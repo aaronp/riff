@@ -1,57 +1,33 @@
 val repo = "riff"
 name := repo
+
 val username            = "aaronp"
 val scalaEleven         = "2.11.8"
 val scalaTwelve         = "2.12.6"
 val defaultScalaVersion = scalaTwelve
-
-enablePlugins(PamfletPlugin)
-enablePlugins(SiteScaladocPlugin)
-enablePlugins(BuildInfoPlugin)
-
-crossScalaVersions := Seq(scalaEleven, scalaTwelve)
+crossScalaVersions := Seq(scalaTwelve)
 organization := s"com.github.${username}"
 scalaVersion := defaultScalaVersion
 resolvers += "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots"
+
 enablePlugins(GitVersioning)
-autoAPIMappings := true
-exportJars := false
-javacOptions ++= Seq("-source", "1.8", "-target", "1.8", "-XX:MaxMetaspaceSize=1g")
-git.useGitDescribe := false
+enablePlugins(GhpagesPlugin)
+enablePlugins(PamfletPlugin)
+enablePlugins(SiteScaladocPlugin)
 
-scalacOptions += "-Ypartial-unification"
-
-addCompilerPlugin("org.spire-math" %% "kind-projector" % "0.9.3")
-
-buildInfoKeys := Seq[BuildInfoKey](name, version, scalaVersion, sbtVersion)
-buildInfoPackage := s"${repo}.build"
-assemblyMergeStrategy in assembly := {
-  case str if str.contains("application.conf") => MergeStrategy.discard
-  case x =>
-    val oldStrategy = (assemblyMergeStrategy in assembly).value
-    oldStrategy(x)
-}
-
-// see http://www.scalatest.org/user_guide/using_scalatest_with_sbt
-testOptions in Test += (Tests.Argument(TestFrameworks.ScalaTest, "-h", s"target/scalatest-reports", "-oN"))
-
-// put scaladocs under 'api/latest'
-sourceDirectory in Pamflet := sourceDirectory.value / "site"
-
-// see https://www.scala-sbt.org/sbt-site/api-documentation.html
-siteSubdirName in SiteScaladoc := "api/latest"
-
-scalacOptions in (Compile, doc) ++= Seq("-groups", "-implicits")
-
-git.gitTagToVersionNumber := { tag: String =>
-  if (tag matches "v?[0-9]+\\..*") {
-    Some(tag)
-  } else None
-}
+addCompilerPlugin("org.spire-math"  %% "kind-projector" % "0.9.3")
+addCompilerPlugin("org.scalamacros" % "paradise"        % "2.1.0" cross CrossVersion.full)
 
 // see http://scalameta.org/scalafmt/
 scalafmtOnCompile in ThisBuild := true
 scalafmtVersion in ThisBuild := "1.4.0"
+
+// Define a `Configuration` for each project, as per http://www.scala-sbt.org/sbt-site/api-documentation.html
+val Core       = config("core")
+val RiffMonix  = config("riff-monix")
+val RiffFs2    = config("riff-fs2")
+val RiffAkka   = config("riff-akka")
+val RiffHttp4s = config("riff-http4s")
 
 // see https://github.com/sbt/sbt-ghpages
 // this exposes the 'ghpagesPushSite' task
@@ -59,17 +35,47 @@ enablePlugins(GhpagesPlugin)
 git.remoteRepo := s"git@github.com:$username/$repo.git"
 ghpagesNoJekyll := true
 
-// SiteScaladocPlugin.scaladocSettings(
-//   conf,
-//   mappings in (Compile, packageDoc) in project,
-//   s"api/${project.id}"
-// )
+enablePlugins(PamfletPlugin)
+enablePlugins(SiteScaladocPlugin)
 
-sourceDirectory in Pamflet := sourceDirectory.value / "site"
+lazy val scaladocSiteProjects =
+  List((core, Core), (riffMonix, RiffMonix), (riffHttp4s, RiffHttp4s), (riffFs2, RiffFs2), (riffAkka, RiffAkka))
+
+lazy val scaladocSiteSettings = scaladocSiteProjects.flatMap {
+  case (project, conf) =>
+    SiteScaladocPlugin.scaladocSettings(
+      conf,
+      mappings in (Compile, packageDoc) in project,
+      s"api/${project.id}"
+    )
+}
+
+// val siteWithScaladocAlt = project.in(file("site/scaladoc-alternative"))
+//   .settings(scaladocSiteSettings)
+
+lazy val root = (project in file("."))
+  .enablePlugins(BuildInfoPlugin)
+  .enablePlugins(SiteScaladocPlugin)
+  .enablePlugins(PamfletPlugin)
+  .enablePlugins(ScalaUnidocPlugin)
+  .aggregate(
+    core,
+    riffMonix,
+    riffFs2,
+    riffAkka,
+    riffHttp4s
+  )
+  .settings(
+    sourceDirectory in Pamflet := sourceDirectory.value / "site",
+    siteSubdirName in ScalaUnidoc := "api/latest",
+    addMappingsToSiteDir(mappings in (ScalaUnidoc, packageDoc), siteSubdirName in ScalaUnidoc)
+    //,gitRemoteRepo := "git@github.com:aaronp/agora.git"
+  )
+//settings(sourceDirectory in Pamflet := sourceDirectory.value / "site")
 
 lazy val settings = scalafmtSettings
 
-scalacOptions ++= List(
+def additionalScalcSettings = List(
   "-deprecation", // Emit warning and location for usages of deprecated APIs.
   "-encoding",
   "utf-8", // Specify character encoding used by source files.
@@ -102,21 +108,91 @@ scalacOptions ++= List(
   "-Ywarn-nullary-override", // Warn when non-nullary `def f()' overrides nullary `def f'.
   "-Ywarn-nullary-unit",     // Warn when nullary methods return Unit.
   //  "-Ywarn-numeric-widen", // Warn when numerics are widened.
-  "-Ywarn-value-discard", // Warn when non-Unit expression results are unused.
+  "-Ywarn-value-discard" // Warn when non-Unit expression results are unused.
+)
+
+val baseScalacSettings = List(
+  "-deprecation", // Emit warning and location for usages of deprecated APIs.
+  "-encoding",
+  "utf-8", // Specify character encoding used by source files.
   "-feature", // Emit warning and location for usages of features that should be imported explicitly.
   "-language:reflectiveCalls", // Allow reflective calls
   "-language:higherKinds", // Allow higher-kinded types
   "-language:implicitConversions", // Allow definition of implicit functions called views
   "-unchecked",
   "-language:reflectiveCalls", // Allow reflective calls
-  "-language:higherKinds", // Allow higher-kinded types
-  "-language:implicitConversions" // Allow definition of implicit functions called views
+  "-language:higherKinds",         // Allow higher-kinded types
+  "-language:implicitConversions", // Allow definition of implicit functions called views
+  //"-Xlog-implicits",
+  "-Xfuture" // Turn on future language features.
+)
+
+val scalacSettings = baseScalacSettings
+
+val commonSettings: Seq[Def.Setting[_]] = Seq(
+  //version := parentProject.settings.ver.value,
+  organization := s"com.github.${username}",
+  scalaVersion := defaultScalaVersion,
+  resolvers += "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots",
+  autoAPIMappings := true,
+  exportJars := false,
+  crossScalaVersions := Seq(scalaEleven, scalaTwelve),
+  javacOptions ++= Seq("-source", "1.8", "-target", "1.8", "-XX:MaxMetaspaceSize=1g"),
+  scalacOptions ++= scalacSettings,
+  buildInfoKeys := Seq[BuildInfoKey](name, version, scalaVersion, sbtVersion),
+  buildInfoPackage := s"${repo}.build",
+  assemblyMergeStrategy in assembly := {
+    case str if str.contains("application.conf") => MergeStrategy.discard
+    case x =>
+      val oldStrategy = (assemblyMergeStrategy in assembly).value
+      oldStrategy(x)
+  },
+  // see http://www.scalatest.org/user_guide/using_scalatest_with_sbt
+  (testOptions in Test) += (Tests.Argument(TestFrameworks.ScalaTest, "-h", s"target/scalatest-reports-${name.value}", "-oN")),
+  // put scaladocs under 'api/latest'
+  sourceDirectory in Pamflet := sourceDirectory.value / "site",
+  siteSubdirName in SiteScaladoc := "api/latest"
 )
 
 test in assembly := {}
 
 publishMavenStyle := true
-libraryDependencies ++= Dependencies.Riff
+
+lazy val core = project
+  .in(file("core"))
+  //.dependsOn(io % "compile->compile;test->test", configProject % "compile->compile;test->test")
+  .settings(name := s"${repo}")
+  .settings(commonSettings: _*)
+  .settings(addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.0" cross CrossVersion.full))
+  .settings(libraryDependencies ++= Dependencies.RiffCore)
+
+lazy val riffMonix = project
+  .in(file("riff-monix"))
+  .dependsOn(core % "compile->compile;test->test", core % "compile->compile;test->test")
+  .settings(name := s"${repo}-monix")
+  .settings(commonSettings: _*)
+  .settings(libraryDependencies ++= Dependencies.RiffMonix)
+
+lazy val riffFs2 = project
+  .in(file("riff-fs2"))
+  .dependsOn(core % "compile->compile;test->test", core % "compile->compile;test->test")
+  .settings(name := s"${repo}-fs2")
+  .settings(commonSettings: _*)
+  .settings(libraryDependencies ++= Dependencies.RiffFs2)
+
+lazy val riffAkka = project
+  .in(file("riff-akka"))
+  .dependsOn(core % "compile->compile;test->test", core % "compile->compile;test->test")
+  .settings(name := s"${repo}-akka")
+  .settings(commonSettings: _*)
+  .settings(libraryDependencies ++= Dependencies.RiffAkka)
+
+lazy val riffHttp4s = project
+  .in(file("riff-http4s"))
+  .dependsOn(core % "compile->compile;test->test", core % "compile->compile;test->test")
+  .settings(name := s"${repo}-http4s")
+  .settings(commonSettings: _*)
+  .settings(libraryDependencies ++= Dependencies.RiffHttp4s)
 
 // see https://leonard.io/blog/2017/01/an-in-depth-guide-to-deploying-to-maven-central/
 pomIncludeRepository := (_ => false)

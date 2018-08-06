@@ -3,7 +3,7 @@ scala:
    - 2.12.3
    - 2.11.11
 script:
-  - sbt ++$TRAVIS_SCALA_VERSION -jvm-opts travis/jvmopts clean test cucumber
+  - sbt ++$TRAVIS_SCALA_VERSION -jvm-opts travis/jvmopts clean test
 jdk:
     - oraclejdk8
 

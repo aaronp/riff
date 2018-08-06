@@ -14,16 +14,28 @@ object Dependencies {
     "junit" % "junit" % "4.12" % "test"
   )
 
-  val cats = List("cats-core", "cats-free").map { art =>
-    "org.typelevel" %% art % "1.1.0"
-  }
-
   val monix = List("monix", "monix-execution",  "monix-eval", "monix-reactive", "monix-tail").map { art =>
     "io.monix" %% art % "3.0.0-RC1"
-  } ++ List(
-    "org.atnos" %% "eff" % "5.2.0", // http://atnos-org.github.io/eff/org.atnos.site.Installation.html
-    "org.atnos" %% "eff-monix" % "5.2.0"
+  }
+
+  val simulacrum: ModuleID = "com.github.mpilquist" %% "simulacrum" % "0.13.0"
+
+  val reactiveStreams = "org.reactivestreams" % "reactive-streams" % "1.0.2"
+
+  val eie = "com.github.aaronp" %% "eie" % "0.0.3"
+  val http4s = List("http4s-blaze-server", "http4s-circe", "http4s-dsl").map { art =>
+    "org.http4s"      %% art  % "0.18.12"
+  }
+  val akka = List(
+    "com.typesafe.akka" %% "akka-actor" % "2.5.14",
+    "com.typesafe.akka" %% "akka-testkit" % "2.5.14" % Test
   )
 
-  val Riff = config :: monix ::: cats ::: logging ::: testDependencies
+  val fs2 = List("co.fs2" %% "fs2-core" % "0.10.4")
+
+  val RiffCore: List[ModuleID] = reactiveStreams :: simulacrum :: config :: eie :: logging ::: testDependencies
+  val RiffMonix: List[ModuleID] = monix ::: logging ::: testDependencies
+  val RiffFs2: List[ModuleID] = fs2 ::: logging ::: testDependencies
+  val RiffAkka: List[ModuleID] = akka ::: logging ::: testDependencies
+  val RiffHttp4s: List[ModuleID] = http4s ::: logging ::: testDependencies
 }
