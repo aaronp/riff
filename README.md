@@ -1,16 +1,15 @@
 # Riff
-![sbt test](https://travis-ci.org/aaronp/riff.svg?branch=master)
+[![Build Status](https://travis-ci.org/aaronp/riff.svg?branch=master)](https://travis-ci.org/aaronp/riff)
 
-'Riff' is (another) Raft implementation, written in scala.
+A Raft implementation written in scala which cleanly separates the Raft logic from any particular
+transport/framework.
 
-Having had a look at existing implementations, most on the JVM seemed strongly biased to a particular framework.
-The scala ones in particular being tied to Akka.
+The core project only has a dependency on eie (a tiny IO library), and then offers support for akka,monix,fs2,http4s,etc
+in separate sub-projects.
 
-I tried to take the approach where a Raft node's instance is represented by a single stateful class which takes some requests
-as inputs and produces requests/responses as output.
-
-That stateful class can then be 'lifted' into some other context... put behind an akka actor, into a monix/fs2 stream, REST service, etc.
-(as opposed to being coupled to any of those directly).
+The outer-most representation clearly takes its inputs (requests, responses and timer messages) and produces addressed
+messages which can then be used by the sub-projects to send REST requests, put messages on queues, pipe them through a
+stream, etc.
 
 From the outside, the Raft node takes requests, responses and timer messages as inputs and produces requests/responses as
 outputs.
