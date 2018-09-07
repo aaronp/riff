@@ -33,7 +33,7 @@ object Dependencies {
 
   val fs2 = List("co.fs2" %% "fs2-core" % "0.10.4")
 
-  val RiffCore: List[ModuleID] = reactiveStreams :: simulacrum :: config :: eie :: logging ::: testDependencies
+  val RiffCore: List[ModuleID] = reactiveStreams :: eie :: logging ::: testDependencies
   val RiffMonix: List[ModuleID] = monix ::: logging ::: testDependencies
   val RiffFs2: List[ModuleID] = fs2 ::: logging ::: testDependencies
   val RiffAkka: List[ModuleID] = akka ::: logging ::: testDependencies

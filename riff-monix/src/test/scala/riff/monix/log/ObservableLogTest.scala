@@ -24,7 +24,7 @@ class ObservableLogTest extends RiffSpec with Eventually {
 
       Then("The observer should be notified of a LogAppendResult")
       eventually {
-        received should contain only (LogAppended(LogAppendResult(term = 2, firstIndex = 1, lastIndex = 3, Nil)))
+        received should contain only (LogAppended(LogAppendResult(firstIndex = 1, lastIndex = 3, Nil)))
       }
 
       // -- clean up for convenience in testing/asserting new entriew
@@ -44,7 +44,7 @@ class ObservableLogTest extends RiffSpec with Eventually {
 
       Then("The observer should be notified of a LogAppendResult")
       eventually {
-        received should contain only (LogAppended(LogAppendResult(term = 10, firstIndex = 4, lastIndex = 4, Nil)))
+        received should contain only (LogAppended(LogAppendResult(firstIndex = 4, lastIndex = 4, Nil)))
       }
       received.clear()
 
@@ -65,10 +65,7 @@ class ObservableLogTest extends RiffSpec with Eventually {
       ol.append(LogCoords(2, 1), "first commit")
 
       val List(LogAppended(appendResult)) = listTask.runSyncUnsafe(testTimeout)
-      appendResult.firstIndex shouldBe 1
-      appendResult.lastIndex shouldBe 1
-      appendResult.term shouldBe 2
-      appendResult.replacedIndices shouldBe empty
+      appendResult shouldBe LogAppendResult(1, 1)
     }
     "notify observers when multiple entries are appended" in {
       val underlying = RaftLog.inMemory[String]()
@@ -80,11 +77,11 @@ class ObservableLogTest extends RiffSpec with Eventually {
       }
 
       val result1: LogAppendResult = ol.append(LogCoords(2, 1), "first", "second", "third")
-      result1 shouldBe LogAppendResult(term = 2, firstIndex = 1, lastIndex = 3, Nil)
+      result1 shouldBe LogAppendResult(firstIndex = 1, lastIndex = 3, Nil)
       ol.latestAppended() shouldBe LogCoords(2, 3)
 
       val result2: LogAppendResult = ol.append(LogCoords(3, 2), "replaced second", "replaced third", "new fourth")
-      result2 shouldBe LogAppendResult(term = 3, firstIndex = 2, lastIndex = 4, replacedIndices = Seq(2, 3))
+      result2 shouldBe LogAppendResult(firstIndex = 2, lastIndex = 4, replacedIndices = Seq(2, 3))
 
       eventually {
         received.size shouldBe 2

@@ -1,9 +1,6 @@
-target
-.vertx
-./data
-*.gz
-*.log
 .DS_Store
+target
 .idea
-project/project/
-idea_fucked
+.idea_modules
+out
+shared-src

@@ -1,77 +1,51 @@
+import sbtcrossproject.CrossPlugin.autoImport.{CrossType, crossProject}
+
 val repo = "riff"
 name := repo
 
 val username            = "aaronp"
-val scalaEleven         = "2.11.8"
+val scalaEleven         = "2.11.11"
 val scalaTwelve         = "2.12.6"
 val defaultScalaVersion = scalaTwelve
-crossScalaVersions := Seq(scalaTwelve)
+val scalaVersions       = Seq(scalaEleven, scalaTwelve)
+crossScalaVersions := scalaVersions
 organization := s"com.github.${username}"
 scalaVersion := defaultScalaVersion
 resolvers += "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots"
 
-enablePlugins(GitVersioning)
+// see https://github.com/sbt/sbt-ghpages
+// this exposes the 'ghpagesPushSite' task
 enablePlugins(GhpagesPlugin)
+enablePlugins(GitVersioning)
 enablePlugins(PamfletPlugin)
 enablePlugins(SiteScaladocPlugin)
-
-addCompilerPlugin("org.spire-math"  %% "kind-projector" % "0.9.3")
-addCompilerPlugin("org.scalamacros" % "paradise"        % "2.1.0" cross CrossVersion.full)
 
 // see http://scalameta.org/scalafmt/
 scalafmtOnCompile in ThisBuild := true
 scalafmtVersion in ThisBuild := "1.4.0"
 
 // Define a `Configuration` for each project, as per http://www.scala-sbt.org/sbt-site/api-documentation.html
-val Core       = config("core")
+val Core       = config("riff-core")
 val RiffMonix  = config("riff-monix")
 val RiffFs2    = config("riff-fs2")
 val RiffAkka   = config("riff-akka")
 val RiffHttp4s = config("riff-http4s")
 
-// see https://github.com/sbt/sbt-ghpages
-// this exposes the 'ghpagesPushSite' task
-enablePlugins(GhpagesPlugin)
 git.remoteRepo := s"git@github.com:$username/$repo.git"
 ghpagesNoJekyll := true
 
-enablePlugins(PamfletPlugin)
-enablePlugins(SiteScaladocPlugin)
-
 lazy val scaladocSiteProjects =
-  List((core, Core), (riffMonix, RiffMonix), (riffHttp4s, RiffHttp4s), (riffFs2, RiffFs2), (riffAkka, RiffAkka))
+  List((riffCoreCrossProject, Core), (riffMonix, RiffMonix), (riffHttp4s, RiffHttp4s), (riffFs2, RiffFs2), (riffAkka, RiffAkka))
 
 lazy val scaladocSiteSettings = scaladocSiteProjects.flatMap {
-  case (project, conf) =>
+  case (project: Project, conf) =>
     SiteScaladocPlugin.scaladocSettings(
       conf,
       mappings in (Compile, packageDoc) in project,
       s"api/${project.id}"
     )
+  case _ => Nil // ignore cross-projects
 }
-
-// val siteWithScaladocAlt = project.in(file("site/scaladoc-alternative"))
-//   .settings(scaladocSiteSettings)
-
-lazy val root = (project in file("."))
-  .enablePlugins(BuildInfoPlugin)
-  .enablePlugins(SiteScaladocPlugin)
-  .enablePlugins(PamfletPlugin)
-  .enablePlugins(ScalaUnidocPlugin)
-  .aggregate(
-    core,
-    riffMonix,
-    riffFs2,
-    riffAkka,
-    riffHttp4s
-  )
-  .settings(
-    sourceDirectory in Pamflet := sourceDirectory.value / "site",
-    siteSubdirName in ScalaUnidoc := "api/latest",
-    addMappingsToSiteDir(mappings in (ScalaUnidoc, packageDoc), siteSubdirName in ScalaUnidoc)
-    //,gitRemoteRepo := "git@github.com:aaronp/agora.git"
-  )
-//settings(sourceDirectory in Pamflet := sourceDirectory.value / "site")
 
 lazy val settings = scalafmtSettings
 
@@ -136,7 +110,7 @@ val commonSettings: Seq[Def.Setting[_]] = Seq(
   resolvers += "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots",
   autoAPIMappings := true,
   exportJars := false,
-  crossScalaVersions := Seq(scalaEleven, scalaTwelve),
+  crossScalaVersions := scalaVersions,
   javacOptions ++= Seq("-source", "1.8", "-target", "1.8", "-XX:MaxMetaspaceSize=1g"),
   scalacOptions ++= scalacSettings,
   buildInfoKeys := Seq[BuildInfoKey](name, version, scalaVersion, sbtVersion),
@@ -158,38 +132,89 @@ test in assembly := {}
 
 publishMavenStyle := true
 
-lazy val core = project
-  .in(file("core"))
-  //.dependsOn(io % "compile->compile;test->test", configProject % "compile->compile;test->test")
-  .settings(name := s"${repo}")
-  .settings(commonSettings: _*)
-  .settings(addCompilerPlugin("org.scalamacros" % "paradise" % "2.1.0" cross CrossVersion.full))
-  .settings(libraryDependencies ++= Dependencies.RiffCore)
+// val siteWithScaladocAlt = project.in(file("site/scaladoc-alternative"))
+//   .settings(scaladocSiteSettings)
+
+lazy val root = (project in file("."))
+  .enablePlugins(BuildInfoPlugin)
+  .enablePlugins(SiteScaladocPlugin)
+  .enablePlugins(PamfletPlugin)
+  .enablePlugins(ScalaUnidocPlugin)
+  .aggregate(
+    riffCoreJS,
+    riffCoreJVM,
+    riffMonix,
+    riffFs2,
+    riffAkka,
+    riffHttp4s
+  )
+  .settings(
+    sourceDirectory in Pamflet := sourceDirectory.value / "site",
+    siteSubdirName in ScalaUnidoc := "api/latest",
+    addMappingsToSiteDir(mappings in (ScalaUnidoc, packageDoc), siteSubdirName in ScalaUnidoc),
+    publish := {},
+    publishLocal := {}
+  )
+
+//settings(sourceDirectory in Pamflet := sourceDirectory.value / "site")
+// lazy val core = project.in(file("riff-core")).
+//   aggregate(riffCoreJS, riffCoreJVM).
+//   settings(
+//     publish := {},
+//     publishLocal := {}
+//   )
+
+lazy val riffCoreCrossProject = crossProject(JSPlatform, JVMPlatform)
+  .crossType(CrossType.Full)
+  .withoutSuffixFor(JVMPlatform)
+  .settings(
+    name := "riff-core",
+    version := "0.0.1-SNAPSHOT",
+    libraryDependencies ++= List(
+      "com.lihaoyi"         %%% "scalatags"      % "0.6.7",
+      "org.scalatest"       %%% "scalatest"      % "3.0.0" % "test",
+      "org.reactivestreams" % "reactive-streams" % "1.0.2"
+    )
+  )
+  .in(file("riff-core"))
+  .jvmSettings(
+    name := "riff-core-jvm",
+    libraryDependencies ++= List(
+      "org.scala-js"      %% "scalajs-stubs" % scalaJSVersion % "provided",
+      "com.github.aaronp" %% "eie"           % "0.0.3"
+    )
+  )
+  .jsSettings(
+    name := "riff-core-js"
+  )
+
+lazy val riffCoreJVM = riffCoreCrossProject.jvm
+lazy val riffCoreJS  = riffCoreCrossProject.js
 
 lazy val riffMonix = project
   .in(file("riff-monix"))
-  .dependsOn(core % "compile->compile;test->test", core % "compile->compile;test->test")
+  .dependsOn(riffCoreJVM % "compile->compile;test->test", riffCoreJVM % "compile->compile;test->test")
   .settings(name := s"${repo}-monix")
   .settings(commonSettings: _*)
   .settings(libraryDependencies ++= Dependencies.RiffMonix)
 
 lazy val riffFs2 = project
   .in(file("riff-fs2"))
-  .dependsOn(core % "compile->compile;test->test", core % "compile->compile;test->test")
+  .dependsOn(riffCoreJVM % "compile->compile;test->test", riffCoreJVM % "compile->compile;test->test")
   .settings(name := s"${repo}-fs2")
   .settings(commonSettings: _*)
   .settings(libraryDependencies ++= Dependencies.RiffFs2)
 
 lazy val riffAkka = project
   .in(file("riff-akka"))
-  .dependsOn(core % "compile->compile;test->test", core % "compile->compile;test->test")
+  .dependsOn(riffCoreJVM % "compile->compile;test->test", riffCoreJVM % "compile->compile;test->test")
   .settings(name := s"${repo}-akka")
   .settings(commonSettings: _*)
   .settings(libraryDependencies ++= Dependencies.RiffAkka)
 
 lazy val riffHttp4s = project
   .in(file("riff-http4s"))
-  .dependsOn(core % "compile->compile;test->test", core % "compile->compile;test->test")
+  .dependsOn(riffCoreJVM % "compile->compile;test->test", riffCoreJVM % "compile->compile;test->test")
   .settings(name := s"${repo}-http4s")
   .settings(commonSettings: _*)
   .settings(libraryDependencies ++= Dependencies.RiffHttp4s)
