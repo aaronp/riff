@@ -1,8 +1,9 @@
 package riff.raft.node
+
 import riff.RiffSpec
 import riff.raft._
-import riff.raft.log.{LogCoords, LogEntry}
-import riff.raft.messages._
+import riff.raft.log.{LogAppendResult, LogCoords, LogEntry, RaftLog}
+import riff.raft.messages.{AppendEntries, _}
 import riff.raft.timer.LoggedInvocationTimer
 
 class LeaderNodeTest extends RiffSpec {
@@ -22,43 +23,156 @@ class LeaderNodeTest extends RiffSpec {
 //  "LeaderNode updating its cluster view on heartbeat replies" should {
 //
 //  }
-  "LeaderNode brings new client up-to-speed" should {
-    // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
-    Given("A cluster of nodes A, B and C")
-    // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
-    val cluster       = TestCluster(3)
-    val List(a, b, c) = cluster.clusterNodes.ensuring(_.forall(_.persistentState.currentTerm == 0))
+  "LeaderNode.onAppendResponse with successful update" should {
+    "send the next append entries when up to the max append size when receiving a successful append response which is behind the leader's log" in {
 
-    // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
-    And("A becomes the leader and replicated 10 append requests")
-    // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
-    cluster.sendMessages(a.nodeKey, cluster.electLeader(a).toList)
-    val AddressedRequest(appendRequestsFromLeader) = a.createAppend((100 until 110).toArray)
-    cluster.sendMessages(a.nodeKey, appendRequestsFromLeader.toList)
-    cluster.clusterNodes.foreach(_.log.latestAppended() shouldBe LogCoords(1,10))
+      Given("A leader node w/ 100 log entries")
+      val leader = new LeaderNode("the leader", ClusterView(10, "follower1", "follower2"))
+      val log    = RaftLog.inMemory[String]()
+      // in this case every log entry is for a different term, 100 + i
+      val someData = (1 to 100).map(i => LogEntry(100 + i, i.toString)).toArray
+      log.appendAll(1, someData) shouldBe LogAppendResult(1, 100)
+      log.latestAppended() shouldBe LogCoords(200, 100)
 
-    // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
-    And("The leader then accepts 90 more appends, which aren't sent to the followers")
-    // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+      When("The leader receives a successful AppendEntriesResponse w/ a match index 7 and a maxAppendSize 12")
+      val appendResponse                                = AppendEntriesResponse.ok(1, 7)
+      val (committedCoords, AddressedRequest(requests)) = leader.onAppendResponse("follower1", log, currentTerm = 500, appendResponse, maxAppendSize = 5)
 
-    // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
-    And("The leader then accepts 90 more appends, which aren't sent to the followers")
-    // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+      Then("It should commit all values through the match index, as there is now a majority in a 3 node cluster")
+      committedCoords.toList should contain theSameElementsInOrderAs ((1 to 7).map(i => LogCoords(100 + i, i)))
+      log.latestCommit() shouldBe 7
 
-    // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
-    When("A follower then accepts a heartbeat msg w/ a previous index as 100 from the leader")
-    // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+      And("It should send another AppendEntries w/ 5 values, 8 to 13")
+      val List(("follower1", nextAppendEntries)) = requests.toList
 
-    // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
-    Then("the leader should continue to sent HB msgs to that follower until it reaches the 10th entry")
-    // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+      log.coordsForIndex(8) shouldBe Some(LogCoords(108, 8))
 
-    // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
-    Then("The leader should then send batches of updates based on its max batch size until the follower is caught up")
-    // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+      nextAppendEntries shouldBe AppendEntries(LogCoords(108, 8),
+                                               500,
+                                               7,
+                                               Array(
+                                                 LogEntry(108, "8"),
+                                                 LogEntry(109, "9"),
+                                                 LogEntry(110, "10"),
+                                                 LogEntry(111, "11"),
+                                                 LogEntry(112, "12")
+                                               ))
+    }
+    "not send an AppendEntries request when it is up-to-date w/ the leader's log" in {
 
+      Given("A leader node w/ 100 log entries")
+      val leader = new LeaderNode("the leader", ClusterView(10, "follower1", "follower2"))
+      val log    = RaftLog.inMemory[String]()
+      // in this case every log entry is for a different term, 100 + i
+      val someData = (1 to 100).map(i => LogEntry(100 + i, i.toString)).toArray
+      log.appendAll(1, someData) shouldBe LogAppendResult(1, 100)
+      log.latestAppended() shouldBe LogCoords(200, 100)
 
+      ???
+    }
+    "commit the entries when a majority is reached" in {
+      val leader = new LeaderNode("the leader", ClusterView(10, "follower1", "follower2"))
+
+      val log      = RaftLog.inMemory[String]()
+      val someData = (1 to 100).map(i => LogEntry(100 + i, i.toString)).toArray
+      log.appendAll(1, someData) shouldBe LogAppendResult(1, 100)
+      log.latestAppended() shouldBe LogCoords(200, 100)
+
+      val appendResponse                    = AppendEntriesResponse.ok(1, 7)
+      val (Nil, AddressedRequest(requests)) = leader.onAppendResponse("follower1", log, 123, appendResponse, 10)
+      ???
+    }
   }
+
+  "LeaderNode.onAppendResponse with failed update" should {
+    "send a previous append entries for the previous index on failure" in {
+      val leader = new LeaderNode("the leader", ClusterView(10, "follower1", "follower2"))
+      leader.clusterView.stateForPeer("follower1") shouldBe Some(Peer(10, 0))
+      leader.clusterView.stateForPeer("follower2") shouldBe Some(Peer(10, 0))
+      leader.clusterView.stateForPeer("unknown") shouldBe None
+
+      val appendResponse = AppendEntriesResponse.fail(1)
+
+      val log      = RaftLog.inMemory[String]()
+      val someData = (1 to 100).map(i => LogEntry(100 + i, i.toString)).toArray
+      log.appendAll(1, someData) shouldBe LogAppendResult(1, 100)
+      log.latestAppended() shouldBe LogCoords(200, 100)
+
+      val (Nil, AddressedRequest(requests)) = leader.onAppendResponse("follower1", log, 123, appendResponse, 10)
+      val List(("follower1", nextAppend))   = requests.toList
+      nextAppend shouldBe AppendEntries(LogCoords(109, 9), 123, 0)
+
+      leader.clusterView.stateForPeer("follower1") shouldBe Some(Peer(9, 0))
+      leader.clusterView.stateForPeer("follower2") shouldBe Some(Peer(10, 0))
+    }
+  }
+  "LeaderNode send heartbeat timeout" should {
+    "re-send missing AppendEntry requests when the send-heartbeat times out" in {
+      // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+      Given("A cluster of nodes A, B and C")
+      // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+      val cluster       = TestCluster(3)
+      val List(a, b, c) = cluster.clusterNodes.ensuring(_.forall(_.persistentState.currentTerm == 0))
+
+      // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+      And("A becomes the leader and replicated 10 append requests")
+      // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+      cluster.sendMessages(a.nodeKey, cluster.electLeader(a).toList)
+      val AddressedRequest(appendRequestsFromLeader)                       = a.createAppend((100 until 110).toArray)
+      val appendResponses: Map[String, NodeState[String, LogIndex]#Result] = cluster.sendMessages(a.nodeKey, appendRequestsFromLeader.toList)
+
+      withClue("Before receiving the append responses the leader should assume a default view of the cluster") {
+        val initialView: ClusterView[String] = a.raftNode().asLeader.get.clusterView
+        initialView.numberOfPeers shouldBe 2
+        initialView.stateForPeer(b.nodeKey) shouldBe Some(Peer(1, 0))
+        initialView.stateForPeer(c.nodeKey) shouldBe Some(Peer(1, 0))
+      }
+
+      cluster.sendResponses(appendResponses)
+
+      withClue("After receiving the followers' AppendEntriesResponses it should update its view") {
+        val afterFirst10AckView: ClusterView[String] = a.raftNode().asLeader.get.clusterView
+        afterFirst10AckView.numberOfPeers shouldBe 2
+        afterFirst10AckView.stateForPeer(b.nodeKey) shouldBe Some(Peer(11, 10))
+        afterFirst10AckView.stateForPeer(c.nodeKey) shouldBe Some(Peer(11, 10))
+        a.log.latestCommit() shouldBe 10
+        b.log.latestCommit() shouldBe 0
+        c.log.latestCommit() shouldBe 0
+      }
+      cluster.clusterNodes.foreach(_.log.latestAppended() shouldBe LogCoords(1, 10))
+
+      // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+      And("The leader then accepts 90 more appends, which aren't received by the followers")
+      // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+      // we add these to the leader, but never send the requests to the followers
+      a.createAppend((110 until 200).toArray)
+      a.log.latestAppended() shouldBe LogCoords(1, 100)
+
+      // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+      When("The leader next times out w/ for sending a HB msg to a follower")
+      // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+      val AddressedRequest(heartbeatForB) = a.onTimerMessage(SendHeartbeatTimeout(b.nodeKey))
+      heartbeatForB.toMap.keySet shouldBe Set(b.nodeKey)
+      val AppendEntries(LogCoords(1, 10), 1, 10, entries) = heartbeatForB.toMap.apply(b.nodeKey)
+      entries.size shouldBe a.maxAppendSize
+
+      // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+      Then(s"it should send an append msg which contains entries from 11 to ${11 + a.maxAppendSize}")
+      // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+      val bResp: Map[String, NodeState[String, LogIndex]#Result] = cluster.sendMessages(a.nodeKey, heartbeatForB.toList)
+      b.log.entriesFrom(1).map(_.data).toList shouldBe (100 until 120).toList
+
+      bResp.keySet shouldBe Set(b.nodeKey)
+      bResp(b.nodeKey) shouldBe AddressedResponse(a.nodeKey, AppendEntriesResponse(1, true, 20))
+
+      // update the leader w/ node 2's response
+      a.raftNode().asLeader.get.clusterView.toMap() shouldBe Map("node 2" -> Peer(11, 10), "node 3" -> Peer(11, 10))
+      cluster.sendResponses(bResp)
+      a.raftNode().asLeader.get.clusterView.toMap() shouldBe Map("node 2" -> Peer(21, 20), "node 3" -> Peer(11, 10))
+    }
+  }
+
   "LeaderNode when disconnected from the rest of the cluster" should {
 
     "have its unreplicated entries overwritten by entries from a new leader" in {
@@ -89,7 +203,7 @@ class LeaderNodeTest extends RiffSpec {
       // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
       val voteExchanges = cluster.attemptToElectLeader(b).partition {
         case (RequestVoteResponse(_, ok), _) => ok
-        case other => fail(s"got $other")
+        case other                           => fail(s"got $other")
       }
 
       // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
@@ -101,7 +215,7 @@ class LeaderNodeTest extends RiffSpec {
         newLeaderHeartbeats.map(_._1).toSet shouldBe Set("node 1", "node 3")
         newLeaderHeartbeats.map(_._2).foreach {
           case AppendEntries(LogCoords.Empty, 2, 0, entries) => entries shouldBe empty
-          case other => fail(s"got $other")
+          case other                                         => fail(s"got $other")
         }
       }
 
@@ -122,7 +236,7 @@ class LeaderNodeTest extends RiffSpec {
       val AddressedRequest(newLeaderAppendRequests) = b.createAppend(newLeaderFirstAppendData)
       newLeaderAppendRequests.foreach {
         case (_, AppendEntries(LogCoords.Empty, 2, 0, data)) => data.toList shouldBe List(LogEntry(2, newLeaderFirstAppendData))
-        case other => fail(s"got $other")
+        case other                                           => fail(s"got $other")
       }
 
       withClue("Before the old leader gets the append it should have the old values") {
@@ -166,7 +280,7 @@ class LeaderNodeTest extends RiffSpec {
         // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
         import RichNodeState._
 
-        val leaderState = new LeaderNode("the leader", new LeaderState(peerNames.map(_ -> Peer()).toMap))
+        val leaderState = new LeaderNode("the leader", new ClusterView(peerNames.map(_ -> Peer()).toMap))
 
         val thisTerm = 2
 

@@ -100,6 +100,12 @@ abstract class BaseSpec extends WordSpec with Matchers with ScalaFutures with Gi
       }
       all.toMap.ensuring(_.size == all.size, "test case doesn't support multiple requests from the same node - do it in separate calls")
     }
+    def sendResponses(responses: Map[String, NodeState[String, Int]#Result]) = {
+      val all = responses.collect {
+        case (from, AddressedResponse(backTo, resp)) => from -> byName(backTo).onMessage(from, resp)
+      }
+      all.ensuring(_.size == all.size, "test case doesn't support multiple responses from the same node - do it in separate calls")
+    }
 
   }
   protected def newNode(name: String = "test"): NodeState[String, Int] = {

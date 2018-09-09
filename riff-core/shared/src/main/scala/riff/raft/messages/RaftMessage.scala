@@ -18,7 +18,7 @@ sealed trait TimerMessage[+NodeKey] extends RaftMessage[NodeKey, Nothing]
   */
 case object ReceiveHeartbeatTimeout extends TimerMessage[Nothing]
 
-/** Marks a timeout for a leader indicatig it should sent a heartbeat to the given follower
+/** Marks a timeout for a leader indicating it should sent a heartbeat to the given follower
   */
 case class SendHeartbeatTimeout[NodeKey](node: NodeKey) extends TimerMessage[NodeKey]
 
@@ -29,8 +29,28 @@ case class SendHeartbeatTimeout[NodeKey](node: NodeKey) extends TimerMessage[Nod
   */
 sealed trait RaftRequest[+A] extends RequestOrResponse[Nothing, A]
 
-final case class AppendEntries[A](previous: LogCoords, term: Term, commitIndex: LogIndex, entries: Array[LogEntry[A]]) extends RaftRequest[A] {
+final case class AppendEntries[A](previous: LogCoords, term: Term, commitIndex: LogIndex, entries: Array[LogEntry[A]] = Array.empty[LogEntry[A]])
+    extends RaftRequest[A] {
   def appendIndex = previous.index + 1 //LogCoords(term, previous.index + 1)
+
+  override def equals(obj: Any): Boolean = {
+    obj match {
+      case AppendEntries(`previous`, `term`, `commitIndex`, otherEntries) if otherEntries.length == entries.length =>
+        entries.zip(otherEntries).forall {
+          case (a, b) => a == b
+        }
+      case _ => false
+    }
+  }
+  override def toString = {
+    val entrySize = entries.length
+    val entryStr = if (entrySize < 5) {
+      entries.mkString(",")
+    } else {
+      entries.take(4).mkString(",", ",", ",...")
+    }
+    s"""AppendEntries(previous=$previous, term=$term, commitIndex=$commitIndex}, ${entrySize} entries=[$entryStr])"""
+  }
 }
 
 final case class RequestVote(term: Term, logState: LogCoords) extends RaftRequest[Nothing] {

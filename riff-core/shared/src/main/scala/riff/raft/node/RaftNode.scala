@@ -10,14 +10,23 @@ sealed trait RaftNode[NodeKey] {
 
   def becomeFollower(leader: Option[NodeKey]): FollowerNode[NodeKey] = FollowerNode(id, leader = leader)
 
-  def onReceiveHeartbeatTimeout(term: Term, clusterSize: Int): CandidateNode[NodeKey] = {
+  def becomeCandidate(term: Term, clusterSize: Int): CandidateNode[NodeKey] = {
     new CandidateNode[NodeKey](id, new CandidateState[NodeKey](term, Set(id), Set.empty, clusterSize))
   }
+  def becomeLeader(cluster: RaftCluster[NodeKey], initialLogState: LogCoords): LeaderNode[NodeKey] = {
+    LeaderNode(id, initialLogState, cluster)
+  }
+
   def leader: Option[NodeKey]
   def role: NodeRole
   def isFollower: Boolean  = role == Follower
   def isLeader: Boolean    = role == Leader
   def isCandidate: Boolean = role == Candidate
+
+  def asLeader: Option[LeaderNode[NodeKey]] = this match {
+    case leader: LeaderNode[NodeKey] => Option(leader)
+    case _                           => None
+  }
 }
 
 final case class FollowerNode[NodeKey](override val id: NodeKey, override val leader: Option[NodeKey]) extends RaftNode[NodeKey] {
@@ -27,7 +36,7 @@ final case class FollowerNode[NodeKey](override val id: NodeKey, override val le
 final case class CandidateNode[NodeKey](override val id: NodeKey, initialState: CandidateState[NodeKey]) extends RaftNode[NodeKey] {
   override val role         = Candidate
   private var voteResponses = initialState
-  override val leader       = None
+  override val leader: Option[NodeKey] = None
   def candidateState()      = voteResponses
 
   /**
@@ -36,17 +45,17 @@ final case class CandidateNode[NodeKey](override val id: NodeKey, initialState: 
     * @param voteResponse the vote response
     * @return a raft node -- either the candidate or a leader
     */
-  def onRequestVoteResponse(from: NodeKey, cluster: RaftCluster[NodeKey], voteResponse: RequestVoteResponse): RaftNode[NodeKey] = {
+  def onRequestVoteResponse(from: NodeKey, cluster: RaftCluster[NodeKey], initialLogState: LogCoords, voteResponse: RequestVoteResponse): RaftNode[NodeKey] = {
     voteResponses = voteResponses.update(from, voteResponse)
     if (voteResponses.canBecomeLeader) {
-      LeaderNode(id, cluster)
+      LeaderNode(id, initialLogState, cluster)
     } else {
       this
     }
   }
 }
 
-final case class LeaderNode[NodeKey](override val id: NodeKey, clusterView: LeaderState[NodeKey]) extends RaftNode[NodeKey] {
+final case class LeaderNode[NodeKey](override val id: NodeKey, clusterView: ClusterView[NodeKey]) extends RaftNode[NodeKey] {
   override def leader = Option(id)
 
   /** appends the data to the given leader's log, returning the append result and append requests based on the clusterView
@@ -82,14 +91,20 @@ final case class LeaderNode[NodeKey](override val id: NodeKey, clusterView: Lead
     * @param appendResponse the response which we're applying
     * @param maxAppendSize the maximum number of subsequent entries we'll send should we be trying to catch the 'from' node up
     * @tparam A the log type
-    * @return some response - either a no-op or a subsequent [[AppendEntries]] request
+    * @return the committed log coords resulting from having applied this response and the state output (either a no-op or a subsequent [[AppendEntries]] request)
     */
   def onAppendResponse[A](from: NodeKey,
                           log: RaftLog[A],
                           currentTerm: Term,
                           appendResponse: AppendEntriesResponse,
                           maxAppendSize: Int): (Seq[LogCoords], NodeStateOutput[NodeKey, A]) = {
+
+    //
+    // first update the cluster view - update or decrement the nextIndex, matchIndex
+    //
     clusterView.update(from, appendResponse)
+
+    val latestAppended = log.latestAppended()
 
     if (appendResponse.success) {
 
@@ -103,8 +118,6 @@ final case class LeaderNode[NodeKey](override val id: NodeKey, clusterView: Lead
       } else {
         Nil
       }
-
-      val latestAppended = log.latestAppended()
 
       // if there are log entries which occur 'after' this entry, they should then be sent next
       val reply = if (latestAppended.index > appendResponse.matchIndex) {
@@ -122,11 +135,8 @@ final case class LeaderNode[NodeKey](override val id: NodeKey, clusterView: Lead
       // try again w/ an older index. This trusts that the cluster does the right thing when updating its peer view
       val reply = clusterView.stateForPeer(from) match {
         case Some(peer) =>
-          val idx = peer.nextIndex.min(log.latestAppended().index)
-          val coords = log.coordsForIndex(idx) match {
-            case Some(c) => c
-            case None    => log.latestAppended()
-          }
+          val idx = peer.nextIndex.min(latestAppended.index)
+          val coords = log.coordsForIndex(idx).getOrElse(latestAppended)
           AddressedRequest(from, AppendEntries(coords, currentTerm, log.latestCommit(), Array.empty[LogEntry[A]]))
         case None =>
           NoOpOutput(s"Couldn't find peer $from in the cluster(!), ignoring append entries response")
@@ -138,7 +148,7 @@ final case class LeaderNode[NodeKey](override val id: NodeKey, clusterView: Lead
 }
 
 object LeaderNode {
-  def apply[NodeKey](id: NodeKey, cluster: RaftCluster[NodeKey]) = {
-    new LeaderNode[NodeKey](id, LeaderState(cluster))
+  def apply[NodeKey](id: NodeKey, initialLogState: LogCoords, cluster: RaftCluster[NodeKey]): LeaderNode[NodeKey] = {
+    new LeaderNode[NodeKey](id, ClusterView(initialLogState.index, cluster))
   }
 }

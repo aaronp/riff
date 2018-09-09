@@ -64,6 +64,7 @@ object FileBasedLog extends eie.io.LowPriorityIOImplicits {
     }
 
     override def appendAll(logIndex: LogIndex, data: Array[LogEntry[T]]): LogAppendResult = {
+      require(logIndex > 0, s"log indices should begin at 1: $logIndex")
       if (data.isEmpty) {
         LogAppendSuccess(0, 0)
       } else {

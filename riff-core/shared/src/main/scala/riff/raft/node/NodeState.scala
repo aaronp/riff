@@ -6,20 +6,21 @@ import riff.raft.{Term, node}
 
 object NodeState {
 
-  def inMemory[NodeKey, A](id: NodeKey)(implicit timer: RaftTimer[NodeKey]): NodeState[NodeKey, A] = {
+  def inMemory[NodeKey, A](id: NodeKey, maxAppendSize: Int = 10)(implicit timer: RaftTimer[NodeKey]): NodeState[NodeKey, A] = {
     new NodeState[NodeKey, A](
       PersistentState.inMemory().cached(),
       RaftLog.inMemory[A](),
       new Timers[NodeKey](),
       RaftCluster[NodeKey](Nil),
-      node.FollowerNode[NodeKey](id, None)
+      node.FollowerNode[NodeKey](id, None),
+      maxAppendSize
     )
   }
 
 }
 
 /**
-  * The place where the different pieces of the system come together -- the glue code.
+  * The place where the different pieces which represent a Raft Node come together -- the glue code.
   *
   * I've looked at this a few different ways, but ultimately found this abstraction here to be the most readable,
   * and follows most closely what's laid out in the raft spec.
@@ -27,22 +28,22 @@ object NodeState {
   * It's not too generic/abstracted, but quite openly just orchestrates the pieces/interactions of the inputs
   * into a raft node.
   *
-  * At the most general, it just
-  *
-  * @param persistentState
-  * @param log
-  * @param timers
-  * @param cluster
-  * @param initialState
-  * @tparam NodeKey
-  * @tparam A
+  * @param persistentState the state used to track the currentTerm and vote state
+  * @param log the RaftLog which stores the log entries
+  * @param timers the timing apparatus for controlling timeouts
+  * @param cluster this node's view of the cluster
+  * @param initialState the initial role
+  * @param maxAppendSize the maximum number of entries to send to a follower at a time when catching up the log
+  * @tparam NodeKey the underlying node peer type, which may just be a String identifier, or a websocket, actor, etc.
+  *                 so long as it has a meaningful hashCode/equals
+  * @tparam A the log entry type
   */
 class NodeState[NodeKey, A](val persistentState: PersistentState[NodeKey],
                             val log: RaftLog[A],
                             val timers: Timers[NodeKey],
                             val cluster: RaftCluster[NodeKey],
                             initialState: RaftNode[NodeKey],
-                            val maxAppendSize: Int = 1000)
+                            val maxAppendSize: Int)
     extends RaftMessageHandler[NodeKey, A] {
 
   override def toString() = {
@@ -58,7 +59,7 @@ class NodeState[NodeKey, A](val persistentState: PersistentState[NodeKey],
 
   def nodeKey: NodeKey = currentState.id
 
-  private[node] def raftNode(): RaftNode[NodeKey] = currentState
+  def raftNode(): RaftNode[NodeKey] = currentState
 
   protected def thisTerm() = persistentState.currentTerm
 
@@ -118,7 +119,7 @@ class NodeState[NodeKey, A](val persistentState: PersistentState[NodeKey],
   def onRequestVoteResponse(from: NodeKey, voteResponse: RequestVoteResponse): Result = {
     currentState match {
       case candidate: CandidateNode[NodeKey] =>
-        currentState = candidate.onRequestVoteResponse(from, cluster, voteResponse)
+        currentState = candidate.onRequestVoteResponse(from, cluster, log.latestAppended(), voteResponse)
 
         if (currentState.isLeader) {
           // notify leader change
@@ -155,19 +156,53 @@ class NodeState[NodeKey, A](val persistentState: PersistentState[NodeKey],
     }
   }
 
-  def onSendHeartbeatTimeout(toNode: NodeKey): Result = {
-    if (currentState.isLeader) {
-      timers.sendHeartbeat.reset(currentState.id)
-      AddressedRequest(toNode, makeHeartbeat())
-    } else {
-      NoOpOutput(s"Received send heartbeat timeout for $toNode, but we're ${currentState.role} in term ${thisTerm}")
+  private def createAppendOnHeartbeatTimeout(leader: LeaderNode[NodeKey], toNode: NodeKey) = {
+    leader.clusterView.stateForPeer(toNode) match {
+      // we don't know what state this node is in - send our default heartbeat
+      case None => makeDefaultHeartbeat()
+
+      // we're at the beginning of the log - send some data
+      case Some(Peer(1, 0)) => AppendEntries(LogCoords.Empty, thisTerm, log.latestCommit(), log.entriesFrom(1, maxAppendSize))
+
+      // the state where we've not yet matched a peer, so we're trying to send ever-decreasing indices,
+      // using the 'nextIndex' (which should be decrementing on each fail)
+      case Some(Peer(nextIndex, 0)) =>
+        log.coordsForIndex(nextIndex) match {
+          // "This should never happen" (c)
+          // potential error situation where we have a 'nextIndex' -- resend the default heartbeat
+          case None           => makeDefaultHeartbeat()
+          case Some(previous) => AppendEntries(previous, thisTerm, log.latestCommit(), Array.empty[LogEntry[A]])
+        }
+
+      // the normal success state where we send our expected previous coords based on the match index
+      case Some(Peer(nextIndex, matchIndex)) =>
+        log.coordsForIndex(matchIndex) match {
+          case None =>
+            // "This should never happen" (c)
+            // potential error situation where we have a 'nextIndex' -- resend the default heartbeat
+            makeDefaultHeartbeat()
+          case Some(previous) => AppendEntries(previous, thisTerm, log.latestCommit(), log.entriesFrom(nextIndex, maxAppendSize))
+        }
     }
   }
 
-  protected def makeHeartbeat() = AppendEntries(log.latestAppended(), thisTerm, log.latestCommit(), Array.empty[LogEntry[A]])
+  def onSendHeartbeatTimeout(toNode: NodeKey): Result = {
+    currentState match {
+      case leader: LeaderNode[NodeKey] =>
+        timers.sendHeartbeat.reset(toNode)
+
+        val heartbeat = createAppendOnHeartbeatTimeout(leader, toNode)
+        AddressedRequest(toNode -> heartbeat)
+
+      case _ =>
+        NoOpOutput(s"Received send heartbeat timeout for $toNode, but we're ${currentState.role} in term ${thisTerm}")
+    }
+  }
+
+  private def makeDefaultHeartbeat() = AppendEntries(log.latestAppended(), thisTerm, log.latestCommit(), Array.empty[LogEntry[A]])
 
   def onReceiveHeartbeatTimeout(): Result = {
-    onBecomeCandidate()
+    onBecomeCandidateOrLeader()
   }
 
   def onRequest(from: NodeKey, request: RaftRequest[A]): RaftResponse = {
@@ -217,20 +252,23 @@ class NodeState[NodeKey, A](val persistentState: PersistentState[NodeKey],
     reply
   }
 
-  def onBecomeCandidate(): AddressedRequest[NodeKey, A] = {
+  def onBecomeCandidateOrLeader(): AddressedRequest[NodeKey, A] = {
     val newTerm = thisTerm + 1
     persistentState.currentTerm = newTerm
-
-    val clusterSize = cluster.size + 1
-    currentState = currentState.onReceiveHeartbeatTimeout(newTerm, clusterSize)
 
     // write down that we're voting for ourselves
     persistentState.castVote(newTerm, nodeKey)
 
-    val logState: LogCoords = log.latestAppended()
-    val requestVote         = RequestVote(newTerm, logState)
-    val requests            = cluster.peers.map(_ -> requestVote)
-    AddressedRequest(requests)
+    cluster.size + 1 match {
+      case 1 =>
+        val leader: LeaderNode[NodeKey] = currentState.becomeLeader(cluster, log.latestAppended())
+        currentState = leader
+        onBecomeLeader(leader)
+      case clusterSize =>
+        currentState = currentState.becomeCandidate(newTerm, clusterSize)
+        val requestVote = RequestVote(newTerm, log.latestAppended())
+        AddressedRequest(cluster.peers.map(_ -> requestVote))
+    }
   }
 
   def onBecomeFollower(newLeader: Option[NodeKey], newTerm: Term) = {
@@ -244,8 +282,8 @@ class NodeState[NodeKey, A](val persistentState: PersistentState[NodeKey],
     currentState = currentState.becomeFollower(newLeader)
   }
 
-  def onBecomeLeader(state: RaftNode[NodeKey]): Result = {
-    val hb = makeHeartbeat()
+  def onBecomeLeader(state: RaftNode[NodeKey]): AddressedRequest[NodeKey, A] = {
+    val hb = makeDefaultHeartbeat()
     timers.receiveHeartbeat.cancel(currentState.id)
     val msgs = cluster.peers.map { nodeKey =>
       timers.sendHeartbeat.reset(nodeKey)

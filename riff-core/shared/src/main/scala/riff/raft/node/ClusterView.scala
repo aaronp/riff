@@ -8,10 +8,12 @@ import scala.collection.immutable
 /**
   * Keeps track of the leader's ephemeral view of the cluster
   *
-  * @param initialPeersByKey
-  * @tparam NodeKey
+  * @param initialPeersByKey the known cluster state
+  * @tparam NodeKey the type representing this peer node. Typically just a String identifier,
+  *                 though could be something more meaningful/useful, like a websocket. Just so long as it provides a meaningful hashCode/equals
   */
-class LeaderState[NodeKey](initialPeersByKey: Map[NodeKey, Peer]) {
+class ClusterView[NodeKey](initialPeersByKey: Map[NodeKey, Peer]) {
+
   def nodesMatching(previous: LogCoords): immutable.Iterable[NodeKey] = {
     peersByKey.collect {
       case (key, peer) if peer.matchIndex == previous.index => key
@@ -19,6 +21,8 @@ class LeaderState[NodeKey](initialPeersByKey: Map[NodeKey, Peer]) {
   }
 
   private var peersByKey = initialPeersByKey
+
+  def toMap(): Map[NodeKey, Peer] = peersByKey
 
   def stateForPeer(peer: NodeKey): Option[Peer] = peersByKey.get(peer)
 
@@ -46,29 +50,29 @@ class LeaderState[NodeKey](initialPeersByKey: Map[NodeKey, Peer]) {
     */
   def matchIndexCount(index: LogIndex): Int = peersByKey.values.count(_.matchIndex >= index)
 
+  override def toString = peersByKey.mkString(s"clusterView of ${peersByKey.size} nodes: {", ";", "}")
 }
 
-object LeaderState {
-  def apply[NodeKey](cluster: RaftCluster[NodeKey]): LeaderState[NodeKey] = {
-    apply(cluster.peers)
+object ClusterView {
+  def apply[NodeKey](initialIndex: LogIndex, cluster: RaftCluster[NodeKey]): ClusterView[NodeKey] = {
+    apply(initialIndex, cluster.peers)
   }
 
-  def apply[NodeKey](keys: NodeKey*): LeaderState[NodeKey] = {
-    apply(keys.toIterable)
+  def apply[NodeKey](initialIndex: LogIndex, keys: NodeKey*): ClusterView[NodeKey] = {
+    apply(initialIndex, keys.toIterable)
   }
 
-  def apply[NodeKey](first: (NodeKey, Peer), theRest: (NodeKey, Peer)*): LeaderState[NodeKey] = {
-    new LeaderState((first +: theRest).toMap.ensuring(_.size == 1 + theRest.size))
+  def apply[NodeKey](first: (NodeKey, Peer), theRest: (NodeKey, Peer)*): ClusterView[NodeKey] = {
+    new ClusterView((first +: theRest).toMap.ensuring(_.size == 1 + theRest.size))
   }
 
-  def apply[NodeKey](cluster: Iterable[NodeKey]): LeaderState[NodeKey] = {
+  def apply[NodeKey](initialIndex: LogIndex, cluster: Iterable[NodeKey]): ClusterView[NodeKey] = {
     val peersByKey = cluster.foldLeft(Map[NodeKey, Peer]()) {
       case (map, key) =>
-        map.get(key).foreach { duplicate =>
-          throw new IllegalStateException(s"Duplicate node peers found: $key and $duplicate")
+        map.get(key).foreach { duplicate => throw new IllegalStateException(s"Duplicate node peers found: $key and $duplicate")
         }
-        map.updated(key, Peer())
+        map.updated(key, Peer(initialIndex))
     }
-    new LeaderState[NodeKey](peersByKey)
+    new ClusterView[NodeKey](peersByKey)
   }
 }

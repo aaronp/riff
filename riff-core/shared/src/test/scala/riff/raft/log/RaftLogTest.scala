@@ -10,5 +10,4 @@ class RaftLogTest extends RaftLogTCK {
       test(RaftLog.inMemory[String]().cached())
     }
   }
-
 }

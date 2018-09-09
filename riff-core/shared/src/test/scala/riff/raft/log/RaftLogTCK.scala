@@ -1,8 +1,41 @@
 package riff.raft.log
 import riff.RiffSpec
-import riff.raft.{AttemptToOverwriteACommittedIndex, log}
+import riff.raft.AttemptToOverwriteACommittedIndex
 
 trait RaftLogTCK extends RiffSpec {
+
+  "RaftLog.entriesFrom" should {
+    "return entries from a one-based index" in {
+      withLog { log =>
+        log.appendAll(1, Array(LogEntry(9, "foo"), LogEntry(11, "second")))
+        log.entriesFrom(0, 1) shouldBe Array(LogEntry(9, "foo"))
+        log.entriesFrom(0, 2) shouldBe Array(LogEntry(9, "foo"), LogEntry(11, "second"))
+        log.entriesFrom(1, 1) shouldBe Array(LogEntry(9, "foo"))
+        log.entriesFrom(1, 2) shouldBe Array(LogEntry(9, "foo"), LogEntry(11, "second"))
+        log.entriesFrom(2, 1) shouldBe Array(LogEntry(11, "second"))
+        log.entriesFrom(2, 0) shouldBe empty
+        log.entriesFrom(3, 1) shouldBe empty
+      }
+    }
+  }
+  "RaftLog.entryForIndex" should {
+    "return None when empty" in {
+      withLog { log =>
+        log.entryForIndex(0) shouldBe None
+        log.entryForIndex(1) shouldBe None
+        log.entryForIndex(Int.MaxValue) shouldBe None
+      }
+    }
+
+    "return an entry for one-based index" in {
+      withLog { log =>
+        log.appendAll(1, Array(LogEntry(1, "foo"), LogEntry(3, "second")))
+        log.entryForIndex(0) shouldBe None
+        log.entryForIndex(1) shouldBe Some(LogEntry(1, "foo"))
+        log.entryForIndex(2) shouldBe Some(LogEntry(3, "second"))
+      }
+    }
+  }
 
   "RaftLog commit" should {
     "error when trying to commit when no entries are appended" in {
@@ -156,7 +189,7 @@ trait RaftLogTCK extends RiffSpec {
       withLog { log =>
         log.logState shouldBe LogState.Empty
 
-        log.append(LogCoords(7, 1), "first") shouldBe LogAppendResult(1,1)
+        log.append(LogCoords(7, 1), "first") shouldBe LogAppendResult(1, 1)
         log.append(LogCoords(7, 1), "bang") shouldBe AttemptToAppendLogEntryAtEarlierTerm(LogCoords(7, 1), LogCoords(7, 1))
       }
     }
@@ -165,7 +198,7 @@ trait RaftLogTCK extends RiffSpec {
       withLog { log =>
         log.logState shouldBe LogState.Empty
 
-        log.append(LogCoords(7, 1), "first") shouldBe LogAppendResult(1,1)
+        log.append(LogCoords(7, 1), "first") shouldBe LogAppendResult(1, 1)
         log.append(LogCoords(6, 1), "bang") shouldBe AttemptToAppendLogEntryAtEarlierTerm(LogCoords(6, 1), LogCoords(7, 1))
       }
     }

@@ -6,8 +6,19 @@ import riff.raft.messages.{ReceiveHeartbeatTimeout, RequestVote, RequestVoteResp
 class NodeStateTest extends RiffSpec {
   import RichNodeState._
   "NodeState.onTimerMessage" should {
-    "become a candidate when it receives a receive heartbeat timeout as a follower" in {
+    "become a leader if it is a cluster of 1" in {
       val node = newNode()
+      node.raftNode().isFollower shouldBe true
+      node.persistentState.currentTerm shouldBe 0
+
+      // call the method under test
+      node.onTimerMessage(ReceiveHeartbeatTimeout)
+
+      node.raftNode().isLeader shouldBe true
+      node.persistentState.currentTerm shouldBe 1
+    }
+    "become a candidate in a cluster of 2 when it receives a receive heartbeat timeout as a follower" in {
+      val node: NodeState[String, Int] = newNode().withCluster(RaftCluster("neighbor"))
       node.raftNode().isFollower shouldBe true
       node.persistentState.currentTerm shouldBe 0
 
@@ -17,8 +28,8 @@ class NodeStateTest extends RiffSpec {
       node.raftNode().isCandidate shouldBe true
       node.persistentState.currentTerm shouldBe 1
     }
-    "become a candidate in a new term when it receives a receive heartbeat timeout as a candidate" in {
-      val node = newNode()
+    "become a candidate in a cluster of 2 with a new term when it receives a receive heartbeat timeout as a candidate" in {
+      val node = newNode().withCluster(RaftCluster("neighbor"))
       node.raftNode().isFollower shouldBe true
       node.persistentState.currentTerm shouldBe 0
 
@@ -30,9 +41,9 @@ class NodeStateTest extends RiffSpec {
       node.persistentState.currentTerm shouldBe 2
       node.raftNode().isCandidate shouldBe true
     }
-    "become a candidate in a new term when it receives a receive heartbeat timeout as a leader" in {
+    "become a candidate in cluster of 2 with a new term when it receives a receive heartbeat timeout as a leader" in {
       import RichNodeState._
-      val node = newNode().withRaftNode(new LeaderNode("the leader", LeaderState()))
+      val node = newNode().withRaftNode(new LeaderNode("the leader", ClusterView(0)))
       node.raftNode().isLeader shouldBe true
       node.persistentState.currentTerm shouldBe 0
 
@@ -49,7 +60,5 @@ class NodeStateTest extends RiffSpec {
       val reply = node.onRequestVote("someone", RequestVote(term = ourTerm - 1, logState = LogCoords.Empty))
       reply shouldBe RequestVoteResponse(ourTerm, false)
     }
-
   }
-
 }

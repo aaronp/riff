@@ -14,9 +14,9 @@ trait RaftLogOps[A] { self: RaftLog[A] =>
 
   /** Append all the data entries
     *
-    * @param coords
-    * @param data
-    * @return
+    * @param fromIndex the index of the first data element
+    * @param data the entries (term + data) to append
+    * @return the result from appending the data
     */
   def appendAll(fromIndex: LogIndex, data: Array[LogEntry[A]]): LogAppendResult
 
@@ -62,6 +62,9 @@ trait RaftLogOps[A] { self: RaftLog[A] =>
     */
   def commit(index: LogIndex): Seq[LogCoords]
 
+  /** @param index the index for which the log entry should be retrieved
+    * @return the [[LogEntry]] at the given index, if it exists
+    */
   def entryForIndex(index: LogIndex): Option[LogEntry[A]]
 
   /**

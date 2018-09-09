@@ -15,11 +15,11 @@ trait RaftCluster[NodeKey] {
 }
 
 object RaftCluster {
-  //def apply[NodeKey](peers: NodeKey*) = new Fixed(peers.toIterable)
+  def apply[NodeKey](peers: Iterable[NodeKey]): Fixed[NodeKey] = new Fixed(peers)
 
-  def apply[NodeKey](peers: Iterable[NodeKey]) = new Fixed(peers)
+  def apply[NodeKey](first: NodeKey, theRest: NodeKey*): Fixed[NodeKey] = apply(first :: theRest.toList)
 
   class Fixed[NodeKey](override val peers: Iterable[NodeKey]) extends RaftCluster[NodeKey] {
-    override def toString = peers.mkString(s"${peers.size} node cluster [", "," ,"]")
+    override def toString = peers.mkString(s"${peers.size} node cluster [", ",", "]")
   }
 }
