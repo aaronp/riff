@@ -4,6 +4,7 @@ import riff.RiffSpec
 import riff.raft._
 import riff.raft.log.{LogAppendResult, LogCoords, LogEntry, RaftLog}
 import riff.raft.messages.{AppendEntries, _}
+import riff.raft.node.NoOpOutput.LogMessageOutput
 import riff.raft.timer.LoggedInvocationTimer
 
 class LeaderNodeTest extends RiffSpec {
@@ -24,10 +25,10 @@ class LeaderNodeTest extends RiffSpec {
 //
 //  }
   "LeaderNode.onAppendResponse with successful update" should {
-    "send the next append entries when up to the max append size when receiving a successful append response which is behind the leader's log" in {
+    "send the next append entries when receiving a successful append response which is behind the leader's log" in {
 
       Given("A leader node w/ 100 log entries")
-      val leader = new LeaderNode("the leader", ClusterView(10, "follower1", "follower2"))
+      val leader = new LeaderNode("the leader", LeadersClusterView("follower1", "follower2"))
       val log    = RaftLog.inMemory[String]()
       // in this case every log entry is for a different term, 100 + i
       val someData = (1 to 100).map(i => LogEntry(100 + i, i.toString)).toArray
@@ -38,6 +39,9 @@ class LeaderNodeTest extends RiffSpec {
       val appendResponse                                = AppendEntriesResponse.ok(1, 7)
       val (committedCoords, AddressedRequest(requests)) = leader.onAppendResponse("follower1", log, currentTerm = 500, appendResponse, maxAppendSize = 5)
 
+      Then("It should update its cluster view")
+      leader.clusterView.toMap() shouldBe Map("follower1" -> Peer.withMatchIndex(7), "follower2" -> Peer.Empty)
+
       Then("It should commit all values through the match index, as there is now a majority in a 3 node cluster")
       committedCoords.toList should contain theSameElementsInOrderAs ((1 to 7).map(i => LogCoords(100 + i, i)))
       log.latestCommit() shouldBe 7
@@ -46,10 +50,11 @@ class LeaderNodeTest extends RiffSpec {
       val List(("follower1", nextAppendEntries)) = requests.toList
 
       log.coordsForIndex(8) shouldBe Some(LogCoords(108, 8))
+      log.entryForIndex(8) shouldBe Some(LogEntry(108, "8"))
 
-      nextAppendEntries shouldBe AppendEntries(LogCoords(108, 8),
+      nextAppendEntries shouldBe AppendEntries(LogCoords(107, 7),
                                                500,
-                                               7,
+                                               commitIndex = 7,
                                                Array(
                                                  LogEntry(108, "8"),
                                                  LogEntry(109, "9"),
@@ -61,34 +66,45 @@ class LeaderNodeTest extends RiffSpec {
     "not send an AppendEntries request when it is up-to-date w/ the leader's log" in {
 
       Given("A leader node w/ 100 log entries")
-      val leader = new LeaderNode("the leader", ClusterView(10, "follower1", "follower2"))
+      val leader = new LeaderNode("the leader", LeadersClusterView("follower1", "follower2"))
       val log    = RaftLog.inMemory[String]()
       // in this case every log entry is for a different term, 100 + i
       val someData = (1 to 100).map(i => LogEntry(100 + i, i.toString)).toArray
       log.appendAll(1, someData) shouldBe LogAppendResult(1, 100)
       log.latestAppended() shouldBe LogCoords(200, 100)
 
-      ???
+      When("it receives an append response (heartbeat response) matching the leader's latest log entry")
+      val (committedCoords, LogMessageOutput(msg)) = leader.onAppendResponse("follower2", log, 6, AppendEntriesResponse.ok(term = 6, matchIndex = 100), 100)
+
+      Then("it should commit the entries up to match index")
+      committedCoords.size shouldBe 100
     }
     "commit the entries when a majority is reached" in {
-      val leader = new LeaderNode("the leader", ClusterView(10, "follower1", "follower2"))
+      val leader = new LeaderNode("the leader", LeadersClusterView("follower1", "follower2"))
 
-      val log      = RaftLog.inMemory[String]()
-      val someData = (1 to 100).map(i => LogEntry(100 + i, i.toString)).toArray
+      val log                               = RaftLog.inMemory[String]()
+      val someData: Array[LogEntry[String]] = (1 to 100).map(i => LogEntry(100 + i, i.toString)).toArray
       log.appendAll(1, someData) shouldBe LogAppendResult(1, 100)
       log.latestAppended() shouldBe LogCoords(200, 100)
 
-      val appendResponse                    = AppendEntriesResponse.ok(1, 7)
-      val (Nil, AddressedRequest(requests)) = leader.onAppendResponse("follower1", log, 123, appendResponse, 10)
-      ???
+      val appendResponse                          = AppendEntriesResponse.ok(1, 7)
+      val (committed, AddressedRequest(requests)) = leader.onAppendResponse("follower1", log, 123, appendResponse, maxAppendSize = 2)
+      committed should contain theSameElementsInOrderAs (someData.take(7).map(e => LogCoords(e.term, e.data.toInt)))
+      val List(("follower1", AppendEntries(LogCoords(107, 7), 123, 7, entries))) = requests.toList
+      log.latestCommit() shouldBe appendResponse.matchIndex
+      entries should contain only (
+        LogEntry(108, "8"),
+        LogEntry(109, "9")
+      )
     }
   }
 
   "LeaderNode.onAppendResponse with failed update" should {
     "send a previous append entries for the previous index on failure" in {
-      val leader = new LeaderNode("the leader", ClusterView(10, "follower1", "follower2"))
-      leader.clusterView.stateForPeer("follower1") shouldBe Some(Peer(10, 0))
-      leader.clusterView.stateForPeer("follower2") shouldBe Some(Peer(10, 0))
+      val leader =
+        new LeaderNode("the leader", LeadersClusterView("follower1" -> Peer.withUnmatchedNextIndex(10), "follower2" -> Peer.withUnmatchedNextIndex(10)))
+      leader.clusterView.stateForPeer("follower1") shouldBe Some(Peer.withUnmatchedNextIndex(10))
+      leader.clusterView.stateForPeer("follower2") shouldBe Some(Peer.withUnmatchedNextIndex(10))
       leader.clusterView.stateForPeer("unknown") shouldBe None
 
       val appendResponse = AppendEntriesResponse.fail(1)
@@ -102,8 +118,8 @@ class LeaderNodeTest extends RiffSpec {
       val List(("follower1", nextAppend))   = requests.toList
       nextAppend shouldBe AppendEntries(LogCoords(109, 9), 123, 0)
 
-      leader.clusterView.stateForPeer("follower1") shouldBe Some(Peer(9, 0))
-      leader.clusterView.stateForPeer("follower2") shouldBe Some(Peer(10, 0))
+      leader.clusterView.stateForPeer("follower1") shouldBe Some(Peer.withUnmatchedNextIndex(9))
+      leader.clusterView.stateForPeer("follower2") shouldBe Some(Peer.withUnmatchedNextIndex(10))
     }
   }
   "LeaderNode send heartbeat timeout" should {
@@ -122,19 +138,19 @@ class LeaderNodeTest extends RiffSpec {
       val appendResponses: Map[String, NodeState[String, LogIndex]#Result] = cluster.sendMessages(a.nodeKey, appendRequestsFromLeader.toList)
 
       withClue("Before receiving the append responses the leader should assume a default view of the cluster") {
-        val initialView: ClusterView[String] = a.raftNode().asLeader.get.clusterView
+        val initialView: LeadersClusterView[String] = a.raftNode().asLeader.get.clusterView
         initialView.numberOfPeers shouldBe 2
-        initialView.stateForPeer(b.nodeKey) shouldBe Some(Peer(1, 0))
-        initialView.stateForPeer(c.nodeKey) shouldBe Some(Peer(1, 0))
+        initialView.stateForPeer(b.nodeKey) shouldBe Some(Peer.Empty)
+        initialView.stateForPeer(c.nodeKey) shouldBe Some(Peer.Empty)
       }
 
       cluster.sendResponses(appendResponses)
 
       withClue("After receiving the followers' AppendEntriesResponses it should update its view") {
-        val afterFirst10AckView: ClusterView[String] = a.raftNode().asLeader.get.clusterView
+        val afterFirst10AckView: LeadersClusterView[String] = a.raftNode().asLeader.get.clusterView
         afterFirst10AckView.numberOfPeers shouldBe 2
-        afterFirst10AckView.stateForPeer(b.nodeKey) shouldBe Some(Peer(11, 10))
-        afterFirst10AckView.stateForPeer(c.nodeKey) shouldBe Some(Peer(11, 10))
+        afterFirst10AckView.stateForPeer(b.nodeKey) shouldBe Some(Peer.withMatchIndex(10))
+        afterFirst10AckView.stateForPeer(c.nodeKey) shouldBe Some(Peer.withMatchIndex(10))
         a.log.latestCommit() shouldBe 10
         b.log.latestCommit() shouldBe 0
         c.log.latestCommit() shouldBe 0
@@ -167,9 +183,9 @@ class LeaderNodeTest extends RiffSpec {
       bResp(b.nodeKey) shouldBe AddressedResponse(a.nodeKey, AppendEntriesResponse(1, true, 20))
 
       // update the leader w/ node 2's response
-      a.raftNode().asLeader.get.clusterView.toMap() shouldBe Map("node 2" -> Peer(11, 10), "node 3" -> Peer(11, 10))
+      a.raftNode().asLeader.get.clusterView.toMap() shouldBe Map("node 2" -> Peer.withMatchIndex(10), "node 3" -> Peer.withMatchIndex(10))
       cluster.sendResponses(bResp)
-      a.raftNode().asLeader.get.clusterView.toMap() shouldBe Map("node 2" -> Peer(21, 20), "node 3" -> Peer(11, 10))
+      a.raftNode().asLeader.get.clusterView.toMap() shouldBe Map("node 2" -> Peer.withMatchIndex(20), "node 3" -> Peer.withMatchIndex(10))
     }
   }
 
@@ -269,9 +285,9 @@ class LeaderNodeTest extends RiffSpec {
     } {
       val leaderExpectedToCommit = isMajority(numberOfAppendResponsesToApply + 1, clusterSize)
 
-      val verb              = if (leaderExpectedToCommit) "commit" else "not commit"
-      def nameForId(i: Int) = s"member$i"
-      val peerNames         = (1 until clusterSize).map(nameForId).toSet
+      val verb                   = if (leaderExpectedToCommit) "commit" else "not commit"
+      def nameForId(i: Int)      = s"member$i"
+      val peerNames: Set[String] = (1 until clusterSize).map(nameForId).toSet
 
       s"$verb entries when ${numberOfAppendResponsesToApply}/${peerNames.size} peers in a cluster of $clusterSize nodes have the entry" in {
 
@@ -280,7 +296,7 @@ class LeaderNodeTest extends RiffSpec {
         // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
         import RichNodeState._
 
-        val leaderState = new LeaderNode("the leader", new ClusterView(peerNames.map(_ -> Peer()).toMap))
+        val leaderState = new LeaderNode[String]("the leader", LeadersClusterView(peerNames.toList: _*))
 
         val thisTerm = 2
 
@@ -306,14 +322,6 @@ class LeaderNodeTest extends RiffSpec {
         // the leader should always have a log which has committed its entry
 
         val AddressedRequest(appendRequestsFromLeader) = leader.createAppend(Array("foo", "bar", "bazz"))
-        //val (leaderAppendResponse, requests) = leader.makeAppendEntries(leaderLog, 7, Array("foo", "bar", "bazz"))
-
-        // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
-        Then("the leader should reset its 'send heartbeat' timer for its peers")
-        // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
-        val resetSendCalls: List[(String, Option[String])] = leaderTimer.resetSendHeartbeatCalls()
-        resetSendCalls.size shouldBe leaderState.clusterSize - 1
-        resetSendCalls should contain theSameElementsAs peerNames.map(_ -> None)
 
         // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
         Then("the leader log should immediately contain the (uncommitted) entries")

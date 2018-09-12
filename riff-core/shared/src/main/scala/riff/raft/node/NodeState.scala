@@ -71,8 +71,6 @@ class NodeState[NodeKey, A](val persistentState: PersistentState[NodeKey],
   def createAppend(data: Array[A]): NodeStateOutput[NodeKey, A] = {
     withLeader { leader =>
       val (_, requests) = leader.makeAppendEntries[A](log, thisTerm(), data)
-      requests.nodes.foreach(timers.sendHeartbeat.reset)
-
       requests
     }
   }
@@ -119,7 +117,7 @@ class NodeState[NodeKey, A](val persistentState: PersistentState[NodeKey],
   def onRequestVoteResponse(from: NodeKey, voteResponse: RequestVoteResponse): Result = {
     currentState match {
       case candidate: CandidateNode[NodeKey] =>
-        currentState = candidate.onRequestVoteResponse(from, cluster, log.latestAppended(), voteResponse)
+        currentState = candidate.onRequestVoteResponse(from, cluster, voteResponse)
 
         if (currentState.isLeader) {
           // notify leader change
@@ -212,7 +210,7 @@ class NodeState[NodeKey, A](val persistentState: PersistentState[NodeKey],
     }
   }
 
-  def onAppendEntries(from: NodeKey, append: AppendEntries[A]): RaftResponse = {
+  def onAppendEntries(from: NodeKey, append: AppendEntries[A]): AppendEntriesResponse = {
     val becameFollower = if (thisTerm < append.term) {
       onBecomeFollower(Option(from), append.term)
       true
@@ -226,7 +224,9 @@ class NodeState[NodeKey, A](val persistentState: PersistentState[NodeKey],
         if (!becameFollower) {
           timers.receiveHeartbeat.reset(currentState.id)
         }
-        log.onAppend(thisTerm, append)
+        val result = log.onAppend(thisTerm, append)
+        log.commit(append.commitIndex)
+        result
     }
   }
 
@@ -259,13 +259,13 @@ class NodeState[NodeKey, A](val persistentState: PersistentState[NodeKey],
     // write down that we're voting for ourselves
     persistentState.castVote(newTerm, nodeKey)
 
-    cluster.size + 1 match {
-      case 1 =>
-        val leader: LeaderNode[NodeKey] = currentState.becomeLeader(cluster, log.latestAppended())
+    cluster.numberOfPeers  match {
+      case 0 =>
+        val leader = currentState.becomeLeader(cluster)
         currentState = leader
         onBecomeLeader(leader)
       case clusterSize =>
-        currentState = currentState.becomeCandidate(newTerm, clusterSize)
+        currentState = currentState.becomeCandidate(newTerm, clusterSize + 1)
         val requestVote = RequestVote(newTerm, log.latestAppended())
         AddressedRequest(cluster.peers.map(_ -> requestVote))
     }
@@ -274,7 +274,6 @@ class NodeState[NodeKey, A](val persistentState: PersistentState[NodeKey],
   def onBecomeFollower(newLeader: Option[NodeKey], newTerm: Term) = {
     if (currentState.isLeader) {
       // cancel HB for all nodes
-      timers.sendHeartbeat.cancel(nodeKey)
       cluster.peers.foreach(timers.sendHeartbeat.cancel)
     }
     timers.receiveHeartbeat.reset(nodeKey)
@@ -292,4 +291,19 @@ class NodeState[NodeKey, A](val persistentState: PersistentState[NodeKey],
     AddressedRequest(msgs)
   }
 
+  /** a convenience builder method to create a new raft node w/ the given raft log
+    *
+    * @return a new node state
+    */
+  def withLog(newLog: RaftLog[A]): NodeState[NodeKey, A] = {
+    new NodeState(persistentState, newLog, timers, cluster, raftNode, maxAppendSize)
+  }
+
+  /** a convenience builder method to create a new raft node w/ the given cluster
+    *
+    * @return a new node state
+    */
+  def withCluster(newCluster: RaftCluster[NodeKey]) = {
+    new NodeState(persistentState, log, timers, newCluster, raftNode, maxAppendSize)
+  }
 }

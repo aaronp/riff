@@ -28,9 +28,8 @@ object NoOpOutput {
   * @tparam NodeKey the node type
   * @tparam A the log type
   */
-final case class AddressedRequest[NodeKey, A](requests: Iterable[(NodeKey, RaftRequest[A])]) extends NodeStateOutput[NodeKey, A] {
-  def nodes: Iterable[NodeKey] = requests.map(_._1)
-}
+final case class AddressedRequest[NodeKey, A](requests: Iterable[(NodeKey, RaftRequest[A])]) extends NodeStateOutput[NodeKey, A]
+
 object AddressedRequest {
   def apply[NodeKey, A](requests: (NodeKey, RaftRequest[A])*) = {
     new AddressedRequest(requests)

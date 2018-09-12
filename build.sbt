@@ -156,14 +156,6 @@ lazy val root = (project in file("."))
     publishLocal := {}
   )
 
-//settings(sourceDirectory in Pamflet := sourceDirectory.value / "site")
-// lazy val core = project.in(file("riff-core")).
-//   aggregate(riffCoreJS, riffCoreJVM).
-//   settings(
-//     publish := {},
-//     publishLocal := {}
-//   )
-
 lazy val riffCoreCrossProject = crossProject(JSPlatform, JVMPlatform)
   .crossType(CrossType.Full)
   .withoutSuffixFor(JVMPlatform)
@@ -179,6 +171,8 @@ lazy val riffCoreCrossProject = crossProject(JSPlatform, JVMPlatform)
   .in(file("riff-core"))
   .jvmSettings(
     name := "riff-core-jvm",
+    coverageMinimum := 80,
+    coverageFailOnMinimum := true,
     libraryDependencies ++= List(
       "org.scala-js"      %% "scalajs-stubs" % scalaJSVersion % "provided",
       "com.github.aaronp" %% "eie"           % "0.0.3"

@@ -1,8 +1,37 @@
-package riff.raft
-import riff.raft.log._
+package riff.raft.log
 
 class FileBasedRaftLogTest extends RaftLogTCK {
 
+  "RaftLog(file)" should {
+    "error if given a file as a path" in {
+      withDir { dir =>
+        val file = dir.resolve("imAFile.txt").text = "hi"
+        val exp = intercept[Exception] {
+          RaftLog[String](file)
+        }
+        exp.getMessage should include("imAFile.txt is not a directory")
+      }
+    }
+    "error if the directory doesn't exist" in {
+      withDir { dir =>
+        val doesntExist = dir.resolve("data").resolve("instance-1")
+        val exp = intercept[Exception] {
+          RaftLog[String](doesntExist)
+        }
+        exp.getMessage should include("is not a directory")
+      }
+    }
+    "create the directory if it doesn't exist and 'createIfNotExists' is specified" in {
+      withDir { dir =>
+        val doesntExist = dir.resolve("data").resolve("instance-1")
+        doesntExist.exists() shouldBe false
+        val log = RaftLog[String](doesntExist, createIfNotExists = true)
+        doesntExist.exists() shouldBe true
+        log.append(LogCoords(4, 5), "hi")
+        doesntExist.children should not be empty
+      }
+    }
+  }
   "RaftLog.ForDir append" should {
     "remove old appended entries if asked to append an earlier entry with a greater term" in {
       withDir { dir =>

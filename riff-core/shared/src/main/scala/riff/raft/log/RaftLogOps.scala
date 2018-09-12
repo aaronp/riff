@@ -86,6 +86,10 @@ trait RaftLogOps[A] { self: RaftLog[A] =>
     }
   }
 
+  /** @return a caching version of this log
+    */
+  def onCommit(applyToStateMachine: LogEntry[A] => Unit): StateMachineLog[A] = StateMachineLog(this)(applyToStateMachine)
+
   /**
     * @param firstIndex the matching log index, WHICH IS ONE-BASED
     * @param max the maximum entries to return
@@ -118,32 +122,35 @@ trait RaftLogOps[A] { self: RaftLog[A] =>
     * @return the AppendEntriesResponse
     */
   def onAppend(currentTerm: Term, request: AppendEntries[A]): AppendEntriesResponse = {
+    val latest = latestAppended()
+
+    //
+    // we're successful if
+    // 1) common case - it's another append on top of our latest index
+    // 2) we're a follower whose fallen behind. If that's the case, we need to
+    //    a) check the previous matches our log
+    //    -- or --
+    //    b) the previous is the first index
+    //
     val success = {
-      //
-      // we're successful if
-      // 1) common case - it's another append on top of our latest index
-      // 2) we're a follower whose fallen behind. If that's the case, we need to
-      //    a) check the previous matches our log
-      //    -- or --
-      //    b) the previous is the first index
-      //
-        val latest = latestAppended()
-      val matchedPrevious = {
-        latest == request.previous || containsIndex(request.previous)
-      }
+      val matchedPrevious = latest == request.previous || containsIndex(request.previous)
 
       // we could be in the situation where a leader appended an unreplicated entry and subsequently became a follower
       matchedPrevious || (request.previous.index == 0)
     }
 
-    val matchIndex = if (success && request.entries.nonEmpty) {
-      val latestCommitIndex = latestCommit()
-      require(latestCommitIndex <= request.previous.index, s"Attempt to append at ${request.previous} when the latest commit is $latestCommitIndex")
-      val logAppendResult: LogAppendResult = appendAll(request.appendIndex, request.entries)
+    val matchIndex = if (success) {
+      if (request.entries.nonEmpty) {
+        val latestCommitIndex = latestCommit()
+        require(latestCommitIndex <= request.previous.index, s"Attempt to append at ${request.previous} when the latest commit is $latestCommitIndex")
+        val logAppendResult: LogAppendResult = appendAll(request.appendIndex, request.entries)
 
-      logAppendResult match {
-        case LogAppendSuccess(_, lastIndex, _) => lastIndex
-        case _                                 => 0
+        logAppendResult match {
+          case LogAppendSuccess(_, lastIndex, _) => lastIndex
+          case _                                 => 0
+        }
+      } else {
+        latest.index
       }
     } else {
       0

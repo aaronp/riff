@@ -143,25 +143,28 @@ object RaftSimulator {
   case class SendResponse(from: String, to: String, request: RaftResponse)       extends TimelineType
 
   case class AdvanceResult(node: String,
-                           beforeState: Map[String, NodeSnapshot[String]],
+                           beforeStateByName: Map[String, NodeSnapshot[String]],
                            beforeTimeline: Timeline,
                            event: TimelineType,
                            result: NodeResult,
                            afterTimeline: Timeline,
-                           afterState: Map[String, NodeSnapshot[String]]) {
+                           afterStateByName: Map[String, NodeSnapshot[String]]) {
+
+    def beforeState(idx: Int) = beforeStateByName(nameForIdx(idx))
+    def afterState(idx: Int)  = afterStateByName(nameForIdx(idx))
+
+    def stateChanges: Map[String, NodeSnapshot[String]] = afterStateByName.filterNot {
+      case (key, st8) => beforeStateByName(key) == st8
+    }
 
     override def toString = {
-
-      val stateChanges = afterState.filterNot {
-        case (key, st8) => beforeState(key) == st8
-      }
 
       val newEvents = afterTimeline.diff(beforeTimeline)
       s"""$node processed $event:
          |  $result
          |
          |Before State:
-         |${beforeState.mapValues(_.pretty()).mkString("\n")}
+         |${beforeStateByName.mapValues(_.pretty()).mkString("\n")}
          |${stateChanges.size} Changes:
          |${stateChanges.mapValues(_.pretty()).mkString("\n")}
          |
@@ -178,6 +181,6 @@ object RaftSimulator {
       st8
     }
 
-    new RaftSimulator(timeouts, (1 to n).map(i => s"Node $i").toList, newNode)
+    new RaftSimulator(timeouts, (1 to n).map(nameForIdx).toList, newNode)
   }
 }

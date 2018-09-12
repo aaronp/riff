@@ -31,7 +31,8 @@ sealed trait RaftRequest[+A] extends RequestOrResponse[Nothing, A]
 
 final case class AppendEntries[A](previous: LogCoords, term: Term, commitIndex: LogIndex, entries: Array[LogEntry[A]] = Array.empty[LogEntry[A]])
     extends RaftRequest[A] {
-  def appendIndex = previous.index + 1 //LogCoords(term, previous.index + 1)
+
+  def appendIndex = previous.index + 1
 
   override def equals(obj: Any): Boolean = {
     obj match {
@@ -47,7 +48,7 @@ final case class AppendEntries[A](previous: LogCoords, term: Term, commitIndex: 
     val entryStr = if (entrySize < 5) {
       entries.mkString(",")
     } else {
-      entries.take(4).mkString(",", ",", ",...")
+      entries.take(4).mkString("", ",", ",...")
     }
     s"""AppendEntries(previous=$previous, term=$term, commitIndex=$commitIndex}, ${entrySize} entries=[$entryStr])"""
   }

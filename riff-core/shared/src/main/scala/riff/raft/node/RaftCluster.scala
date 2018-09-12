@@ -11,15 +11,20 @@ package riff.raft.node
   */
 trait RaftCluster[NodeKey] {
   def peers: Iterable[NodeKey]
-  def size = peers.size
+  def contains(key: NodeKey): Boolean
+  def numberOfPeers: Int = peers.size
 }
 
 object RaftCluster {
-  def apply[NodeKey](peers: Iterable[NodeKey]): Fixed[NodeKey] = new Fixed(peers)
+  def apply[NodeKey](peers: Iterable[NodeKey]): Fixed[NodeKey] = new Fixed(peers.toSet)
 
-  def apply[NodeKey](first: NodeKey, theRest: NodeKey*): Fixed[NodeKey] = apply(first :: theRest.toList)
+  def apply[NodeKey](first: NodeKey, theRest: NodeKey*): Fixed[NodeKey] = apply(theRest.toSet + first)
 
-  class Fixed[NodeKey](override val peers: Iterable[NodeKey]) extends RaftCluster[NodeKey] {
-    override def toString = peers.mkString(s"${peers.size} node cluster [", ",", "]")
+  class Fixed[NodeKey](override val peers: Set[NodeKey]) extends RaftCluster[NodeKey] {
+    override val numberOfPeers                   = peers.size
+    override def contains(key: NodeKey): Boolean = peers.contains(key)
+    override lazy val toString = {
+      peers.toList.map(_.toString).sorted.mkString(s"${numberOfPeers + 1} node cluster (this node plus ${numberOfPeers} peers: [", ",", "])")
+    }
   }
 }

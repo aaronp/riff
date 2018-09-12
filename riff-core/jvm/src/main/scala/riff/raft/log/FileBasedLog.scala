@@ -13,7 +13,7 @@ trait FileBasedLog[T] extends RaftLog[T] {
 
 object FileBasedLog extends eie.io.LowPriorityIOImplicits {
 
-  def apply[T: ToBytes: FromBytes](dir: Path, createIfNotExists: Boolean = false): FileBasedLog[T] = {
+  def apply[T: ToBytes: FromBytes](dir: Path, createIfNotExists: Boolean): FileBasedLog[T] = {
     require(dir.isDir || (createIfNotExists && dir.mkDirs().isDir), s"$dir is not a directory")
     new ForDir[T](dir)
   }

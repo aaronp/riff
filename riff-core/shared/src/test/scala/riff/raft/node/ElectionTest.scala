@@ -112,10 +112,10 @@ class ElectionTest extends RiffSpec {
       c.persistentState.currentTerm shouldBe 2
 
       val leaderResetHBCalls = cluster.testTimerFor(a.nodeKey).resetSendHeartbeatCalls()
-      leaderResetHBCalls should contain allOf (b.nodeKey -> None, c.nodeKey -> None, b.nodeKey -> Option("1"), c.nodeKey -> Option("2"))
+      leaderResetHBCalls should contain allOf (b.nodeKey -> None, c.nodeKey -> None)
 
       And("The leader should've cancelled its sending heartbeat calls and reset the receiving hb calls")
-      cluster.testTimerFor(a.nodeKey).cancelHeartbeatCall() should contain allOf ("3", "4")
+      cluster.testTimerFor(a.nodeKey).cancelHeartbeatCall() should contain allOf ("1", "2")
       cluster.testTimerFor(a.nodeKey).resetReceiveHeartbeatCalls() should contain only (a.nodeKey -> None)
     }
 

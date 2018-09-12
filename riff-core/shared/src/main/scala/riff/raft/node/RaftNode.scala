@@ -13,9 +13,8 @@ sealed trait RaftNode[NodeKey] {
   def becomeCandidate(term: Term, clusterSize: Int): CandidateNode[NodeKey] = {
     new CandidateNode[NodeKey](id, new CandidateState[NodeKey](term, Set(id), Set.empty, clusterSize))
   }
-  def becomeLeader(cluster: RaftCluster[NodeKey], initialLogState: LogCoords): LeaderNode[NodeKey] = {
-    LeaderNode(id, initialLogState, cluster)
-  }
+
+  def becomeLeader(cluster: RaftCluster[NodeKey]): LeaderNode[NodeKey] = LeaderNode(id, cluster)
 
   def leader: Option[NodeKey]
   def role: NodeRole
@@ -45,17 +44,17 @@ final case class CandidateNode[NodeKey](override val id: NodeKey, initialState: 
     * @param voteResponse the vote response
     * @return a raft node -- either the candidate or a leader
     */
-  def onRequestVoteResponse(from: NodeKey, cluster: RaftCluster[NodeKey], initialLogState: LogCoords, voteResponse: RequestVoteResponse): RaftNode[NodeKey] = {
+  def onRequestVoteResponse(from: NodeKey, cluster: RaftCluster[NodeKey], voteResponse: RequestVoteResponse): RaftNode[NodeKey] = {
     voteResponses = voteResponses.update(from, voteResponse)
     if (voteResponses.canBecomeLeader) {
-      LeaderNode(id, initialLogState, cluster)
+      LeaderNode(id, cluster)
     } else {
       this
     }
   }
 }
 
-final case class LeaderNode[NodeKey](override val id: NodeKey, clusterView: ClusterView[NodeKey]) extends RaftNode[NodeKey] {
+final case class LeaderNode[NodeKey](override val id: NodeKey, clusterView: LeadersClusterView[NodeKey]) extends RaftNode[NodeKey] {
   override def leader = Option(id)
 
   /** appends the data to the given leader's log, returning the append result and append requests based on the clusterView
@@ -99,56 +98,55 @@ final case class LeaderNode[NodeKey](override val id: NodeKey, clusterView: Clus
                           appendResponse: AppendEntriesResponse,
                           maxAppendSize: Int): (Seq[LogCoords], NodeStateOutput[NodeKey, A]) = {
 
+    val latestAppended = log.latestAppended()
+
     //
     // first update the cluster view - update or decrement the nextIndex, matchIndex
     //
-    clusterView.update(from, appendResponse)
+    clusterView.update(from, appendResponse) match {
+      case Some(newPeerState) if appendResponse.success =>
 
-    val latestAppended = log.latestAppended()
+        val values = log.entriesFrom(newPeerState.nextIndex, maxAppendSize)
 
-    if (appendResponse.success) {
+        // if the majority of the peers have the same match index
+        val count = clusterView.matchIndexCount(appendResponse.matchIndex) + 1
 
-      val values = log.entriesFrom(appendResponse.matchIndex, maxAppendSize)
-
-      // if the majority of the peers have the same match index
-      val count = clusterView.matchIndexCount(appendResponse.matchIndex) + 1
-
-      val committed: Seq[LogCoords] = if (isMajority(count, clusterSize)) {
-        log.commit(appendResponse.matchIndex)
-      } else {
-        Nil
-      }
-
-      // if there are log entries which occur 'after' this entry, they should then be sent next
-      val reply = if (latestAppended.index > appendResponse.matchIndex) {
-        log.coordsForIndex(appendResponse.matchIndex) match {
-          case Some(previous) =>
-            AddressedRequest(from, AppendEntries(previous, currentTerm, log.latestCommit(), values))
-          case None =>
-            NoOpOutput(s"Couldn't read the log entry at ${appendResponse.matchIndex}. The latest append is ${log.latestAppended()}")
+        val committed: Seq[LogCoords] = if (isMajority(count, clusterSize)) {
+          log.commit(appendResponse.matchIndex)
+        } else {
+          Nil
         }
-      } else {
-        NoOpOutput("The leader thanks you for your reply - you're all up-to-date!")
-      }
-      (committed, reply)
-    } else {
-      // try again w/ an older index. This trusts that the cluster does the right thing when updating its peer view
-      val reply = clusterView.stateForPeer(from) match {
-        case Some(peer) =>
-          val idx = peer.nextIndex.min(latestAppended.index)
-          val coords = log.coordsForIndex(idx).getOrElse(latestAppended)
-          AddressedRequest(from, AppendEntries(coords, currentTerm, log.latestCommit(), Array.empty[LogEntry[A]]))
-        case None =>
-          NoOpOutput(s"Couldn't find peer $from in the cluster(!), ignoring append entries response")
-      }
 
-      (Nil, reply)
+        // if there are log entries which occur 'after' this entry, they should then be sent next
+        val reply = if (latestAppended.index > appendResponse.matchIndex) {
+          log.coordsForIndex(appendResponse.matchIndex) match {
+            case Some(previous) =>
+              AddressedRequest(from, AppendEntries(previous, currentTerm, log.latestCommit(), values))
+            case None =>
+              NoOpOutput(s"Couldn't read the log entry at ${appendResponse.matchIndex}. The latest append is ${log.latestAppended()}")
+          }
+        } else {
+          NoOpOutput("The leader thanks you for your reply - you're all up-to-date!")
+        }
+        (committed, reply)
+      case _ =>
+        // try again w/ an older index. This trusts that the cluster does the right thing when updating its peer view
+        val reply = clusterView.stateForPeer(from) match {
+          case Some(peer) =>
+            val idx = peer.nextIndex.min(latestAppended.index)
+            val coords = log.coordsForIndex(idx).getOrElse(latestAppended)
+            AddressedRequest(from, AppendEntries(coords, currentTerm, log.latestCommit(), Array.empty[LogEntry[A]]))
+          case None =>
+            NoOpOutput(s"Couldn't find peer $from in the cluster(!), ignoring append entries response")
+        }
+
+        (Nil, reply)
     }
   }
 }
 
 object LeaderNode {
-  def apply[NodeKey](id: NodeKey, initialLogState: LogCoords, cluster: RaftCluster[NodeKey]): LeaderNode[NodeKey] = {
-    new LeaderNode[NodeKey](id, ClusterView(initialLogState.index, cluster))
+  def apply[NodeKey](id: NodeKey, cluster: RaftCluster[NodeKey]): LeaderNode[NodeKey] = {
+    new LeaderNode[NodeKey](id, LeadersClusterView(cluster))
   }
 }

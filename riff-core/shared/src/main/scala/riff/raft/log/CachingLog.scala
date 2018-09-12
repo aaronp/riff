@@ -1,5 +1,5 @@
 package riff.raft.log
-import riff.raft.{LogIndex, Term}
+import riff.raft.LogIndex
 
 /**
   * Wraps a log by keeping in memory the latest commit/append index
@@ -7,7 +7,7 @@ import riff.raft.{LogIndex, Term}
   * @param underlying the underlying log
   * @tparam A
   */
-class CachingLog[A](val underlying: RaftLog[A]) extends RaftLog[A] {
+class CachingLog[A](override val underlying: RaftLog[A]) extends DelegateLog[A] {
   private var latestAppendCache: Option[LogCoords] = None
   private var latestCommitCache: Option[LogIndex]  = None
   override def appendAll(firstIndex: LogIndex, data: Array[LogEntry[A]]): LogAppendResult = {
@@ -21,9 +21,6 @@ class CachingLog[A](val underlying: RaftLog[A]) extends RaftLog[A] {
       value
     }
   }
-  override def termForIndex(index: LogIndex): Option[Term] = {
-    underlying.termForIndex(index)
-  }
   override def latestAppended(): LogCoords = {
     latestAppendCache.getOrElse {
       val value = underlying.latestAppended
@@ -35,5 +32,4 @@ class CachingLog[A](val underlying: RaftLog[A]) extends RaftLog[A] {
     latestCommitCache = None
     underlying.commit(index)
   }
-  override def entryForIndex(index: LogIndex) = underlying.entryForIndex(index)
 }
