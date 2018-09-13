@@ -1,4 +1,4 @@
-package riff.raft.integration
+package riff.raft.integration.simulator
 
 import riff.raft.Term
 import riff.raft.log.{LogEntry, RaftLog}
@@ -6,22 +6,24 @@ import riff.raft.node._
 
 case class NodeSnapshot[A](name: String,
                            role: NodeRole,
+                           cluster: ClusterSnapshot[String],
                            persistentStateSnapshot: PersistentStateSnapshot,
                            leaderSnapshot: Option[LeaderSnapshot],
                            log: LogSnapshot[A]) {
   def pretty() = {
-    s"""$name ($role)
-       |$persistentStateSnapshot
+    s"""$name ($role) in ${cluster.pretty}
+       |    $persistentStateSnapshot
        |${leaderSnapshot.fold("")(_.pretty)}${log.pretty}
      """.stripMargin
   }
 }
 
 object NodeSnapshot {
-  def apply[A](node: NodeState[String, A]): NodeSnapshot[A] = {
+  def apply[A](node: RaftNode[String, A]): NodeSnapshot[A] = {
     new NodeSnapshot[A](
       node.nodeKey,
       node.raftNode().role,
+      ClusterSnapshot(node.cluster),
       PersistentStateSnapshot(node.persistentState),
       node.raftNode().asLeader.map(LeaderSnapshot.apply),
       LogSnapshot(node.log)
@@ -29,7 +31,17 @@ object NodeSnapshot {
   }
 }
 
-case class LogSnapshot[A](entries: List[LogEntry[A]]) {
+case class ClusterSnapshot[A](peers: Set[A]) {
+  def pretty = s"cluster of ${peers.size} peers: [${peers.toList.map(_.toString).sorted.mkString(",")}]"
+}
+object ClusterSnapshot {
+  def apply[A](cluster: RaftCluster[A]): ClusterSnapshot[A] = {
+    val peers = cluster.peers
+    new ClusterSnapshot(peers.toSet.ensuring(_.size == peers.size))
+  }
+}
+
+case class LogSnapshot[A](entries: List[LogEntry[A]], latestCommit : Int) {
   def pretty(): String = {
     entries.zipWithIndex
       .map {
@@ -40,11 +52,13 @@ case class LogSnapshot[A](entries: List[LogEntry[A]]) {
 }
 object LogSnapshot {
   def apply[A](log: RaftLog[A]): LogSnapshot[A] = {
-    new LogSnapshot(log.entriesFrom(0).toList)
+    new LogSnapshot(log.entriesFrom(0).toList, log.latestCommit())
   }
 }
 
-case class PersistentStateSnapshot(currentTerm: Term, votedForInTerm: Option[String])
+case class PersistentStateSnapshot(currentTerm: Term, votedForInTerm: Option[String]) {
+  override def toString = s"term ${currentTerm}, voted for ${votedForInTerm.getOrElse("nobody")}"
+}
 object PersistentStateSnapshot {
   def apply(state: PersistentState[String]): PersistentStateSnapshot = {
     val castle = state.currentTerm // current turm
@@ -67,7 +81,7 @@ case class LeaderSnapshot(view: Map[String, Peer]) {
   }
 }
 object LeaderSnapshot {
-  def apply(leader: LeaderNode[String]) = {
+  def apply(leader: LeaderNodeState[String]) = {
     new LeaderSnapshot(leader.clusterView.toMap)
   }
 }

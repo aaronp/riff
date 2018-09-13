@@ -1,4 +1,4 @@
-package riff.raft.integration
+package riff.raft.integration.simulator
 
 import scala.concurrent.duration.FiniteDuration
 
@@ -6,7 +6,7 @@ import scala.concurrent.duration.FiniteDuration
   * Used for testing as a means of walking through events (requests, responses, timeouts) in a controlled manner.
   *
   */
-case class Timeline private (currentTime: Long, sortedEventsAscending: List[(Long, Any)]) {
+case class Timeline[A] private (initialTime: Long, currentTime: Long, sortedEventsAscending: List[(Long, A)]) extends HasTimeline[A] {
 
   // just to help our sanity -- verify the events are always in increasing order
   sortedEventsAscending.sliding(2, 1).foreach {
@@ -14,41 +14,39 @@ case class Timeline private (currentTime: Long, sortedEventsAscending: List[(Lon
     case _                            => require(sortedEventsAscending.size < 2)
   }
 
-  def diff(other: Timeline): List[(Long, Any)] = sortedEventsAscending.diff(other.sortedEventsAscending)
+  def diff(other: Timeline[A]): List[(Long, A)] = sortedEventsAscending.diff(other.sortedEventsAscending)
 
-  def remove(entry: (Long, Any)) = {
+  def remove(entry: (Long, A)) = {
     copy(sortedEventsAscending = sortedEventsAscending diff List(entry))
   }
 
-  def events = sortedEventsAscending
+  def size() = sortedEventsAscending.size
 
-  def insertAtTime(time: Long, value: Any): Timeline = {
-    require(time > currentTime, s"Can't insert at $time as it is before $currentTime")
+  def events: List[(Long, A)] = sortedEventsAscending
+
+  def insertAtTime(time: Long, value: A): Timeline[A] = {
+    require(time >= currentTime, s"Can't insert at $time as it is before $currentTime")
     val (before, after) = sortedEventsAscending.span(_._1 <= time)
     val entry           = (time, value)
     val newEvents       = before ::: entry :: after
     copy(sortedEventsAscending = newEvents)
   }
 
-  def insertAfter(delay: FiniteDuration, value: Any): (Timeline, (Long, Any)) = {
+  def insertAfter(delay: FiniteDuration, value: A): (Timeline[A], (Long, A)) = {
     val time = currentTime + delay.toMillis
     insertAtTime(time, value) -> (time, value)
   }
 
-  def pop(): Option[(Timeline, Any)] = {
+  def pop(): Option[(Timeline[A], A)] = {
     sortedEventsAscending match {
       case (headTime, head) :: tail =>
         Option(copy(currentTime = headTime, sortedEventsAscending = tail) -> head)
       case Nil => None
     }
   }
+  override def currentTimeline(): Timeline[A] = this
 }
 
 object Timeline {
-  def apply(time: Long = 0) = new Timeline(time, Nil)
-
-  class Shared(initial: Timeline) {
-    var current = Timeline
-  }
-
+  def apply[A](time: Long = 0) = new Timeline[A](time, time, Nil)
 }

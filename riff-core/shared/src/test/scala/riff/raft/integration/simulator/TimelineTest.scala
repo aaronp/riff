@@ -1,4 +1,4 @@
-package riff.raft.integration
+package riff.raft.integration.simulator
 
 import riff.RiffSpec
 
@@ -8,7 +8,7 @@ class TimelineTest extends RiffSpec {
 
   "Timeline" should {
     "insert events in order" in {
-      val timeline = Timeline()
+      val timeline = Timeline[String]()
       timeline.pop() shouldBe empty
 
       val newTimeline = timeline.insertAtTime(100, "at 100 ms")

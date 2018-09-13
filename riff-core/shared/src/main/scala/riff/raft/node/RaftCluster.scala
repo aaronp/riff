@@ -10,6 +10,14 @@ package riff.raft.node
   * @tparam NodeKey the type of peer node
   */
 trait RaftCluster[NodeKey] {
+
+  def asDynamicCluster(): RaftCluster.Dynamic[NodeKey] = {
+    this match {
+      case d: RaftCluster.Dynamic[NodeKey] => d
+      case _                               => RaftCluster.dynamic(peers.toSet)
+    }
+  }
+
   def peers: Iterable[NodeKey]
   def contains(key: NodeKey): Boolean
   def numberOfPeers: Int = peers.size
@@ -19,6 +27,21 @@ object RaftCluster {
   def apply[NodeKey](peers: Iterable[NodeKey]): Fixed[NodeKey] = new Fixed(peers.toSet)
 
   def apply[NodeKey](first: NodeKey, theRest: NodeKey*): Fixed[NodeKey] = apply(theRest.toSet + first)
+
+  def dynamic[NodeKey](nodes: NodeKey*): Dynamic[NodeKey]     = dynamic(nodes.toSet)
+  def dynamic[NodeKey](nodes: Set[NodeKey]): Dynamic[NodeKey] = new Dynamic[NodeKey](nodes)
+
+  class Dynamic[NodeKey](initialPeers: Set[NodeKey]) extends RaftCluster[NodeKey] {
+    private var nodePeers = initialPeers
+    def add(peer: NodeKey) = {
+      nodePeers = nodePeers + peer
+    }
+    def remove(peer: NodeKey) = {
+      nodePeers = nodePeers - peer
+    }
+    override def peers: Iterable[NodeKey]        = nodePeers
+    override def contains(key: NodeKey): Boolean = nodePeers.contains(key)
+  }
 
   class Fixed[NodeKey](override val peers: Set[NodeKey]) extends RaftCluster[NodeKey] {
     override val numberOfPeers                   = peers.size

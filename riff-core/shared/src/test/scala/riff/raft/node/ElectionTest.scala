@@ -5,7 +5,7 @@ import riff.raft.messages._
 
 class ElectionTest extends RiffSpec {
 
-  "NodeState election" should {
+  "RaftNode election" should {
     "transition nodes from followers to candidates and leaders from an initial state" in {
       Given("A cluster of three nodes")
       val cluster       = TestCluster(3)
@@ -21,7 +21,7 @@ class ElectionTest extends RiffSpec {
       c.raftNode().role shouldBe Follower
 
       And(s"${a.nodeKey} should send vote requests to ${b.nodeKey} and ${c.nodeKey}")
-      val replies: Map[String, NodeState[String, Int]#Result] = cluster.sendMessages(a.nodeKey, requestVotes)
+      val replies: Map[String, RaftNode[String, Int]#Result] = cluster.sendMessages(a.nodeKey, requestVotes)
       replies.keySet should contain only (b.nodeKey, c.nodeKey)
 
       When(s"${a.nodeKey} gets its replies from ${b.nodeKey} and ${c.nodeKey}")
@@ -77,7 +77,7 @@ class ElectionTest extends RiffSpec {
       Then("All responses should be false as they're all voting in the same term as themselves")
       responses.foreach(_.granted shouldBe false)
     }
-    "reject nodes trying to be elected with a shorter log" in {
+    "reject nodes with a shorter log from being elected" in {
       Given("A cluster of three nodes")
       val cluster       = TestCluster(3)
       val List(a, b, c) = cluster.clusterNodes.ensuring(_.forall(_.persistentState.currentTerm == 0))
@@ -112,10 +112,10 @@ class ElectionTest extends RiffSpec {
       c.persistentState.currentTerm shouldBe 2
 
       val leaderResetHBCalls = cluster.testTimerFor(a.nodeKey).resetSendHeartbeatCalls()
-      leaderResetHBCalls should contain allOf (b.nodeKey -> None, c.nodeKey -> None)
+      leaderResetHBCalls should contain only(a.nodeKey -> None)
 
       And("The leader should've cancelled its sending heartbeat calls and reset the receiving hb calls")
-      cluster.testTimerFor(a.nodeKey).cancelHeartbeatCall() should contain allOf ("1", "2")
+      cluster.testTimerFor(a.nodeKey).cancelHeartbeatCall() should contain only ("1")
       cluster.testTimerFor(a.nodeKey).resetReceiveHeartbeatCalls() should contain only (a.nodeKey -> None)
     }
 

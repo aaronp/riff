@@ -1,309 +1,168 @@
 package riff.raft.node
-import riff.raft.log.{LogCoords, LogEntry, RaftLog}
-import riff.raft.messages.{RaftResponse, _}
-import riff.raft.timer.{RaftTimer, Timers}
-import riff.raft.{Term, node}
+import riff.raft.log.{LogAppendResult, LogCoords, LogEntry, RaftLog}
+import riff.raft.messages.{AppendEntries, AppendEntriesResponse, RequestVoteResponse}
+import riff.raft.{Term, isMajority}
 
-object NodeState {
-
-  def inMemory[NodeKey, A](id: NodeKey, maxAppendSize: Int = 10)(implicit timer: RaftTimer[NodeKey]): NodeState[NodeKey, A] = {
-    new NodeState[NodeKey, A](
-      PersistentState.inMemory().cached(),
-      RaftLog.inMemory[A](),
-      new Timers[NodeKey](),
-      RaftCluster[NodeKey](Nil),
-      node.FollowerNode[NodeKey](id, None),
-      maxAppendSize
-    )
-  }
-
-}
+import scala.collection.immutable
 
 /**
-  * The place where the different pieces which represent a Raft Node come together -- the glue code.
+  * Represents an in-memory state matching a node's role
   *
-  * I've looked at this a few different ways, but ultimately found this abstraction here to be the most readable,
-  * and follows most closely what's laid out in the raft spec.
-  *
-  * It's not too generic/abstracted, but quite openly just orchestrates the pieces/interactions of the inputs
-  * into a raft node.
-  *
-  * @param persistentState the state used to track the currentTerm and vote state
-  * @param log the RaftLog which stores the log entries
-  * @param timers the timing apparatus for controlling timeouts
-  * @param cluster this node's view of the cluster
-  * @param initialState the initial role
-  * @param maxAppendSize the maximum number of entries to send to a follower at a time when catching up the log
-  * @tparam NodeKey the underlying node peer type, which may just be a String identifier, or a websocket, actor, etc.
-  *                 so long as it has a meaningful hashCode/equals
-  * @tparam A the log entry type
+  * @tparam NodeKey
   */
-class NodeState[NodeKey, A](val persistentState: PersistentState[NodeKey],
-                            val log: RaftLog[A],
-                            val timers: Timers[NodeKey],
-                            val cluster: RaftCluster[NodeKey],
-                            initialState: RaftNode[NodeKey],
-                            val maxAppendSize: Int)
-    extends RaftMessageHandler[NodeKey, A] {
+sealed trait NodeState[NodeKey] {
+  def id: NodeKey
 
-  override def toString() = {
-    s"""RaftNode ${currentState.id} {
-       |  timers : $timers
-       |  cluster : $cluster
-       |  currentState : $currentState
-       |  log : ${log}
-       |}""".stripMargin
+  def becomeFollower(leader: Option[NodeKey]): FollowerNodeState[NodeKey] = FollowerNodeState(id, leader = leader)
+
+  def becomeCandidate(term: Term, clusterSize: Int): CandidateNodeState[NodeKey] = {
+    new CandidateNodeState[NodeKey](id, new CandidateState[NodeKey](term, Set(id), Set.empty, clusterSize))
   }
 
-  private var currentState: RaftNode[NodeKey] = initialState
+  def becomeLeader(cluster: RaftCluster[NodeKey]): LeaderNodeState[NodeKey] = LeaderNodeState(id, cluster)
 
-  def nodeKey: NodeKey = currentState.id
+  def leader: Option[NodeKey]
+  def role: NodeRole
+  def isFollower: Boolean  = role == Follower
+  def isLeader: Boolean    = role == Leader
+  def isCandidate: Boolean = role == Candidate
 
-  def raftNode(): RaftNode[NodeKey] = currentState
-
-  protected def thisTerm() = persistentState.currentTerm
-
-  /** This function may be used as a convenience to generate append requests for a
-    *
-    * @param data the data to append
-    * @return either some append requests or an error output if we are not the leader
-    */
-  def createAppend(data: Array[A]): NodeStateOutput[NodeKey, A] = {
-    withLeader { leader =>
-      val (_, requests) = leader.makeAppendEntries[A](log, thisTerm(), data)
-      requests
-    }
+  def asLeader: Option[LeaderNodeState[NodeKey]] = this match {
+    case leader: LeaderNodeState[NodeKey] => Option(leader)
+    case _                           => None
   }
+}
 
-  private def withLeader(f: LeaderNode[NodeKey] => AddressedRequest[NodeKey, A]) = {
-    currentState match {
-      case leader: LeaderNode[NodeKey] => f(leader)
-      case _ =>
-        val leaderMsg = currentState.leader.fold("")(name => s". The leader is ${name}")
-        NoOpOutput(s"Can't create an append request as we are ${currentState.role} in term ${thisTerm}$leaderMsg")
-    }
-  }
+final case class FollowerNodeState[NodeKey](override val id: NodeKey, override val leader: Option[NodeKey]) extends NodeState[NodeKey] {
+  override val role = Follower
+}
+
+final case class CandidateNodeState[NodeKey](override val id: NodeKey, initialState: CandidateState[NodeKey]) extends NodeState[NodeKey] {
+  override val role = Candidate
+  private var voteResponses = initialState
+  override val leader: Option[NodeKey] = None
+  def candidateState() = voteResponses
 
   /**
-    * Applies requests and responses coming to the node state and replies w/ any resulting messages
-    *
-    * @param from the node from which this message is received
-    * @param msg the Raft message
-    * @return and resulting messages (requests or responses)
+    * @param from the node which sent this response
+    * @param cluster the raft cluster, should we be able to become the leader
+    * @param voteResponse the vote response
+    * @return a raft node -- either the candidate or a leader
     */
-  def onMessage(from: NodeKey, msg: RequestOrResponse[NodeKey, A]): Result = {
-    msg match {
-      case request: RaftRequest[A] => AddressedResponse(from, onRequest(from, request))
-      case reply: RaftResponse     => onResponse(from, reply)
-    }
-  }
-
-  /**
-    * Handle a response coming from 'from'
-    *
-    * @param from the originating node
-    * @param reply the response
-    * @return any messages resulting from having processed this response
-    */
-  def onResponse(from: NodeKey, reply: RaftResponse): Result = {
-    reply match {
-      case voteResponse: RequestVoteResponse => onRequestVoteResponse(from, voteResponse)
-      case appendResponse: AppendEntriesResponse =>
-        val (_, result) = onAppendEntriesResponse(from, appendResponse)
-        result
-    }
-  }
-
-  def onRequestVoteResponse(from: NodeKey, voteResponse: RequestVoteResponse): Result = {
-    currentState match {
-      case candidate: CandidateNode[NodeKey] =>
-        currentState = candidate.onRequestVoteResponse(from, cluster, voteResponse)
-
-        if (currentState.isLeader) {
-          // notify leader change
-          onBecomeLeader(currentState)
-        } else {
-          NoOpOutput(s"Got vote ${voteResponse}, vote state is now : ${candidate.candidateState()}")
-        }
-      case _ =>
-        NoOpOutput(s"Got vote ${voteResponse} while in role ${currentState.role}, term ${thisTerm}")
-    }
-  }
-
-  /**
-    * We're either the leader and should update our peer view/commit log, or aren't and should ignore it
-    *
-    * @param appendResponse
-    * @return the result
-    */
-  def onAppendEntriesResponse(from: NodeKey, appendResponse: AppendEntriesResponse): (Seq[LogCoords], Result) = {
-    currentState match {
-      case leader: LeaderNode[NodeKey] =>
-        leader.onAppendResponse(from, log, persistentState.currentTerm, appendResponse, maxAppendSize)
-      case _ =>
-        val result = NoOpOutput(s"Ignoring append response from $from as we're in role ${currentState.role}, term ${thisTerm}")
-        (Nil, result)
-
-    }
-  }
-
-  def onTimerMessage(timeout: TimerMessage[NodeKey]): Result = {
-    timeout match {
-      case ReceiveHeartbeatTimeout      => onReceiveHeartbeatTimeout()
-      case SendHeartbeatTimeout(toNode) => onSendHeartbeatTimeout(toNode)
-    }
-  }
-
-  private def createAppendOnHeartbeatTimeout(leader: LeaderNode[NodeKey], toNode: NodeKey) = {
-    leader.clusterView.stateForPeer(toNode) match {
-      // we don't know what state this node is in - send our default heartbeat
-      case None => makeDefaultHeartbeat()
-
-      // we're at the beginning of the log - send some data
-      case Some(Peer(1, 0)) => AppendEntries(LogCoords.Empty, thisTerm, log.latestCommit(), log.entriesFrom(1, maxAppendSize))
-
-      // the state where we've not yet matched a peer, so we're trying to send ever-decreasing indices,
-      // using the 'nextIndex' (which should be decrementing on each fail)
-      case Some(Peer(nextIndex, 0)) =>
-        log.coordsForIndex(nextIndex) match {
-          // "This should never happen" (c)
-          // potential error situation where we have a 'nextIndex' -- resend the default heartbeat
-          case None           => makeDefaultHeartbeat()
-          case Some(previous) => AppendEntries(previous, thisTerm, log.latestCommit(), Array.empty[LogEntry[A]])
-        }
-
-      // the normal success state where we send our expected previous coords based on the match index
-      case Some(Peer(nextIndex, matchIndex)) =>
-        log.coordsForIndex(matchIndex) match {
-          case None =>
-            // "This should never happen" (c)
-            // potential error situation where we have a 'nextIndex' -- resend the default heartbeat
-            makeDefaultHeartbeat()
-          case Some(previous) => AppendEntries(previous, thisTerm, log.latestCommit(), log.entriesFrom(nextIndex, maxAppendSize))
-        }
-    }
-  }
-
-  def onSendHeartbeatTimeout(toNode: NodeKey): Result = {
-    currentState match {
-      case leader: LeaderNode[NodeKey] =>
-        timers.sendHeartbeat.reset(toNode)
-
-        val heartbeat = createAppendOnHeartbeatTimeout(leader, toNode)
-        AddressedRequest(toNode -> heartbeat)
-
-      case _ =>
-        NoOpOutput(s"Received send heartbeat timeout for $toNode, but we're ${currentState.role} in term ${thisTerm}")
-    }
-  }
-
-  private def makeDefaultHeartbeat() = AppendEntries(log.latestAppended(), thisTerm, log.latestCommit(), Array.empty[LogEntry[A]])
-
-  def onReceiveHeartbeatTimeout(): Result = {
-    onBecomeCandidateOrLeader()
-  }
-
-  def onRequest(from: NodeKey, request: RaftRequest[A]): RaftResponse = {
-    request match {
-      case append: AppendEntries[A] => onAppendEntries(from, append)
-      case vote: RequestVote        => onRequestVote(from, vote)
-    }
-  }
-
-  def onAppendEntries(from: NodeKey, append: AppendEntries[A]): AppendEntriesResponse = {
-    val becameFollower = if (thisTerm < append.term) {
-      onBecomeFollower(Option(from), append.term)
-      true
+  def onRequestVoteResponse(from: NodeKey, cluster: RaftCluster[NodeKey], voteResponse: RequestVoteResponse): NodeState[NodeKey] = {
+    voteResponses = voteResponses.update(from, voteResponse)
+    if (voteResponses.canBecomeLeader) {
+      LeaderNodeState(id, cluster)
     } else {
-      false
-    }
-
-    currentState match {
-      case _: LeaderNode[NodeKey] => AppendEntriesResponse.fail(thisTerm())
-      case _ =>
-        if (!becameFollower) {
-          timers.receiveHeartbeat.reset(currentState.id)
-        }
-        val result = log.onAppend(thisTerm, append)
-        log.commit(append.commitIndex)
-        result
+      this
     }
   }
+}
+
+final case class LeaderNodeState[NodeKey](override val id: NodeKey, clusterView: LeadersClusterView[NodeKey]) extends NodeState[NodeKey] {
+  override def leader = Option(id)
+
+  /** appends the data to the given leader's log, returning the append result and append requests based on the clusterView
+    *
+    * @param log the leader's log from which the previous append/commit are taken
+    * @param currentTerm the leader node's term
+    * @param data the data to append
+    * @tparam A
+    * @return the result from appending the entries to the leader's log, as well as an addressed request
+    */
+  def makeAppendEntries[A](log: RaftLog[A], currentTerm: Term, data: Array[A]): (LogAppendResult, AddressedRequest[NodeKey, A]) = {
+    val previous: LogCoords         = log.latestAppended()
+    val entries: Array[LogEntry[A]] = data.map(LogEntry(currentTerm, _))
+    val appendResult = log.appendAll(previous.index + 1, entries)
+
+    val requests: immutable.Iterable[(NodeKey, AppendEntries[A])] = {
+      val peersWithMatchingLogs = clusterView.eligibleNodesForPreviousEntry(previous)
+
+      //
+      // check if we're a single-node cluster, in which case we can commit immediately as the leader
+      //
+      if (peersWithMatchingLogs.isEmpty) {
+        if (clusterView.numberOfPeers() == 0) {
+          log.commit(log.latestAppended().index)
+        }
+        Nil
+      } else {
+        val request = AppendEntries[A](previous, currentTerm, log.latestCommit(), entries)
+        peersWithMatchingLogs.map(_ -> request)
+      }
+    }
+    appendResult -> AddressedRequest(requests)
+  }
+
+  override val role = Leader
+
+  def clusterSize = clusterView.numberOfPeers + 1
 
   /**
-    * Create a reply to the given vote request.
+    * Handle the append response coming from the 'from' node
     *
-    * NOTE: Whatever the actual node 'A' is, it is expected that, upon a successful reply,
-    * it updates it's own term and writes down (remembers) that it voted in this term so
-    * as not to double-vote should this node crash.
-    *
-    * @param forRequest the data from the vote request
-    * @return the RequestVoteResponse
+    * @param from the node replying, presumably to some sent append request
+    * @param log the leader's log
+    * @param currentTerm the leader's current term
+    * @param appendResponse the response which we're applying
+    * @param maxAppendSize the maximum number of subsequent entries we'll send should we be trying to catch the 'from' node up
+    * @tparam A the log type
+    * @return the committed log coords resulting from having applied this response and the state output (either a no-op or a subsequent [[AppendEntries]] request)
     */
-  def onRequestVote(from: NodeKey, forRequest: RequestVote): RequestVoteResponse = {
-    val beforeTerm = persistentState.currentTerm
-    val reply      = persistentState.castVote(log.latestAppended(), from, forRequest)
+  def onAppendResponse[A](from: NodeKey,
+                          log: RaftLog[A],
+                          currentTerm: Term,
+                          appendResponse: AppendEntriesResponse,
+                          maxAppendSize: Int): (Seq[LogCoords], RaftNodeResult[NodeKey, A]) = {
 
-    // regardless of granting the vote or not, if we just saw a later term, we need to be a follower
-    // ... and if we are (soon to be were) leader, we have to transition (cancel heartbeats, etc)
-    if (beforeTerm < reply.term) {
-      onBecomeFollower(None, reply.term)
+    val latestAppended = log.latestAppended()
+
+    //
+    // first update the cluster view - update or decrement the nextIndex, matchIndex
+    //
+    clusterView.update(from, appendResponse) match {
+      case Some(newPeerState) if appendResponse.success =>
+        val values = log.entriesFrom(newPeerState.nextIndex, maxAppendSize)
+
+        // if the majority of the peers have the same match index
+        val count = clusterView.matchIndexCount(appendResponse.matchIndex) + 1
+
+        val committed: Seq[LogCoords] = if (isMajority(count, clusterSize)) {
+          log.commit(appendResponse.matchIndex)
+        } else {
+          Nil
+        }
+
+        // if there are log entries which occur 'after' this entry, they should then be sent next
+        val reply = if (latestAppended.index > appendResponse.matchIndex) {
+          log.coordsForIndex(appendResponse.matchIndex) match {
+            case Some(previous) =>
+              AddressedRequest(from, AppendEntries(previous, currentTerm, log.latestCommit(), values))
+            case None =>
+              NoOpResult(s"Couldn't read the log entry at ${appendResponse.matchIndex}. The latest append is ${log.latestAppended()}")
+          }
+        } else {
+          NoOpResult("The leader thanks you for your reply - you're all up-to-date!")
+        }
+        (committed, reply)
+      case _ =>
+        // try again w/ an older index. This trusts that the cluster does the right thing when updating its peer view
+        val reply = clusterView.stateForPeer(from) match {
+          case Some(peer) =>
+            val idx    = peer.nextIndex.min(latestAppended.index)
+            val coords = log.coordsForIndex(idx).getOrElse(latestAppended)
+            AddressedRequest(from, AppendEntries(coords, currentTerm, log.latestCommit(), Array.empty[LogEntry[A]]))
+          case None =>
+            NoOpResult(s"Couldn't find peer $from in the cluster(!), ignoring append entries response")
+        }
+
+        (Nil, reply)
     }
-    reply
   }
+}
 
-  def onBecomeCandidateOrLeader(): AddressedRequest[NodeKey, A] = {
-    val newTerm = thisTerm + 1
-    persistentState.currentTerm = newTerm
-
-    // write down that we're voting for ourselves
-    persistentState.castVote(newTerm, nodeKey)
-
-    cluster.numberOfPeers  match {
-      case 0 =>
-        val leader = currentState.becomeLeader(cluster)
-        currentState = leader
-        onBecomeLeader(leader)
-      case clusterSize =>
-        currentState = currentState.becomeCandidate(newTerm, clusterSize + 1)
-        val requestVote = RequestVote(newTerm, log.latestAppended())
-        AddressedRequest(cluster.peers.map(_ -> requestVote))
-    }
-  }
-
-  def onBecomeFollower(newLeader: Option[NodeKey], newTerm: Term) = {
-    if (currentState.isLeader) {
-      // cancel HB for all nodes
-      cluster.peers.foreach(timers.sendHeartbeat.cancel)
-    }
-    timers.receiveHeartbeat.reset(nodeKey)
-    persistentState.currentTerm = newTerm
-    currentState = currentState.becomeFollower(newLeader)
-  }
-
-  def onBecomeLeader(state: RaftNode[NodeKey]): AddressedRequest[NodeKey, A] = {
-    val hb = makeDefaultHeartbeat()
-    timers.receiveHeartbeat.cancel(currentState.id)
-    val msgs = cluster.peers.map { nodeKey =>
-      timers.sendHeartbeat.reset(nodeKey)
-      (nodeKey, hb)
-    }
-    AddressedRequest(msgs)
-  }
-
-  /** a convenience builder method to create a new raft node w/ the given raft log
-    *
-    * @return a new node state
-    */
-  def withLog(newLog: RaftLog[A]): NodeState[NodeKey, A] = {
-    new NodeState(persistentState, newLog, timers, cluster, raftNode, maxAppendSize)
-  }
-
-  /** a convenience builder method to create a new raft node w/ the given cluster
-    *
-    * @return a new node state
-    */
-  def withCluster(newCluster: RaftCluster[NodeKey]) = {
-    new NodeState(persistentState, log, timers, newCluster, raftNode, maxAppendSize)
+object LeaderNodeState {
+  def apply[NodeKey](id: NodeKey, cluster: RaftCluster[NodeKey]): LeaderNodeState[NodeKey] = {
+    new LeaderNodeState[NodeKey](id, LeadersClusterView(cluster))
   }
 }

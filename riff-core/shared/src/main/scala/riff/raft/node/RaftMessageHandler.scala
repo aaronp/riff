@@ -14,7 +14,7 @@ import scala.reflect.ClassTag
 trait RaftMessageHandler[NodeKey, A] {
 
   type Msg    = RaftMessage[NodeKey, A]
-  type Result = NodeStateOutput[NodeKey, A]
+  type Result = RaftNodeResult[NodeKey, A]
 
   /**
     * Used to append to this node's log and create append requests if we are the leader
@@ -34,5 +34,5 @@ trait RaftMessageHandler[NodeKey, A] {
     */
   def onMessage(from: NodeKey, msg: RequestOrResponse[NodeKey, A]): Result
 
-  def onTimerMessage(msg: TimerMessage[NodeKey]): Result
+  def onTimerMessage(msg: TimerMessage): Result
 }

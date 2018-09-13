@@ -161,7 +161,6 @@ lazy val riffCoreCrossProject = crossProject(JSPlatform, JVMPlatform)
   .withoutSuffixFor(JVMPlatform)
   .settings(
     name := "riff-core",
-    version := "0.0.1-SNAPSHOT",
     libraryDependencies ++= List(
       "com.lihaoyi"         %%% "scalatags"      % "0.6.7",
       "org.scalatest"       %%% "scalatest"      % "3.0.0" % "test",
@@ -185,30 +184,61 @@ lazy val riffCoreCrossProject = crossProject(JSPlatform, JVMPlatform)
 lazy val riffCoreJVM = riffCoreCrossProject.jvm
 lazy val riffCoreJS  = riffCoreCrossProject.js
 
+val circeVersion = "0.9.3"
+
+lazy val riffJsonCrossProject = crossProject(JSPlatform, JVMPlatform)
+  .crossType(CrossType.Full)
+  .withoutSuffixFor(JVMPlatform)
+  .settings(
+    name := "riff-json",
+    libraryDependencies ++= List(
+      "com.lihaoyi"   %%% "scalatags" % "0.6.7",
+      "org.scalatest" %%% "scalatest" % "3.0.0" % "test"
+    ) ++ (List(
+      "io.circe" %%% "circe-core",
+      "io.circe" %%% "circe-generic",
+      "io.circe" %%% "circe-parser"
+    ).map(_ % circeVersion))
+  )
+  .in(file("riff-json"))
+  .jvmSettings(
+    name := "riff-json-jvm"
+  )
+  .jsSettings(
+    name := "riff-json-js"
+  )
+  .dependsOn(riffCoreCrossProject % "compile->compile;test->test")
+
+lazy val riffJsonJVM = riffJsonCrossProject.jvm
+lazy val riffJsonJS  = riffJsonCrossProject.js
+
 lazy val riffMonix = project
   .in(file("riff-monix"))
-  .dependsOn(riffCoreJVM % "compile->compile;test->test", riffCoreJVM % "compile->compile;test->test")
   .settings(name := s"${repo}-monix")
   .settings(commonSettings: _*)
   .settings(libraryDependencies ++= Dependencies.RiffMonix)
+  .dependsOn(riffCoreJVM % "compile->compile;test->test")
 
 lazy val riffFs2 = project
   .in(file("riff-fs2"))
-  .dependsOn(riffCoreJVM % "compile->compile;test->test", riffCoreJVM % "compile->compile;test->test")
+  .dependsOn(riffCoreJVM % "compile->compile;test->test")
+  .dependsOn(riffJsonJVM % "compile->compile;test->test")
   .settings(name := s"${repo}-fs2")
   .settings(commonSettings: _*)
   .settings(libraryDependencies ++= Dependencies.RiffFs2)
 
 lazy val riffAkka = project
   .in(file("riff-akka"))
-  .dependsOn(riffCoreJVM % "compile->compile;test->test", riffCoreJVM % "compile->compile;test->test")
+  .dependsOn(riffCoreJVM % "compile->compile;test->test")
+  .dependsOn(riffJsonJVM % "compile->compile;test->test")
   .settings(name := s"${repo}-akka")
   .settings(commonSettings: _*)
   .settings(libraryDependencies ++= Dependencies.RiffAkka)
 
 lazy val riffHttp4s = project
   .in(file("riff-http4s"))
-  .dependsOn(riffCoreJVM % "compile->compile;test->test", riffCoreJVM % "compile->compile;test->test")
+  .dependsOn(riffCoreJVM % "compile->compile;test->test")
+  .dependsOn(riffJsonJVM % "compile->compile;test->test")
   .settings(name := s"${repo}-http4s")
   .settings(commonSettings: _*)
   .settings(libraryDependencies ++= Dependencies.RiffHttp4s)

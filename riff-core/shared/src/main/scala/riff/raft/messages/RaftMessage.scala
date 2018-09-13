@@ -12,15 +12,15 @@ sealed trait RaftMessage[+NodeKey, +A]
 
 sealed trait RequestOrResponse[+NodeKey, +A] extends RaftMessage[NodeKey, A]
 
-sealed trait TimerMessage[+NodeKey] extends RaftMessage[NodeKey, Nothing]
+sealed trait TimerMessage extends RaftMessage[Nothing, Nothing]
 
 /** Marks a timeout of not hearing from a leader
   */
-case object ReceiveHeartbeatTimeout extends TimerMessage[Nothing]
+case object ReceiveHeartbeatTimeout extends TimerMessage
 
 /** Marks a timeout for a leader indicating it should sent a heartbeat to the given follower
   */
-case class SendHeartbeatTimeout[NodeKey](node: NodeKey) extends TimerMessage[NodeKey]
+case object SendHeartbeatTimeout extends TimerMessage
 
 /**
   * RaftRequest

@@ -20,13 +20,5 @@ trait RaftClient[A] {
     * @param data the data to write
     * @return an observable of the append results as they are appended/co
     */
-//  def append(data: A, theRest: A*): Publisher[AppendStatus] = {
-//    if (theRest.isEmpty) {
-//      appendAll(data :: Nil)
-//    } else {
-//      appendAll(data +: theRest)
-//    }
-//  }
-
-  def appendAll(data: Iterable[A]): Publisher[AppendStatus]
+  def append(data: A): Publisher[AppendStatus]
 }

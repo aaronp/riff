@@ -4,22 +4,22 @@ import riff.raft.Term
 
 import scala.language.implicitConversions
 
-class RichNodeState[NodeKey, A](val nodeState: NodeState[NodeKey, A]) {
+class RichNodeState[NodeKey, A](val nodeState: RaftNode[NodeKey, A]) {
 
   def currentTerm: Term = nodeState.persistentState.currentTerm
-  def withRaftNode(newState: RaftNode[NodeKey]) = {
+  def withRaftNode(newState: NodeState[NodeKey]) = {
     import nodeState._
-    new NodeState(persistentState, log, timers, cluster, newState, maxAppendSize)
+    new RaftNode(persistentState, log, timers, cluster, newState, maxAppendSize)
   }
 
   def withTerm(t: Term) = {
     import nodeState._
     val ps = PersistentState.inMemory[NodeKey]().currentTerm = t
 
-    new NodeState(ps, log, timers, cluster, raftNode, maxAppendSize)
+    new RaftNode(ps, log, timers, cluster, raftNode, maxAppendSize)
   }
 
 }
 object RichNodeState {
-  implicit def asRichState[NodeKey, A](nodeState: NodeState[NodeKey, A]) = new RichNodeState(nodeState)
+  implicit def asRichState[NodeKey, A](nodeState: RaftNode[NodeKey, A]) = new RichNodeState(nodeState)
 }

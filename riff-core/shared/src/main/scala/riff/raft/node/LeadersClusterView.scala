@@ -15,9 +15,9 @@ import scala.collection.immutable
 private[node] class LeadersClusterView[NodeKey](cluster: RaftCluster[NodeKey]) {
   private var peersByKey = Map[NodeKey, Peer]()
 
-  def nodesMatching(previous: LogCoords): immutable.Iterable[NodeKey] = {
+  def eligibleNodesForPreviousEntry(previous: LogCoords): immutable.Iterable[NodeKey] = {
     toMap.collect {
-      case (key, peer) if peer.matchIndex == previous.index => key
+      case (key, peer) if peer.matchIndex == previous.index || peer.matchIndex == 0 => key
     }
   }
 
