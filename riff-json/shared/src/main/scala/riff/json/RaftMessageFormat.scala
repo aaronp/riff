@@ -19,8 +19,7 @@ class RaftMessageFormat[NodeKey, A](implicit nodeKeyEnc: Encoder[NodeKey], nodeK
           "AppendEntries" ->
             Json.obj(
               "previous"    -> msg.previous.asJson,
-              "term"        -> msg.previous.asJson,
-              "previous"    -> msg.term.asJson,
+              "term"        -> msg.term.asJson,
               "commitIndex" -> msg.commitIndex.asJson,
               "entries"     -> entries
             ))
@@ -45,14 +44,21 @@ class RaftMessageFormat[NodeKey, A](implicit nodeKeyEnc: Encoder[NodeKey], nodeK
         val fail = DecodingFailure(s"Invalid json string '$other', expected one of $ReceiveHeartbeatTimeoutName or $SendHeartbeatTimeoutName", c.history)
         Left(fail)
       case Left(_) =>
-        import cats.syntax.either._
         import io.circe.generic.auto._
 
-        c.downField("AppendEntries")
-          .as[AppendEntries[A]]
-          .orElse(c.downField("AppendEntriesResponse").as[AppendEntriesResponse])
-          .orElse(c.downField("RequestVoteResponse").as[RequestVoteResponse])
-          .orElse(c.downField("RequestVote").as[RequestVote])
+        val opt = c
+          .downField("AppendEntries")
+          .success
+          .map(decodeAppendEntries)
+          .orElse(c.downField("AppendEntriesResponse").success.map(_.as[AppendEntriesResponse]))
+          .orElse(c.downField("RequestVoteResponse").success.map(_.as[RequestVoteResponse]))
+          .orElse(c.downField("RequestVote").success.map(_.as[RequestVote]))
+
+        opt.getOrElse(Left(DecodingFailure(s"Invalid json string '${c.focus}'", c.history)))
     }
+  }
+  def decodeAppendEntries(hcursor: HCursor): Result[RaftMessage[NodeKey, A]] = {
+    import io.circe.generic.auto._
+    hcursor.as[AppendEntries[A]]
   }
 }
