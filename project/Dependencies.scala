@@ -38,4 +38,5 @@ object Dependencies {
   val RiffFs2: List[ModuleID] = fs2 ::: logging ::: testDependencies
   val RiffAkka: List[ModuleID] = akka ::: logging ::: testDependencies
   val RiffHttp4s: List[ModuleID] = http4s ::: logging ::: testDependencies
+  val RiffWeb: List[ModuleID] = http4s ::: logging ::: testDependencies
 }

@@ -29,13 +29,13 @@ val Core       = config("riff-core")
 val RiffMonix  = config("riff-monix")
 val RiffFs2    = config("riff-fs2")
 val RiffAkka   = config("riff-akka")
-val RiffHttp4s = config("riff-http4s")
+val RiffWeb = config("riff-web")
 
 git.remoteRepo := s"git@github.com:$username/$repo.git"
 ghpagesNoJekyll := true
 
 lazy val scaladocSiteProjects =
-  List((riffCoreCrossProject, Core), (riffMonix, RiffMonix), (riffHttp4s, RiffHttp4s), (riffFs2, RiffFs2), (riffAkka, RiffAkka))
+  List((riffCoreCrossProject, Core), (riffMonix, RiffMonix), (riffWeb, RiffWeb), (riffFs2, RiffFs2), (riffAkka, RiffAkka))
 
 lazy val scaladocSiteSettings = scaladocSiteProjects.flatMap {
   case (project: Project, conf) =>
@@ -146,7 +146,7 @@ lazy val root = (project in file("."))
     riffMonix,
     riffFs2,
     riffAkka,
-    riffHttp4s
+    riffWeb
   )
   .settings(
     sourceDirectory in Pamflet := sourceDirectory.value / "site",
@@ -235,13 +235,13 @@ lazy val riffAkka = project
   .settings(commonSettings: _*)
   .settings(libraryDependencies ++= Dependencies.RiffAkka)
 
-lazy val riffHttp4s = project
-  .in(file("riff-http4s"))
+lazy val riffWeb = project
+  .in(file("riff-web"))
   .dependsOn(riffCoreJVM % "compile->compile;test->test")
   .dependsOn(riffJsonJVM % "compile->compile;test->test")
-  .settings(name := s"${repo}-http4s")
+  .settings(name := s"${repo}-web")
   .settings(commonSettings: _*)
-  .settings(libraryDependencies ++= Dependencies.RiffHttp4s)
+  .settings(libraryDependencies ++= Dependencies.RiffWeb)
 
 // see https://leonard.io/blog/2017/01/an-in-depth-guide-to-deploying-to-maven-central/
 pomIncludeRepository := (_ => false)
