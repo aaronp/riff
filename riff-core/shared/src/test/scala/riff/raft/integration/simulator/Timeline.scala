@@ -32,6 +32,10 @@ case class Timeline[A] private (initialTime: Long,
     }
   }
 
+  def wasRemoved(predicate : PartialFunction[A, Boolean]) = removed.map(_._2).exists { a =>
+    predicate.isDefinedAt(a) && predicate(a)
+  }
+
   def insertAtTime(time: Long, value: A): Timeline[A] = {
     require(time >= currentTime, s"Can't insert at $time as it is before $currentTime")
     val (before, after) = sortedEventsAscending.span(_._1 <= time)

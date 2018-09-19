@@ -41,9 +41,16 @@ class IntegrationTest extends RiffSpec {
 
       val result = simulator.advanceUntil(_.hasLeader)
 
+      simulator.nodes().map { n =>
+        n.nodeKey -> n.raftNode().role
+
+      }
+      println(simulator)
       When("A follower is removed")
       val someFollower: NodeSnapshot[String] = result.nodesWithRole(Follower).head
       simulator.killNode(someFollower.name)
+
+      println(simulator)
 
       And("The remaining nodes have some entries replicated")
       (0 to 5).foreach { i => simulator.appendToLeader(Array(s"some entry $i"))
@@ -54,10 +61,28 @@ class IntegrationTest extends RiffSpec {
       val newLeader = simulator.nodesWithRole(Follower).head
       newLeader.onReceiveHeartbeatTimeout()
 
+      println(simulator)
+      println()
+      val aboutToSend: AdvanceResult = simulator.advanceUntil { r =>
+        r.beforeTimeline.wasRemoved {
+          case ReceiveTimeout(nodeName) => nodeName == "Node 2"
+        }
+      }
+      println(aboutToSend)
+      println("-" * 80)
+      println(simulator.advance())
+      println("-" * 80)
+      println(simulator.advance())
+      println("-" * 80)
+      println(simulator.advance())
+      println("-" * 80)
+      println(simulator.advance())
+      println("-" * 80)
+
       try {
         simulator.advanceUntil(r => r.leader.name == newLeader.nodeKey)
       } catch {
-        case bang : Exception =>
+        case bang: Exception =>
           println(bang)
 
           val timeline = simulator.currentTimeline()

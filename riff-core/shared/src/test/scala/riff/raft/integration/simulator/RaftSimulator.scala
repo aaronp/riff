@@ -6,7 +6,7 @@ import riff.raft.messages.{ReceiveHeartbeatTimeout, RequestOrResponse, SendHeart
 import riff.raft.node._
 import riff.raft.timer.RaftTimer
 
-import scala.annotation.tailrec
+import scala.collection.mutable.ListBuffer
 import scala.concurrent.duration._
 
 /**
@@ -159,7 +159,9 @@ class RaftSimulator private (nextSendTimeout: Iterator[FiniteDuration],
 
   def currentLeader(): RaftNode[String, String] = clusterByName(leader().get.id)
 
-  def nodesWithRole(role: NodeRole) = clusterByName.values.filter(_.raftNode().role == role)
+  def nodesWithRole(role: NodeRole): List[RaftNode[String, String]] = nodes.filter(_.raftNode().role == role)
+
+  def nodes(): List[RaftNode[String, String]] = clusterByName.values.toList
 
   /** @return the current leader (if there is one)
     */
@@ -200,22 +202,21 @@ class RaftSimulator private (nextSendTimeout: Iterator[FiniteDuration],
     advanceUntil(100, defaultLatency, predicate)
   }
 
-  def advanceUntil(max: Int, latency: FiniteDuration = defaultLatency, predicate: AdvanceResult => Boolean): AdvanceResult = {
-    val first: AdvanceResult = advance(latency)
-    if (predicate(first)) {
-      first
-    } else {
+  def advanceUntil(max: Int, initialLatency: FiniteDuration, predicate: AdvanceResult => Boolean): AdvanceResult = {
+    var latency             = initialLatency
+    var next: AdvanceResult = advance(latency)
 
-      // format: off
-      val (results, _) = (1 until max).view.map { _ => advance(latency) }.span(r => !predicate(r))
-      // format: on
+    println(this)
+    val list = ListBuffer[AdvanceResult](next)
+    while (!predicate(next) || list.size >= max) {
+      latency = latency + 5.millis
+      next = advance(latency)
 
-      val list = results.toList
-
-      require(list.size < max - 1, s"The condition never occurred in $max events")
-
-      concatResults(first :: list)
+      println("- " * 50)
+      println(this)
+      list += next
     }
+    concatResults(list.toList)
   }
 
   /**
@@ -233,10 +234,7 @@ class RaftSimulator private (nextSendTimeout: Iterator[FiniteDuration],
 
   private def concatResults(list: List[AdvanceResult]): AdvanceResult = {
     val last: AdvanceResult = list.last
-
-    last.copy(beforeTimeline = list.head.beforeTimeline,
-      beforeStateByName = list.head.beforeStateByName,
-      advanceEvents = list.flatMap(_.advanceEvents))
+    last.copy(beforeTimeline = list.head.beforeTimeline, beforeStateByName = list.head.beforeStateByName, advanceEvents = list.flatMap(_.advanceEvents))
   }
 
   /**
