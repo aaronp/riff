@@ -7,6 +7,39 @@ import scala.concurrent.duration._
 class TimelineTest extends RiffSpec {
 
   "Timeline" should {
+    "contain the full timeline" in {
+      val Some((timeline, "first")) = Timeline[String]()
+        .insertAfter(1.second, "first")
+        ._1
+        .insertAfter(2.second, "second")
+        ._1
+        .insertAfter(3.second, "third")
+        ._1
+        .insertAfter(4.second, "fourth")
+        ._1
+        .pop()
+
+      timeline.currentTime shouldBe 1000
+
+      val Some((twoLeft, "second")) = timeline.remove((4000L, "fourth")).pop()
+      println(twoLeft.pretty())
+      println()
+      twoLeft.pretty() shouldBe """-1000ms : first
+                                  |@0ms    : second
+                                  |+1000ms : third
+                                  |+2000ms : (removed) fourth
+                                  |""".stripMargin
+
+      twoLeft.historyDescending shouldBe List(2000 -> "second", 1000 -> "first")
+      twoLeft.currentTime shouldBe 2000
+    }
+    "insert events at the same time puts them in insertion order" in {
+      val timeline = Timeline[String]().
+        insertAfter(3.millis, "first")._1
+        .insertAfter(3.millis, "second")._1
+        .insertAfter(2.millis, "zero")._1
+      timeline.events.map(_._2) shouldBe List("zero", "first", "second")
+    }
     "insert events in order" in {
       val timeline = Timeline[String]()
       timeline.pop() shouldBe empty

@@ -6,6 +6,7 @@ import riff.raft.messages.{ReceiveHeartbeatTimeout, RequestOrResponse, SendHeart
 import riff.raft.node._
 import riff.raft.timer.RaftTimer
 
+import scala.annotation.tailrec
 import scala.concurrent.duration._
 
 /**
@@ -36,6 +37,24 @@ class RaftSimulator private (nextSendTimeout: Iterator[FiniteDuration],
                              newNode: (String, RaftCluster[String], RaftTimer[String]) => RaftNode[String, String])
     extends HasTimeline[TimelineType] {
 
+  /**
+    * Convenience method for debugging failed tests.
+    *
+    * We may offer 'advanceUntil ...' which may fail, in which case we can take the timeline of events and step through 'em
+    *
+    * @param timeline
+    * @param replies
+    * @return the results from each timeline event
+    */
+  def replay(timeline: Timeline[TimelineType], replies: List[RaftNode[String, String]#Result] = Nil): List[RaftNode[String, String]#Result] = {
+    timeline.pop() match {
+      case None => replies.reverse
+      case Some((remaining, next)) =>
+        val (_, result) = processNextEventInTheTimeline(next, remaining.currentTime)
+        replay(remaining, result :: replies)
+    }
+  }
+
   def killNode(nodeName: String) = {
     val found = clusterByName.get(nodeName)
     clusterByName = clusterByName - nodeName
@@ -64,6 +83,7 @@ class RaftSimulator private (nextSendTimeout: Iterator[FiniteDuration],
 
   // a handy place for breakpoints to watch for all updates
   private def updateTimeline(newTimeline: Timeline[TimelineType]) = {
+    require(newTimeline.currentTime >= sharedSimulatedTimeline.currentTime)
     sharedSimulatedTimeline = newTimeline
   }
   private def markUndelivered(newTimeline: Timeline[TimelineType]) = {
@@ -84,7 +104,9 @@ class RaftSimulator private (nextSendTimeout: Iterator[FiniteDuration],
     }
   }
 
-  override def currentTimeline(): Timeline[TimelineType] = sharedSimulatedTimeline
+  override def currentTimeline(): Timeline[TimelineType] = {
+    sharedSimulatedTimeline
+  }
 
   /**
     * convenience method to append to whatever the leader node is -- will error if there is no leader
@@ -96,7 +118,7 @@ class RaftSimulator private (nextSendTimeout: Iterator[FiniteDuration],
     val ldr = currentLeader()
     ldr.appendIfLeader(data) match {
       case Some((appendResults, AddressedRequest(requests))) =>
-        val newTimeline = requests.foldLeft(sharedSimulatedTimeline) {
+        val newTimeline = requests.foldLeft(currentTimeline) {
           case (timeline, (to, msg)) =>
             val (newTimeline, _) = timeline.insertAfter(latency, SendRequest(ldr.raftNode().id, to, msg))
             newTimeline
@@ -184,19 +206,9 @@ class RaftSimulator private (nextSendTimeout: Iterator[FiniteDuration],
       first
     } else {
 
-      var mostRecentResult = first
-      val (results, _) = (1 until max).view
-        .map { _ =>
-          try {
-            val nextResult = advance(latency)
-            mostRecentResult = nextResult
-            nextResult
-          } catch {
-            case exp =>
-              throw new Exception(s"${exp.getMessage}, previous result was: $mostRecentResult", exp)
-          }
-        }
-        .span(r => !predicate(r))
+      // format: off
+      val (results, _) = (1 until max).view.map { _ => advance(latency) }.span(r => !predicate(r))
+      // format: on
 
       val list = results.toList
 
@@ -220,7 +232,11 @@ class RaftSimulator private (nextSendTimeout: Iterator[FiniteDuration],
   }
 
   private def concatResults(list: List[AdvanceResult]): AdvanceResult = {
-    list.last.copy(beforeTimeline = list.head.beforeTimeline, beforeStateByName = list.head.beforeStateByName, events = list.flatMap(_.events))
+    val last: AdvanceResult = list.last
+
+    last.copy(beforeTimeline = list.head.beforeTimeline,
+      beforeStateByName = list.head.beforeStateByName,
+      advanceEvents = list.flatMap(_.advanceEvents))
   }
 
   /**
@@ -232,23 +248,31 @@ class RaftSimulator private (nextSendTimeout: Iterator[FiniteDuration],
   private def advanceSafe(latency: FiniteDuration = 50.millis): Option[AdvanceResult] = {
 
     val beforeState: Map[String, NodeSnapshot[String]] = takeSnapshot()
-    val beforeTimeline                                 = sharedSimulatedTimeline
+    val beforeTimeline                                 = currentTimeline
 
-    processNextEventInTheTimeline().map {
+    // pop one off our timeline stack, then subsequently update our sharedSimulatedTimeline
+    val nextOpt = beforeTimeline.pop().map {
+      case (newTimeline, e) =>
+        updateTimeline(newTimeline)
+        val (recipient, result) = processNextEventInTheTimeline(e, beforeTimeline.currentTime)
+        (e, recipient, result)
+    }
+
+    nextOpt.map {
       case (e, node, result: NoOpResult) =>
-        AdvanceResult(node, beforeState, beforeTimeline, e, result, sharedSimulatedTimeline, undeliveredTimeline, takeSnapshot())
+        AdvanceResult(node, beforeState, beforeTimeline, e, result, currentTimeline, undeliveredTimeline, takeSnapshot())
       case (e, node, result @ AddressedRequest(msgs)) =>
-        val newTimeline = msgs.foldLeft(sharedSimulatedTimeline) {
-          case (time, (to, msg)) =>
-            val (newTime, _) = time.insertAfter(latency, SendRequest(node, to, msg))
+        val newTimeline = msgs.zipWithIndex.foldLeft(currentTimeline) {
+          case (time, ((to, msg), index)) =>
+            val (newTime, _) = time.insertAfter(latency + index.millis, SendRequest(node, to, msg))
             newTime
         }
         updateTimeline(newTimeline)
         AdvanceResult(node, beforeState, beforeTimeline, e, result, newTimeline, undeliveredTimeline, takeSnapshot())
       case (e, node, result @ AddressedResponse(to, msg)) =>
-        val (newTime, _) = sharedSimulatedTimeline.insertAfter(latency, SendResponse(node, to, msg))
+        val (newTime, _) = currentTimeline.insertAfter(latency, SendResponse(node, to, msg))
         updateTimeline(newTime)
-        AdvanceResult(node, beforeState, beforeTimeline, e, result, sharedSimulatedTimeline, undeliveredTimeline, takeSnapshot())
+        AdvanceResult(node, beforeState, beforeTimeline, e, result, currentTimeline, undeliveredTimeline, takeSnapshot())
     }
   }
 
@@ -262,50 +286,35 @@ class RaftSimulator private (nextSendTimeout: Iterator[FiniteDuration],
     *
     * @return a tuple of the next event, recipient of the event, and result in an option, or None if no events are enqueued (which should never be the case, as we should always be sending heartbeats)
     */
-  private def processNextEventInTheTimeline(): Option[(TimelineType, String, RaftNode[String, String]#Result)] = {
+  private def processNextEventInTheTimeline(nextEvent: TimelineType, currentTime: Long): (String, RaftNode[String, String]#Result) = {
 
-    def deliverMsg(from: String, to: String, timelineEvent: TimelineType, msg: RequestOrResponse[String, String]) = {
+    def deliverMsg(from: String, to: String, msg: RequestOrResponse[String, String]) = {
       clusterByName.get(to) match {
         case Some(node) =>
           node.onMessage(from, msg)
         case None =>
-          markUndelivered(undeliveredTimeline.insertAfter(0.millis, timelineEvent)._1)
-
+          markUndelivered(undeliveredTimeline.insertAfter(currentTime.millis, nextEvent)._1)
           NoOpResult(s"Can't deliver msg from $from to $to : $msg")
       }
     }
-    def deliverTimerMsg(to: String, timelineEvent: TimelineType, msg: TimerMessage) = {
+    def deliverTimerMsg(to: String, msg: TimerMessage) = {
       clusterByName.get(to) match {
         case Some(node) => node.onTimerMessage(msg)
         case None =>
-          markUndelivered(undeliveredTimeline.insertAfter(0.millis, timelineEvent)._1)
+          markUndelivered(undeliveredTimeline.insertAfter(currentTime.millis, nextEvent)._1)
           NoOpResult(s"Can't deliver timer msg for $to : $msg")
       }
     }
 
-    val popped = sharedSimulatedTimeline
-      .pop()
-      .map {
-        case (newTimeline, e) =>
-          updateTimeline(newTimeline)
-          e
-      }
-
-    try {
-      popped.map {
-        case e @ SendTimeout(node)            => (e, node, deliverTimerMsg(node, e, SendHeartbeatTimeout))
-        case e @ ReceiveTimeout(node: String) => (e, node, deliverTimerMsg(node, e, ReceiveHeartbeatTimeout))
-        case e @ SendRequest(from, to, request) =>
-          val result = deliverMsg(from, to, e, request)
-          (e, to, result)
-        case e @ SendResponse(from, to, response) =>
-          val result = deliverMsg(from, to, e, response)
-          (e, to, result)
-        case other => sys.error(s"Unhandled simulated event $other")
-      }
-    } catch {
-      case exp: Exception =>
-        throw new Exception(s"Error processing $popped: ${exp.getMessage}", exp)
+    nextEvent match {
+      case SendTimeout(node)            => (node, deliverTimerMsg(node, SendHeartbeatTimeout))
+      case ReceiveTimeout(node: String) => (node, deliverTimerMsg(node, ReceiveHeartbeatTimeout))
+      case SendRequest(from, to, request) =>
+        val result = deliverMsg(from, to, request)
+        (to, result)
+      case SendResponse(from, to, response) =>
+        val result = deliverMsg(from, to, response)
+        (to, result)
     }
   }
 
@@ -319,7 +328,7 @@ class RaftSimulator private (nextSendTimeout: Iterator[FiniteDuration],
     override type CancelT = (Long, TimelineType)
 
     private def scheduleTimeout(after: FiniteDuration, raftNode: TimelineType) = {
-      val (newTimeline, entry) = sharedSimulatedTimeline.insertAfter(after, raftNode)
+      val (newTimeline, entry) = currentTimeline.insertAfter(after, raftNode)
       updateTimeline(newTimeline)
       entry
     }
@@ -336,9 +345,11 @@ class RaftSimulator private (nextSendTimeout: Iterator[FiniteDuration],
       scheduleTimeout(timeout, SendTimeout(raftNode))
     }
     override def cancelTimeout(c: (Long, TimelineType)): Unit = {
-      updateTimeline(sharedSimulatedTimeline.remove(c))
+      updateTimeline(currentTimeline.remove(c))
     }
   }
+
+  override def toString() = pretty()
 }
 
 object RaftSimulator {

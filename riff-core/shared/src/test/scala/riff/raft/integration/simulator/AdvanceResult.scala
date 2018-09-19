@@ -10,7 +10,7 @@ import riff.raft.node.{Follower, Leader, NodeRole}
 case class AdvanceResult(node: String,
                          beforeStateByName: Map[String, NodeSnapshot[String]],
                          beforeTimeline: Timeline[TimelineType],
-                         events: List[(TimelineType, NodeResult)],
+                         advanceEvents: List[(TimelineType, NodeResult)],
                          afterTimeline: Timeline[TimelineType],
                          afterStateByName: Map[String, NodeSnapshot[String]])
     extends HasTimeline[TimelineType] {
@@ -62,7 +62,7 @@ case class AdvanceResult(node: String,
       .mkString("\n")
 
     val newEvents = afterTimeline.diff(beforeTimeline)
-    s"""$node processed ${events.size}:
+    s"""$node processed ${advanceEvents.size}:
        |
        |$result
        |

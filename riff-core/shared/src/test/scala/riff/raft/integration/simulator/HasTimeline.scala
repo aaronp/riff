@@ -10,6 +10,12 @@ trait HasTimeline[A] {
 
   def currentTimeline(): Timeline[A]
 
+  def diff(other: Timeline[A]): List[(Long, A)] = currentTimeline.sortedEventsAscending.diff(other.sortedEventsAscending)
+
+  def size() = events.size
+
+  def events: List[(Long, A)] = currentTimeline.sortedEventsAscending
+
   def timeline(): List[(Long, A)] = currentTimeline.events
 
   def timelineValues(): List[A] = timeline().map(_._2)
@@ -24,23 +30,40 @@ trait HasTimeline[A] {
   }
 
   def pretty(indent: String = ""): String = {
-    val sortedEventsAscending = currentTimeline.sortedEventsAscending
-    val currentTime           = currentTimeline.currentTime
-    sortedEventsAscending.headOption.fold(s"empty timeline @ $currentTime") {
-      case (firstTime, firstEvent) =>
-        val padded = {
+    val timeline = currentTimeline
 
-          val strings = (s"$indent$currentTime", firstEvent.toString) +: sortedEventsAscending.tail.map {
-            case (time, event) =>
-              s"$indent+${time - firstTime}ms" -> event.toString
-          }
-          val padSize = strings.map(_._1.length).max
-          strings.map {
-            case (time, event) => s"${time.padTo(padSize, ' ')} : $event"
-          }
+    val currentTime = timeline.currentTime
+
+    val all = {
+
+      val (pastDeleted, futureDeleted) = {
+        val deleted = timeline.removed.sortBy(_._1).map {
+          case (time, event) => (time, s"(removed) $event")
         }
+        deleted.partition(_._1 < currentTime)
+      }
 
-        padded.mkString(indent, s"\n$indent", "\n")
+      implicit val ord: Ordering[(Long, Any)] = Ordering.by[(Long, Any), Long](_._1)
+      val hist   = MergeSorted(currentTimeline.historyDescending.reverse, pastDeleted)
+      val future = MergeSorted(timeline.sortedEventsAscending, futureDeleted)
+      (hist ::: future).map {
+        case (time, event) =>
+          val sign = if (time < currentTime) "-" else if (time > currentTime) "+" else "@"
+          val diff = (currentTime - time).abs
+          s"$sign${diff}ms" -> event
+      }
+    }
+
+    if (all.isEmpty) {
+      s"${indent}empty timeline @ $currentTime"
+    } else {
+      val padded = {
+        val padSize = all.map(_._1.length).max
+        all.map {
+          case (time, event) => s"${time.padTo(padSize, ' ')} : $event"
+        }
+      }
+      padded.mkString(indent, s"\n$indent", "\n")
     }
   }
 }

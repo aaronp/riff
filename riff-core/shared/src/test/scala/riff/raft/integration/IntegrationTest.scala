@@ -35,9 +35,9 @@ class IntegrationTest extends RiffSpec {
       simulator.leader() should not be (empty)
       simulator.timelineValues should contain only (SendTimeout(nameForIdx(1)))
     }
-    "bring disconnected back up-to-date" ignore {
+    "bring disconnected back up-to-date" in {
       Given("A cluster of four nodes w/ an elected leader")
-      val simulator = RaftSimulator.clusterOfSize(4)
+      val simulator: RaftSimulator = RaftSimulator.clusterOfSize(4)
 
       val result = simulator.advanceUntil(_.hasLeader)
 
@@ -46,8 +46,7 @@ class IntegrationTest extends RiffSpec {
       simulator.killNode(someFollower.name)
 
       And("The remaining nodes have some entries replicated")
-      (0 to 5).foreach { i =>
-        simulator.appendToLeader(Array(s"some entry $i"))
+      (0 to 5).foreach { i => simulator.appendToLeader(Array(s"some entry $i"))
       }
       simulator.advanceUntil(_.leader.log.latestCommit == 5)
 
@@ -55,7 +54,20 @@ class IntegrationTest extends RiffSpec {
       val newLeader = simulator.nodesWithRole(Follower).head
       newLeader.onReceiveHeartbeatTimeout()
 
-      simulator.advanceUntil(r => r.leader.name == newLeader.nodeKey)
+      try {
+        simulator.advanceUntil(r => r.leader.name == newLeader.nodeKey)
+      } catch {
+        case bang : Exception =>
+          println(bang)
+
+          val timeline = simulator.currentTimeline()
+          println(simulator)
+
+          val fresh: RaftSimulator = RaftSimulator.clusterOfSize(4)
+          val results              = fresh.replay(timeline)
+
+          println(results)
+      }
     }
     "dynamically add a node" in {
       Given("An initially empty cluster which elects itself as leader")

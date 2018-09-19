@@ -3,10 +3,20 @@ package riff.raft.integration.simulator
 import scala.concurrent.duration.FiniteDuration
 
 /**
-  * Used for testing as a means of walking through events (requests, responses, timeouts) in a controlled manner.
+  *  Used for testing as a means of walking through events (requests, responses, timeouts) in a controlled manner.
   *
+  * @param initialTime the initial time when the timeline was started. An epoch, or typically just zero.
+  * @param currentTime the current time in the timeline - this will be the time of the last popped event, and so initially is ste to initialTime
+  * @param sortedEventsAscending the events in the timeline, coupled with the times when they take place.
+  * @param history the past events in the timeline in reverse order
+  * @tparam A
   */
-case class Timeline[A] private (initialTime: Long, currentTime: Long, sortedEventsAscending: List[(Long, A)]) extends HasTimeline[A] {
+case class Timeline[A] private (initialTime: Long,
+                                currentTime: Long,
+                                sortedEventsAscending: List[(Long, A)],
+                                historyDescending: List[(Long, A)],
+                                removed: List[(Long, A)])
+    extends HasTimeline[A] {
 
   // just to help our sanity -- verify the events are always in increasing order
   sortedEventsAscending.sliding(2, 1).foreach {
@@ -14,15 +24,13 @@ case class Timeline[A] private (initialTime: Long, currentTime: Long, sortedEven
     case _                            => require(sortedEventsAscending.size < 2)
   }
 
-  def diff(other: Timeline[A]): List[(Long, A)] = sortedEventsAscending.diff(other.sortedEventsAscending)
-
   def remove(entry: (Long, A)) = {
-    copy(sortedEventsAscending = sortedEventsAscending diff List(entry))
+    if (sortedEventsAscending.contains(entry)) {
+      copy(sortedEventsAscending = sortedEventsAscending diff List(entry), removed = entry :: removed)
+    } else {
+      this
+    }
   }
-
-  def size() = sortedEventsAscending.size
-
-  def events: List[(Long, A)] = sortedEventsAscending
 
   def insertAtTime(time: Long, value: A): Timeline[A] = {
     require(time >= currentTime, s"Can't insert at $time as it is before $currentTime")
@@ -39,8 +47,8 @@ case class Timeline[A] private (initialTime: Long, currentTime: Long, sortedEven
 
   def pop(): Option[(Timeline[A], A)] = {
     sortedEventsAscending match {
-      case (headTime, head) :: tail =>
-        Option(copy(currentTime = headTime, sortedEventsAscending = tail) -> head)
+      case (h @ (headTime, head : A)) :: tail =>
+        Option(copy(currentTime = headTime, sortedEventsAscending = tail, historyDescending = h :: historyDescending) -> head)
       case Nil => None
     }
   }
@@ -48,5 +56,5 @@ case class Timeline[A] private (initialTime: Long, currentTime: Long, sortedEven
 }
 
 object Timeline {
-  def apply[A](time: Long = 0) = new Timeline[A](time, time, Nil)
+  def apply[A](time: Long = 0) = new Timeline[A](time, time, Nil, Nil, Nil)
 }

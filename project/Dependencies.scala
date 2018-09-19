@@ -26,6 +26,12 @@ object Dependencies {
   val http4s = List("http4s-blaze-server", "http4s-circe", "http4s-dsl").map { art =>
     "org.http4s"      %% art  % "0.18.12"
   }
+
+  val vertx = List(
+    "io.vertx" %% "vertx-lang-scala" % "3.5.2",
+    "io.vertx" %% "vertx-web-scala" % "3.5.2"
+  )
+
   val akka = List(
     "com.typesafe.akka" %% "akka-actor" % "2.5.14",
     "com.typesafe.akka" %% "akka-testkit" % "2.5.14" % Test
@@ -38,5 +44,5 @@ object Dependencies {
   val RiffFs2: List[ModuleID] = fs2 ::: logging ::: testDependencies
   val RiffAkka: List[ModuleID] = akka ::: logging ::: testDependencies
   val RiffHttp4s: List[ModuleID] = http4s ::: logging ::: testDependencies
-  val RiffWeb: List[ModuleID] = http4s ::: logging ::: testDependencies
+  val RiffWeb: List[ModuleID] = monix ::: vertx ::: logging ::: testDependencies
 }

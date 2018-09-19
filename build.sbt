@@ -25,11 +25,11 @@ scalafmtOnCompile in ThisBuild := true
 scalafmtVersion in ThisBuild := "1.4.0"
 
 // Define a `Configuration` for each project, as per http://www.scala-sbt.org/sbt-site/api-documentation.html
-val Core       = config("riff-core")
-val RiffMonix  = config("riff-monix")
-val RiffFs2    = config("riff-fs2")
-val RiffAkka   = config("riff-akka")
-val RiffWeb = config("riff-web")
+val Core      = config("riff-core")
+val RiffMonix = config("riff-monix")
+val RiffFs2   = config("riff-fs2")
+val RiffAkka  = config("riff-akka")
+val RiffWeb   = config("riff-web")
 
 git.remoteRepo := s"git@github.com:$username/$repo.git"
 ghpagesNoJekyll := true
@@ -237,6 +237,7 @@ lazy val riffAkka = project
 
 lazy val riffWeb = project
   .in(file("riff-web"))
+  .dependsOn(riffMonix % "compile->compile;test->test")
   .dependsOn(riffCoreJVM % "compile->compile;test->test")
   .dependsOn(riffJsonJVM % "compile->compile;test->test")
   .settings(name := s"${repo}-web")
