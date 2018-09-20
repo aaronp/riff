@@ -11,7 +11,7 @@ class RaftNodeTest extends RiffSpec {
     "commit the entry immediately if it is a single node cluster" in {
       val node = newNode()
       node.onTimerMessage(ReceiveHeartbeatTimeout)
-      node.raftNode().isLeader shouldBe true
+      node.state().isLeader shouldBe true
 
       node.createAppend(Array(123))
       node.log.latestAppended() shouldBe LogCoords(1, 1)
@@ -21,7 +21,7 @@ class RaftNodeTest extends RiffSpec {
       val node = newNode().withCluster(RaftCluster("single peer"))
       node.onTimerMessage(ReceiveHeartbeatTimeout)
       node.onRequestVoteResponse("single peer", RequestVoteResponse(1, true))
-      node.raftNode().isLeader shouldBe true
+      node.state().isLeader shouldBe true
 
       node.createAppend(Array(123))
       node.log.latestAppended() shouldBe LogCoords(1, 1)
@@ -46,7 +46,7 @@ class RaftNodeTest extends RiffSpec {
           }
       }
       val node: RaftNode[String, Int] = newNode().withLog(stateMachineLog).withTerm(ourTerm)
-      node.raftNode().role shouldBe Follower
+      node.state().role shouldBe Follower
 
       // ---------------------------------------------------------------------------------------
       When("The node receives an AppendEntries request which commits the first entry")
@@ -89,49 +89,49 @@ class RaftNodeTest extends RiffSpec {
   "RaftNode.onTimerMessage" should {
     "become a leader if it is a cluster of 1" in {
       val node = newNode()
-      node.raftNode().isFollower shouldBe true
+      node.state().isFollower shouldBe true
       node.persistentState.currentTerm shouldBe 0
 
       // call the method under test
       node.onTimerMessage(ReceiveHeartbeatTimeout)
 
-      node.raftNode().isLeader shouldBe true
+      node.state().isLeader shouldBe true
       node.persistentState.currentTerm shouldBe 1
     }
     "become a candidate in a cluster of 2 when it receives a receive heartbeat timeout as a follower" in {
       val node: RaftNode[String, Int] = newNode().withCluster(RaftCluster("neighbor"))
-      node.raftNode().isFollower shouldBe true
+      node.state().isFollower shouldBe true
       node.persistentState.currentTerm shouldBe 0
 
       // call the method under test
       node.onTimerMessage(ReceiveHeartbeatTimeout)
 
-      node.raftNode().isCandidate shouldBe true
+      node.state().isCandidate shouldBe true
       node.persistentState.currentTerm shouldBe 1
     }
     "become a candidate in a cluster of 2 with a new term when it receives a receive heartbeat timeout as a candidate" in {
       val node = newNode().withCluster(RaftCluster("neighbor"))
-      node.raftNode().isFollower shouldBe true
+      node.state().isFollower shouldBe true
       node.persistentState.currentTerm shouldBe 0
 
       node.onTimerMessage(ReceiveHeartbeatTimeout)
       node.persistentState.currentTerm shouldBe 1
-      node.raftNode().isCandidate shouldBe true
+      node.state().isCandidate shouldBe true
 
       node.onTimerMessage(ReceiveHeartbeatTimeout)
       node.persistentState.currentTerm shouldBe 2
-      node.raftNode().isCandidate shouldBe true
+      node.state().isCandidate shouldBe true
     }
     "become a candidate in cluster of 2 with a new term when it receives a receive heartbeat timeout as a leader" in {
       import RichNodeState._
       val cluster = RaftCluster("A follower")
       val node    = newNode().withCluster(cluster).withRaftNode(new LeaderNodeState("the leader", LeadersClusterView(cluster)))
-      node.raftNode().isLeader shouldBe true
+      node.state().isLeader shouldBe true
       node.persistentState.currentTerm shouldBe 0
 
       node.onTimerMessage(ReceiveHeartbeatTimeout)
       node.persistentState.currentTerm shouldBe 1
-      node.raftNode().isCandidate shouldBe true
+      node.state().isCandidate shouldBe true
     }
   }
   "RaftNode onRequestVote" should {

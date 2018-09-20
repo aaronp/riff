@@ -34,7 +34,7 @@ trait RaftTimer[A] {
     * Resets a leader's send heartbeat timeout for a given node.
     *
     * It is assumed that this function will be called periodically from the node passed in order to send a heartbeat
-    * to the given 'raftNode'
+    * to the given 'state'
     *
     * @param raftNode the node which should be timed-out should another 'reset 'or 'cancelTimeout' be called on the returned value
     * @param previous An optional previous cancelation token to cancel

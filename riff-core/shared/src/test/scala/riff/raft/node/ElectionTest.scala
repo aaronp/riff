@@ -16,9 +16,9 @@ class ElectionTest extends RiffSpec {
       requestVotes.size shouldBe 2
 
       Then(s"${a.nodeKey} should be a candidate")
-      a.raftNode().role shouldBe Candidate
-      b.raftNode().role shouldBe Follower
-      c.raftNode().role shouldBe Follower
+      a.state().role shouldBe Candidate
+      b.state().role shouldBe Follower
+      c.state().role shouldBe Follower
 
       And(s"${a.nodeKey} should send vote requests to ${b.nodeKey} and ${c.nodeKey}")
       val replies: Map[String, RaftNode[String, Int]#Result] = cluster.sendMessages(a.nodeKey, requestVotes)
@@ -39,9 +39,9 @@ class ElectionTest extends RiffSpec {
       firstHeartbeatRequests.keySet should contain only (b.nodeKey, c.nodeKey)
 
       Then(s"${a.nodeKey} should be the leader")
-      a.raftNode().role shouldBe Leader
-      b.raftNode().role shouldBe Follower
-      c.raftNode().role shouldBe Follower
+      a.state().role shouldBe Leader
+      b.state().role shouldBe Follower
+      c.state().role shouldBe Follower
       cluster.clusterNodes.foreach(_.persistentState.currentTerm shouldBe 1)
     }
     "not elect a leader in a split-brain, four node election" in {
@@ -56,7 +56,7 @@ class ElectionTest extends RiffSpec {
       }.toMap
 
       Then("They should all be candidates")
-      cluster.clusterNodes.foreach(_.raftNode().role shouldBe Candidate)
+      cluster.clusterNodes.foreach(_.state().role shouldBe Candidate)
 
       val votes = List(
         a -> b,
@@ -104,9 +104,9 @@ class ElectionTest extends RiffSpec {
       heartbeatMsgsFromC shouldBe empty
 
       And("the other nodes should increment their terms and become followers, but NOT vote for the candidate")
-      a.raftNode().role shouldBe Follower
-      b.raftNode().role shouldBe Follower
-      c.raftNode().role shouldBe Candidate
+      a.state().role shouldBe Follower
+      b.state().role shouldBe Follower
+      c.state().role shouldBe Candidate
       a.persistentState.currentTerm shouldBe 2
       b.persistentState.currentTerm shouldBe 2
       c.persistentState.currentTerm shouldBe 2

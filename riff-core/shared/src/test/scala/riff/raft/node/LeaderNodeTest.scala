@@ -123,7 +123,7 @@ class LeaderNodeTest extends RiffSpec {
       val appendResponses: Map[String, RaftNode[String, LogIndex]#Result] = cluster.sendMessages(a.nodeKey, appendRequestsFromLeader.toList)
 
       withClue("Before receiving the append responses the leader should assume a default view of the cluster") {
-        val initialView: LeadersClusterView[String] = a.raftNode().asLeader.get.clusterView
+        val initialView: LeadersClusterView[String] = a.state().asLeader.get.clusterView
         initialView.numberOfPeers shouldBe 2
         initialView.stateForPeer(b.nodeKey) shouldBe Some(Peer.Empty)
         initialView.stateForPeer(c.nodeKey) shouldBe Some(Peer.Empty)
@@ -132,7 +132,7 @@ class LeaderNodeTest extends RiffSpec {
       cluster.sendResponses(appendResponses)
 
       withClue("After receiving the followers' AppendEntriesResponses it should update its view") {
-        val afterFirst10AckView: LeadersClusterView[String] = a.raftNode().asLeader.get.clusterView
+        val afterFirst10AckView: LeadersClusterView[String] = a.state().asLeader.get.clusterView
         afterFirst10AckView.numberOfPeers shouldBe 2
         afterFirst10AckView.stateForPeer(b.nodeKey) shouldBe Some(Peer.withMatchIndex(10))
         afterFirst10AckView.stateForPeer(c.nodeKey) shouldBe Some(Peer.withMatchIndex(10))
@@ -168,11 +168,11 @@ class LeaderNodeTest extends RiffSpec {
       bResp(b.nodeKey) shouldBe AddressedResponse(a.nodeKey, AppendEntriesResponse(1, true, 20))
 
       // update the leader w/ node 2's response
-      a.raftNode().asLeader.get.clusterView.toMap() shouldBe Map("node 2" -> Peer.withMatchIndex(10), "node 3" -> Peer.withMatchIndex(10))
+      a.state().asLeader.get.clusterView.toMap() shouldBe Map("node 2" -> Peer.withMatchIndex(10), "node 3" -> Peer.withMatchIndex(10))
 
       // just send the response from b
       cluster.sendResponses(bResp - c.nodeKey)
-      a.raftNode().asLeader.get.clusterView.toMap() shouldBe Map("node 2" -> Peer.withMatchIndex(20), "node 3" -> Peer.withMatchIndex(10))
+      a.state().asLeader.get.clusterView.toMap() shouldBe Map("node 2" -> Peer.withMatchIndex(20), "node 3" -> Peer.withMatchIndex(10))
     }
   }
 
@@ -222,9 +222,9 @@ class LeaderNodeTest extends RiffSpec {
         }
       }
 
-      a.raftNode().role shouldBe Follower
-      b.raftNode().role shouldBe Leader
-      c.raftNode().role shouldBe Follower
+      a.state().role shouldBe Follower
+      b.state().role shouldBe Leader
+      c.state().role shouldBe Follower
       cluster.clusterNodes.foreach(_.persistentState.currentTerm shouldBe 2)
 
       // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =

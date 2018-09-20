@@ -120,7 +120,7 @@ class RaftSimulator private (nextSendTimeout: Iterator[FiniteDuration],
       case Some((appendResults, AddressedRequest(requests))) =>
         val newTimeline = requests.foldLeft(currentTimeline) {
           case (timeline, (to, msg)) =>
-            val (newTimeline, _) = timeline.insertAfter(latency, SendRequest(ldr.raftNode().id, to, msg))
+            val (newTimeline, _) = timeline.insertAfter(latency, SendRequest(ldr.state().id, to, msg))
             newTimeline
         }
         updateTimeline(newTimeline)
@@ -159,14 +159,14 @@ class RaftSimulator private (nextSendTimeout: Iterator[FiniteDuration],
 
   def currentLeader(): RaftNode[String, String] = clusterByName(leader().get.id)
 
-  def nodesWithRole(role: NodeRole): List[RaftNode[String, String]] = nodes.filter(_.raftNode().role == role)
+  def nodesWithRole(role: NodeRole): List[RaftNode[String, String]] = nodes.filter(_.state().role == role)
 
   def nodes(): List[RaftNode[String, String]] = clusterByName.values.toList
 
   /** @return the current leader (if there is one)
     */
   def leader(): Option[LeaderNodeState[String]] = {
-    val leaders = clusterByName.values.map(_.raftNode()) collect {
+    val leaders = clusterByName.values.map(_.state()) collect {
       case leader: LeaderNodeState[String] => leader
     }
     leaders.toList match {

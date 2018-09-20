@@ -42,7 +42,7 @@ class IntegrationTest extends RiffSpec {
       val result = simulator.advanceUntil(_.hasLeader)
 
       simulator.nodes().map { n =>
-        n.nodeKey -> n.raftNode().role
+        n.nodeKey -> n.state().role
 
       }
       println(simulator)

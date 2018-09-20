@@ -16,7 +16,7 @@ class RichNodeState[NodeKey, A](val nodeState: RaftNode[NodeKey, A]) {
     import nodeState._
     val ps = PersistentState.inMemory[NodeKey]().currentTerm = t
 
-    new RaftNode(ps, log, timers, cluster, raftNode, maxAppendSize)
+    new RaftNode(ps, log, timers, cluster, state, maxAppendSize)
   }
 
 }

@@ -22,10 +22,10 @@ object NodeSnapshot {
   def apply[A](node: RaftNode[String, A]): NodeSnapshot[A] = {
     new NodeSnapshot[A](
       node.nodeKey,
-      node.raftNode().role,
+      node.state().role,
       ClusterSnapshot(node.cluster),
       PersistentStateSnapshot(node.persistentState),
-      node.raftNode().asLeader.map(LeaderSnapshot.apply),
+      node.state().asLeader.map(LeaderSnapshot.apply),
       LogSnapshot(node.log)
     )
   }

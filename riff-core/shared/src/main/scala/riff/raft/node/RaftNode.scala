@@ -291,7 +291,7 @@ class RaftNode[NodeKey, A](val persistentState: PersistentState[NodeKey],
 
   def nodeKey: NodeKey = currentState.id
 
-  def raftNode(): NodeState[NodeKey] = currentState
+  def state(): NodeState[NodeKey] = currentState
 
   protected def thisTerm() = persistentState.currentTerm
 
@@ -300,7 +300,7 @@ class RaftNode[NodeKey, A](val persistentState: PersistentState[NodeKey],
     * @return a new node state
     */
   def withLog(newLog: RaftLog[A]): RaftNode[NodeKey, A] = {
-    new RaftNode(persistentState, newLog, timers, cluster, raftNode, maxAppendSize)
+    new RaftNode(persistentState, newLog, timers, cluster, state, maxAppendSize)
   }
 
   /** a convenience builder method to create a new raft node w/ the given cluster
@@ -308,7 +308,7 @@ class RaftNode[NodeKey, A](val persistentState: PersistentState[NodeKey],
     * @return a new node state
     */
   def withCluster(newCluster: RaftCluster[NodeKey]): RaftNode[NodeKey, A] = {
-    new RaftNode(persistentState, log, timers, newCluster, raftNode, maxAppendSize)
+    new RaftNode(persistentState, log, timers, newCluster, state, maxAppendSize)
   }
 
   override def toString() = {
