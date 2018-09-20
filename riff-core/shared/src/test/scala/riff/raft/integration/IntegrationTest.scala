@@ -4,7 +4,7 @@ import riff.RiffSpec
 import riff.raft.integration.simulator._
 import riff.raft.log.{LogCoords, LogEntry}
 import riff.raft.messages.AppendEntries
-import riff.raft.node.{Follower, Leader}
+import riff.raft.node.{Follower, Leader, Peer}
 
 /**
   * The other tests would create some inputs, feed them into the relevant functions/classes under test, and assert
@@ -23,7 +23,7 @@ class IntegrationTest extends RiffSpec {
       val simulator = RaftSimulator.clusterOfSize(1)
       simulator.snapshotFor(1).persistentStateSnapshot.currentTerm shouldBe 0
 
-      simulator.leader() shouldBe empty
+      simulator.leaderStateOpt() shouldBe empty
       withClue("the new node should've set a receive HB timeout on creation") {
         simulator.timelineValues should contain only (ReceiveTimeout(nameForIdx(1)))
       }
@@ -32,30 +32,56 @@ class IntegrationTest extends RiffSpec {
       result.afterState(1).role shouldBe Leader
       result.leader.persistentStateSnapshot.currentTerm shouldBe 1
 
-      simulator.leader() should not be (empty)
+      simulator.leaderStateOpt() should not be (empty)
       simulator.timelineValues should contain only (SendTimeout(nameForIdx(1)))
     }
-    "bring disconnected back up-to-date" in {
+    "bring disconnected back up-to-date before the leader is acked" in {
       Given("A cluster of four nodes w/ an elected leader")
       val simulator: RaftSimulator = RaftSimulator.clusterOfSize(4)
 
-      val result = simulator.advanceUntil(_.hasLeader)
+      simulator.advanceUntil(_.hasLeader)
 
-      simulator.nodes().map { n =>
-        n.nodeKey -> n.state().role
+      // format: off
+      simulator.nodes().map { n => n.nodeKey -> n.state().role }.toMap shouldBe Map(
+        "Node 1" -> Leader,
+        "Node 2" -> Follower,
+        "Node 3" -> Follower,
+        "Node 4" -> Follower)
+      // format: oN
 
-      }
-      println(simulator)
       When("A follower is removed")
-      val someFollower: NodeSnapshot[String] = result.nodesWithRole(Follower).head
-      simulator.killNode(someFollower.name)
+      val someFollower = simulator.nodeFor(2)
+      simulator.killNode(someFollower.state.id)
+
+      And("The followers have not yet sent their AppendEntries responses")
+
+      simulator.timelineAssertions shouldBe List(
+        "SendResponse(Node 4, Node 1, RequestVoteResponse(term=1, granted=true))",
+        "SendRequest(Node 1, Node 2, AppendEntries(previous=LogCoords(0, 0), term=1, commit=0, []))",
+        "SendRequest(Node 1, Node 3, AppendEntries(previous=LogCoords(0, 0), term=1, commit=0, []))",
+        "SendRequest(Node 1, Node 4, AppendEntries(previous=LogCoords(0, 0), term=1, commit=0, []))",
+        "SendTimeout(Node 1)",
+        "ReceiveTimeout(Node 2)",
+        "ReceiveTimeout(Node 4)",
+        "ReceiveTimeout(Node 3)"
+      )
+
+      val view = simulator.leaderState.clusterView
+      view.toMap shouldBe Map("Node 3" -> Peer.Empty, "Node 4" -> Peer.Empty)
 
       println(simulator)
-
       And("The remaining nodes have some entries replicated")
-      (0 to 5).foreach { i => simulator.appendToLeader(Array(s"some entry $i"))
+      (0 to 5).foreach { i =>
+        // format: off
+        simulator.appendToLeader(Array(s"some entry $i"))
+      // format: on
       }
-      simulator.advanceUntil(_.leader.log.latestCommit == 5)
+
+      println()
+      println(simulator.timelineAsExpectation())
+      println()
+
+      simulator.advanceUntil(100, simulator.defaultLatency, _.leader.log.latestCommit == 5, true)
 
       When("A follower times out and becomes leader")
       val newLeader = simulator.nodesWithRole(Follower).head

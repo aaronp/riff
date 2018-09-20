@@ -73,7 +73,6 @@ class RaftNode[NodeKey, A](val persistentState: PersistentState[NodeKey],
     currentState match {
       case leader: LeaderNodeState[NodeKey] =>
         val res = leader.makeAppendEntries[A](log, thisTerm(), data)
-
         Option(res)
       case _ => None
     }

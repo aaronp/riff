@@ -33,7 +33,7 @@ import scala.concurrent.duration._
 class RaftSimulator private (nextSendTimeout: Iterator[FiniteDuration],
                              nextReceiveTimeout: Iterator[FiniteDuration],
                              clusterNodes: List[String],
-                             defaultLatency: FiniteDuration,
+                             val defaultLatency: FiniteDuration,
                              newNode: (String, RaftCluster[String], RaftTimer[String]) => RaftNode[String, String])
     extends HasTimeline[TimelineType] {
 
@@ -116,11 +116,12 @@ class RaftSimulator private (nextSendTimeout: Iterator[FiniteDuration],
     */
   def appendToLeader(data: Array[String], latency: FiniteDuration = defaultLatency): Option[LogAppendResult] = {
     val ldr = currentLeader()
+    val ldrId = ldr.state().id
     ldr.appendIfLeader(data) match {
       case Some((appendResults, AddressedRequest(requests))) =>
-        val newTimeline = requests.foldLeft(currentTimeline) {
-          case (timeline, (to, msg)) =>
-            val (newTimeline, _) = timeline.insertAfter(latency, SendRequest(ldr.state().id, to, msg))
+        val newTimeline = requests.zipWithIndex.foldLeft(currentTimeline) {
+          case (timeline, ((to, msg), i)) =>
+            val (newTimeline, _) = timeline.insertAfter(latency + i.millis, SendRequest(ldrId, to, msg))
             newTimeline
         }
         updateTimeline(newTimeline)
@@ -157,15 +158,17 @@ class RaftSimulator private (nextSendTimeout: Iterator[FiniteDuration],
     this
   }
 
-  def currentLeader(): RaftNode[String, String] = clusterByName(leader().get.id)
+  def currentLeader(): RaftNode[String, String] = clusterByName(leaderState.id)
 
   def nodesWithRole(role: NodeRole): List[RaftNode[String, String]] = nodes.filter(_.state().role == role)
 
   def nodes(): List[RaftNode[String, String]] = clusterByName.values.toList
 
+  def leaderState(): LeaderNodeState[String] = leaderStateOpt.get
+
   /** @return the current leader (if there is one)
     */
-  def leader(): Option[LeaderNodeState[String]] = {
+  def leaderStateOpt(): Option[LeaderNodeState[String]] = {
     val leaders = clusterByName.values.map(_.state()) collect {
       case leader: LeaderNodeState[String] => leader
     }
@@ -202,18 +205,34 @@ class RaftSimulator private (nextSendTimeout: Iterator[FiniteDuration],
     advanceUntil(100, defaultLatency, predicate)
   }
 
-  def advanceUntil(max: Int, initialLatency: FiniteDuration, predicate: AdvanceResult => Boolean): AdvanceResult = {
+  /**
+    * Continues to advance the timeline until the given 'predicate' condition is true (up to 'max')
+    *
+    * @param max the maximum number to advance (the timeline should continually get timeouts registered, so without a max this could potentially loop forever)
+    * @param latency the latency to use for enqueueing request/responses
+    * @param predicate the condition we're moving towards
+    * @param debug if true this spits out the timeline at each step as a convenience
+    * @return the result
+    */
+  def advanceUntil(max: Int, initialLatency: FiniteDuration, predicate: AdvanceResult => Boolean, debug: Boolean = false): AdvanceResult = {
     var latency             = initialLatency
     var next: AdvanceResult = advance(latency)
 
-    println(this)
+    def logDebug() = {
+      if (debug) {
+        println("- " * 50)
+        println(this)
+      }
+    }
+
+    logDebug()
+
     val list = ListBuffer[AdvanceResult](next)
     while (!predicate(next) || list.size >= max) {
       latency = latency + 5.millis
       next = advance(latency)
 
-      println("- " * 50)
-      println(this)
+      logDebug()
       list += next
     }
     concatResults(list.toList)

@@ -20,6 +20,24 @@ trait HasTimeline[A] {
 
   def timelineValues(): List[A] = timeline().map(_._2)
 
+  /** A convenience method for dumping the limeline as an expectation.
+    * Useful for stepping through test scenarios and adding the results as an assertion
+    *
+    * @param ev
+    * @tparam T
+    * @return the current timeline as a String which can be pasted
+    */
+  def timelineAsExpectation[T](prefix : String = "simulator.timelineAssertions shouldBe ")(implicit ev: A =:= TimelineType) = {
+    val quote = "\""
+    timelineAssertions(ev).mkString(s"$prefix List(\n    $quote", "\",\n    \"", "\"\n)")
+  }
+
+  def timelineAssertions[T](implicit ev: A =:= TimelineType) = {
+    timelineValues().map { x =>
+      ev(x).asAssertion()
+    }
+  }
+
   def findOnly[T <: A: ClassTag]: (Long, T) = {
     val List(only) = findAll[T]
     only
@@ -44,8 +62,8 @@ trait HasTimeline[A] {
       }
 
       implicit val ord: Ordering[(Long, Any)] = Ordering.by[(Long, Any), Long](_._1)
-      val hist   = MergeSorted(currentTimeline.historyDescending.reverse, pastDeleted)
-      val future = MergeSorted(timeline.sortedEventsAscending, futureDeleted)
+      val hist                                = MergeSorted(currentTimeline.historyDescending.reverse, pastDeleted)
+      val future                              = MergeSorted(timeline.sortedEventsAscending, futureDeleted)
       (hist ::: future).map {
         case (time, event) =>
           val sign = if (time < currentTime) "-" else if (time > currentTime) "+" else "@"

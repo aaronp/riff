@@ -17,7 +17,7 @@ private[node] class LeadersClusterView[NodeKey](cluster: RaftCluster[NodeKey]) {
 
   def eligibleNodesForPreviousEntry(previous: LogCoords): immutable.Iterable[NodeKey] = {
     toMap.collect {
-      case (key, peer) if peer.matchIndex == previous.index || peer.matchIndex == 0 => key
+      case (key, peer) if peer.matchIndex == previous.index => key
     }
   }
 
@@ -67,7 +67,10 @@ private[node] class LeadersClusterView[NodeKey](cluster: RaftCluster[NodeKey]) {
 
   def numberOfPeers(): Int = cluster.numberOfPeers
 
-  override def toString = toMap.mkString(s"clusterView of ${peersByKey.size} nodes: {", ";", "}")
+  override def toString(): String = {
+    val map = toMap
+    map.mkString(s"clusterView of ${map.size} nodes: {", ";", "}")
+  }
 }
 
 object LeadersClusterView {
