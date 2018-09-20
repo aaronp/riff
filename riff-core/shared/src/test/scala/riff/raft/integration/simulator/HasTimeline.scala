@@ -16,9 +16,7 @@ trait HasTimeline[A] {
 
   def events: List[(Long, A)] = currentTimeline.sortedEventsAscending
 
-  def timeline(): List[(Long, A)] = currentTimeline.events
-
-  def timelineValues(): List[A] = timeline().map(_._2)
+  def timelineValues(): List[A] = events.map(_._2)
 
   /** A convenience method for dumping the limeline as an expectation.
     * Useful for stepping through test scenarios and adding the results as an assertion
@@ -43,7 +41,7 @@ trait HasTimeline[A] {
     only
   }
 
-  def findAll[T <: A: ClassTag]: List[(Long, T)] = timeline().collect {
+  def findAll[T <: A: ClassTag]: List[(Long, T)] = events.collect {
     case (time, tea: T) => (time, tea)
   }
 

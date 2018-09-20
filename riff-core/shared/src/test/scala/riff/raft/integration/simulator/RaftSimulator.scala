@@ -55,10 +55,12 @@ class RaftSimulator private (nextSendTimeout: Iterator[FiniteDuration],
     }
   }
 
+  /** Simulates the effect of making a node un responsive by not sending requests/responses to the node.
+    * The messages sent, however, will remain "popped" from the timeline, which is what we want... just as if e.g.
+    * we sent a REST request which wasn't ever received.
+    */
   def killNode(nodeName: String) = {
-    val found = clusterByName.get(nodeName)
-    clusterByName = clusterByName - nodeName
-    found
+    stoppedNodes = stoppedNodes + nodeName
   }
 
   // keeps track of events. This is a var that can change via 'updateTimeline', but doesn't need to be locked/volatile,
@@ -72,6 +74,10 @@ class RaftSimulator private (nextSendTimeout: Iterator[FiniteDuration],
   // put behind something else which drives that concern.
   private var sharedSimulatedTimeline = Timeline[TimelineType]()
   private var undeliveredTimeline     = Timeline[TimelineType]()
+
+  // a separate collect of the nodes which we want to be unresponsive. We don't just remove them from the 'clusterByName'
+  // map, as we still want the cluster view to be correct (e.g. the leader node should still know about the stopped/unresponsive members)
+  private var stoppedNodes : Set[String] = Set.empty
 
   private var clusterByName: Map[String, RaftNode[String, String]] = {
     clusterNodes
@@ -111,8 +117,6 @@ class RaftSimulator private (nextSendTimeout: Iterator[FiniteDuration],
   /**
     * convenience method to append to whatever the leader node is -- will error if there is no leader
     *
-    * @param str
-    * @return the append result
     */
   def appendToLeader(data: Array[String], latency: FiniteDuration = defaultLatency): Option[LogAppendResult] = {
     val ldr = currentLeader()
@@ -214,8 +218,7 @@ class RaftSimulator private (nextSendTimeout: Iterator[FiniteDuration],
     * @param debug if true this spits out the timeline at each step as a convenience
     * @return the result
     */
-  def advanceUntil(max: Int, initialLatency: FiniteDuration, predicate: AdvanceResult => Boolean, debug: Boolean = false): AdvanceResult = {
-    var latency             = initialLatency
+  def advanceUntil(max: Int, latency: FiniteDuration, predicate: AdvanceResult => Boolean, debug: Boolean = false): AdvanceResult = {
     var next: AdvanceResult = advance(latency)
 
     def logDebug() = {
@@ -229,7 +232,6 @@ class RaftSimulator private (nextSendTimeout: Iterator[FiniteDuration],
 
     val list = ListBuffer[AdvanceResult](next)
     while (!predicate(next) || list.size >= max) {
-      latency = latency + 5.millis
       next = advance(latency)
 
       logDebug()
@@ -259,10 +261,10 @@ class RaftSimulator private (nextSendTimeout: Iterator[FiniteDuration],
   /**
     * pops the next event from the sharedSimulatedTimeline and enqueues the result onto the sharedSimulatedTimeline.
     *
-    * @param latency
-    * @return
+    * @param latency the time buffer to assume for sending/receiving messages.
+    * @return the result of advancing the next event in the timeline, if there was a next event
     */
-  private def advanceSafe(latency: FiniteDuration = 50.millis): Option[AdvanceResult] = {
+  private def advanceSafe(latency: FiniteDuration = defaultLatency): Option[AdvanceResult] = {
 
     val beforeState: Map[String, NodeSnapshot[String]] = takeSnapshot()
     val beforeTimeline                                 = currentTimeline
@@ -281,7 +283,12 @@ class RaftSimulator private (nextSendTimeout: Iterator[FiniteDuration],
       case (e, node, result @ AddressedRequest(msgs)) =>
         val newTimeline = msgs.zipWithIndex.foldLeft(currentTimeline) {
           case (time, ((to, msg), index)) =>
-            val (newTime, _) = time.insertAfter(latency + index.millis, SendRequest(node, to, msg))
+            val (newTime, _) =
+
+              // if we just blindly use the latency, the we'll end up sending messages based off whatever the current
+              // time is in the timeline, when really it should be done after the next
+
+              time.insertAfter(latency + index.millis, SendRequest(node, to, msg))
             newTime
         }
         updateTimeline(newTimeline)
@@ -307,17 +314,17 @@ class RaftSimulator private (nextSendTimeout: Iterator[FiniteDuration],
 
     def deliverMsg(from: String, to: String, msg: RequestOrResponse[String, String]) = {
       clusterByName.get(to) match {
-        case Some(node) =>
+        case Some(node) if !stoppedNodes.contains(to) =>
           node.onMessage(from, msg)
-        case None =>
+        case _ =>
           markUndelivered(undeliveredTimeline.insertAfter(currentTime.millis, nextEvent)._1)
           NoOpResult(s"Can't deliver msg from $from to $to : $msg")
       }
     }
     def deliverTimerMsg(to: String, msg: TimerMessage) = {
       clusterByName.get(to) match {
-        case Some(node) => node.onTimerMessage(msg)
-        case None =>
+        case Some(node) if !stoppedNodes.contains(to) => node.onTimerMessage(msg)
+        case _ =>
           markUndelivered(undeliveredTimeline.insertAfter(currentTime.millis, nextEvent)._1)
           NoOpResult(s"Can't deliver timer msg for $to : $msg")
       }

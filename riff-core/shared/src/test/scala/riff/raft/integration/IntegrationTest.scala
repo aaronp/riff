@@ -35,7 +35,7 @@ class IntegrationTest extends RiffSpec {
       simulator.leaderStateOpt() should not be (empty)
       simulator.timelineValues should contain only (SendTimeout(nameForIdx(1)))
     }
-    "bring disconnected back up-to-date before the leader is acked" in {
+    "bring disconnected back up-to-date" in {
       Given("A cluster of four nodes w/ an elected leader")
       val simulator: RaftSimulator = RaftSimulator.clusterOfSize(4)
 
@@ -47,7 +47,7 @@ class IntegrationTest extends RiffSpec {
         "Node 2" -> Follower,
         "Node 3" -> Follower,
         "Node 4" -> Follower)
-      // format: oN
+      // format: on
 
       When("A follower is removed")
       val someFollower = simulator.nodeFor(2)
@@ -67,21 +67,42 @@ class IntegrationTest extends RiffSpec {
       )
 
       val view = simulator.leaderState.clusterView
-      view.toMap shouldBe Map("Node 3" -> Peer.Empty, "Node 4" -> Peer.Empty)
+      view.toMap shouldBe Map("Node 2" -> Peer.Empty, "Node 3" -> Peer.Empty, "Node 4" -> Peer.Empty)
 
-      println(simulator)
       And("The remaining nodes have some entries replicated")
+
+      // here we send five separate requests, as opposed to one request w/ five entries.
+      // that means that the leader should immediately send the first request, but subsequent requests
+      // won't match the leader's view of its peers, so the data (append requests) won't be sent until
+      // the nodes response, thus allowing the leader to update its cluster view
       (0 to 5).foreach { i =>
         // format: off
         simulator.appendToLeader(Array(s"some entry $i"))
       // format: on
       }
 
-      println()
-      println(simulator.timelineAsExpectation())
-      println()
+
+      Then("At this point the leader (with a log w/ a single entry, so the previous coords is still 0) has received some append requests")
+      And("...so ")
+
+      simulator.timelineAssertions shouldBe  List(
+        "SendResponse(Node 4, Node 1, RequestVoteResponse(term=1, granted=true))",
+        "SendRequest(Node 1, Node 2, AppendEntries(previous=LogCoords(0, 0), term=1, commit=0, [(1,some entry 0)]))",
+        "SendRequest(Node 1, Node 3, AppendEntries(previous=LogCoords(0, 0), term=1, commit=0, [(1,some entry 0)]))",
+        "SendRequest(Node 1, Node 4, AppendEntries(previous=LogCoords(0, 0), term=1, commit=0, [(1,some entry 0)]))",
+        "SendRequest(Node 1, Node 2, AppendEntries(previous=LogCoords(0, 0), term=1, commit=0, []))",
+        "SendRequest(Node 1, Node 3, AppendEntries(previous=LogCoords(0, 0), term=1, commit=0, []))",
+        "SendRequest(Node 1, Node 4, AppendEntries(previous=LogCoords(0, 0), term=1, commit=0, []))",
+        "SendTimeout(Node 1)",
+        "ReceiveTimeout(Node 2)",
+        "ReceiveTimeout(Node 4)",
+        "ReceiveTimeout(Node 3)"
+      )
+      println(simulator)
 
       simulator.advanceUntil(100, simulator.defaultLatency, _.leader.log.latestCommit == 5, true)
+
+      println(simulator)
 
       When("A follower times out and becomes leader")
       val newLeader = simulator.nodesWithRole(Follower).head
