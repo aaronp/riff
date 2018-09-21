@@ -13,8 +13,7 @@ case class NodeSnapshot[A](name: String,
   def pretty() = {
     s"""$name ($role) in ${cluster.pretty}
        |    $persistentStateSnapshot
-       |${leaderSnapshot.fold("")(_.pretty)}${log.pretty}
-     """.stripMargin
+       |${leaderSnapshot.fold("\n")(_.pretty)}${log.pretty}""".stripMargin
   }
 }
 
@@ -68,12 +67,11 @@ object PersistentStateSnapshot {
 
 case class LeaderSnapshot(view: Map[String, Peer]) {
   def pretty() = {
-    if (view.isEmpty) ""
-    else {
-
+    if (view.isEmpty) {
+      "\n"
+    } else {
       val width = view.keySet.map(_.length).max
-      view
-        .map {
+      view.map {
           case (name, p) => s"    ${name.padTo(width, ' ')} --> $p"
         }
         .mkString("\n")

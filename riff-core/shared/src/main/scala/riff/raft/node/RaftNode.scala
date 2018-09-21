@@ -258,6 +258,10 @@ class RaftNode[NodeKey, A](val persistentState: PersistentState[NodeKey],
     // write down that we're voting for ourselves
     persistentState.castVote(newTerm, nodeKey)
 
+    // this election may end up being a split-brain, or we may have been disconnected. At any rate,
+    // we need to reset our heartbeat timeout
+    timers.receiveHeartbeat.reset(nodeKey)
+
     cluster.numberOfPeers match {
       case 0 =>
         val leader = currentState.becomeLeader(cluster)
