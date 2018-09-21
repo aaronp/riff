@@ -125,7 +125,14 @@ class RaftSimulator private (nextSendTimeout: Iterator[FiniteDuration],
       case Some((appendResults, AddressedRequest(requests))) =>
         val newTimeline = requests.zipWithIndex.foldLeft(currentTimeline) {
           case (timeline, ((to, msg), i)) =>
-            val (newTimeline, _) = timeline.insertAfter(latency + i.millis, SendRequest(ldrId, to, msg))
+            //
+            // ensure we insert the 'SendRequest' after any other SendRequest which came FROM this node
+            // ...so we're not reordering our requests
+            //
+            val (newTimeline, _) = timeline.pushAfter(latency + i.millis, SendRequest(ldrId, to, msg)) {
+              case SendRequest(from, _, _) => from == ldrId
+            }
+
             newTimeline
         }
         updateTimeline(newTimeline)
@@ -231,12 +238,13 @@ class RaftSimulator private (nextSendTimeout: Iterator[FiniteDuration],
     logDebug()
 
     val list = ListBuffer[AdvanceResult](next)
-    while (!predicate(next) || list.size >= max) {
+    while (!predicate(next) && list.size < max) {
       next = advance(latency)
 
       logDebug()
       list += next
     }
+    require(list.size < max, s"The condition was never met after $max iterations")
     concatResults(list.toList)
   }
 
@@ -270,7 +278,7 @@ class RaftSimulator private (nextSendTimeout: Iterator[FiniteDuration],
     val beforeTimeline                                 = currentTimeline
 
     // pop one off our timeline stack, then subsequently update our sharedSimulatedTimeline
-    val nextOpt = beforeTimeline.pop().map {
+    val nextOpt: Option[(TimelineType, String, RaftNode[String, String]#Result)] = beforeTimeline.pop().map {
       case (newTimeline, e) =>
         updateTimeline(newTimeline)
         val (recipient, result) = processNextEventInTheTimeline(e, beforeTimeline.currentTime)
@@ -282,13 +290,14 @@ class RaftSimulator private (nextSendTimeout: Iterator[FiniteDuration],
         AdvanceResult(node, beforeState, beforeTimeline, e, result, currentTimeline, undeliveredTimeline, takeSnapshot())
       case (e, node, result @ AddressedRequest(msgs)) =>
         val newTimeline = msgs.zipWithIndex.foldLeft(currentTimeline) {
-          case (time, ((to, msg), index)) =>
+          case (time, ((to, msg), i)) =>
             val (newTime, _) =
 
               // if we just blindly use the latency, the we'll end up sending messages based off whatever the current
               // time is in the timeline, when really it should be done after the next
-
-              time.insertAfter(latency + index.millis, SendRequest(node, to, msg))
+              time.pushAfter(latency + i.millis, SendRequest(node, to, msg)) {
+                case SendRequest(from, _, _) => from == node
+              }
             newTime
         }
         updateTimeline(newTimeline)

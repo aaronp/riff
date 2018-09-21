@@ -18,6 +18,12 @@ trait HasTimeline[A] {
 
   def timelineValues(): List[A] = events.map(_._2)
 
+  def lastTimeMatching(predicate: PartialFunction[A, Boolean]): Option[Long] = {
+    events.reverse.collectFirst {
+      case (time, a) if predicate.isDefinedAt(a) && predicate(a) => time
+    }
+  }
+
   /** A convenience method for dumping the limeline as an expectation.
     * Useful for stepping through test scenarios and adding the results as an assertion
     *
@@ -27,7 +33,13 @@ trait HasTimeline[A] {
     */
   def timelineAsExpectation[T](prefix : String = "simulator.timelineAssertions shouldBe ")(implicit ev: A =:= TimelineType) = {
     val quote = "\""
-    timelineAssertions(ev).mkString(s"$prefix List(\n    $quote", "\",\n    \"", "\"\n)")
+    val code = timelineAssertions(ev).mkString(s"$prefix List(\n    $quote", "\",\n    \"", "\"\n)")
+
+    s"""
+      |withClue(simulator.timelineAsExpectation()) {
+      |  $code
+      |}
+    """.stripMargin
   }
 
   def timelineAssertions[T](implicit ev: A =:= TimelineType) = {
@@ -81,5 +93,14 @@ trait HasTimeline[A] {
       }
       padded.mkString(indent, s"\n$indent", "\n")
     }
+  }
+
+
+  def wasRemoved(predicate: PartialFunction[A, Boolean]): Boolean = {
+    // format: off
+    currentTimeline().removed.exists {
+      case (_, a) => predicate.isDefinedAt(a) && predicate(a)
+    }
+    // format: on
   }
 }

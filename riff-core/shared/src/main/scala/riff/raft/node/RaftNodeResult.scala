@@ -24,7 +24,7 @@ object NoOpResult {
 
 /** A sequence of requests to send out as a result of a [[RaftNode]] having processed an event or message
   *
-  * @param requests the requests to send
+  * @param requests the requests to send, coupled w/ the intended recipient
   * @tparam NodeKey the node type
   * @tparam A the log type
   */

@@ -71,6 +71,7 @@ class IntegrationTest extends RiffSpec {
 
       And("The remaining nodes have some entries replicated")
 
+
       // here we send five separate requests, as opposed to one request w/ five entries.
       // that means that the leader should immediately send the first request, but subsequent requests
       // won't match the leader's view of its peers, so the data (append requests) won't be sent until
@@ -85,14 +86,29 @@ class IntegrationTest extends RiffSpec {
       Then("At this point the leader (with a log w/ a single entry, so the previous coords is still 0) has received some append requests")
       And("...so ")
 
+      withClue(simulator.timelineAsExpectation()) {
+        simulator.timelineAssertions shouldBe  List(
+          "SendResponse(Node 4, Node 1, RequestVoteResponse(term=1, granted=true))",
+          "SendRequest(Node 1, Node 2, AppendEntries(previous=LogCoords(0, 0), term=1, commit=0, []))",
+          "SendRequest(Node 1, Node 3, AppendEntries(previous=LogCoords(0, 0), term=1, commit=0, []))",
+          "SendRequest(Node 1, Node 4, AppendEntries(previous=LogCoords(0, 0), term=1, commit=0, []))",
+          "SendRequest(Node 1, Node 2, AppendEntries(previous=LogCoords(0, 0), term=1, commit=0, [(1,some entry 0)]))",
+          "SendRequest(Node 1, Node 3, AppendEntries(previous=LogCoords(0, 0), term=1, commit=0, [(1,some entry 0)]))",
+          "SendRequest(Node 1, Node 4, AppendEntries(previous=LogCoords(0, 0), term=1, commit=0, [(1,some entry 0)]))",
+          "SendTimeout(Node 1)",
+          "ReceiveTimeout(Node 2)",
+          "ReceiveTimeout(Node 4)",
+          "ReceiveTimeout(Node 3)"
+        )
+      }
       simulator.timelineAssertions shouldBe  List(
         "SendResponse(Node 4, Node 1, RequestVoteResponse(term=1, granted=true))",
-        "SendRequest(Node 1, Node 2, AppendEntries(previous=LogCoords(0, 0), term=1, commit=0, [(1,some entry 0)]))",
-        "SendRequest(Node 1, Node 3, AppendEntries(previous=LogCoords(0, 0), term=1, commit=0, [(1,some entry 0)]))",
-        "SendRequest(Node 1, Node 4, AppendEntries(previous=LogCoords(0, 0), term=1, commit=0, [(1,some entry 0)]))",
         "SendRequest(Node 1, Node 2, AppendEntries(previous=LogCoords(0, 0), term=1, commit=0, []))",
         "SendRequest(Node 1, Node 3, AppendEntries(previous=LogCoords(0, 0), term=1, commit=0, []))",
         "SendRequest(Node 1, Node 4, AppendEntries(previous=LogCoords(0, 0), term=1, commit=0, []))",
+        "SendRequest(Node 1, Node 2, AppendEntries(previous=LogCoords(0, 0), term=1, commit=0, [(1,some entry 0)]))",
+        "SendRequest(Node 1, Node 3, AppendEntries(previous=LogCoords(0, 0), term=1, commit=0, [(1,some entry 0)]))",
+        "SendRequest(Node 1, Node 4, AppendEntries(previous=LogCoords(0, 0), term=1, commit=0, [(1,some entry 0)]))",
         "SendTimeout(Node 1)",
         "ReceiveTimeout(Node 2)",
         "ReceiveTimeout(Node 4)",
