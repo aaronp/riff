@@ -10,7 +10,7 @@ class MonixTimer[A: TimerCallback](sendHeartbeatTimeout: FiniteDuration, receive
 
   override def cancelTimeout(c: Cancelable): Unit = c.cancel()
 
-  override def resetSendHeartbeatTimeout(node: A, previous: Option[Cancelable]) = {
+  override def resetSendHeartbeatTimeout(node: A, previous: Option[Cancelable]): Cancelable = {
     previous.foreach(cancelTimeout)
     val cancel: Cancelable = sched.scheduleOnce(sendHeartbeatTimeout) {
       TimerCallback[A].onSendHeartbeatTimeout(node)

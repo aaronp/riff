@@ -22,8 +22,8 @@ class TimelineTest extends RiffSpec {
       timeline.currentTime shouldBe 1000
 
       val Some((twoLeft, "second")) = timeline.remove((4000L, "fourth")).pop()
-      twoLeft.pretty() shouldBe """-1000ms : first
-                                  |@0ms    : second
+      twoLeft.pretty(includeHistory = true) shouldBe """-1000ms : first
+                                  | 0ms    : second
                                   |+1000ms : third
                                   |+2000ms : (removed) fourth
                                   |""".stripMargin

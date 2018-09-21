@@ -42,7 +42,16 @@ object Dependencies {
   val RiffCore: List[ModuleID] = reactiveStreams :: eie :: logging ::: testDependencies
   val RiffMonix: List[ModuleID] = monix ::: logging ::: testDependencies
   val RiffFs2: List[ModuleID] = fs2 ::: logging ::: testDependencies
-  val RiffAkka: List[ModuleID] = akka ::: logging ::: testDependencies
+  val RiffAkka: List[ModuleID] = {
+    val akkaCirce = "de.heikoseeberger" %% "akka-http-circe" % "1.19.0"
+    val cors = "ch.megard" %% "akka-http-cors" % "0.2.2"
+    val akkaHttp = List("", "-core").map { suffix =>
+      "com.typesafe.akka" %% s"akka-http$suffix" % "10.1.5"
+    } :+ cors :+ akkaCirce :+ ("com.typesafe.akka" %% "akka-http-testkit" % "10.1.5" % "test")
+
+    val akkaStreams = "com.typesafe.akka" %% "akka-stream" % "2.5.12"
+    akkaStreams +: akkaHttp ::: akka ::: logging ::: testDependencies
+  }
   val RiffHttp4s: List[ModuleID] = http4s ::: logging ::: testDependencies
-  val RiffWeb: List[ModuleID] = monix ::: vertx ::: logging ::: testDependencies
+  val RiffWeb: List[ModuleID] = config :: monix ::: vertx ::: logging ::: testDependencies
 }

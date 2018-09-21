@@ -29,13 +29,11 @@ object Server extends StrictLogging {
     start(hostPort, None, LoggingHandler, websocketHandler)
   }
 
-  def start(hostPort: HostPort,
-            staticPath : Option[String] = None)(
-      onConnect: PartialFunction[String, OnConnect])(implicit timeout: Duration, scheduler: Scheduler): ScalaVerticle = {
+  def start(hostPort: HostPort, staticPath: Option[String] = None)(onConnect: PartialFunction[String, OnConnect])(implicit timeout: Duration,
+                                                                                                                  scheduler: Scheduler): ScalaVerticle = {
     val websocketHandler = RoutingSocketHandler(onConnect.andThen(ServerWebSocketHandler.replay("general")))
     start(hostPort, staticPath, LoggingHandler, websocketHandler)
   }
-
 
 //  def start(hostPort: HostPort, requestHandler: Handler[HttpServerRequest] = LoggingHandler, staticPath : Option[String] = None, nullableName: String = null)(
 //      onConnect: PartialFunction[String, OnConnect])(implicit timeout: Duration, scheduler: Scheduler): ScalaVerticle = {
@@ -45,7 +43,7 @@ object Server extends StrictLogging {
 //  }
 
   def start(hostPort: HostPort,
-            staticPath : Option[String],
+            staticPath: Option[String],
             requestHandler: Handler[HttpServerRequest],
             socketHandler: Handler[ServerWebSocket]): ScalaVerticle = {
     object Server extends ScalaVerticle {

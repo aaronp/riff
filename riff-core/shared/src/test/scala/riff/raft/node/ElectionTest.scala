@@ -116,7 +116,6 @@ class ElectionTest extends RiffSpec {
 
       And("The leader should've cancelled its sending heartbeat calls and reset the receiving hb calls")
       cluster.testTimerFor(a.nodeKey).cancelHeartbeatCall() should contain only ("1")
-      cluster.testTimerFor(a.nodeKey).resetReceiveHeartbeatCalls() should contain only (a.nodeKey -> None)
     }
 
   }

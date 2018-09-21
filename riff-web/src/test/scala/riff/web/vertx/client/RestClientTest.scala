@@ -1,13 +1,16 @@
 package riff.web.vertx.client
 
+import monix.execution.Scheduler.Implicits.global
 import monix.reactive.Observable
-import streaming.api.{BaseStreamingApiSpec, HostPort}
+import org.scalatest.concurrent.Eventually
+import riff.RiffSpec
+import riff.web.vertx.server.Server
+import streaming.api.HostPort
 import streaming.rest._
-import streaming.vertx.server.Server
 
 import scala.concurrent.duration.{FiniteDuration, _}
 
-class RestClientTest extends BaseStreamingApiSpec {
+class RestClientTest extends RiffSpec with Eventually {
 
   "RestClient.send" should {
     "send and receive shit" in {

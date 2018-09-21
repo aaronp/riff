@@ -4,6 +4,16 @@
 A Raft implementation written in scala which cleanly separates the Raft logic from any particular
 transport/framework.
 
+Check out the project documentation [here](https://aaronp.github.io/riff/Contents+in+Depth.html)
+
+## API docs
+ * [Core](https://aaronp.github.io/riff/api/riffCoreCrossProject/riff/raft/index.html)
+ * [Monix](https://aaronp.github.io/riff/api/riffMonix/riff/monix/index.html)
+ * [FS2](https://aaronp.github.io/riff/api/riffFs2/riff/monix/log/index.html)
+ * [Akka](https://aaronp.github.io/riff/api/riffAkka/riff/akka/http/index.html)
+
+## Reasoning
+
 The core project only has a dependency on eie (a tiny IO library), and then offers support for akka,monix,fs2,http4s,etc
 in separate sub-projects.
 
@@ -25,5 +35,3 @@ Mill certainly looks really promising!
 ```
 sbt clean coverage test coverageReport
 ```
-
-You can read more about the design and check the documentation [here](https://aaronp.github.io/riff)

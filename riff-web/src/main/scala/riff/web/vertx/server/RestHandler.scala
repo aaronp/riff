@@ -1,14 +1,14 @@
 package riff.web.vertx.server
 
-import agora.io.{FromBytes, ToBytes}
 import com.typesafe.scalalogging.StrictLogging
+import eie.io.{FromBytes, ToBytes}
 import io.vertx.core.Handler
 import io.vertx.core.buffer.Buffer
 import io.vertx.scala.core.http.{HttpServerRequest, HttpServerResponse}
 import monix.execution.{Ack, Scheduler}
 import monix.reactive.{Observable, Observer, Pipe}
+import riff.web.vertx.server.RestHandler.ResponseObserver
 import streaming.rest._
-import streaming.vertx.server.RestHandler.ResponseObserver
 
 import scala.concurrent.Future
 import scala.util.control.NonFatal

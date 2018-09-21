@@ -11,9 +11,14 @@ case class NodeSnapshot[A](name: String,
                            leaderSnapshot: Option[LeaderSnapshot],
                            log: LogSnapshot[A]) {
   def pretty() = {
+    val logStr = log.pretty("    ") match {
+      case "" => ""
+      case str    => s"$str"
+    }
+
     s"""$name ($role) in ${cluster.pretty}
        |    $persistentStateSnapshot
-       |${leaderSnapshot.fold("\n")(_.pretty)}${log.pretty}""".stripMargin
+       |${leaderSnapshot.fold("")(_.pretty)}${logStr}""".stripMargin
   }
 }
 
@@ -40,13 +45,17 @@ object ClusterSnapshot {
   }
 }
 
-case class LogSnapshot[A](entries: List[LogEntry[A]], latestCommit : Int) {
-  def pretty(): String = {
-    entries.zipWithIndex
-      .map {
-        case (LogEntry(t, value), i) => s"${i.toString.padTo(3, ' ')} | ${t.toString.padTo(3, ' ')} | $value"
-      }
-      .mkString("\n")
+case class LogSnapshot[A](entries: List[LogEntry[A]], latestCommit: Int) {
+  def pretty(indent: String = ""): String = {
+    if (entries.isEmpty) {
+      ""
+    } else {
+      entries.zipWithIndex
+        .map {
+          case (LogEntry(t, value), i) => s"${i.toString.padTo(3, ' ')} | ${t.toString.padTo(3, ' ')} | $value"
+        }
+        .mkString(s"${indent}latestCommit=$latestCommit\n$indent", s"\n$indent", s"")
+    }
   }
 }
 object LogSnapshot {
@@ -68,13 +77,14 @@ object PersistentStateSnapshot {
 case class LeaderSnapshot(view: Map[String, Peer]) {
   def pretty() = {
     if (view.isEmpty) {
-      "\n"
+      ""
     } else {
       val width = view.keySet.map(_.length).max
-      view.map {
+      view
+        .map {
           case (name, p) => s"    ${name.padTo(width, ' ')} --> $p"
         }
-        .mkString("\n")
+        .mkString("", "\n", "")
     }
   }
 }

@@ -7,14 +7,14 @@ import io.vertx.core.Handler
 import io.vertx.scala.core.http.{WebSocketBase, WebSocketFrame}
 import monix.execution.Scheduler
 import monix.reactive.{Observable, Pipe}
+import riff.web.vertx.server.WebSocketFrameAsWebFrame
 import streaming.api.sockets.WebFrame
-import streaming.vertx.server.WebSocketFrameAsWebFrame
 
 import scala.concurrent.duration.Duration
 
 object WebFrameEndpoint extends StrictLogging {
 
-  def replay(name : String, socket: WebSocketBase)(implicit timeout: Duration, scheduler: Scheduler): (WebSocketObserver, Observable[WebFrame]) = {
+  def replay(name: String, socket: WebSocketBase)(implicit timeout: Duration, scheduler: Scheduler): (WebSocketObserver, Observable[WebFrame]) = {
 
     val (frameSink, frameSource: Observable[WebFrame]) = Pipe.replay[WebFrame].multicast
 
@@ -30,7 +30,6 @@ object WebFrameEndpoint extends StrictLogging {
         logger.warn("frame sink already completed")
       }
     }
-
 
     socket.frameHandler(new Handler[WebSocketFrame] {
       override def handle(event: WebSocketFrame): Unit = {
@@ -64,14 +63,17 @@ object WebFrameEndpoint extends StrictLogging {
       }
     })
 
-    val source = frameSource.doOnComplete { () =>
-      logger.debug(s"\n>>> $name onComplete called\n")
+    val source = frameSource
+      .doOnComplete { () =>
+        logger.debug(s"\n>>> $name onComplete called\n")
 
-    }.doOnError { err =>
-      logger.debug(s"\n>>> $name onError($err) called\n")
-    }.doOnNext { x =>
-      logger.debug(s"\n>>> $name onNext($x) called\n")
-    }
+      }
+      .doOnError { err =>
+        logger.debug(s"\n>>> $name onError($err) called\n")
+      }
+      .doOnNext { x =>
+        logger.debug(s"\n>>> $name onNext($x) called\n")
+      }
 
     (observable, source)
   }

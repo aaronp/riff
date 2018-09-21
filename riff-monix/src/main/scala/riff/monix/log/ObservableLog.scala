@@ -20,7 +20,7 @@ case class ObservableLog[A](underlying: RaftLog[A])(implicit scheduler: Schedule
 
   def asObservable: Observable[LogNotificationMessage] = logView.filter(_ != null)
 
-  override def appendAll(fromIndex: LogIndex, data: Array[LogEntry[A]]) = {
+  override def appendAll(fromIndex: LogIndex, data: Array[LogEntry[A]]): LogAppendResult = {
     val result: LogAppendResult = underlying.appendAll(fromIndex, data)
 
     logView := LogAppended(result)

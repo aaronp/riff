@@ -208,7 +208,7 @@ class RaftNode[NodeKey, A](val persistentState: PersistentState[NodeKey],
   }
 
   def onAppendEntries(from: NodeKey, append: AppendEntries[A]): AppendEntriesResponse = {
-    val doAppend = if (thisTerm < append.term) {
+    val doAppend = if (thisTerm <= append.term) {
       onBecomeFollower(Option(from), append.term)
       true
     } else {

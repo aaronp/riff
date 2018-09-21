@@ -29,13 +29,13 @@ val Core      = config("riff-core")
 val RiffMonix = config("riff-monix")
 val RiffFs2   = config("riff-fs2")
 val RiffAkka  = config("riff-akka")
-val RiffWeb   = config("riff-web")
+//val RiffWeb   = config("riff-web")
 
 git.remoteRepo := s"git@github.com:$username/$repo.git"
 ghpagesNoJekyll := true
 
 lazy val scaladocSiteProjects =
-  List((riffCoreCrossProject, Core), (riffMonix, RiffMonix), (riffWeb, RiffWeb), (riffFs2, RiffFs2), (riffAkka, RiffAkka))
+  List((riffCoreJVM, Core), (riffMonix, RiffMonix), (riffFs2, RiffFs2), (riffAkka, RiffAkka))
 
 lazy val scaladocSiteSettings = scaladocSiteProjects.flatMap {
   case (project: Project, conf) =>
@@ -122,10 +122,7 @@ val commonSettings: Seq[Def.Setting[_]] = Seq(
       oldStrategy(x)
   },
   // see http://www.scalatest.org/user_guide/using_scalatest_with_sbt
-  (testOptions in Test) += (Tests.Argument(TestFrameworks.ScalaTest, "-h", s"target/scalatest-reports-${name.value}", "-oN")),
-  // put scaladocs under 'api/latest'
-  sourceDirectory in Pamflet := sourceDirectory.value / "site",
-  siteSubdirName in SiteScaladoc := "api/latest"
+  (testOptions in Test) += (Tests.Argument(TestFrameworks.ScalaTest, "-h", s"target/scalatest-reports-${name.value}", "-oN"))
 )
 
 test in assembly := {}
@@ -133,7 +130,6 @@ test in assembly := {}
 publishMavenStyle := true
 
 // val siteWithScaladocAlt = project.in(file("site/scaladoc-alternative"))
-//   .settings(scaladocSiteSettings)
 
 lazy val root = (project in file("."))
   .enablePlugins(BuildInfoPlugin)
@@ -145,13 +141,14 @@ lazy val root = (project in file("."))
     riffCoreJVM,
     riffMonix,
     riffFs2,
-    riffAkka,
-    riffWeb
+    riffAkka
+    //, riffWeb
   )
+  .settings(scaladocSiteSettings)
   .settings(
     sourceDirectory in Pamflet := sourceDirectory.value / "site",
     siteSubdirName in ScalaUnidoc := "api/latest",
-    addMappingsToSiteDir(mappings in (ScalaUnidoc, packageDoc), siteSubdirName in ScalaUnidoc),
+//    addMappingsToSiteDir(mappings in (ScalaUnidoc, packageDoc), siteSubdirName in ScalaUnidoc),
     publish := {},
     publishLocal := {}
   )
@@ -175,7 +172,9 @@ lazy val riffCoreCrossProject = crossProject(JSPlatform, JVMPlatform)
     libraryDependencies ++= List(
       "org.scala-js"      %% "scalajs-stubs" % scalaJSVersion % "provided",
       "com.github.aaronp" %% "eie"           % "0.0.3"
-    )
+    ),
+    // put scaladocs under 'api/latest'
+    siteSubdirName in SiteScaladoc := "api/latest"
   )
   .jsSettings(
     name := "riff-core-js"

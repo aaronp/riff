@@ -2,9 +2,10 @@ package riff.web.vertx.server
 
 import io.vertx.core.Handler
 import io.vertx.scala.core.http.ServerWebSocket
-import streaming.vertx.server.RoutingSocketHandler.NotFoundHandler
+import  RoutingSocketHandler.NotFoundHandler
 
-case class RoutingSocketHandler(byRoute: PartialFunction[String, Handler[ServerWebSocket]], notFound : Handler[ServerWebSocket] = NotFoundHandler) extends Handler[ServerWebSocket] {
+case class RoutingSocketHandler(byRoute: PartialFunction[String, Handler[ServerWebSocket]], notFound: Handler[ServerWebSocket] = NotFoundHandler)
+    extends Handler[ServerWebSocket] {
   override def handle(event: ServerWebSocket): Unit = {
     val path = event.uri()
     val h = if (byRoute.isDefinedAt(path)) {

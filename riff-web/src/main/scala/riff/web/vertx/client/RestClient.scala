@@ -11,17 +11,16 @@ import monix.reactive.{Observable, Pipe}
 import streaming.api.HostPort
 import streaming.rest.{HttpMethod, RestInput, RestResponse}
 
-
 object RestClient {
   def connect(location: HostPort)(implicit scheduler: Scheduler): RestClient = RestClient(location)
 }
-
 
 case class RestClient(location: HostPort, impl: Vertx = Vertx.vertx())(implicit scheduler: Scheduler) extends ScalaVerticle with StrictLogging {
   vertx = impl
   val httpClient: HttpClient = vertx.createHttpClient
 
-  val sendPipe: Pipe[RestInput, RestResponse] = Pipe.publishToOne[RestInput].transform { restInputs: Observable[RestInput] => restInputs.flatMapDelayErrors(send).doOnTerminate { errOpt =>
+  val sendPipe: Pipe[RestInput, RestResponse] = Pipe.publishToOne[RestInput].transform { restInputs: Observable[RestInput] =>
+    restInputs.flatMapDelayErrors(send).doOnTerminate { errOpt =>
       logger.error(s"stopping client connected to $location ${errOpt.fold("")("on error " + _)} ")
       stop()
     }
@@ -36,17 +35,16 @@ case class RestClient(location: HostPort, impl: Vertx = Vertx.vertx())(implicit 
       case Left(bad) =>
         Observable.raiseError(new IllegalArgumentException(s"Request for ${req.uri} didn't resolve given the path parts: $bad"))
       case Right(parts) =>
-
         val uri = parts.mkString("/")
 
         val httpRequest: HttpClientRequest = req.uri.method match {
-          case HttpMethod.GET => httpClient.get(location.port, location.host, uri)
-          case HttpMethod.POST => httpClient.post(location.port, location.host, uri)
-          case HttpMethod.PUT => httpClient.put(location.port, location.host, uri)
-          case HttpMethod.DELETE => httpClient.delete(location.port, location.host, uri)
-          case HttpMethod.HEAD => httpClient.head(location.port, location.host, uri)
+          case HttpMethod.GET     => httpClient.get(location.port, location.host, uri)
+          case HttpMethod.POST    => httpClient.post(location.port, location.host, uri)
+          case HttpMethod.PUT     => httpClient.put(location.port, location.host, uri)
+          case HttpMethod.DELETE  => httpClient.delete(location.port, location.host, uri)
+          case HttpMethod.HEAD    => httpClient.head(location.port, location.host, uri)
           case HttpMethod.OPTIONS => httpClient.options(location.port, location.host, uri)
-          case _ => null
+          case _                  => null
         }
 
         val responseVar = Var[RestResponse](null)
@@ -75,7 +73,7 @@ case class RestClient(location: HostPort, impl: Vertx = Vertx.vertx())(implicit 
 
           builtRequest.end()
 
-          responseVar.filter( _ != null).take(1)
+          responseVar.filter(_ != null).take(1)
         }
     }
   }

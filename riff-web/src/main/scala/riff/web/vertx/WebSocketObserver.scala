@@ -45,7 +45,6 @@ private[vertx] final case class WebSocketObserver(name: String, socket: WebSocke
 
     logger.debug(s"\n\t!!!! $name onError trying to close the socket will  ${if (ok) "succeed" else "fail"}")
 
-
     try {
       if (ok) {
         logger.debug(s"$name onError($ex) closing the socket")

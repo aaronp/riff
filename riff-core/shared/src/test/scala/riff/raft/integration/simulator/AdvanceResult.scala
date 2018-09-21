@@ -15,7 +15,15 @@ case class AdvanceResult(node: String,
                          afterStateByName: Map[String, NodeSnapshot[String]])
     extends HasTimeline[TimelineType] {
 
-  def nodesWithRole(role: NodeRole): Iterable[NodeSnapshot[String]] = afterStateByName.values.filter(_.role == role)
+  def timelineDiff() = {
+    afterTimeline.pretty()
+  }
+
+  def nodesWithRole(role: NodeRole): Iterable[NodeSnapshot[String]] = nodeSnapshots.filter(_.role == role)
+
+  def nodeSnapshots: Iterable[NodeSnapshot[String]] = afterStateByName.values
+
+  def leaderOpt(): Option[NodeSnapshot[String]] =nodesWithRole(Leader).headOption
   def leader: NodeSnapshot[String] = {
     val List(only) = nodesWithRole(Leader).toList
     only
@@ -31,7 +39,6 @@ case class AdvanceResult(node: String,
         followers.size == leader.cluster.peers.size && followers.forall(_.persistentStateSnapshot.currentTerm == leader.persistentStateSnapshot.currentTerm)
     }
   }
-
 
   /** @param idx the member index
     * @return the 'before' node state for the given member
