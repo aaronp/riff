@@ -1,0 +1,136 @@
+<!DOCTYPE html SYSTEM "about:legacy-compat">
+<html manifest="pamflet.manifest">
+      <head>
+        <meta charset="utf-8"/>
+        <meta content="width=device-width, initial-scale=1" name="viewport"/>
+        <title>Project Blog — Writing integration tests using a stack for a timeline</title>
+        
+        <link rel="stylesheet" href="css/blueprint/screen.css" type="text/css" media="screen, projection"/>
+        <link rel="stylesheet" href="css/blueprint/grid.css" type="text/css" media="screen and (min-device-width: 800px), projection"/>
+        <link rel="stylesheet" href="css/blueprint/print.css" type="text/css" media="print"/> 
+        <!--[if lt IE 8]>
+          <link rel="stylesheet" href={ relativeBase + "css/blueprint/ie.css" } type="text/css" media="screen, projection"/>
+        <![endif]-->
+        <link rel="stylesheet" href="css/pamflet.css" type="text/css" media="screen, projection"/>
+        <link rel="stylesheet" href="css/pamflet-print.css" type="text/css" media="print"/>
+        <link rel="stylesheet" href="css/pamflet-grid.css" type="text/css" media="screen and (min-device-width: 800px), projection"/>
+        <link rel="stylesheet" href="css/color_scheme-redmond.css" type="text/css" media="screen, projection"/>
+        <link rel="stylesheet" href="css/color_scheme-github.css" type="text/css" media="screen, projection"/>
+        <link rel="stylesheet" href="css/color_scheme-monokai.css" type="text/css" media="screen, projection"/>
+        <link rel="stylesheet" href="css/pamfletheight_2em_2em.css" type="text/css" media="screen and (min-device-width: 800px), projection"/>
+        <script type="text/javascript" src="js/jquery-1.6.2.min.js"></script>
+        <script type="text/javascript" src="js/jquery.collapse.js"></script>
+        <script type="text/javascript" src="js/pamflet.js"></script>
+        <script type="text/javascript">
+          Pamflet.page.language = 'en';
+        </script>
+        <script type="text/javascript" src="js/prettify/prettify.js"></script><script type="text/javascript" src="js/prettify/lang-scala.js"></script><link type="text/css" rel="stylesheet" href="css/prettify.css"/><script type="text/javascript"><!--
+        window.onload=function() { prettyPrint(); };
+      --></script>
+        
+        
+        
+      </head>
+      <body class="color_scheme-redmond">
+        <a class="page prev nav" href="Project+Blog.html">
+            <span class="space">&nbsp;</span>
+            <span class="flip arrow">❧</span>
+          </a><a class="page next nav" href="Contents+in+Depth.html">
+            <span class="space">&nbsp;</span>
+            <span class="arrow">❧</span>
+          </a>
+        <div class="container contentswrapper">
+          <div class="span-16 prepend-1 append-1 contents">
+            <h1 id="Writing+integration+tests+using+a+stack+for+a+timeline">Writing integration tests using a stack for a timeline<a href="#Writing+integration+tests+using+a+stack+for+a+timeline" class="header-link"><span class="header-link-content">&nbsp;</span></a></h1><p>Why hello, future self (and perhaps one other person who might accidentally read this).
+</p><p>I’m just in the process of flushing out the ‘RaftSimulator’ and ‘Timeline’ stuff and how best to use it.
+</p><p>In general I’m really pleased with this approach. The ‘IntegrationTest’ gives me a lot of
+confidence by letting the components all generate their own messages, set (and reset/cancel) their
+own timeouts, etc. Those parts are all real, production code using the interfaces given to
+them.
+</p><p>The actual implementations for that test is given to the nodes by the RaftSimulator,
+which then just puts the events (timeouts, resets, messages, whatever), on a stack (the Timeline).
+</p><p>The timers used even have a ‘random’ element … except in these tests those random times
+are completely deterministic.
+</p><h2 id="A+bit+of+a+breakthrough%3F+%E2%80%A6making+it+easy+to+quickly+inspect+and+write+%28hopefully+meaningful%29+tests">A bit of a breakthrough? …making it easy to quickly inspect and write (hopefully meaningful) tests<a href="#A+bit+of+a+breakthrough%3F+%E2%80%A6making+it+easy+to+quickly+inspect+and+write+%28hopefully+meaningful%29+tests" class="header-link"><span class="header-link-content">&nbsp;</span></a></h2><p>I’ve just introduced a helper method on HasTimeline - the ‘timelineAsExpectation’ and ‘timelineAssertions’.
+</p><p>These are two sides to the same coin, and are a means of explicitly putting something in code which we all (I think)
+do manually. And that is run some code, dump some state, and then take that text dump and turn it into an assertion.
+</p><p>Sometimes people write fancy “recorders” and serialize some results under e.g. src/test/resources/regressionTests/testFoo.dat
+</p><p>For me, if you’re going to be doing that, then just provide a way to provide it as a small text snippet, and then just
+put that expectation directly in the test code in a readable way. And that is what ‘simulator.timelineAsExpectation’ is for.
+</p><p>You would
+</p><ul><li>add the following line someplace where you want to assert the state of events:
+<code>`scala
+println(simulator.timelineAsExpectation)
+</code>`
+</li><li>Run the test
+</li><li><p>Check the output. Does it look like what you expected? If not, edit it. Otherwise, just paste that
+output over the println:
+```scala
+</p><pre><code>  simulator.timelineAssertions shouldBe List(
+    &quot;SendResponse(Node 4, Node 1, RequestVoteResponse(term=1, granted=true))&quot;,
+    &quot;SendRequest(Node 1, Node 2, AppendEntries(previous=LogCoords(0, 0), term=1, commit=0, []))&quot;,
+    &quot;SendRequest(Node 1, Node 3, AppendEntries(previous=LogCoords(0, 0), term=1, commit=0, []))&quot;,
+    &quot;SendRequest(Node 1, Node 4, AppendEntries(previous=LogCoords(0, 0), term=1, commit=0, []))&quot;,
+    &quot;SendTimeout(Node 1)&quot;,
+    &quot;ReceiveTimeout(Node 2)&quot;,
+    &quot;ReceiveTimeout(Node 4)&quot;,
+    &quot;ReceiveTimeout(Node 3)&quot;
+  )
+</code></pre><p>```
+* This is possible because our simulator has explicitly controlled the “random” timeout durations, etc.
+  So now, barring a logic (or format) chagne, subsequent runs will always have the same events in the same order.
+</p></li></ul><h2 id="And+%E2%80%A6+profit%21">And … profit!<a href="#And+%E2%80%A6+profit%21" class="header-link"><span class="header-link-content">&nbsp;</span></a></h2><p>And so, we have very fast, meaningful integration tests.
+</p><p>We’ve gained:
+  <em> Speed!
+    We’re always just popping the next event off the stack, which we can do immediately.
+    e.g., if the next even will occur in 500ms, we don’t have to actually wait for
+    500ms as we would if this were multi-threaded. We just pop off that even and advance the current time by 500ms.
+    “But, what if another event were to …” — STOP! ‘cause it won’t. If it did, it’d be on the timeline.
+  </em> The ability to manufacture error scenarios. Since we have a timeline we’re advancing, we can manually manipulate it
+    at any time to drop events, insert erroneous events, etc. These are scenarios which would take some serious effort (and
+    likely polluted prod code) to have to engineer otherwise.
+  <em> Meaningful stack traces. It’s all on the same test thread.
+  </em> Not having to wait some arbitrary time for an event NOT to happen. If there is some timeout set in XYZ ms in
+    the future, we can investigate the timeline and prove nothing’s been queued.
+</p><p>We’ve lost:
+  * Being forced to set very small timeouts, or tweak timeouts for different or slow environments.
+</p><h2 id="This+doesn%E2%80%99t+replace+real+integration+tests">This doesn’t replace real integration tests<a href="#This+doesn%E2%80%99t+replace+real+integration+tests" class="header-link"><span class="header-link-content">&nbsp;</span></a></h2><p>… but it does reduce the load significantly of what we’re expecting from those kinds of tests.
+We can be happy that the events generated/consumed are correct in a cheap way, and so can run them
+on every change/commit without worry.
+</p><p>We don’t have to check for free ports, spin up or consume any services, etc.
+</p><p>And it’s worth noting that the code we’re testing is, by design, not thread-safe anyway. It’s intended
+to be put being something which can guarantee thread safety (e.g. lifted into a reactive stream, actor, into a service, etc).
+</p><p>This approach isn’t a replacement for real, full production integration tests. You still need those -
+but only to prove the integration, and not basic functionality/correctness.
+</p><h2 id="That%E2%80%99s+it%21">That’s it!<a href="#That%E2%80%99s+it%21" class="header-link"><span class="header-link-content">&nbsp;</span></a></h2><p>We’re using the main, production code to generate messages, and then
+feed those messages to their recipients. The code to do that is still relatively small -
+just a stack for the timeline (w/ the convenience of a tracked history and removed events),
+and a ‘RaftSimulator’ for advancing that timeline and applying the messages to their destinations.
+</p><div class="bottom nav end span-16">
+                        
+                      </div><div class="tocwrapper show">
+      <a class="tochead nav" style="display: none" href="#toc">❦</a>
+      <a name="toc"></a>
+      <h4 class="toctitle">Contents</h4>
+      <div class="tocbody">
+      <div><a href="Project+Blog.html">Project Blog</a></div><ol class="toc"> <li><div class="current">Writing integration tests using a stack for a timeline</div></li><li class="generated"><div><a href="Contents+in+Depth.html">Contents in Depth</a></div></li><li class="generated"><div><a href="Combined+Pages.html">Combined Pages</a></div></li> </ol></div></div>
+          </div>
+        </div>
+        <div class="header">
+          <div class="container">
+        <div class="span-16 prepend-1 append-1">
+          <div class="span-16 top nav">
+            <div class="span-16 title">
+              <span>Project Blog</span> — Writing integration tests using a stack for a timeline
+            </div>
+          </div>
+        </div>
+      </div>
+        </div>
+        <div class="footer">
+          
+        </div>
+        
+        
+      </body>
+    </html>
