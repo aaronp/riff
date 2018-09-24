@@ -42,14 +42,16 @@ object FileBasedLog extends eie.io.LowPriorityIOImplicits {
     * @param ev$1
     * @tparam T
     */
-  private class ForDir[T: ToBytes: FromBytes](override val dir: Path, fileAttributes: List[FileAttribute[_]] = DefaultAttributes.toList)
+  private class ForDir[T: ToBytes: FromBytes](override val dir: Path,
+                                              fileAttributes: List[FileAttribute[_]] = DefaultAttributes.toList)
       extends BaseLog[T]
       with FileBasedLog[T] {
 
     private val commitFile = dir.resolve(".committed").createIfNotExists(fileAttributes: _*).ensuring(_.isFile)
 
     // contains the <term>:<index> of the latest entry appended
-    private val latestAppendedFile = dir.resolve(".latestAppended").createIfNotExists(fileAttributes: _*).ensuring(_.isFile)
+    private val latestAppendedFile =
+      dir.resolve(".latestAppended").createIfNotExists(fileAttributes: _*).ensuring(_.isFile)
 
     override def entryForIndex(index: LogIndex) = {
       val path = entryFileForIndex(index)
@@ -66,7 +68,7 @@ object FileBasedLog extends eie.io.LowPriorityIOImplicits {
     override def appendAll(logIndex: LogIndex, data: Array[LogEntry[T]]): LogAppendResult = {
       require(logIndex > 0, s"log indices should begin at 1: $logIndex")
       if (data.isEmpty) {
-        LogAppendSuccess(0, 0)
+        LogAppendSuccess(LogCoords.Empty, LogCoords.Empty)
       } else {
         doAppendAll(logIndex, data.head.term, data)
       }
@@ -103,10 +105,10 @@ object FileBasedLog extends eie.io.LowPriorityIOImplicits {
 
           // update the '.latestAppended' file w/ these coords as an optimisation so we don't have to search the file system
           // for that info
-          val latestCoord = appended.last
+          val latestCoord: LogCoords = appended.last
           updateLatestAppended(latestCoord)
 
-          LogAppendSuccess(appended.head.index, latestCoord.index, removedIndices)
+          LogAppendSuccess(appended.head, latestCoord, removedIndices)
       }
     }
 

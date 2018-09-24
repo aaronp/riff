@@ -11,6 +11,7 @@ trait RaftTimerTCK extends RiffSpec {
   def falseHeartbeatTimeout = 10.millis
   def slowHeartbeatTimeout  = 100.millis
 
+  val scalingFactor = 5
   "RaftTimer" should {
     "not immediately timeout upon creation" in {
       implicit val callback = new TestCallback
@@ -24,7 +25,7 @@ trait RaftTimerTCK extends RiffSpec {
       )
 
       // give it adequate time to invoke our timeout
-      assertAfter(heartbeatTimeout * 3) {
+      assertAfter(heartbeatTimeout * scalingFactor) {
         callback.sentCalls shouldBe empty
         callback.receivedCalls shouldBe empty
       }
@@ -43,7 +44,7 @@ trait RaftTimerTCK extends RiffSpec {
       val resetTime = System.currentTimeMillis()
       val c         = timer.resetSendHeartbeatTimeout("test", None)
 
-      assertAfter(heartbeatTimeout / 2) {
+      assertAfter(heartbeatTimeout / scalingFactor) {
         And("then cancelled before the timeout is reached")
         val cancelTime = System.currentTimeMillis()
         timer.cancelTimeout(c)

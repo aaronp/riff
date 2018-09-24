@@ -4,7 +4,8 @@ import riff.raft.timer.{RaftTimer, TimerCallback}
 
 import scala.concurrent.duration.FiniteDuration
 
-class MonixTimer[A: TimerCallback](sendHeartbeatTimeout: FiniteDuration, receiveHeartbeatTimeout: FiniteDuration)(implicit sched: Scheduler)
+class MonixTimer[A: TimerCallback](sendHeartbeatTimeout: FiniteDuration, receiveHeartbeatTimeout: FiniteDuration)(
+    implicit sched: Scheduler)
     extends RaftTimer[A] {
   type CancelT = Cancelable
 

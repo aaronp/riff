@@ -6,9 +6,20 @@ import riff.raft.{LogIndex, Term}
 import scala.reflect.ClassTag
 
 /**
-  * Additional convenience operations which can be performed on a RaftLog
+  * A base type for the raft log.
   *
-  * @tparam A
+  * the [[RaftLogOps#onCommit]] is the primary, important bit which binds the commit of the log entry to your application.
+  * That is the point where the entry is applied to your state-machine.
+  *
+  *
+  * The 'RaftLogOps' is declared from which RaftLog extends, as the JVM-specific implemenation uses the 'RaftLog' companion
+  * object with its dependency on the 'ToBytes'/'FromBytes' typeclasses, which as I write this, I
+  * realize how silly a reason that perhaps is to split it up.
+  *
+  * At any rate, the end-client consumers of this trait won't know, as both the JVM and Javascript variants expose a RaftLog, so it shouldn't really
+  * impact anybody, other than to give 'em pause as they think "why this extra step in the class hierarchy?"
+  *
+  * @tparam A the type stored in the log
   */
 trait RaftLogOps[A] { self: RaftLog[A] =>
 
@@ -77,7 +88,7 @@ trait RaftLogOps[A] { self: RaftLog[A] =>
 
   final def coordsForIndex(index: LogIndex): Option[LogCoords] = termForIndex(index).map(LogCoords(_, index))
 
-  /** @return a caching version of this log
+  /** @return a caching version of this log -- an optimisation for keeping in-memory the latestCommit and latestAppended
     */
   def cached(): CachingLog[A] = {
     this match {
@@ -86,7 +97,35 @@ trait RaftLogOps[A] { self: RaftLog[A] =>
     }
   }
 
-  /** @return a caching version of this log
+  /** This function is the main point of the Raft cluster -- it applies the provided function
+    * to the LogEntry[A] once the entry is committed. It is up to the application what to do with
+    * the side-effectful function.
+    *
+    * You can chain these methods to do multiple things, but notice that this method returns a NEW
+    * log, and so all of this should be done prior to creating the RaftNode which will handle the
+    * cluster events.
+    *
+    * For example:
+    *
+    * {{{
+    *
+    *   def businessLogicOnCommit(json : Json) = ...
+    *
+    *   val raftNode : RaftNode[String, Json] = {
+    *      val dataDir : Path = ...
+    *      val node = RaftNode[Json](dataDir)
+    *      node.withLog(node.log.onCommit { entry =>
+    *         businessLogicOnCommit(entry.data)
+    *     }
+    *   }
+    *
+    *   // put the raft node behind some REST routes of some framework....
+    *   val routes = createWebRouts(raftNode)
+    *   Http.bind(8080, routes)
+    *
+    * }}}
+    *
+    * @return a log which applies the given function when the given log entry is committed.
     */
   def onCommit(applyToStateMachine: LogEntry[A] => Unit): StateMachineLog[A] = StateMachineLog(this)(applyToStateMachine)
 
@@ -139,14 +178,14 @@ trait RaftLogOps[A] { self: RaftLog[A] =>
       matchedPrevious || (request.previous.index == 0)
     }
 
-    val matchIndex = if (success) {
+    val matchIndex: LogIndex = if (success) {
       if (request.entries.nonEmpty) {
         val latestCommitIndex = latestCommit()
         require(latestCommitIndex <= request.previous.index, s"Attempt to append at ${request.previous} when the latest commit is $latestCommitIndex")
         val logAppendResult: LogAppendResult = appendAll(request.appendIndex, request.entries)
 
         logAppendResult match {
-          case LogAppendSuccess(_, lastIndex, _) => lastIndex
+          case LogAppendSuccess(_, lastIndex, _) => lastIndex.index
           case _                                 => 0
         }
       } else {
@@ -163,5 +202,4 @@ trait RaftLogOps[A] { self: RaftLog[A] =>
       AppendEntriesResponse.fail(currentTerm)
     }
   }
-
 }

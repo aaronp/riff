@@ -16,7 +16,6 @@ object RaftNode {
       maxAppendSize
     )
   }
-
 }
 
 /**

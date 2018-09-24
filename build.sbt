@@ -150,6 +150,7 @@ lazy val root = (project in file("."))
     // TODO - check
     paradoxProperties += ("project.url" -> "https://aaronp.github.io/riff/docs/current/"),
     //sourceDirectory in Pamflet := sourceDirectory.value / "site",
+    siteSourceDirectory := target.value / "paradox" / "site" / "main",
     paradoxTheme := Some(builtinParadoxTheme("generic")),
     siteSubdirName in ScalaUnidoc := "api/latest",
 //    addMappingsToSiteDir(mappings in (ScalaUnidoc, packageDoc), siteSubdirName in ScalaUnidoc),

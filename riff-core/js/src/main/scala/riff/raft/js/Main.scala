@@ -1,9 +1,10 @@
 package riff.raft.js
 
-import scala.scalajs.js.annotation.JSExport
+import scala.scalajs.js.annotation.{JSExportTopLevel}
 import org.scalajs.dom
 import org.scalajs.dom.html
 import org.scalajs.dom.window
+
 import scala.util.Random
 
 case class Point(x: Int, y: Int) {
@@ -11,10 +12,10 @@ case class Point(x: Int, y: Int) {
   def /(d: Int)   = Point(x / d, y / d)
 }
 
-@JSExport
+@JSExportTopLevel("Main")
 object Main {
 
-  @JSExport
+  @JSExportTopLevel("main")
   def main(canvas: html.Canvas): Unit = {
 
     window.alert("Loaded main!")

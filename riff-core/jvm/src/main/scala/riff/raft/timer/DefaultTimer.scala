@@ -6,14 +6,16 @@ import scala.concurrent.duration.FiniteDuration
 
 class DefaultTimer[A: TimerCallback](sendHeartbeatTimeout: FiniteDuration,
                                      receiveHeartbeatTimeout: FiniteDuration,
-                                     schedulerService: ScheduledExecutorService = java.util.concurrent.Executors.newScheduledThreadPool(1),
+                                     schedulerService: ScheduledExecutorService =
+                                       java.util.concurrent.Executors.newScheduledThreadPool(1),
                                      cancelMayInterruptIfRunning: Boolean = true)
     extends RaftTimer[A] {
   override type CancelT = ScheduledFuture[Unit]
 
   override def cancelTimeout(c: ScheduledFuture[Unit]): Unit = c.cancel(cancelMayInterruptIfRunning)
 
-  override def resetSendHeartbeatTimeout(raftNode: A, previous: Option[ScheduledFuture[Unit]]): ScheduledFuture[Unit] = {
+  override def resetSendHeartbeatTimeout(raftNode: A,
+                                         previous: Option[ScheduledFuture[Unit]]): ScheduledFuture[Unit] = {
     val next = schedulerService
       .schedule(new Runnable() {
         override def run(): Unit = {
@@ -29,7 +31,8 @@ class DefaultTimer[A: TimerCallback](sendHeartbeatTimeout: FiniteDuration,
     next
   }
 
-  override def resetReceiveHeartbeatTimeout(raftNode: A, previous: Option[ScheduledFuture[Unit]]): ScheduledFuture[Unit] = {
+  override def resetReceiveHeartbeatTimeout(raftNode: A,
+                                            previous: Option[ScheduledFuture[Unit]]): ScheduledFuture[Unit] = {
     previous.foreach(cancelTimeout)
 
     val next = schedulerService
@@ -49,7 +52,8 @@ class DefaultTimer[A: TimerCallback](sendHeartbeatTimeout: FiniteDuration,
 object DefaultTimer {
   def apply[A: TimerCallback](sendHeartbeatTimeout: FiniteDuration,
                               receiveHeartbeatTimeout: FiniteDuration,
-                              schedulerService: ScheduledExecutorService = java.util.concurrent.Executors.newScheduledThreadPool(1),
+                              schedulerService: ScheduledExecutorService =
+                                java.util.concurrent.Executors.newScheduledThreadPool(1),
                               cancelMayInterruptIfRunning: Boolean = true): RaftTimer[A] = {
     new DefaultTimer(sendHeartbeatTimeout, receiveHeartbeatTimeout, schedulerService, cancelMayInterruptIfRunning)
   }

@@ -33,7 +33,7 @@ object RaftLog {
 
     override def appendAll(logIndex: LogIndex, data: Array[LogEntry[A]]): LogAppendResult = {
       if (data.isEmpty) {
-        LogAppendResult(0, 0)
+        LogAppendResult(LogCoords.Empty, LogCoords.Empty)
       } else {
         doAppendAll(logIndex, data.head.term, data)
       }
@@ -71,7 +71,7 @@ object RaftLog {
           val latestCoord = appended.last
           repo.setItem(Keys.LatestAppended, s"${latestCoord.term}:${latestCoord.index}")
 
-          LogAppendResult(appended.head.index, latestCoord.index, removedIndices)
+          LogAppendResult(appended.head, latestCoord, removedIndices)
       }
     }
 

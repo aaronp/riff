@@ -50,8 +50,8 @@ class FileBasedRaftLogTest extends RaftLogTCK {
 
         // call the method under test -- appending term 5 at index 2 should remove our previous entries
         log.append(LogCoords(5, 2), "replacing entry") shouldBe LogAppendResult(
-          firstIndex = 2,
-          lastIndex = 2,
+          firstIndex = LogCoords(5, 2),
+          lastIndex = LogCoords(5, 2),
           replacedIndices = Seq(2, 3)
         )
         log.latestAppended() shouldBe LogCoords(5, 2)

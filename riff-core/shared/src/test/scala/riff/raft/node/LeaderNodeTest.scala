@@ -17,7 +17,7 @@ class LeaderNodeTest extends RiffSpec {
       val log    = RaftLog.inMemory[String]()
       // in this case every log entry is for a different term, 100 + i
       val someData = (1 to 100).map(i => LogEntry(100 + i, i.toString)).toArray
-      log.appendAll(1, someData) shouldBe LogAppendResult(1, 100)
+      log.appendAll(1, someData) shouldBe LogAppendResult(LogCoords(101, 1), LogCoords(200, 100))
       log.latestAppended() shouldBe LogCoords(200, 100)
 
       When("The leader receives a successful AppendEntriesResponse w/ a match index 7 and a maxAppendSize 12")
@@ -55,7 +55,7 @@ class LeaderNodeTest extends RiffSpec {
       val log    = RaftLog.inMemory[String]()
       // in this case every log entry is for a different term, 100 + i
       val someData = (1 to 100).map(i => LogEntry(100 + i, i.toString)).toArray
-      log.appendAll(1, someData) shouldBe LogAppendResult(1, 100)
+      log.appendAll(1, someData) shouldBe LogAppendResult(LogCoords(101, 1), LogCoords(200, 100))
       log.latestAppended() shouldBe LogCoords(200, 100)
 
       When("it receives an append response (heartbeat response) matching the leader's latest log entry")
@@ -69,7 +69,7 @@ class LeaderNodeTest extends RiffSpec {
 
       val log                               = RaftLog.inMemory[String]()
       val someData: Array[LogEntry[String]] = (1 to 100).map(i => LogEntry(100 + i, i.toString)).toArray
-      log.appendAll(1, someData) shouldBe LogAppendResult(1, 100)
+      log.appendAll(1, someData) shouldBe LogAppendResult(LogCoords(101, 1), LogCoords(200, 100))
       log.latestAppended() shouldBe LogCoords(200, 100)
 
       val appendResponse                          = AppendEntriesResponse.ok(1, 7)
@@ -96,7 +96,7 @@ class LeaderNodeTest extends RiffSpec {
 
       val log      = RaftLog.inMemory[String]()
       val someData = (1 to 100).map(i => LogEntry(100 + i, i.toString)).toArray
-      log.appendAll(1, someData) shouldBe LogAppendResult(1, 100)
+      log.appendAll(1, someData) shouldBe LogAppendResult(LogCoords(101, 1), LogCoords(200, 100))
       log.latestAppended() shouldBe LogCoords(200, 100)
 
       val (Nil, AddressedRequest(requests)) = leader.onAppendResponse("follower1", log, 123, appendResponse, 10)
