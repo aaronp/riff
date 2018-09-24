@@ -103,8 +103,18 @@ class IntegrationTest extends RiffSpec {
 
       // force a timeout
       simulator.applyTimelineEvent(ReceiveTimeout(newLeader))
-      //simulator.advanceUntilDebug(_.leaderOpt.exists(_.name == newLeader))
       simulator.advanceUntil(_.leaderOpt.exists(_.name == newLeader))
+
+      And("The stopped node is restarted")
+      simulator.restartNode(someFollower.state.id)
+
+
+      Then("The new leader should bring the restarted node's log up-to-date")
+      simulator.advanceUntilDebug { res =>
+        res.nodeSnapshots.forall(_.log.latestCommit == 6)
+      }
+
+      simulator.nodes().foreach(_.persistentState.currentTerm shouldBe 2)
 
     }
     "dynamically add a node" in {

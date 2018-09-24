@@ -45,6 +45,14 @@ class RaftSimulator private (nextSendTimeout: Iterator[FiniteDuration],
     stoppedNodes = stoppedNodes + nodeName
   }
 
+  /**
+    * Just makes the node respond to events again
+    * @param nodeName the node to restart
+    */
+  def restartNode(nodeName: String) = {
+    stoppedNodes = stoppedNodes - nodeName
+  }
+
   // keeps track of events. This is a var that can change via 'updateTimeline', but doesn't need to be locked/volatile,
   // as our IntegrationTest is single-threaded (which makes stepping through, debugging and testing a *LOT* easier
   // as we don't have to wait for arbitrary times for things NOT to happen, or otherwise set short (but non-zero) delays
