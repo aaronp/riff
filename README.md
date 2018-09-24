@@ -4,12 +4,12 @@
 A Raft implementation written in scala which cleanly separates the Raft logic from any particular
 transport/framework.
 
-Check out the project documentation [here](https://aaronp.github.io/riff/Contents+in+Depth.html)
+Check out the project documentation [here](https://aaronp.github.io/riff/index.html)
 
 ## API docs
  * [Core](https://aaronp.github.io/riff/api/riffCoreCrossProject/riff/raft/index.html)
  * [Monix](https://aaronp.github.io/riff/api/riffMonix/riff/monix/index.html)
- * [FS2](https://aaronp.github.io/riff/api/riffFs2/riff/monix/log/index.html)
+ * [FS2](https://aaronp.github.io/riff/api/riffFs2/riff/fs2/)
  * [Akka](https://aaronp.github.io/riff/api/riffAkka/riff/akka/http/index.html)
 
 ## Reasoning
