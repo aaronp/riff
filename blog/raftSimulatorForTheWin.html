@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+<head>
+<title>Meaningful Integration Testing · Riff</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="description" content='riff'/>
+<link href="https://fonts.googleapis.com/css?family=Roboto:100normal,100italic,300normal,300italic,400normal,400italic,500normal,500italic,700normal,700italic,900normal,900italicc" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="../js/page.js"></script>
+<script type="text/javascript" src="../js/warnOldVersion.js"></script>
+<script type="text/javascript" src="../js/groups.js"></script>
+<link rel="stylesheet" type="text/css" href="../lib/normalize.css/normalize.css"/>
+<link rel="stylesheet" type="text/css" href="../lib/foundation/dist/foundation.min.css"/>
+<link rel="stylesheet" type="text/css" href="../css/page.css"/>
+
+<!--
+<link rel="shortcut icon" href="../images/favicon.ico" />
+-->
+</head>
+
+<body>
+<div class="off-canvas-wrapper">
+<div class="off-canvas-wrapper-inner" data-off-canvas-wrapper>
+
+<div class="off-canvas position-left" id="off-canvas-menu" data-off-canvas>
+<nav class="off-canvas-nav">
+<div class="nav-home">
+<a href="../index.html" >
+<span class="home-icon">⌂</span>Riff
+</a>
+<div class="version-number">
+0.0.1*
+</div>
+</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="../about/index.html" class="page">About</a>
+  <ul>
+    <li><a href="../about/motivation.html" class="page">about/motivation.html</a></li>
+    <li><a href="../about/gettingStarted.html" class="page">Getting Started</a></li>
+    <li><a href="../about/api.html" class="page">API docs</a></li>
+  </ul></li>
+  <li><a href="../blog/index.html" class="page">Project Blog</a>
+  <ul>
+    <li><a href="../blog/raftSimulatorForTheWin.html" class="active page">Meaningful Integration Testing</a></li>
+  </ul></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="off-canvas-content" data-off-canvas-content>
+
+<header class="site-header expanded row">
+<div class="small-12 column">
+<a href="#" class="off-canvas-toggle hide-for-medium" data-toggle="off-canvas-menu"><svg class="svg-icon svg-icon-menu" version="1.1" id="Menu" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 20 20" enable-background="new 0 0 20 20" xml:space="preserve"> <path class="svg-icon-menu-path" fill="#53CDEC" d="M16.4,9H3.6C3.048,9,3,9.447,3,10c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,9.447,16.952,9,16.4,9z M16.4,13
+H3.6C3.048,13,3,13.447,3,14c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,13.447,16.952,13,16.4,13z M3.6,7H16.4
+C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.048,7,3.6,7z"/></svg>
+</a>
+<div class="title"><a href="../index.html">Riff</a></div>
+
+<!--
+<a href="https://www.example.com" class="logo show-for-medium">logo</a>
+-->
+</div>
+</header>
+
+<div class="expanded row">
+
+<div class="medium-3 large-2 show-for-medium column">
+<nav class="site-nav">
+<div class="nav-home">
+<a href="../index.html" >
+<span class="home-icon">⌂</span>Riff
+</a>
+<div class="version-number">
+0.0.1*
+</div>
+</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="../about/index.html" class="page">About</a>
+  <ul>
+    <li><a href="../about/motivation.html" class="page">about/motivation.html</a></li>
+    <li><a href="../about/gettingStarted.html" class="page">Getting Started</a></li>
+    <li><a href="../about/api.html" class="page">API docs</a></li>
+  </ul></li>
+  <li><a href="../blog/index.html" class="page">Project Blog</a>
+  <ul>
+    <li><a href="../blog/raftSimulatorForTheWin.html" class="active page">Meaningful Integration Testing</a></li>
+  </ul></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="small-12 medium-9 large-10 column">
+<section class="site-content">
+
+<span id="version-warning"></span>
+
+<div class="page-header row">
+<div class="medium-12 show-for-medium column">
+<div class="nav-breadcrumbs">
+<ul>
+  <li><a href="../index.html">Riff</a></li>
+  <li><a href="../blog/index.html">Project Blog</a></li>
+  <li>Meaningful Integration Testing</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div class="page-content row">
+<div class="small-12 large-9 column" id="docs">
+<h1><a href="#meaningful-integration-testing" name="meaningful-integration-testing" class="anchor"><span class="anchor-link"></span></a>Meaningful Integration Testing</h1>
+<p>At this point in the project, I&rsquo;ve written some of the &lsquo;units&rsquo;: * The underlying log * The timers * Voting/Election logic * Append entries logic * Leader behaviour</p>
+<p>I&rsquo;m relatively happy that, given some inputs, those units provide the outputs expected. What I&rsquo;m not <strong>as</strong> confident about is if the assertions I&rsquo;ve made in those tests are necessarily the best place for them. </p>
+<p>Should certain validation happen at each level, for example, or is it ok to assume that certain conditions will always hold by the time an entry is appended to the log?</p>
+<p>Decisions such as these aren&rsquo;t always easily representable by the type system (and even if technically they can be represented, the object allocation tax or cognitive overheads may not be worth it).</p>
+<p>And so at this point, to gain confidence the system behaves as expected, I&rsquo;d typically reach for an &lsquo;integration test&rsquo;. i.e., spin-up some actual <a href="https://aaronp.github.io/riff/api/riffCoreCrossProject/riff/raft/node/RaftNode.html">RaftNode</a>s and have them talk to each other.</p>
+<h2><a href="#wait-before-you-integrate-" name="wait-before-you-integrate-" class="anchor"><span class="anchor-link"></span></a>Wait Before you Integrate!</h2>
+<p>My problem is this: I want to gain confidence that the system can drive itself. According to the <a href="https://raft.github.io/">Raft Spec</a>, we should be able to start w/ some initial nodes with random heartbeat time-outs. When we &ldquo;let go&rdquo;, the system should drive itself &ndash; the first node(s) to timeout should send <a href="https://aaronp.github.io/riff/api/riffCoreCrossProject/riff/raft/messages/RequestVote.html">RaftNode</a> messages</p>
+<p>I&rsquo;m not a strong advocate of &ldquo;test-first&rdquo; (see myriad talks by Dan North on this), but I <em>do</em> want confidence that the tests are a good indication that the code works.</p>
+<p>I want realistic implementations of the components (<a href="https://aaronp.github.io/riff/api/riffCoreCrossProject/riff/raft/timer/RaftTimer.html">RaftTimer</a>, <a href="https://aaronp.github.io/riff/api/riffCoreCrossProject/riff/raft/cluster/RaftCluster.html">RaftCluster</a>, etc) to show that messages can be created from the members of a cluster, consumed by the other cluster nodes, replied to, etc (as a production system would do).</p>
+<p>And so often at this point, projects tend to do full integration tests to achieve this kind of confidence/coverage.</p>
+<p>Except &hellip; there are a number of non-trivial problems I find with that:</p>
+<h3><a href="#integration-test-setup-is-often-messy-and-sequential-" name="integration-test-setup-is-often-messy-and-sequential-" class="anchor"><span class="anchor-link"></span></a>Integration test setup is often messy (and sequential)</h3>
+<p>You end up having to mess about w/ properly starting up services (and ensuring they&rsquo;re torn down). A problem which gets harder when working in teams. Will current (and future) team members know to do this properly? Will they have to consult the project docs or a wiki to know how to do it right?</p>
+<p>Also, you end up having to mess about ensuring each service is on its own port, even when running tests in parallel. And even if that&rsquo;s done right, it&rsquo;s a lot slower than what it has to be.</p>
+<h3><a href="#they-often-introduce-compromises" name="they-often-introduce-compromises" class="anchor"><span class="anchor-link"></span></a>They often Introduce Compromises</h3>
+<p>Even if you&rsquo;re not spinning up whole services, but just testing in multiple threads:</p>
+<ul>
+  <li><strong>You have to put in effort to get meaningful errors when things fail.</strong> Perhaps just by turning logging on, but you could also end up setting up awkward hooks in your code just so you can subclass within your tests in order to track state</li>
+  <li><strong>You introduce non-determinism.</strong> Unless you&rsquo;re explicitly sprinkling semaphores/latches/whatever throughout your code &ndash; again, perhaps via some &lsquo;just-for-testing&rsquo; hooks. Your tests run locally, but fail on the build server, or a colleague&rsquo;s machine. Or they fail 1 time in 100, and you&rsquo;re forever putting them in a loop to try and catch the state from that one time.</li>
+  <li><strong>They&rsquo;re harder to debug</strong>. You often can&rsquo;t just stick a breakpoint in one part and not affect the test results. You can turn logging on (or up), but piecing together events logs can be time-intensive to figure out, for even simple scenarios.</li>
+  <li><strong>They&rsquo;re slow.</strong> You have to use real time-outs/delays, and so the threads end up actually having to wait for whatever those are set to. Even if you turn everything down to tens or hundreds of milliseconds, you actually have to wait for those tens/hundreds of milliseconds, which is a big tax to pay when you add more test scenarios.</li>
+  <li><strong>They&rsquo;re even slower than that</strong> &hellip; because you also have to wait for things <em>not</em> to happen. How long should you wait to ensure a message ISN&rsquo;T going to be delivered? And how confident can you ever be?</li>
+  <li><strong>They can be harder to reason about.</strong> In a test, you want to control the environment of what you&rsquo;re testing. <em>This</em> happens, then <em>that</em>. Every time, and know the scenario you&rsquo;re testing. If you want to see what happens if the events happen in a different order, then you should explicitly model and test that.</li>
+  <li><strong>You can&rsquo;t always capture intermediate state.</strong> Without all that special &ldquo;hooking-in&rdquo; logic, things can happen before you can observe them</li>
+  <li><strong>Stack-traces are less meaningful.</strong> A small point, but not when the tests start failing or someone else has to look at them</li>
+  <li><strong>It&rsquo;s the wrong level of abstraction.</strong> We want to test the logic of the messages, not whether they can be sent to an actor, over a websocket, via a REST call, put on a queue, whatever. This isn&rsquo;t purist &ndash; those things can be misconfigured, have their own bugs/problems, etc. Our &ldquo;will the cluster behave when given XYZ&rdquo; tests shouldn&rsquo;t start to fail because something like the configuration parser was changed.</li>
+</ul>
+<p>Remember, at this point we just wanted to test that our system can dive itself via events. </p>
+<p>And if we write those tests in full multi-threaded, integration-test style, that becomes the foundation for all our meaningful tests as we proceed. Any regression-tests for bugs, performance refactorings, etc, end up paying these prices to just prove the system is still functionally correct.</p>
+<h2><a href="#so-how-should-we-test-" name="so-how-should-we-test-" class="anchor"><span class="anchor-link"></span></a>So, how should we test?</h2>
+<p>Well, at the crux of it, we want to assert a series of events. If I set up a cluster w/ certain initial conditions, then some events should occur. </p>
+<p>So if we controll both the scheduler and the &ldquo;randomness&rdquo; of the timer, then those events should occur in the same order - every time.</p>
+<p>Also, we can poke the cluster in a certain way (append some data via the leader, disconnect a node) and observe the events the cluster generates. This avoid the &ldquo;wait for things not to happen&rdquo; tests, as we can see if the timers were used to schedule anything on the timeline. Remember, we know exactly what&rsquo;s going to happen next!</p>
+<h3><a href="#mocking-sucks" name="mocking-sucks" class="anchor"><span class="anchor-link"></span></a>Mocking Sucks</h3>
+<p>A quick digression to just mention a few soft rules I often have in the back of my head:</p>
+<ul>
+  <li>Source files should tend to be fewer than 250 lines, even w/ comments</li>
+  <li>Classes and parameter lists should have fewer than about 6 arguments/parameters/members</li>
+  <li>If you have to mock, you&rsquo;ve likely done something wrong</li>
+</ul>
+<p>And just to explain that last one&hellip; if you have some non-trivial logic you want to test, perhaps buried deep in a thing which has some sizeable parameters itself, I try to first see if I can just take the pieces of information out needed for that logic and put it in a helper function (for which I can write a set of tests), as opposed to having to mock-out all the other unneeded bits. </p>
+<p>That test/logic can then more easily be read, tested, moved, etc. And you&rsquo;re not having to read that code later saying &ldquo;why do I need to provide X,Y and Z that I don&rsquo;t need just to compute this thing?&rdquo;</p>
+<h2><a href="#getting-to-the-point" name="getting-to-the-point" class="anchor"><span class="anchor-link"></span></a>Getting to the point</h2>
+<p>What I&rsquo;ve tried which I&rsquo;m pretty happy with, is writing an implementation of the RaftTimer and RaftCluster which just sticks the events on a timeline (a stack) instead of sending them directly to their recipients.</p>
+<p>Then &lsquo;RaftSimulator&rsquo; is the implementaion of the <a href="https://aaronp.github.io/riff/api/riffCoreCrossProject/riff/raft/cluster/RaftCluster.html">RaftCluster</a>). The tests ask the &lsquo;RaftSimulator&rsquo; to advance the timeline, which just pops the next event off the stack and hands it to the intended recipient, whose response in-turn is then pushed on the stack.</p>
+<p>The RaftSimulator also injects a RaftTimer into the nodes whose &lsquo;schedule&rsquo; and &lsquo;cancel&rsquo; implementations which insert and remove events at particular times.</p>
+<p>These test-time components are providing a couple of real implementations (the timer and cluster) to the production code. And to sound more functional, they just allow us to &ldquo;lift&rdquo; our real code into a test context by using the interfaces we&rsquo;ve already worked out we need in exactly the same way we&rsquo;ll have to &ldquo;lift&rdquo; the code to be behind an actor, service, stream, etc.</p>
+<p>If we success at this &ndash; proving our logic/functionality produces events generated/consumed are correct &ndash; then we&rsquo;ve done it in a cheap way, and so can run them on every change/commit without worry.</p>
+<p>Another big plus is that we can easlily run <strong>just</strong> these tests with coverage, which is handy to help identify code that either can just be deleted or is unreachable via the public API.</p>
+<h3><a href="#show-me-the-code-what-does-it-look-like-" name="show-me-the-code-what-does-it-look-like-" class="anchor"><span class="anchor-link"></span></a>Show me the code &hellip; what does it look like?</h3>
+<p>Well, the main pieces are the <a href="https://github.com/aaronp/riff/blob/master/riff-core/shared/src/test/scala/riff/raft/integration/simulator/Timeline.scala">Timeline</a>, as well as <a href="https://github.com/aaronp/riff/blob/master/riff-core/shared/src/test/scala/riff/raft/integration/simulator/HasTimeline.scala">HasTimeline</a> that offers some convenience methods to anything which as a Timeline.</p>
+<p>That&rsquo;s then driven by the <a href="https://github.com/aaronp/riff/blob/master/riff-core/shared/src/test/scala/riff/raft/integration/simulator/RaftSimulator.scala">RaftSimulator</a> which got a bit bigger than I like, but mostly to provide some utility to the tests.</p>
+<p>Then <a href="https://github.com/aaronp/riff/blob/master/riff-core/shared/src/test/scala/riff/raft/integration/IntegrationTest.scala">tests</a> can just use that simulator. They don&rsquo;t have to extend some special test template, remember to try/finally stop anything, etc. </p>
+<p>And so a snippet from a test as I write it may look like this:</p>
+<pre class="prettyprint"><code class="language-scala">      When(&quot;A follower times out and becomes leader&quot;)
+      val newLeader = nameForIdx(4)
+
+      // force a timeout
+      simulator.applyTimelineEvent(ReceiveTimeout(newLeader))
+      simulator.advanceUntil(_.leaderOpt.exists(_.name == newLeader))
+
+      And(&quot;The stopped node is restarted&quot;)
+      simulator.restartNode(someFollower.state.id)
+
+      Then(&quot;The new leader should bring the restarted node&#39;s log up-to-date&quot;)
+      simulator.advanceUntilDebug { res =&gt;
+        res.nodeSnapshots.forall(_.log.latestCommit == 6)
+      }
+
+      simulator.nodes().foreach(_.persistentState.currentTerm shouldBe 2)
+</code></pre>
+<p>The &lsquo;advanceUntil&rsquo; is a method which continues to pop events off the timeline (up to some max) until the given predicate is true. Also, while writing or debugging the tests, you can append a <strong>&lsquo;Debug&rsquo;</strong> suffix to dump the timeline/state at every step:</p>
+<pre class="prettyprint"><code class="language-scala">// this will dump the state to std-out. Replace the &#39;Debug&#39; when you&#39;ve understood why the cluster behaves as it is and fix/test accordingly:
+simulator.advanceUntilDebug(_.leaderOpt.exists(_.name == newLeader))
+</code></pre>
+<p>which spits out the current state of the cluster and the timeline:</p>
+<pre><code>  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+ 0ms   : SendRequest(Node 4,Node 1,RequestVote(2,{term=1, index=6}))
++11ms  : SendRequest(Node 4,Node 2,RequestVote(2,{term=1, index=6}))
++23ms  : SendRequest(Node 4,Node 3,RequestVote(2,{term=1, index=6}))
++107ms : SendTimeout(Node 1)
++126ms : (removed) ReceiveTimeout(Node 1)
++180ms : (removed) ReceiveTimeout(Node 3)
++201ms : (removed) ReceiveTimeout(Node 4)
++222ms : (removed) ReceiveTimeout(Node 3)
++235ms : (removed) ReceiveTimeout(Node 3)
++286ms : ReceiveTimeout(Node 2)
++288ms : (removed) ReceiveTimeout(Node 3)
++290ms : ReceiveTimeout(Node 4)
++342ms : (removed) ReceiveTimeout(Node 4)
++353ms : ReceiveTimeout(Node 3)
++395ms : (removed) ReceiveTimeout(Node 4)
++534ms : (removed) ReceiveTimeout(Node 4)
++600ms : (removed) ReceiveTimeout(Node 4)
++665ms : (removed) ReceiveTimeout(Node 4)
+
+Node 1 (Leader) in cluster of 3 peers: [Node 2,Node 3,Node 4]
+    term 1, voted for Node 1
+    Node 2 --&gt; Peer(nextIndex=1, matchIndex=0)
+    Node 3 --&gt; Peer(nextIndex=7, matchIndex=6)
+    Node 4 --&gt; Peer(nextIndex=7, matchIndex=6)    latestCommit=6
+    0   | 1   | some entry 0
+    1   | 1   | some entry 1
+    2   | 1   | some entry 2
+    3   | 1   | some entry 3
+    4   | 1   | some entry 4
+    5   | 1   | some entry 5
+Node 2 [stopped] (Follower) in cluster of 3 peers: [Node 1,Node 3,Node 4]
+    term 1, voted for Node 1
+
+Node 3 (Follower) in cluster of 3 peers: [Node 1,Node 2,Node 4]
+    term 1, voted for Node 1
+    latestCommit=6
+    0   | 1   | some entry 0
+    1   | 1   | some entry 1
+    2   | 1   | some entry 2
+    3   | 1   | some entry 3
+    4   | 1   | some entry 4
+    5   | 1   | some entry 5
+Node 4 (Candidate) in cluster of 3 peers: [Node 1,Node 2,Node 3]
+    term 2, voted for Node 4
+    latestCommit=6
+    0   | 1   | some entry 0
+    1   | 1   | some entry 1
+    2   | 1   | some entry 2
+    3   | 1   | some entry 3
+    4   | 1   | some entry 4
+    5   | 1   | some entry 5
+</code></pre>
+<h4><a href="#this-approach-vs-record-replay" name="this-approach-vs-record-replay" class="anchor"><span class="anchor-link"></span></a>This Approach vs Record/Replay</h4>
+<p>Sometimes people write fancy &ldquo;recorders&rdquo; and serialize some results under e.g. src/test/resources/regressionTests/testFoo.dat</p>
+<p>For me, if you&rsquo;re going to be doing that, then just provide a way to provide it as a small text snippet, and then just put that expectation directly in the test code in a readable way. And that is what &lsquo;simulator.timelineAsExpectation&rsquo; is for.</p>
+<p>You would</p>
+<ul>
+  <li>
+  <p>add the following line someplace where you want to assert the state of events:</p>
+  <pre class="prettyprint"><code class="language-scala">println(simulator.timelineAsExpectation)
+</code></pre></li>
+  <li>Run the test</li>
+  <li>Check the output. Does it look like what you expected? If not, edit it so it does.
+    <p>Then, just replace the println w/ its output. That&rsquo;s your &ldquo;saved&rdquo; state, which will be reproduced every time on any machine &hellip; until someone changes the code:</p>
+    <pre class="prettyprint"><code class="language-scala">      simulator.timelineAssertions shouldBe List(
+        &quot;SendResponse(Node 4, Node 1, RequestVoteResponse(term=1, granted=true))&quot;,
+        &quot;SendRequest(Node 1, Node 2, AppendEntries(previous=LogCoords(0, 0), term=1, commit=0, []))&quot;,
+        &quot;SendRequest(Node 1, Node 3, AppendEntries(previous=LogCoords(0, 0), term=1, commit=0, []))&quot;,
+        &quot;SendRequest(Node 1, Node 4, AppendEntries(previous=LogCoords(0, 0), term=1, commit=0, []))&quot;,
+        &quot;SendTimeout(Node 1)&quot;,
+        &quot;ReceiveTimeout(Node 2)&quot;,
+        &quot;ReceiveTimeout(Node 4)&quot;,
+        &quot;ReceiveTimeout(Node 3)&quot;
+      )
+</code></pre>
+    <ul>
+      <li>This is possible because our simulator has explicitly controlled the &ldquo;random&rdquo; timeout durations, etc.  So now, barring a logic (or format) chagne, subsequent runs will always have the same events in the same order.</li>
+    </ul>
+  </li>
+</ul>
+<h2><a href="#this-doesnt-replace-real-integration-tests" name="this-doesnt-replace-real-integration-tests" class="anchor"><span class="anchor-link"></span></a>This doesn&rsquo;t replace real integration tests</h2>
+<p>In general, I&rsquo;m very happy w/ this approach, but it isn&rsquo;t a complete replacement for real, full production integration tests. </p>
+<p>Of course you still need those - but only to prove the integration, and not for basic functionality/correctness.</p>
+<p>Put another way, the responsibility of what we&rsquo;re require from the integration/system tests is significantly reduced.</p>
+<p>Also, if/when our full integration tests <strong>do</strong> find errors, we should be able to write a test for it using our single-threaded, RaftSimulator approach, unless the bug truely is related specifically to threading, queues, sockets, etc.</p>
+<p>And it&rsquo;s worth noting that the code we&rsquo;re testing is, by design, not thread-safe anyway. It&rsquo;s intended to be put being something which can guarantee thread safety (e.g. lifted into a reactive stream, actor, into a service, etc).</p>
+<h2><a href="#thats-it-" name="thats-it-" class="anchor"><span class="anchor-link"></span></a>That&rsquo;s it!</h2>
+<p>We&rsquo;re using the main, production code to generate messages, and then feed those messages to their recipients. </p>
+<p>The code to do that is still relatively small - just a stack for the timeline (w/ the convenience of a tracked history and removed events), and a &lsquo;RaftSimulator&rsquo; for advancing that timeline and applying the messages to their destinations.</p>
+<div class="source-github">
+The source code for this page can be found <a href="https://github.com/aaronp/riff/tree/master/src/main/paradox/blog/raftSimulatorForTheWin.md">here</a>.
+</div>
+
+</div>
+<div class="large-3 show-for-large column" data-sticky-container>
+<nav class="sidebar sticky" data-sticky data-anchor="docs" data-sticky-on="large">
+<div class="page-nav">
+<div class="nav-title">On this page:</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="../blog/raftSimulatorForTheWin.html#meaningful-integration-testing" class="header">Meaningful Integration Testing</a>
+  <ul>
+    <li><a href="../blog/raftSimulatorForTheWin.html#wait-before-you-integrate-" class="header">Wait Before you Integrate!</a></li>
+    <li><a href="../blog/raftSimulatorForTheWin.html#so-how-should-we-test-" class="header">So, how should we test?</a></li>
+    <li><a href="../blog/raftSimulatorForTheWin.html#getting-to-the-point" class="header">Getting to the point</a></li>
+    <li><a href="../blog/raftSimulatorForTheWin.html#this-doesnt-replace-real-integration-tests" class="header">This doesn&rsquo;t replace real integration tests</a></li>
+    <li><a href="../blog/raftSimulatorForTheWin.html#thats-it-" class="header">That&rsquo;s it!</a></li>
+  </ul></li>
+</ul>
+</div>
+</div>
+</nav>
+</div>
+</div>
+
+</section>
+</div>
+
+</div>
+
+<footer class="site-footer">
+
+<section class="site-footer-nav">
+<div class="expanded row">
+<div class="small-12 large-offset-2 large-10 column">
+<div class="row site-footer-content">
+
+<div class="small-12 medium-4 large-3 text-center column">
+<div class="nav-links">
+<ul>
+<!-- <li><a href="https://www.example.com/products/">Products</a> -->
+</ul>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+</section>
+
+<section class="site-footer-base">
+<div class="expanded row">
+<div class="small-12 large-offset-2 large-10 column">
+<div class="row site-footer-content">
+
+<div class="small-12 text-center large-9 column">
+
+<!--
+<div class="copyright">
+<span class="text">&copy; 2018</span>
+<a href="https://www.example.com" class="logo">logo</a>
+</div>
+-->
+</div>
+
+</div>
+</div>
+</div>
+</section>
+</footer>
+
+</div>
+</div>
+</div>
+</body>
+
+<script type="text/javascript" src="../lib/foundation/dist/foundation.min.js"></script>
+<script type="text/javascript">jQuery(document).foundation();</script>
+<script type="text/javascript" src="../js/magellan.js"></script>
+
+<style type="text/css">@import "../lib/prettify/prettify.css";</style>
+<script type="text/javascript" src="../lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="../lib/prettify/lang-scala.js"></script>
+<script type="text/javascript">jQuery(function(){window.prettyPrint && prettyPrint()});</script>
+<script type="text/javascript">jQuery(function(jq){initOldVersionWarnings(jq, '0.0.1-SNAPSHOT', 'https://aaronp.github.io/riff/docs/current/')});</script>
+
+
+</html>
