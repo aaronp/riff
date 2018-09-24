@@ -1,5 +1,11 @@
 # Project Blog
 
+@@@ index
+
+* [Fast, Meaningful Tests](raftSimulatorForTheWin.md)
+
+@@@
+
 I'm sure this exists as "a thing" somewhere already, but I've only just thought of it...
 The idea of producing a blog entry along side code commits.
 

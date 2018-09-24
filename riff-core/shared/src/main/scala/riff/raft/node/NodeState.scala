@@ -29,7 +29,7 @@ sealed trait NodeState[NodeKey] {
 
   def asLeader: Option[LeaderNodeState[NodeKey]] = this match {
     case leader: LeaderNodeState[NodeKey] => Option(leader)
-    case _                           => None
+    case _                                => None
   }
 }
 
@@ -38,10 +38,10 @@ final case class FollowerNodeState[NodeKey](override val id: NodeKey, override v
 }
 
 final case class CandidateNodeState[NodeKey](override val id: NodeKey, initialState: CandidateState[NodeKey]) extends NodeState[NodeKey] {
-  override val role = Candidate
-  private var voteResponses = initialState
+  override val role                    = Candidate
+  private var voteResponses            = initialState
   override val leader: Option[NodeKey] = None
-  def candidateState() = voteResponses
+  def candidateState()                 = voteResponses
 
   /**
     * @param from the node which sent this response
@@ -73,7 +73,7 @@ final case class LeaderNodeState[NodeKey](override val id: NodeKey, clusterView:
   def makeAppendEntries[A](log: RaftLog[A], currentTerm: Term, data: Array[A]): (LogAppendResult, AddressedRequest[NodeKey, A]) = {
     val previous: LogCoords         = log.latestAppended()
     val entries: Array[LogEntry[A]] = data.map(LogEntry(currentTerm, _))
-    val appendResult = log.appendAll(previous.index + 1, entries)
+    val appendResult                = log.appendAll(previous.index + 1, entries)
 
     val requests: immutable.Iterable[(NodeKey, AppendEntries[A])] = {
       val peersWithMatchingLogs = clusterView.eligibleNodesForPreviousEntry(previous)
@@ -122,7 +122,7 @@ final case class LeaderNodeState[NodeKey](override val id: NodeKey, clusterView:
     //
     clusterView.update(from, appendResponse) match {
       case Some(newPeerState) if appendResponse.success =>
-        val values = log.entriesFrom(newPeerState.nextIndex, maxAppendSize)
+        val values: Array[LogEntry[A]] = log.entriesFrom(newPeerState.nextIndex, maxAppendSize)
 
         // if the majority of the peers have the same match index
         val count = clusterView.matchIndexCount(appendResponse.matchIndex) + 1
@@ -137,7 +137,18 @@ final case class LeaderNodeState[NodeKey](override val id: NodeKey, clusterView:
         val reply = if (latestAppended.index > appendResponse.matchIndex) {
           log.coordsForIndex(appendResponse.matchIndex) match {
             case Some(previous) =>
-              AddressedRequest(from, AppendEntries(previous, currentTerm, log.latestCommit(), values))
+
+              //
+              // it's the leader's responsibility to send the right commit index for the follower nodes, who should
+              // blindly just commit what they're asked to. And so ... we mustn't send a commit index higher than the
+              // index we've asked the node to append
+              //
+              val commitIdx = {
+                val highestSentIndexInclusive = newPeerState.nextIndex + values.size - 1
+                log.latestCommit().min(highestSentIndexInclusive)
+              }
+
+              AddressedRequest(from, AppendEntries(previous, currentTerm, commitIdx, values))
             case None =>
               NoOpResult(s"Couldn't read the log entry at ${appendResponse.matchIndex}. The latest append is ${log.latestAppended()}")
           }
@@ -149,9 +160,10 @@ final case class LeaderNodeState[NodeKey](override val id: NodeKey, clusterView:
         // try again w/ an older index. This trusts that the cluster does the right thing when updating its peer view
         val reply = clusterView.stateForPeer(from) match {
           case Some(peer) =>
-            val idx    = peer.nextIndex.min(latestAppended.index)
-            val coords = log.coordsForIndex(idx).getOrElse(latestAppended)
-            AddressedRequest(from, AppendEntries(coords, currentTerm, log.latestCommit(), Array.empty[LogEntry[A]]))
+            val idx        = peer.nextIndex.min(latestAppended.index)
+            val prevCoords = log.coordsForIndex(idx).getOrElse(latestAppended)
+            val commitIdx  = log.latestCommit().min(prevCoords.index)
+            AddressedRequest(from, AppendEntries(prevCoords, currentTerm, commitIdx, Array.empty[LogEntry[A]]))
           case None =>
             NoOpResult(s"Couldn't find peer $from in the cluster(!), ignoring append entries response")
         }

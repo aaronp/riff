@@ -110,12 +110,14 @@ class IntegrationTest extends RiffSpec {
 
 
       Then("The new leader should bring the restarted node's log up-to-date")
-      simulator.advanceUntilDebug { res =>
+      simulator.advanceUntil { res =>
         res.nodeSnapshots.forall(_.log.latestCommit == 6)
       }
 
+      And("All the nodes logs should be equal")
       simulator.nodes().foreach(_.persistentState.currentTerm shouldBe 2)
-
+      val logs = simulator.takeSnapshot().values.map(_.log)
+      logs.foreach(_ shouldBe logs.head)
     }
     "dynamically add a node" in {
       Given("An initially empty cluster which elects itself as leader")

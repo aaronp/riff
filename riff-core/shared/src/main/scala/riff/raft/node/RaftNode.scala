@@ -208,10 +208,15 @@ class RaftNode[NodeKey, A](val persistentState: PersistentState[NodeKey],
   }
 
   def onAppendEntries(from: NodeKey, append: AppendEntries[A]): AppendEntriesResponse = {
-    val doAppend = if (thisTerm <= append.term) {
+    val beforeTerm = thisTerm()
+    val doAppend = if (beforeTerm < append.term) {
       onBecomeFollower(Option(from), append.term)
-      true
+      false
+    } else if (beforeTerm > append.term) {
+      // ignore/fail if we get an append for an earlier term
+      false
     } else {
+      // we're supposedly the leader of this term ... ???
       currentState match {
         case _: LeaderNodeState[NodeKey] => false
         case _ =>
@@ -221,8 +226,10 @@ class RaftNode[NodeKey, A](val persistentState: PersistentState[NodeKey],
     }
 
     if (doAppend) {
-      val result = log.onAppend(thisTerm, append)
-      log.commit(append.commitIndex)
+      val result: AppendEntriesResponse = log.onAppend(thisTerm, append)
+      if (result.success) {
+        log.commit(append.commitIndex)
+      }
       result
     } else {
       AppendEntriesResponse.fail(thisTerm())

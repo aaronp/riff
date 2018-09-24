@@ -1,4 +1,3 @@
-# About Riff
 
 Having had a look at the offerings, it seemed the existing JVM Raft implementations were all tied to a framework or paradigm
 (typically actors).

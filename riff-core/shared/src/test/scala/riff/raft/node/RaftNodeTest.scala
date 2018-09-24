@@ -62,13 +62,13 @@ class RaftNodeTest extends RiffSpec {
       // ---------------------------------------------------------------------------------------
       When("It receives another append but w/ the same commit index")
       val appendWithCommit2 = AppendEntries(LogCoords(2, 5), term = 3, commitIndex = 1, Array(LogEntry(3, 5678)))
-      node.onAppendEntries("a new leader", appendWithCommit2) shouldBe AppendEntriesResponse.ok(term = 3, matchIndex = 6)
+      node.onAppendEntries("a new leader", appendWithCommit2) shouldBe AppendEntriesResponse.fail(3)
 
       // ---------------------------------------------------------------------------------------
-      Then("The log should have the new entry, but not have tried to commit anything new")
+      Then("The log should NOT have appended the new entry")
       firstCommittedList shouldBe List(LogEntry(2, 1000))
       anotherCommittedList shouldBe firstCommittedList
-      node.log.latestAppended() shouldBe LogCoords(3, 6)
+      node.log.latestAppended() shouldBe LogCoords(2, 5)
       node.persistentState.currentTerm shouldBe 3
 
       // ---------------------------------------------------------------------------------------
@@ -76,13 +76,13 @@ class RaftNodeTest extends RiffSpec {
       val ae = AppendEntries[Int](LogCoords(3, 6), term = 3, commitIndex = 5)
       val actual = node.onAppendEntries("a new leader", ae)
 
-      actual shouldBe AppendEntriesResponse.ok(term = 3, matchIndex = 6)
+      actual shouldBe AppendEntriesResponse.fail(term = 3)
 
       // ---------------------------------------------------------------------------------------
-      Then("The log should've appended 3 entries")
-      firstCommittedList shouldBe List(LogEntry(2, 1000), LogEntry(2, 1001), LogEntry(2, 1002), LogEntry(2, 1003), LogEntry(2, 1234))
+      Then("The log should've only appended the first entry")
+      firstCommittedList shouldBe List(LogEntry(2, 1000))
       anotherCommittedList shouldBe firstCommittedList
-      node.log.latestAppended() shouldBe LogCoords(3, 6)
+      node.log.latestAppended() shouldBe LogCoords(2, 5)
 
     }
   }

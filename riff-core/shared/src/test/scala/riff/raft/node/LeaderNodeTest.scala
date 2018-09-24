@@ -297,7 +297,7 @@ class LeaderNodeTest extends RiffSpec {
         val peerInstancesByName: Map[String, RaftNode[String, String]] = peerNames.map { name =>
           val peersToThisNode    = (peerNames - name) + leaderState.id
           implicit val peerTimer = new LoggedInvocationTimer[String]
-          val peerState          = RaftNode.inMemory[String, String](name).withCluster(RaftCluster(peersToThisNode))
+          val peerState          = RaftNode.inMemory[String, String](name).withCluster(RaftCluster(peersToThisNode)).withTerm(thisTerm)
           name -> peerState
         }.toMap
 

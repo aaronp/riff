@@ -17,7 +17,7 @@ resolvers += "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repos
 // this exposes the 'ghpagesPushSite' task
 enablePlugins(GhpagesPlugin)
 enablePlugins(GitVersioning)
-enablePlugins(PamfletPlugin)
+//enablePlugins(PamfletPlugin)
 enablePlugins(SiteScaladocPlugin)
 
 // see http://scalameta.org/scalafmt/
@@ -134,7 +134,8 @@ publishMavenStyle := true
 lazy val root = (project in file("."))
   .enablePlugins(BuildInfoPlugin)
   .enablePlugins(SiteScaladocPlugin)
-  .enablePlugins(PamfletPlugin)
+  //.enablePlugins(PamfletPlugin)
+  .enablePlugins(ParadoxPlugin)
   .enablePlugins(ScalaUnidocPlugin)
   .aggregate(
     riffCoreJS,
@@ -146,7 +147,10 @@ lazy val root = (project in file("."))
   )
   .settings(scaladocSiteSettings)
   .settings(
-    sourceDirectory in Pamflet := sourceDirectory.value / "site",
+    // TODO - check
+    paradoxProperties += ("project.url" -> "https://aaronp.github.io/riff/docs/current/"),
+    //sourceDirectory in Pamflet := sourceDirectory.value / "site",
+    paradoxTheme := Some(builtinParadoxTheme("generic")),
     siteSubdirName in ScalaUnidoc := "api/latest",
 //    addMappingsToSiteDir(mappings in (ScalaUnidoc, packageDoc), siteSubdirName in ScalaUnidoc),
     publish := {},
