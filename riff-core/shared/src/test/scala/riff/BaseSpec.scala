@@ -4,9 +4,9 @@ import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.time.{Millis, Seconds, Span}
 import org.scalatest.{GivenWhenThen, Matchers, WordSpec}
 import riff.raft.log.{LogCoords, RaftLog}
-import riff.raft.messages.{AppendEntries, RaftRequest, RaftResponse, ReceiveHeartbeatTimeout}
+import riff.raft.messages._
 import riff.raft.node._
-import riff.raft.timer.LoggedInvocationTimer
+import riff.raft.timer.LoggedInvocationClock
 
 import scala.collection.immutable
 import scala.concurrent.duration._
@@ -32,17 +32,19 @@ abstract class BaseSpec extends WordSpec with Matchers with ScalaFutures with Gi
 
   case class TestCluster(ofSize: Int) {
 
-    lazy val byName: Map[String, RaftNode[String, Int]] = clusterNodes.map(n => n.nodeKey -> n).toMap.ensuring(_.size == clusterNodes.size)
+    lazy val byName: Map[String, RaftNode[Int]] =
+      clusterNodes.map(n => n.nodeId -> n).toMap.ensuring(_.size == clusterNodes.size)
 
-    val clusterNodes: List[RaftNode[String, Int]] = {
+    val clusterNodes: List[RaftNode[Int]] = {
       val nodes = (1 to ofSize).map { i => newNode(s"node $i")
       }
-      val nodeNames = nodes.map(_.nodeKey).toSet
-      nodes.map { n => n.withCluster(RaftCluster(nodeNames - n.nodeKey))
+      val nodeNames = nodes.map(_.nodeId).toSet
+      nodes.map { n => n.withCluster(RaftCluster(nodeNames - n.nodeId))
       }.toList
     }
 
-    def testTimerFor(nodeKey: String) = byName(nodeKey).timers.timer.asInstanceOf[LoggedInvocationTimer[String]]
+    def testTimerFor(nodeKey: String): LoggedInvocationClock =
+      byName(nodeKey).timers.clock.asInstanceOf[LoggedInvocationClock]
 
     /** Convenience method to:
       * 1) timeout the given node
@@ -54,7 +56,7 @@ abstract class BaseSpec extends WordSpec with Matchers with ScalaFutures with Gi
       */
     def electLeader(member: String): Map[String, AppendEntries[Int]] = electLeader(byName(member))
 
-    def electLeader(member: RaftNode[String, Int]): Map[String, AppendEntries[Int]] = {
+    def electLeader(member: RaftNode[Int]): Map[String, AppendEntries[Int]] = {
       val leaderResultsAfterHavingAppliedTheResponses = attemptToElectLeader(member).map(_._2)
       asHeartbeats(leaderResultsAfterHavingAppliedTheResponses)
     }
@@ -66,20 +68,20 @@ abstract class BaseSpec extends WordSpec with Matchers with ScalaFutures with Gi
       * @param member the member to transition
       * @return the vote responses
       */
-    def attemptToElectLeader(candidate: RaftNode[String, Int]): List[(RaftResponse, candidate.Result)] = {
+    def attemptToElectLeader(candidate: RaftNode[Int]): List[(RaftResponse, candidate.Result)] = {
       val AddressedRequest(requestVotes) = candidate.onTimerMessage(ReceiveHeartbeatTimeout)
-      val replies                        = sendMessages(candidate.nodeKey, requestVotes)
+      val replies: Map[String, RaftNode[Int]#Result] = sendMessages(candidate.nodeId, requestVotes)
 
       replies.toList.map {
         case (from, AddressedResponse(_, voteResponse)) =>
-          val candidateResp = candidate.onMessage(from, voteResponse)
+          val candidateResp = candidate.onMessage(AddressedMessage(from, voteResponse))
           voteResponse -> candidateResp
         case other => fail(s"Expected an AddressedResponse but got $other")
       }
     }
 
     // convenience method for converting leader replies to hb messages
-    def asHeartbeats(leaderResultsAfterHavingAppliedTheResponses: immutable.Iterable[RaftNodeResult[String, Int]]) = {
+    def asHeartbeats(leaderResultsAfterHavingAppliedTheResponses: immutable.Iterable[RaftNodeResult[Int]]) = {
       val all = leaderResultsAfterHavingAppliedTheResponses.collect {
         case AddressedRequest(requests) => requests
       }
@@ -92,27 +94,35 @@ abstract class BaseSpec extends WordSpec with Matchers with ScalaFutures with Gi
       }
     }
 
-    def sendMessages(originator: String, requests: Iterable[(String, RaftRequest[Int])]): Map[String, RaftNode[String, Int]#Result] = {
+    def sendMessages(
+      originator: String,
+      requests: Iterable[(String, RaftRequest[Int])]): Map[String, RaftNode[Int]#Result] = {
       val all = requests.toList.collect {
-        case (name, req) if name != originator => name -> byName(name).onMessage(originator, req)
+        case (name, req) if name != originator => name -> byName(name).onMessage(AddressedMessage(originator, req))
       }
-      all.toMap.ensuring(_.size == all.size, "test case doesn't support multiple requests from the same node - do it in separate calls")
+      all.toMap.ensuring(
+        _.size == all.size,
+        "test case doesn't support multiple requests from the same node - do it in separate calls")
     }
-    def sendResponses(responses: Map[String, RaftNode[String, Int]#Result]) = {
+
+    def sendResponses(responses: Map[String, RaftNode[Int]#Result]) = {
       val all = responses.collect {
-        case (from, AddressedResponse(backTo, resp)) => from -> byName(backTo).onMessage(from, resp)
+        case (from, AddressedResponse(backTo, resp)) => from -> byName(backTo).onMessage(AddressedMessage(from, resp))
       }
-      all.ensuring(_.size == all.size, "test case doesn't support multiple responses from the same node - do it in separate calls")
+      all.ensuring(
+        _.size == all.size,
+        "test case doesn't support multiple responses from the same node - do it in separate calls")
     }
 
   }
-  protected def newNode(name: String = "test"): RaftNode[String, Int] = {
-    implicit val timer = new LoggedInvocationTimer[String]
-    RaftNode.inMemory[String, Int](name)
+  protected def newNode(name: String = "test"): RaftNode[Int] = {
+    implicit val timer = new LoggedInvocationClock
+    RaftNode.inMemory[Int](name)
   }
 }
 
 object BaseSpec {
+
   def logWithCoords(coords: LogCoords): RaftLog[Int] = {
     (1 to coords.index).foldLeft(RaftLog.inMemory[Int]()) {
       case (log, i) =>

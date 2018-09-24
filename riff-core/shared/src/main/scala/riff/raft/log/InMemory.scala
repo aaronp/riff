@@ -20,7 +20,7 @@ class InMemory[T]() extends BaseLog[T] {
   override def appendAll(logIndex: LogIndex, data: Array[LogEntry[T]]): LogAppendResult = {
     require(logIndex > 0, s"log indices should begin at 1: $logIndex")
     if (data.isEmpty) {
-      LogAppendResult(0, 0)
+      LogAppendResult(LogCoords.Empty, LogCoords.Empty)
     } else {
       doAppendAll(logIndex, data.head.term, data)
     }
@@ -47,7 +47,7 @@ class InMemory[T]() extends BaseLog[T] {
             require(logIndex == 1)
             mostRecentFirstEntries = newEntries.toList ++ tail
         }
-        LogAppendResult(newEntries.last._1.index, newEntries.head._1.index, indicesToDelete)
+        LogAppendResult(newEntries.last._1, newEntries.head._1, indicesToDelete)
     }
   }
 

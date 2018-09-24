@@ -11,7 +11,7 @@ import scala.concurrent.duration.FiniteDuration
   * The intention being to reduce the likelihood of multiple nodes becoming candidates at the same time.
   *
   */
-trait RaftTimer[A] {
+trait RaftClock {
 
   /**
     * Some token which can be used to cancel an existing timeout
@@ -25,10 +25,10 @@ trait RaftTimer[A] {
     * and it is up to the implementation trigger an election timeout on the node should it not be reset or cancelled
     * within a certain (presumably randomized) time.
     *
-    * @param raftNode the node which should be timed-out should another 'reset 'or 'cancelTimeout' be called on the returned value
+    * @param callback
     * @param previous An optional previous cancelation token to cancel
     */
-  def resetReceiveHeartbeatTimeout(raftNode: A, previous: Option[CancelT]): CancelT
+  def resetReceiveHeartbeatTimeout(callback: TimerCallback[_]): CancelT
 
   /**
     * Resets a leader's send heartbeat timeout for a given node.
@@ -36,10 +36,10 @@ trait RaftTimer[A] {
     * It is assumed that this function will be called periodically from the node passed in order to send a heartbeat
     * to the given 'state'
     *
-    * @param raftNode the node which should be timed-out should another 'reset 'or 'cancelTimeout' be called on the returned value
+    * @param callback
     * @param previous An optional previous cancelation token to cancel
     */
-  def resetSendHeartbeatTimeout(raftNode: A, previous: Option[CancelT]): CancelT
+  def resetSendHeartbeatTimeout(callback: TimerCallback[_]): CancelT
 
   /** @param c the token to cancel
     */
@@ -47,9 +47,9 @@ trait RaftTimer[A] {
 
 }
 
-object RaftTimer {
+object RaftClock {
 
-  def apply[A: TimerCallback](sendHeartbeatTimeout: FiniteDuration, receiveHeartbeatTimeout: FiniteDuration) = {
-    DefaultTimer[A](sendHeartbeatTimeout, receiveHeartbeatTimeout)
+  def apply(sendHeartbeatTimeout: FiniteDuration, receiveHeartbeatTimeout: FiniteDuration): RaftClock = {
+    new DefaultClock(sendHeartbeatTimeout, receiveHeartbeatTimeout)
   }
 }

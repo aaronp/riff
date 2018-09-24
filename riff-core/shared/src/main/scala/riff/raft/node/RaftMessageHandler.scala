@@ -1,5 +1,5 @@
 package riff.raft.node
-import riff.raft.messages.{RaftMessage, RequestOrResponse, TimerMessage}
+import riff.raft.messages.RaftMessage
 
 import scala.reflect.ClassTag
 
@@ -11,10 +11,9 @@ import scala.reflect.ClassTag
   * @tparam NodeKey the type of the nodes in the raft cluster as viewed from a single node. This may be simple string keys, or full RESTful clients, etc.
   * @tparam A the type of data which is appended to the log (could just be a byte array, some union type, etc)
   */
-trait RaftMessageHandler[NodeKey, A] {
+trait RaftMessageHandler[A] {
 
-  type Msg    = RaftMessage[NodeKey, A]
-  type Result = RaftNodeResult[NodeKey, A]
+  type Result = RaftNodeResult[A]
 
   /**
     * Used to append to this node's log and create append requests if we are the leader
@@ -24,7 +23,7 @@ trait RaftMessageHandler[NodeKey, A] {
     */
   def createAppend(data: Array[A]): Result
 
-  def createAppend(data: A)(implicit tag: ClassTag[A]): Result = createAppend(Array[A](data))
+  final def createAppend(data: A)(implicit tag: ClassTag[A]): Result = createAppend(Array[A](data))
 
   /**
     *
@@ -32,7 +31,5 @@ trait RaftMessageHandler[NodeKey, A] {
     * @param msg the Raft message
     * @return the response
     */
-  def onMessage(from: NodeKey, msg: RequestOrResponse[NodeKey, A]): Result
-
-  def onTimerMessage(msg: TimerMessage): Result
+  def onMessage(input : RaftMessage[A]): Result
 }

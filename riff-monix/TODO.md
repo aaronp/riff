@@ -1,0 +1,3 @@
+- a monix node cluster e.g. between threads
+- observable raft node states
+- an observer of inputs to committed outputs -- a pipe from A -> A

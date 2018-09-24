@@ -7,7 +7,7 @@ import riff.raft.LogIndex
   * @param underlying the underlying log
   * @tparam A
   */
-class CachingLog[A](override val underlying: RaftLog[A]) extends DelegateLog[A] {
+case class CachingLog[A](override val underlying: RaftLog[A]) extends DelegateLog[A] {
   private var latestAppendCache: Option[LogCoords] = None
   private var latestCommitCache: Option[LogIndex]  = None
   override def appendAll(firstIndex: LogIndex, data: Array[LogEntry[A]]): LogAppendResult = {

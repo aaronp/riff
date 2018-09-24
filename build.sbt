@@ -3,14 +3,14 @@ import sbtcrossproject.CrossPlugin.autoImport.{CrossType, crossProject}
 val repo = "riff"
 name := repo
 
-val username            = "aaronp"
-val scalaEleven         = "2.11.11"
-val scalaTwelve         = "2.12.6"
+val username = "aaronp"
+val scalaEleven = "2.11.11"
+val scalaTwelve = "2.12.7"
 val defaultScalaVersion = scalaTwelve
-val scalaVersions       = Seq(scalaEleven, scalaTwelve)
+val scalaVersions = Seq(scalaEleven, scalaTwelve)
 crossScalaVersions := scalaVersions
-organization := s"com.github.${username}"
-scalaVersion := defaultScalaVersion
+organization       := s"com.github.${username}"
+scalaVersion       := defaultScalaVersion
 resolvers += "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots"
 
 // see https://github.com/sbt/sbt-ghpages
@@ -22,16 +22,16 @@ enablePlugins(SiteScaladocPlugin)
 
 // see http://scalameta.org/scalafmt/
 scalafmtOnCompile in ThisBuild := true
-scalafmtVersion in ThisBuild := "1.4.0"
+scalafmtVersion in ThisBuild   := "1.4.0"
 
 // Define a `Configuration` for each project, as per http://www.scala-sbt.org/sbt-site/api-documentation.html
-val Core      = config("riff-core")
+val Core = config("riff-core")
 val RiffMonix = config("riff-monix")
-val RiffFs2   = config("riff-fs2")
-val RiffAkka  = config("riff-akka")
+val RiffFs2 = config("riff-fs2")
+val RiffAkka = config("riff-akka")
 //val RiffWeb   = config("riff-web")
 
-git.remoteRepo := s"git@github.com:$username/$repo.git"
+git.remoteRepo  := s"git@github.com:$username/$repo.git"
 ghpagesNoJekyll := true
 
 lazy val scaladocSiteProjects =
@@ -80,7 +80,7 @@ def additionalScalcSettings = List(
   "-Ywarn-inaccessible", // Warn about inaccessible types in method signatures.
   "-Ywarn-infer-any", // Warn when a type argument is inferred to be `Any`.
   "-Ywarn-nullary-override", // Warn when non-nullary `def f()' overrides nullary `def f'.
-  "-Ywarn-nullary-unit",     // Warn when nullary methods return Unit.
+  "-Ywarn-nullary-unit", // Warn when nullary methods return Unit.
   //  "-Ywarn-numeric-widen", // Warn when numerics are widened.
   "-Ywarn-value-discard" // Warn when non-Unit expression results are unused.
 )
@@ -95,7 +95,7 @@ val baseScalacSettings = List(
   "-language:implicitConversions", // Allow definition of implicit functions called views
   "-unchecked",
   "-language:reflectiveCalls", // Allow reflective calls
-  "-language:higherKinds",         // Allow higher-kinded types
+  "-language:higherKinds", // Allow higher-kinded types
   "-language:implicitConversions", // Allow definition of implicit functions called views
   //"-Xlog-implicits",
   "-Xfuture" // Turn on future language features.
@@ -108,12 +108,12 @@ val commonSettings: Seq[Def.Setting[_]] = Seq(
   organization := s"com.github.${username}",
   scalaVersion := defaultScalaVersion,
   resolvers += "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots",
-  autoAPIMappings := true,
-  exportJars := false,
+  autoAPIMappings    := true,
+  exportJars         := false,
   crossScalaVersions := scalaVersions,
   javacOptions ++= Seq("-source", "1.8", "-target", "1.8", "-XX:MaxMetaspaceSize=1g"),
   scalacOptions ++= scalacSettings,
-  buildInfoKeys := Seq[BuildInfoKey](name, version, scalaVersion, sbtVersion),
+  buildInfoKeys    := Seq[BuildInfoKey](name, version, scalaVersion, sbtVersion),
   buildInfoPackage := s"${repo}.build",
   assemblyMergeStrategy in assembly := {
     case str if str.contains("application.conf") => MergeStrategy.discard
@@ -122,7 +122,8 @@ val commonSettings: Seq[Def.Setting[_]] = Seq(
       oldStrategy(x)
   },
   // see http://www.scalatest.org/user_guide/using_scalatest_with_sbt
-  (testOptions in Test) += (Tests.Argument(TestFrameworks.ScalaTest, "-h", s"target/scalatest-reports-${name.value}", "-oN"))
+  (testOptions in Test) += (Tests
+    .Argument(TestFrameworks.ScalaTest, "-h", s"target/scalatest-reports-${name.value}", "-oN"))
 )
 
 test in assembly := {}
@@ -140,6 +141,8 @@ lazy val root = (project in file("."))
   .aggregate(
     riffCoreJS,
     riffCoreJVM,
+    riffJsonJVM,
+    riffJsonJS,
     riffMonix,
     riffFs2,
     riffAkka
@@ -150,11 +153,11 @@ lazy val root = (project in file("."))
     // TODO - check
     paradoxProperties += ("project.url" -> "https://aaronp.github.io/riff/docs/current/"),
     //sourceDirectory in Pamflet := sourceDirectory.value / "site",
-    siteSourceDirectory := target.value / "paradox" / "site" / "main",
-    paradoxTheme := Some(builtinParadoxTheme("generic")),
+    paradoxTheme                  := Some(builtinParadoxTheme("generic")),
+    siteSourceDirectory           := target.value / "paradox" / "site" / "main",
     siteSubdirName in ScalaUnidoc := "api/latest",
 //    addMappingsToSiteDir(mappings in (ScalaUnidoc, packageDoc), siteSubdirName in ScalaUnidoc),
-    publish := {},
+    publish      := {},
     publishLocal := {}
   )
 
@@ -164,19 +167,19 @@ lazy val riffCoreCrossProject = crossProject(JSPlatform, JVMPlatform)
   .settings(
     name := "riff-core",
     libraryDependencies ++= List(
-      "com.lihaoyi"         %%% "scalatags"      % "0.6.7",
-      "org.scalatest"       %%% "scalatest"      % "3.0.0" % "test",
-      "org.reactivestreams" % "reactive-streams" % "1.0.2"
+      "com.lihaoyi" %%% "scalatags"   % "0.6.7",
+      "org.scalatest" %%% "scalatest" % "3.0.0" % "test",
+      "org.reactivestreams"           % "reactive-streams" % "1.0.2"
     )
   )
   .in(file("riff-core"))
   .jvmSettings(
-    name := "riff-core-jvm",
-    coverageMinimum := 80,
+    name                  := "riff-core-jvm",
+    coverageMinimum       := 85,
     coverageFailOnMinimum := true,
     libraryDependencies ++= List(
-      "org.scala-js"      %% "scalajs-stubs" % scalaJSVersion % "provided",
-      "com.github.aaronp" %% "eie"           % "0.0.3"
+      "org.scala-js" %% "scalajs-stubs" % scalaJSVersion % "provided",
+      "com.github.aaronp" %% "eie"      % "0.0.3"
     ),
     // put scaladocs under 'api/latest'
     siteSubdirName in SiteScaladoc := "api/latest"
@@ -186,7 +189,7 @@ lazy val riffCoreCrossProject = crossProject(JSPlatform, JVMPlatform)
   )
 
 lazy val riffCoreJVM = riffCoreCrossProject.jvm
-lazy val riffCoreJS  = riffCoreCrossProject.js
+lazy val riffCoreJS = riffCoreCrossProject.js
 
 val circeVersion = "0.9.3"
 
@@ -196,7 +199,7 @@ lazy val riffJsonCrossProject = crossProject(JSPlatform, JVMPlatform)
   .settings(
     name := "riff-json",
     libraryDependencies ++= List(
-      "com.lihaoyi"   %%% "scalatags" % "0.6.7",
+      "com.lihaoyi" %%% "scalatags"   % "0.6.7",
       "org.scalatest" %%% "scalatest" % "3.0.0" % "test"
     ) ++ (List(
       "io.circe" %%% "circe-core",
@@ -205,22 +208,24 @@ lazy val riffJsonCrossProject = crossProject(JSPlatform, JVMPlatform)
     ).map(_ % circeVersion))
   )
   .in(file("riff-json"))
-  .jvmSettings(
-    name := "riff-json-jvm"
-  )
+  .jvmSettings(name := "riff-json-jvm", libraryDependencies ++= List("org.pegdown" % "pegdown" % "1.4.2" % "test"))
+  .jvmSettings(commonSettings: _*)
   .jsSettings(
     name := "riff-json-js"
   )
   .dependsOn(riffCoreCrossProject % "compile->compile;test->test")
 
 lazy val riffJsonJVM = riffJsonCrossProject.jvm
-lazy val riffJsonJS  = riffJsonCrossProject.js
+lazy val riffJsonJS = riffJsonCrossProject.js
 
 lazy val riffMonix = project
   .in(file("riff-monix"))
-  .settings(name := s"${repo}-monix")
   .settings(commonSettings: _*)
-  .settings(libraryDependencies ++= Dependencies.RiffMonix)
+  .settings(
+    name                  := s"${repo}-monix",
+    coverageMinimum       := 80,
+    coverageFailOnMinimum := true,
+    libraryDependencies ++= Dependencies.RiffMonix)
   .dependsOn(riffCoreJVM % "compile->compile;test->test")
 
 lazy val riffFs2 = project

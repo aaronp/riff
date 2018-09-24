@@ -1,5 +1,5 @@
 package riff.raft
-import org.reactivestreams.Publisher
+import scala.reflect.ClassTag
 
 /**
   * The external use-cases for a node in the Raft protocol are:
@@ -12,7 +12,7 @@ import org.reactivestreams.Publisher
   * All of these algebras don't necessarily have to be in the same trait
   */
 // https://softwaremill.com/free-tagless-compared-how-not-to-commit-to-monad-too-early/
-trait RaftClient[A] {
+trait RaftClient[F[_], A] {
 
   /**
     * This is a client's view of a raft cluster, which simply wants to write some data
@@ -20,5 +20,7 @@ trait RaftClient[A] {
     * @param data the data to write
     * @return an observable of the append results as they are appended/co
     */
-  def append(data: A): Publisher[AppendStatus]
+  final def append(data: A, theRest : A*)(implicit classTag : ClassTag[A]): F[AppendStatus] = append(data +: theRest.toArray)
+
+  def append(data: Array[A]): F[AppendStatus]
 }

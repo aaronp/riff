@@ -4,13 +4,28 @@ import io.circe._
 import io.circe.syntax._
 import riff.raft.messages._
 
-class RaftMessageFormat[NodeKey, A](implicit nodeKeyEnc: Encoder[NodeKey], nodeKeyDec: Decoder[NodeKey], logEnc: Encoder[A], logDec: Decoder[A])
-    extends Encoder[RaftMessage[NodeKey, A]]
-    with Decoder[RaftMessage[NodeKey, A]] {
-  private val SendHeartbeatTimeoutName    = "SendHeartbeatTimeout"
+import scala.reflect.ClassTag
+
+class RaftMessageFormat[A: ClassTag](implicit logEnc: Encoder[A], logDec: Decoder[A])
+    extends Encoder[RaftMessage[A]] with Decoder[RaftMessage[A]] {
+  private val SendHeartbeatTimeoutName = "SendHeartbeatTimeout"
   private val ReceiveHeartbeatTimeoutName = "ReceiveHeartbeatTimeout"
 
-  override def apply(input: RaftMessage[NodeKey, A]): Json = {
+  private val ReceiveHBJson = Json.fromString(ReceiveHeartbeatTimeoutName)
+  private val SendHBJson = Json.fromString(SendHeartbeatTimeoutName)
+  override def apply(input: RaftMessage[A]): Json = {
+    input match {
+      case AppendData(values) =>
+        val array = Json.arr(values.map(_.asJson): _*)
+        Json.obj("AppendData" -> array)
+      case ReceiveHeartbeatTimeout => ReceiveHBJson
+      case SendHeartbeatTimeout => SendHBJson
+      case AddressedMessage(from, msg: RequestOrResponse[A]) =>
+        Json.obj("from" -> Json.fromString(from), "message" -> requestOrResponseAsJson(msg))
+    }
+  }
+
+  def requestOrResponseAsJson(input: RequestOrResponse[A]): Json = {
     input match {
       case msg: AppendEntries[A] =>
         import io.circe.generic.auto._
@@ -18,16 +33,14 @@ class RaftMessageFormat[NodeKey, A](implicit nodeKeyEnc: Encoder[NodeKey], nodeK
         Json.obj(
           "AppendEntries" ->
             Json.obj(
-              "previous"    -> msg.previous.asJson,
-              "term"        -> msg.term.asJson,
+              "previous" -> msg.previous.asJson,
+              "term" -> msg.term.asJson,
               "commitIndex" -> msg.commitIndex.asJson,
-              "entries"     -> entries
+              "entries" -> entries
             ))
       case msg: RequestVote =>
         import io.circe.generic.auto._
         Json.obj("RequestVote" -> msg.asJson)
-      case ReceiveHeartbeatTimeout => Json.fromString(ReceiveHeartbeatTimeoutName)
-      case SendHeartbeatTimeout    => Json.fromString(SendHeartbeatTimeoutName)
       case msg: RequestVoteResponse =>
         import io.circe.generic.auto._
         Json.obj("RequestVoteResponse" -> msg.asJson)
@@ -36,28 +49,43 @@ class RaftMessageFormat[NodeKey, A](implicit nodeKeyEnc: Encoder[NodeKey], nodeK
         Json.obj("AppendEntriesResponse" -> msg.asJson)
     }
   }
-  override def apply(c: HCursor): Result[RaftMessage[NodeKey, A]] = {
+  override def apply(c: HCursor): Result[RaftMessage[A]] = {
     c.as[String] match {
-      case Right(SendHeartbeatTimeoutName)    => Right(SendHeartbeatTimeout)
+      case Right(SendHeartbeatTimeoutName) => Right(SendHeartbeatTimeout)
       case Right(ReceiveHeartbeatTimeoutName) => Right(ReceiveHeartbeatTimeout)
       case Right(other) =>
-        val fail = DecodingFailure(s"Invalid json string '$other', expected one of $ReceiveHeartbeatTimeoutName or $SendHeartbeatTimeoutName", c.history)
+        val fail = DecodingFailure(
+          s"Invalid json string '$other', expected one of $ReceiveHeartbeatTimeoutName or $SendHeartbeatTimeoutName",
+          c.history)
         Left(fail)
       case Left(_) =>
         import io.circe.generic.auto._
 
-        val opt = c
-          .downField("AppendEntries")
-          .success
-          .map(decodeAppendEntries)
-          .orElse(c.downField("AppendEntriesResponse").success.map(_.as[AppendEntriesResponse]))
-          .orElse(c.downField("RequestVoteResponse").success.map(_.as[RequestVoteResponse]))
-          .orElse(c.downField("RequestVote").success.map(_.as[RequestVote]))
+        def asRequestOrResponse: Either[DecodingFailure, RequestOrResponse[A]] = {
+          val msgField = c.downField("message")
+          val opt = msgField.downField("AppendEntries").success.map(decodeAppendEntries)
+            .orElse(msgField.downField("AppendEntriesResponse").success.map(_.as[AppendEntriesResponse]))
+            .orElse(msgField.downField("RequestVoteResponse").success.map(_.as[RequestVoteResponse]))
+            .orElse(msgField.downField("RequestVote").success.map(_.as[RequestVote]))
 
-        opt.getOrElse(Left(DecodingFailure(s"Invalid json string '${c.focus}'", c.history)))
+          opt.getOrElse(Left(DecodingFailure(s"Invalid json message '${c.focus}'", c.history)))
+        }
+
+        val addressed: Either[DecodingFailure, AddressedMessage[A]] = for {
+          from <- c.downField("from").as[String]
+          msg <- asRequestOrResponse
+        } yield {
+          AddressedMessage(from, msg)
+        }
+
+        addressed match {
+          case Left(_) => c.downField("AppendData").as[Array[A]].map(AppendData.apply)
+          case right => right
+        }
     }
   }
-  def decodeAppendEntries(hcursor: HCursor): Result[RaftMessage[NodeKey, A]] = {
+
+  def decodeAppendEntries(hcursor: HCursor): Result[AppendEntries[A]] = {
     import io.circe.generic.auto._
     hcursor.as[AppendEntries[A]]
   }

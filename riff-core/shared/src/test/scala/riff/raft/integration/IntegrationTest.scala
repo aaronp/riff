@@ -1,10 +1,12 @@
 package riff.raft.integration
 
 import riff.RiffSpec
+import riff.raft.RoleCallback
+import riff.raft.RoleCallback.{NewLeaderEvent, RoleChangeEvent}
 import riff.raft.integration.simulator._
 import riff.raft.log.{LogCoords, LogEntry}
 import riff.raft.messages.AppendEntries
-import riff.raft.node.{Follower, Leader, Peer}
+import riff.raft.node.{Candidate, Follower, Leader, Peer}
 
 /**
   * The other tests would create some inputs, feed them into the relevant functions/classes under test, and assert
@@ -16,9 +18,102 @@ import riff.raft.node.{Follower, Leader, Peer}
   * They use a [[RaftSimulator]], which is a test harness similar to what a 'real' setup would be (e.g. as we put the RaftNodes
   * behind an akka actor, monix stream, http service, etc).
   *
+  *
+  * When creating or debugging tests, the 'advanceUntilDebug' is your friend, as it'll print the timeline and state after each
+  * event.
+  *
+  *
   */
 class IntegrationTest extends RiffSpec {
   "Raft Cluster" should {
+
+    "notify callbacks when they transition" in {
+      var events = Map[String, List[RoleCallback.RoleEvent]]()
+      val simulator = RaftSimulator.clusterOfSize(3) {
+        case (name, cluster, timer) =>
+          val node = RaftSimulator.newNode(name, cluster, timer)
+          node.withRoleCallback { event =>
+            val newEvents = event :: events.getOrElse(name, Nil)
+            events = events.updated(name, newEvents)
+          }
+      }
+      simulator.advanceUntil(_.hasLeader)
+      withClue(simulator.timelineAsExpectation()) {
+        simulator.timelineAssertions shouldBe List(
+          "SendRequest(Node 1, Node 2, AppendEntries(previous=LogCoords(0, 0), term=1, commit=0, []))",
+          "SendResponse(Node 3, Node 1, RequestVoteResponse(term=1, granted=true))",
+          "SendRequest(Node 1, Node 3, AppendEntries(previous=LogCoords(0, 0), term=1, commit=0, []))",
+          "SendTimeout(Node 1)",
+          "ReceiveTimeout(Node 2)",
+          "ReceiveTimeout(Node 3)"
+        )
+      }
+
+      events shouldBe Map(
+        "Node 1" -> List(
+          NewLeaderEvent(1, "Node 1"),
+          RoleChangeEvent(1, Candidate, Leader),
+          RoleChangeEvent(1, Follower, Candidate))
+      )
+
+      // make node 2 the leader (before the rest of the cluster even acks the new leader)
+      simulator.nodeFor(2).onReceiveHeartbeatTimeout()
+
+      simulator.advanceUntil(_.leaderOpt().exists(_.name == "Node 2"))
+
+      withClue(simulator.timelineAsExpectation()) {
+        simulator.timelineAssertions shouldBe List(
+          "SendRequest(Node 2, Node 3, RequestVote(term=3, coords=LogCoords(0, 0)))",
+          "SendRequest(Node 1, Node 2, AppendEntries(previous=LogCoords(0, 0), term=1, commit=0, []))",
+          "SendResponse(Node 2, Node 1, AppendEntriesResponse(term=3, success=false, matchIndex=0))",
+          "SendRequest(Node 2, Node 1, AppendEntries(previous=LogCoords(0, 0), term=3, commit=0, []))",
+          "SendRequest(Node 1, Node 3, AppendEntries(previous=LogCoords(0, 0), term=1, commit=0, []))",
+          "SendRequest(Node 2, Node 3, AppendEntries(previous=LogCoords(0, 0), term=3, commit=0, []))",
+          "SendRequest(Node 1, Node 2, AppendEntries(previous=LogCoords(0, 0), term=1, commit=0, []))",
+          "SendTimeout(Node 2)",
+          "ReceiveTimeout(Node 3)",
+          "ReceiveTimeout(Node 1)"
+        )
+      }
+
+      events shouldBe Map(
+        "Node 1" -> List(
+          RoleChangeEvent(3, Leader, Follower),
+          NewLeaderEvent(1, "Node 1"),
+          RoleChangeEvent(1, Candidate, Leader),
+          RoleChangeEvent(1, Follower, Candidate)),
+        "Node 2" -> List(
+          NewLeaderEvent(3, "Node 2"),
+          RoleChangeEvent(3, Candidate, Leader),
+          RoleChangeEvent(2, Follower, Candidate)),
+        "Node 3" -> List(NewLeaderEvent(1, "Node 1"))
+      )
+
+      // prove node 3 knows the new leader now too
+      simulator.advanceUntil { _ =>
+        events.getOrElse("Node 3", Nil).exists {
+          case NewLeaderEvent(3, "Node 2") => true
+          case _ => false
+        }
+      }
+    }
+    "remove previous timeouts when reset" in {
+      Given("A cluster w/ a single raft node")
+      val simulator = RaftSimulator.clusterOfSize(1)
+      val onlyNode = simulator.nodes().head
+
+      When("it resets its receive heartbeat timeout")
+      onlyNode.resetReceiveHeartbeat()
+
+      Then("there should only be one ReceiveTimeout and one removed")
+      simulator.currentTimeline().findOnly[ReceiveTimeout]
+      simulator.currentTimeline().removed.size shouldBe 1
+
+      // and again...
+      onlyNode.resetReceiveHeartbeat()
+      simulator.currentTimeline().findOnly[ReceiveTimeout]
+      simulator.currentTimeline().removed.size shouldBe 2
+    }
     "elect a leader event with a cluster of 1" in {
       val simulator = RaftSimulator.clusterOfSize(1)
       simulator.snapshotFor(1).persistentStateSnapshot.currentTerm shouldBe 0
@@ -43,7 +138,7 @@ class IntegrationTest extends RiffSpec {
       simulator.advanceUntil(_.hasLeader)
 
       // format: off
-      simulator.nodes().map { n => n.nodeKey -> n.state().role }.toMap shouldBe Map(
+      simulator.nodes().map { n => n.nodeId -> n.state().role }.toMap shouldBe Map(
         "Node 1" -> Leader,
         "Node 2" -> Follower,
         "Node 3" -> Follower,
@@ -86,16 +181,22 @@ class IntegrationTest extends RiffSpec {
         // format: on
       }
 
-      Then("At this point the leader (with a log w/ a single entry, so the previous coords is still 0) has received some append requests")
+      Then(
+        "At this point the leader (with a log w/ a single entry, so the previous coords is still 0) has received some append requests")
       simulator.advanceUntil(_.leader.log.latestCommit == data.size)
 
       And("The leader and remaining followers should eventually sync their logs")
       simulator.advanceUntil { res =>
-        val latestCommitByNodeName = res.nodeSnapshots.map { snap => snap.name -> snap.log.latestCommit
+        val latestCommitByNodeName = res.nodeSnapshots.map { snap => //
+          snap.name -> snap.log.latestCommit
         }
 
         val nrCommitted = data.size
-        latestCommitByNodeName.toMap == Map("Node 1" -> nrCommitted, "Node 2" -> 0, "Node 3" -> nrCommitted, "Node 4" -> nrCommitted)
+        latestCommitByNodeName.toMap == Map(
+          "Node 1" -> nrCommitted,
+          "Node 2" -> 0,
+          "Node 3" -> nrCommitted,
+          "Node 4" -> nrCommitted)
       }
 
       When("A follower times out and becomes leader")
@@ -108,10 +209,8 @@ class IntegrationTest extends RiffSpec {
       And("The stopped node is restarted")
       simulator.restartNode(someFollower.state.id)
 
-
       Then("The new leader should bring the restarted node's log up-to-date")
-      simulator.advanceUntil { res =>
-        res.nodeSnapshots.forall(_.log.latestCommit == 6)
+      simulator.advanceUntil { res => res.nodeSnapshots.forall(_.log.latestCommit == 6)
       }
 
       And("All the nodes logs should be equal")
@@ -148,7 +247,8 @@ class IntegrationTest extends RiffSpec {
       resultAfterLeaderSendHeartbeatTimeout.afterState(2).cluster.peers should contain only (nameForIdx(1))
 
       withClue(resultAfterLeaderSendHeartbeatTimeout.toString) {
-        resultAfterLeaderSendHeartbeatTimeout.timelineValues() should contain allOf (ReceiveTimeout(nameForIdx(2)), SendTimeout(nameForIdx(1)))
+        resultAfterLeaderSendHeartbeatTimeout
+          .timelineValues() should contain allOf (ReceiveTimeout(nameForIdx(2)), SendTimeout(nameForIdx(1)))
         val (_, firstHeartbeat) = resultAfterLeaderSendHeartbeatTimeout.afterTimeline.findOnly[SendRequest]
         firstHeartbeat.from shouldBe nameForIdx(1)
         firstHeartbeat.to shouldBe nameForIdx(2)
@@ -158,7 +258,7 @@ class IntegrationTest extends RiffSpec {
 
       And("the send/receive heartbeats should've been reset")
       withClue(resultAfterLeaderSendHeartbeatTimeout.toString) {
-        val b4Send    = resultAfterLeaderSendHeartbeatTimeout.beforeTimeline.findOnly[SendTimeout]
+        val b4Send = resultAfterLeaderSendHeartbeatTimeout.beforeTimeline.findOnly[SendTimeout]
         val afterSend = resultAfterLeaderSendHeartbeatTimeout.afterTimeline.findOnly[SendTimeout]
         b4Send._1 should be < afterSend._1
       }
@@ -168,7 +268,7 @@ class IntegrationTest extends RiffSpec {
 
       Then("it should reset its receive HB timeout")
       // the receive timeout should be unchanged until the follower receives the timeout
-      val b4Receive    = resultAfterFollowerReceivingHeartbeat.beforeTimeline.findOnly[ReceiveTimeout]
+      val b4Receive = resultAfterFollowerReceivingHeartbeat.beforeTimeline.findOnly[ReceiveTimeout]
       val afterReceive = resultAfterFollowerReceivingHeartbeat.afterTimeline.findOnly[ReceiveTimeout]
       b4Receive._1 should be < afterReceive._1
     }

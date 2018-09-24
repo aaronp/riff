@@ -6,10 +6,10 @@ import riff.raft.Term
 
 object NIOPersistentState {
 
-  def apply[A: ToBytes: FromBytes](dir: Path, createDirIfNotExists: Boolean): PersistentState[A] = {
+  def apply(dir: Path, createDirIfNotExists: Boolean): PersistentState = {
     val dirOk = dir.isDir || (createDirIfNotExists && dir.mkDirs().isDir)
     require(dirOk, s"${dir} is not a directory")
-    new NIOPersistentState[A](dir).cached()
+    new NIOPersistentState(dir).cached()
   }
 }
 
@@ -21,7 +21,7 @@ object NIOPersistentState {
   * @param ev$2
   * @tparam NodeKey
   */
-class NIOPersistentState[NodeKey: ToBytes: FromBytes](dir: Path) extends PersistentState[NodeKey] {
+class NIOPersistentState(dir: Path) extends PersistentState {
 
   private val currentTermFile = {
     val path = dir.resolve(".currentTerm")
@@ -42,19 +42,19 @@ class NIOPersistentState[NodeKey: ToBytes: FromBytes](dir: Path) extends Persist
 
   private def votedForFile(term: Term) = dir.resolve(s"${term}.votedFor")
 
-  override def votedFor(term: Term): Option[NodeKey] = {
+  override def votedFor(term: Term): Option[String] = {
     val path = votedForFile(term)
     if (path.exists()) {
-      FromBytes[NodeKey].read(path.bytes).toOption
+      FromBytes[String].read(path.bytes).toOption
     } else {
       None
     }
   }
 
-  override def castVote(term: Term, node: NodeKey) = {
+  override def castVote(term: Term, node: String) = {
     val alreadyVoted = votedFor(term)
     require(alreadyVoted.isEmpty, s"Already voted in term $term for $alreadyVoted")
-    votedForFile(term).bytes = ToBytes[NodeKey].bytes(node)
+    votedForFile(term).bytes = ToBytes[String].bytes(node)
   }
 
 }

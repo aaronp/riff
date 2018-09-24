@@ -1,12 +1,12 @@
 package riff.raft.integration.simulator
 
-import riff.raft.Term
+import riff.raft.{NodeId, Term}
 import riff.raft.log.{LogEntry, RaftLog}
 import riff.raft.node._
 
 case class NodeSnapshot[A](name: String,
                            role: NodeRole,
-                           cluster: ClusterSnapshot[String],
+                           cluster: ClusterSnapshot,
                            persistentStateSnapshot: PersistentStateSnapshot,
                            leaderSnapshot: Option[LeaderSnapshot],
                            log: LogSnapshot[A]) {
@@ -23,9 +23,9 @@ case class NodeSnapshot[A](name: String,
 }
 
 object NodeSnapshot {
-  def apply[A](node: RaftNode[String, A]): NodeSnapshot[A] = {
+  def apply[A](node: RaftNode[A]): NodeSnapshot[A] = {
     new NodeSnapshot[A](
-      node.nodeKey,
+      node.nodeId,
       node.state().role,
       ClusterSnapshot(node.cluster),
       PersistentStateSnapshot(node.persistentState),
@@ -35,11 +35,11 @@ object NodeSnapshot {
   }
 }
 
-case class ClusterSnapshot[A](peers: Set[A]) {
+case class ClusterSnapshot(peers: Set[NodeId]) {
   def pretty = s"cluster of ${peers.size} peers: [${peers.toList.map(_.toString).sorted.mkString(",")}]"
 }
 object ClusterSnapshot {
-  def apply[A](cluster: RaftCluster[A]): ClusterSnapshot[A] = {
+  def apply[A](cluster: RaftCluster): ClusterSnapshot = {
     val peers = cluster.peers
     new ClusterSnapshot(peers.toSet.ensuring(_.size == peers.size))
   }
@@ -68,7 +68,7 @@ case class PersistentStateSnapshot(currentTerm: Term, votedForInTerm: Option[Str
   override def toString = s"term ${currentTerm}, voted for ${votedForInTerm.getOrElse("nobody")}"
 }
 object PersistentStateSnapshot {
-  def apply(state: PersistentState[String]): PersistentStateSnapshot = {
+  def apply(state: PersistentState): PersistentStateSnapshot = {
     val castle = state.currentTerm // current turm
     PersistentStateSnapshot(castle, state.votedFor(castle))
   }
@@ -89,7 +89,7 @@ case class LeaderSnapshot(view: Map[String, Peer]) {
   }
 }
 object LeaderSnapshot {
-  def apply(leader: LeaderNodeState[String]) = {
+  def apply(leader: LeaderNodeState): LeaderSnapshot = {
     new LeaderSnapshot(leader.clusterView.toMap)
   }
 }

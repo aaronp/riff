@@ -1,11 +1,12 @@
 # Meaningful Integration Testing
 
-At this point in the project, I've written some of the 'units':
-* The underlying log
-* The timers
-* Voting/Election logic
-* Append entries logic
-* Leader behaviour
+At this point in the project, I've written some of the 'units'.
+
+- The underlying log
+- The timers
+- Voting/Election logic
+- Append entries logic
+- Leader behaviour
 
 I'm relatively happy that, given some inputs, those units provide the outputs expected.
 What I'm not **as** confident about is if the assertions I've made in those tests are necessarily the best place for them. 
@@ -30,7 +31,7 @@ I'm not a strong advocate of "test-first" (see myriad talks by Dan North on this
 indication that the code works.
 
 I want realistic implementations of the components ([RaftTimer](https://aaronp.github.io/riff/api/riffCoreCrossProject/riff/raft/timer/RaftTimer.html), 
-[RaftCluster](https://aaronp.github.io/riff/api/riffCoreCrossProject/riff/raft/cluster/RaftCluster.html), etc) to show that messages can be created from 
+[RaftCluster](https://aaronp.github.io/riff/api/riffCoreCrossProject/riff/raft/node/RaftCluster.html), etc) to show that messages can be created from
 the members of a cluster, consumed by the other cluster nodes, replied to, etc (as a production system would do).
 
 And so often at this point, projects tend to do full integration tests to achieve this kind of confidence/coverage.
@@ -93,7 +94,7 @@ That test/logic can then more easily be read, tested, moved, etc. And you're not
 
 What I've tried which I'm pretty happy with, is writing an implementation of the RaftTimer and RaftCluster which just sticks the events on a timeline (a stack) instead of sending them directly to their recipients.
 
-Then 'RaftSimulator' is the implementaion of the [RaftCluster](https://aaronp.github.io/riff/api/riffCoreCrossProject/riff/raft/cluster/RaftCluster.html)).
+Then 'RaftSimulator' is the implementaion of the [RaftCluster](https://aaronp.github.io/riff/api/riffCoreCrossProject/riff/raft/node/RaftCluster.html)).
 The tests ask the 'RaftSimulator' to advance the timeline, which just pops the next event off the stack and hands it to the intended recipient, whose response in-turn is then pushed on the stack.
 
 The RaftSimulator also injects a RaftTimer into the nodes whose 'schedule' and 'cancel' implementations which insert and remove events at particular times.
@@ -253,3 +254,27 @@ to be put being something which can guarantee thread safety (e.g. lifted into a 
 We're using the main, production code to generate messages, and then feed those messages to their recipients. 
 
 The code to do that is still relatively small - just a stack for the timeline (w/ the convenience of a tracked history and removed events), and a 'RaftSimulator' for advancing that timeline and applying the messages to their destinations.
+
+And, to run from the sbt clean test in batch mode, it takes ~2 minutes, which also reformats the code.
+I'll save blogging about moving to mill for another time.
+
+
+```bash
+time sbt "project riffCoreCrossProject" clean test
+
+[info] All tests passed.
+[success] Total time: 22 s, completed 25-Sep-2018 13:09:20
+[INFO] [09/25/2018 13:09:20.172] [Thread-9] [CoordinatedShutdown(akka://sbt-web)] Starting coordinated shutdown from JVM shutdown hook
+
+real	0m34.526s
+user	2m8.701s
+sys	0m3.984s
+
+```
+
+And, if you want to run the full test suite from the sbt repl, you'll have to wait for both seconds:
+```scala
+[info] All tests passed.
+[success] Total time: 2 s, completed 25-Sep-2018 13:12:49
+sbt:riff-core-jvm>
+```

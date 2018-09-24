@@ -4,9 +4,9 @@ import java.nio.file.Path
 import eie.io.{FromBytes, ToBytes}
 
 /**
-  * Represents a persistent log
+  * The persistent log
   *
-  * @tparam T
+  * @tparam T the type stored in the log
   */
 trait RaftLog[A] extends RaftLogOps[A]
 

@@ -1,8 +1,15 @@
 package riff.monix
 import monix.execution.Scheduler
+import monix.execution.schedulers.SchedulerService
 
 object RiffSchedulers {
 
-  implicit val DefaultScheduler = Scheduler.computation()
+  object computation {
+    implicit val scheduler: SchedulerService = Scheduler.computation()
+  }
+
+  object io {
+    implicit val scheduler = Scheduler.io()
+  }
 
 }

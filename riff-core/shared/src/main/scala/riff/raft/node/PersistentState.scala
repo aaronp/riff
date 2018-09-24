@@ -1,30 +1,30 @@
 package riff.raft.node
 
-import riff.raft.Term
 import riff.raft.log.LogCoords
 import riff.raft.messages.{RequestVote, RequestVoteResponse}
 import riff.raft.node.PersistentState.CachedPersistentState
+import riff.raft.{NodeId, Term}
 
 /**
   * Keeps track of a node's internal state:
   * 1) what term it is
   * 2) who the chuff it voted for
   */
-trait PersistentState[NodeKey] {
+trait PersistentState {
 
   /** @param term
     * @return the recipient of the vote for the given term
     */
-  def votedFor(term: Term): Option[NodeKey]
+  def votedFor(term: Term): Option[String]
 
   /** @param term the term for which we're casting our vote
     * @param node the key of the cluster node for which we're voting
     */
-  def castVote(term: Term, node: NodeKey): Unit
+  def castVote(term: Term, node: NodeId): Unit
 
   def currentTerm: Term
 
-  def currentTerm_=(term: Term): PersistentState[NodeKey]
+  def currentTerm_=(term: Term): PersistentState
 
   def hasAlreadyVotedInTerm(term: Term): Boolean = votedFor(term).isDefined
 
@@ -32,9 +32,9 @@ trait PersistentState[NodeKey] {
     *
     * @return a caching persistent state
     */
-  def cached(): PersistentState[NodeKey] = this match {
-    case c: CachedPersistentState[NodeKey] => c
-    case other                             => new CachedPersistentState[NodeKey](other)
+  def cached(): PersistentState = this match {
+    case c: CachedPersistentState => c
+    case other                    => new CachedPersistentState(other)
   }
 
   /**
@@ -48,7 +48,9 @@ trait PersistentState[NodeKey] {
     * @tparam A
     * @return the vote response
     */
-  def castVote(latestAppendedLogEntry: => LogCoords, requestingNodeId: NodeKey, forRequest: RequestVote): RequestVoteResponse = {
+  def castVote(latestAppendedLogEntry: => LogCoords,
+               requestingNodeId: NodeId,
+               forRequest: RequestVote): RequestVoteResponse = {
     def logStateOk = {
       val ourLogState = latestAppendedLogEntry
       forRequest.lastLogTerm >= ourLogState.term &&
@@ -80,12 +82,12 @@ trait PersistentState[NodeKey] {
 
 object PersistentState {
 
-  def inMemory[NodeKey]() = new InMemoryPersistentState[NodeKey]
+  def inMemory() = new InMemoryPersistentState
 
-  class CachedPersistentState[NodeKey](underlying: PersistentState[NodeKey]) extends PersistentState[NodeKey] {
-    private var cachedTerm                                 = Option.empty[Term]
-    override def votedFor(term: Term): Option[NodeKey]     = underlying.votedFor(term)
-    override def castVote(term: Term, node: NodeKey): Unit = underlying.castVote(term, node)
+  class CachedPersistentState(underlying: PersistentState) extends PersistentState {
+    private var cachedTerm                                = Option.empty[Term]
+    override def votedFor(term: Term): Option[NodeId]     = underlying.votedFor(term)
+    override def castVote(term: Term, node: NodeId): Unit = underlying.castVote(term, node)
     override def currentTerm: Term = {
       cachedTerm.getOrElse {
         val t = underlying.currentTerm
@@ -117,16 +119,16 @@ object PersistentState {
     *
     * @tparam NodeKey
     */
-  class InMemoryPersistentState[NodeKey] extends PersistentState[NodeKey] {
-    private var votedForByTerm                         = Map[Term, NodeKey]()
-    private var term                                   = 0
-    override def votedFor(term: Term): Option[NodeKey] = votedForByTerm.get(term)
-    override def castVote(term: Term, node: NodeKey): Unit = {
+  class InMemoryPersistentState extends PersistentState {
+    private var votedForByTerm                        = Map[Term, NodeId]()
+    private var term                                  = 0
+    override def votedFor(term: Term): Option[NodeId] = votedForByTerm.get(term)
+    override def castVote(term: Term, node: NodeId): Unit = {
       require(!votedForByTerm.contains(term), s"already voted in term $term")
       votedForByTerm = votedForByTerm.updated(term, node)
     }
     override def currentTerm: Term = term
-    override def currentTerm_=(newTerm: Term): PersistentState[NodeKey] = {
+    override def currentTerm_=(newTerm: Term): PersistentState = {
       require(newTerm >= term)
       term = newTerm
       this

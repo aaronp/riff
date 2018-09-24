@@ -2,7 +2,9 @@
 
 @@@ index
 
-* [Fast, Meaningful Tests](raftSimulatorForTheWin.md)
+* [Fast, Meaningful Tests](01_raftSimulatorForTheWin.md)
+* [Fast, Meaningful Tests](02_eventSourceAGoGo.md)
+* [NodeKey is Dead](03_NodeKeyIsDead.md)
 
 @@@
 

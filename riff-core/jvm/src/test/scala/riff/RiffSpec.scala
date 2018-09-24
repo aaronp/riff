@@ -14,7 +14,7 @@ class RiffSpec extends BaseSpec with LowPriorityIOImplicits {
   def withDir[T](f: Path => T): T = {
 
     val name: String = getClass.getSimpleName
-    val dir: Path    = nextTestDir(name)
+    val dir: Path = nextTestDir(name)
     if (dir.exists()) {
       dir.delete()
     }

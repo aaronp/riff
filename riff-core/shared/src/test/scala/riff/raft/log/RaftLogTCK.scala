@@ -71,15 +71,15 @@ trait RaftLogTCK extends RiffSpec {
   "RaftLog append" should {
     "overwrite the first entry if another append comes w/ a later term" in {
       withLog { log =>
-        log.append(LogCoords(1, 1), "unreplicated 1", "unreplicated 2") shouldBe LogAppendResult(1, 2)
-        log.append(LogCoords(2, 1), "replaced") shouldBe LogAppendResult(1, 1, List(1, 2))
+        log.append(LogCoords(1, 1), "unreplicated 1", "unreplicated 2") shouldBe LogAppendResult(LogCoords(1, 1), LogCoords(1, 2))
+        log.append(LogCoords(2, 1), "replaced") shouldBe LogAppendResult(LogCoords(2, 1), LogCoords(2, 1), List(1, 2))
       }
     }
     "not overwrite the first entry if another append comes w/ an earlier term" in {
       withLog { log =>
-        log.append(LogCoords(10, 1), "unreplicated 1", "unreplicated 2") shouldBe LogAppendResult(1, 2)
+        log.append(LogCoords(10, 1), "unreplicated 1", "unreplicated 2") shouldBe LogAppendResult(LogCoords(10, 1), LogCoords(10, 2))
         intercept[Exception] {
-          log.append(LogCoords(9, 1), "replaced") shouldBe LogAppendResult(0, 0)
+          log.append(LogCoords(9, 1), "replaced") shouldBe LogAppendResult(LogCoords.Empty, LogCoords.Empty)
         }
         log.entryForIndex(1) shouldBe Some(LogEntry(10, "unreplicated 1"))
         log.entryForIndex(2) shouldBe Some(LogEntry(10, "unreplicated 2"))
@@ -87,7 +87,7 @@ trait RaftLogTCK extends RiffSpec {
     }
     "increment the index for every value its appending" in {
       withLog { log =>
-        log.append(LogCoords(2, 1), "1", "two", "three") shouldBe LogAppendSuccess(1, 3)
+        log.append(LogCoords(2, 1), "1", "two", "three") shouldBe LogAppendSuccess(LogCoords(2, 1), LogCoords(2, 3))
 
         log.latestAppended() shouldBe LogCoords(2, 3)
         log.latestCommit() shouldBe 0
@@ -128,11 +128,11 @@ trait RaftLogTCK extends RiffSpec {
       withLog { log =>
         val actual = log.append(LogCoords(2, 1), "first", "second", "third")
 
-        actual shouldBe LogAppendResult(firstIndex = 1, lastIndex = 3, Nil)
+        actual shouldBe LogAppendResult(firstIndex = LogCoords(2, 1), lastIndex = LogCoords(2, 3), Nil)
 
         log.latestAppended() shouldBe LogCoords(2, 3)
 
-        log.append(LogCoords(3, 1), "new first") shouldBe LogAppendResult(firstIndex = 1, lastIndex = 1, Seq(1, 2, 3))
+        log.append(LogCoords(3, 1), "new first") shouldBe LogAppendResult(firstIndex = LogCoords(3, 1), lastIndex = LogCoords(3, 1), Seq(1, 2, 3))
 
         log.latestAppended() shouldBe LogCoords(3, 1)
         log.latestCommit() shouldBe 0
@@ -142,11 +142,11 @@ trait RaftLogTCK extends RiffSpec {
     }
     "replace entries appended as if a new leader overrides uncommitted entries" in {
       withLog { log =>
-        log.append(LogCoords(2, 1), "first") shouldBe LogAppendResult(firstIndex = 1, lastIndex = 1, Nil)
+        log.append(LogCoords(2, 1), "first") shouldBe LogAppendResult(firstIndex = LogCoords(2, 1), lastIndex = LogCoords(2, 1), Nil)
 
         log.latestAppended() shouldBe LogCoords(2, 1)
 
-        log.append(LogCoords(3, 1), "new first", "two", "three") shouldBe LogAppendResult(firstIndex = 1, lastIndex = 3, Seq(1))
+        log.append(LogCoords(3, 1), "new first", "two", "three") shouldBe LogAppendResult(firstIndex = LogCoords(3, 1), lastIndex = LogCoords(3, 3), Seq(1))
 
         log.latestAppended() shouldBe LogCoords(3, 3)
         log.latestCommit() shouldBe 0
@@ -181,7 +181,7 @@ trait RaftLogTCK extends RiffSpec {
       withLog { log =>
         log.logState shouldBe LogState.Empty
 
-        log.append(LogCoords(7, 1), "first") shouldBe LogAppendResult(1, 1)
+        log.append(LogCoords(7, 1), "first") shouldBe LogAppendResult(LogCoords(7, 1), LogCoords(7, 1))
         log.append(LogCoords(7, 3), "bang") shouldBe AttemptToSkipLogEntry(LogCoords(7, 3), 2)
       }
     }
@@ -189,7 +189,7 @@ trait RaftLogTCK extends RiffSpec {
       withLog { log =>
         log.logState shouldBe LogState.Empty
 
-        log.append(LogCoords(7, 1), "first") shouldBe LogAppendResult(1, 1)
+        log.append(LogCoords(7, 1), "first") shouldBe LogAppendResult(LogCoords(7, 1), LogCoords(7, 1))
         log.append(LogCoords(7, 1), "bang") shouldBe AttemptToAppendLogEntryAtEarlierTerm(LogCoords(7, 1), LogCoords(7, 1))
       }
     }
@@ -198,7 +198,7 @@ trait RaftLogTCK extends RiffSpec {
       withLog { log =>
         log.logState shouldBe LogState.Empty
 
-        log.append(LogCoords(7, 1), "first") shouldBe LogAppendResult(1, 1)
+        log.append(LogCoords(7, 1), "first") shouldBe LogAppendResult(LogCoords(7, 1), LogCoords(7, 1))
         log.append(LogCoords(6, 1), "bang") shouldBe AttemptToAppendLogEntryAtEarlierTerm(LogCoords(6, 1), LogCoords(7, 1))
       }
     }
