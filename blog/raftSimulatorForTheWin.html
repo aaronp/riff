@@ -124,7 +124,7 @@ C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.
 <h2><a href="#wait-before-you-integrate-" name="wait-before-you-integrate-" class="anchor"><span class="anchor-link"></span></a>Wait Before you Integrate!</h2>
 <p>My problem is this: I want to gain confidence that the system can drive itself. According to the <a href="https://raft.github.io/">Raft Spec</a>, we should be able to start w/ some initial nodes with random heartbeat time-outs. When we &ldquo;let go&rdquo;, the system should drive itself &ndash; the first node(s) to timeout should send <a href="https://aaronp.github.io/riff/api/riffCoreCrossProject/riff/raft/messages/RequestVote.html">RaftNode</a> messages</p>
 <p>I&rsquo;m not a strong advocate of &ldquo;test-first&rdquo; (see myriad talks by Dan North on this), but I <em>do</em> want confidence that the tests are a good indication that the code works.</p>
-<p>I want realistic implementations of the components (<a href="https://aaronp.github.io/riff/api/riffCoreCrossProject/riff/raft/timer/RaftTimer.html">RaftTimer</a>, <a href="https://aaronp.github.io/riff/api/riffCoreCrossProject/riff/raft/cluster/RaftCluster.html">RaftCluster</a>, etc) to show that messages can be created from the members of a cluster, consumed by the other cluster nodes, replied to, etc (as a production system would do).</p>
+<p>I want realistic implementations of the components (<a href="https://aaronp.github.io/riff/api/riffCoreCrossProject/riff/raft/timer/RaftTimer.html">RaftTimer</a>, <a href="https://aaronp.github.io/riff/api/riffCoreCrossProject/riff/raft/node/RaftCluster.html">RaftCluster</a>, etc) to show that messages can be created from the members of a cluster, consumed by the other cluster nodes, replied to, etc (as a production system would do).</p>
 <p>And so often at this point, projects tend to do full integration tests to achieve this kind of confidence/coverage.</p>
 <p>Except &hellip; there are a number of non-trivial problems I find with that:</p>
 <h3><a href="#integration-test-setup-is-often-messy-and-sequential-" name="integration-test-setup-is-often-messy-and-sequential-" class="anchor"><span class="anchor-link"></span></a>Integration test setup is often messy (and sequential)</h3>
@@ -160,7 +160,7 @@ C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.
 <p>That test/logic can then more easily be read, tested, moved, etc. And you&rsquo;re not having to read that code later saying &ldquo;why do I need to provide X,Y and Z that I don&rsquo;t need just to compute this thing?&rdquo;</p>
 <h2><a href="#getting-to-the-point" name="getting-to-the-point" class="anchor"><span class="anchor-link"></span></a>Getting to the point</h2>
 <p>What I&rsquo;ve tried which I&rsquo;m pretty happy with, is writing an implementation of the RaftTimer and RaftCluster which just sticks the events on a timeline (a stack) instead of sending them directly to their recipients.</p>
-<p>Then &lsquo;RaftSimulator&rsquo; is the implementaion of the <a href="https://aaronp.github.io/riff/api/riffCoreCrossProject/riff/raft/cluster/RaftCluster.html">RaftCluster</a>). The tests ask the &lsquo;RaftSimulator&rsquo; to advance the timeline, which just pops the next event off the stack and hands it to the intended recipient, whose response in-turn is then pushed on the stack.</p>
+<p>Then &lsquo;RaftSimulator&rsquo; is the implementaion of the <a href="https://aaronp.github.io/riff/api/riffCoreCrossProject/riff/raft/node/RaftCluster.html">RaftCluster</a>). The tests ask the &lsquo;RaftSimulator&rsquo; to advance the timeline, which just pops the next event off the stack and hands it to the intended recipient, whose response in-turn is then pushed on the stack.</p>
 <p>The RaftSimulator also injects a RaftTimer into the nodes whose &lsquo;schedule&rsquo; and &lsquo;cancel&rsquo; implementations which insert and remove events at particular times.</p>
 <p>These test-time components are providing a couple of real implementations (the timer and cluster) to the production code. And to sound more functional, they just allow us to &ldquo;lift&rdquo; our real code into a test context by using the interfaces we&rsquo;ve already worked out we need in exactly the same way we&rsquo;ll have to &ldquo;lift&rdquo; the code to be behind an actor, service, stream, etc.</p>
 <p>If we success at this &ndash; proving our logic/functionality produces events generated/consumed are correct &ndash; then we&rsquo;ve done it in a cheap way, and so can run them on every change/commit without worry.</p>
@@ -282,6 +282,23 @@ Node 4 (Candidate) in cluster of 3 peers: [Node 1,Node 2,Node 3]
 <h2><a href="#thats-it-" name="thats-it-" class="anchor"><span class="anchor-link"></span></a>That&rsquo;s it!</h2>
 <p>We&rsquo;re using the main, production code to generate messages, and then feed those messages to their recipients. </p>
 <p>The code to do that is still relatively small - just a stack for the timeline (w/ the convenience of a tracked history and removed events), and a &lsquo;RaftSimulator&rsquo; for advancing that timeline and applying the messages to their destinations.</p>
+<p>And, to run from the sbt clean test in batch mode, it takes ~2 minutes, which also reformats the code. I&rsquo;ll save blogging about moving to mill for another time.</p>
+<pre class="prettyprint"><code class="language-bash">time sbt &quot;project riffCoreCrossProject&quot; clean test
+
+[info] All tests passed.
+[success] Total time: 22 s, completed 25-Sep-2018 13:09:20
+[INFO] [09/25/2018 13:09:20.172] [Thread-9] [CoordinatedShutdown(akka://sbt-web)] Starting coordinated shutdown from JVM shutdown hook
+
+real	0m34.526s
+user	2m8.701s
+sys	0m3.984s
+
+</code></pre>
+<p>And, if you want to run the full test suite from the sbt repl, you&rsquo;ll have to wait for both seconds:</p>
+<pre class="prettyprint"><code class="language-scala">[info] All tests passed.
+[success] Total time: 2 s, completed 25-Sep-2018 13:12:49
+sbt:riff-core-jvm&gt;
+</code></pre>
 <div class="source-github">
 The source code for this page can be found <a href="https://github.com/aaronp/riff/tree/master/src/main/paradox/blog/raftSimulatorForTheWin.md">here</a>.
 </div>
