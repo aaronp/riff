@@ -38,7 +38,6 @@
 <ul>
   <li><a href="../about/index.html" class="active page">About</a>
   <ul>
-    <li><a href="../about/motivation.html" class="page">about/motivation.html</a></li>
     <li><a href="../about/gettingStarted.html" class="page">Getting Started</a></li>
     <li><a href="../about/api.html" class="page">API docs</a></li>
   </ul></li>
@@ -84,7 +83,6 @@ C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.
 <ul>
   <li><a href="../about/index.html" class="active page">About</a>
   <ul>
-    <li><a href="../about/motivation.html" class="page">about/motivation.html</a></li>
     <li><a href="../about/gettingStarted.html" class="page">Getting Started</a></li>
     <li><a href="../about/api.html" class="page">API docs</a></li>
   </ul></li>
@@ -117,15 +115,70 @@ C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.
 <div class="page-content row">
 <div class="small-12 large-9 column" id="docs">
 <h1><a href="#about" name="about" class="anchor"><span class="anchor-link"></span></a>About</h1>
+<p>This started out with just an interest in Raft. I thought it&rsquo;d be a good candidate to play around with trying out different approaches, as it is easy to understand, well specified, and also useful! It&rsquo;s also a nice mix of networked communication, disk IO, etc, and so I could get a feel for trying to use free monads, finally tagless, or whatever the latest &ldquo;ooh, how will this work in the real world&rdquo; technology.</p>
+<p>It&rsquo;s grown a bit from that, as I found the existing JVM implementations a bit lacking, if only because they were all coupled w/ a framework or library, such as akka.</p>
+<p>I&rsquo;m of the opinion that busiess logic should be writtin in as vanilla a way possible. Just pure functions ideally, which are then &ldquo;lifted&rdquo; into some other framework (actors, streams, REST services, whatever).</p>
+<p>And so, the reasoning is largely (hopefully) to aid in readability and reuse, the first of which at least is a core tennent of why Raft was designed the way it is in the first place.</p>
+<h2><a href="#general-approach" name="general-approach" class="anchor"><span class="anchor-link"></span></a>General approach</h2>
+<p>I find most interfaces can be reduced to something in the form:</p>
+<pre><code>SomeInput : Foo | Bar(x) | Bazz(y, z)
+SomeOutput : Ok | ResultOne(a) | ResultTwo(b)
+</code></pre>
+<p>In scala, you can then can make this easier to write by exposing a trait like this:</p>
+<pre class="prettyprint"><code class="language-scala">trait SomethingDsl {
+
+	def onInput(input : SomeInput) : SomeOutput
+
+	final def foo() = onInput(Foo)
+
+	final def bar(x : Int)  = onInput(Bar(x))
+
+	...
+}
+
+</code></pre>
+<p>or even go (arguably dangerously) circular, leaving which implementation to specify up to the thing implementing it:</p>
+<pre class="prettyprint"><code class="language-scala">trait SomethingDsl {
+
+	def onInput(input : SomeInput) : SomeOutput = input match {
+		case Foo =&gt; foo()
+		case Bar(x) =&gt; bar(x)
+		...
+	}
+
+	def foo() = onInput(Foo)
+
+	def bar(x : Int)  = onInput(Bar(x))
+
+	...
+}
+
+</code></pre>
+<p>And by representing the inputs using the command pattern, it then easily lends itself to making those commands serialise to/from json (or some binary protocol) for use over the wire. Or, if not, they&rsquo;re messages which can be put on a queue or sent to an actor, so we go a ways already by representing things in that form.</p>
+<p>And so that&rsquo;s the approach I&rsquo;ve taken with <a href="https://aaronp.github.io/riff/api/riffCoreCrossProject/riff/raft/node/RaftNode.html">RaftNode</a>). It has an &lsquo;onMessage&rsquo; which returns a result, and so can easily be put behind a REST service, akka actor, queue, etc.</p>
+<p>So, that&rsquo;s it. It will hopefully be useful, at least to me, and I look forward to the &ldquo;did you consider&rdquo; or &ldquo;you seem to have neglected&hellip;&rdquo; comments.</p>
 <div class="source-github">
 The source code for this page can be found <a href="https://github.com/aaronp/riff/tree/master/src/main/paradox/about/index.md">here</a>.
 </div>
 
 <div class="nav-next">
-<p><strong>Next:</strong> <a href="../about/motivation.html">about/motivation.html</a></p>
+<p><strong>Next:</strong> <a href="../about/gettingStarted.html">Getting Started</a></p>
 </div>
 </div>
 <div class="large-3 show-for-large column" data-sticky-container>
+<nav class="sidebar sticky" data-sticky data-anchor="docs" data-sticky-on="large">
+<div class="page-nav">
+<div class="nav-title">On this page:</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="../about/index.html#about" class="header">About</a>
+  <ul>
+    <li><a href="../about/index.html#general-approach" class="header">General approach</a></li>
+  </ul></li>
+</ul>
+</div>
+</div>
+</nav>
 </div>
 </div>
 
