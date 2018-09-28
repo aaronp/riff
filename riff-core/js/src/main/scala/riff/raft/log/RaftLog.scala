@@ -22,10 +22,10 @@ object RaftLog {
 
   class JSLog[A: StringFormat](repo: Repo) extends BaseLog[A] {
     private object Keys {
-      val LatestCommitted                = ".latestCommitted"
-      val LatestAppended                 = ".latestAppended"
+      val LatestCommitted = ".latestCommitted"
+      val LatestAppended = ".latestAppended"
       def entryForIndex(index: LogIndex) = s"${index}.entry"
-      def termForIndex(index: LogIndex)  = s"$index.term"
+      def termForIndex(index: LogIndex) = s"$index.term"
     }
     override protected def doCommit(index: LogIndex, entriesToCommit: immutable.IndexedSeq[LogCoords]): Unit = {
       repo.setItem(Keys.LatestCommitted, index.toString)
@@ -94,8 +94,8 @@ object RaftLog {
     override def entryForIndex(index: LogIndex): Option[LogEntry[A]] = {
       for {
         entryStr <- repo.getItem(Keys.entryForIndex(index))
-        entry    <- StringFormat[A].fromString(entryStr).toOption
-        termStr  <- repo.getItem(Keys.termForIndex(index))
+        entry <- StringFormat[A].fromString(entryStr).toOption
+        termStr <- repo.getItem(Keys.termForIndex(index))
       } yield {
         LogEntry[A](termStr.toInt, entry)
       }

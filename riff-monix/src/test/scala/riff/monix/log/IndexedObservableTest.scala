@@ -36,7 +36,7 @@ class IndexedObservableTest extends RiffSpec with Eventually {
 
       // now subscribe from some index
       val fromFifty = indexed.fromIndex(50)
-      val list      = fromFifty.take(10).toListL.runSyncUnsafe(testTimeout)
+      val list = fromFifty.take(10).toListL.runSyncUnsafe(testTimeout)
       list.map(_._1) shouldBe (50 until 60).toList
 
       input := "1000"

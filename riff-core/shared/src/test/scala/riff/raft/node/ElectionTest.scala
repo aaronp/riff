@@ -21,7 +21,7 @@ class ElectionTest extends RiffSpec {
       c.state().role shouldBe Follower
 
       And(s"${a.nodeKey} should send vote requests to ${b.nodeKey} and ${c.nodeKey}")
-      val replies: Map[String, RaftNode[String, Int]#Result] = cluster.sendMessages(a.nodeKey, requestVotes)
+      val replies: Map[String, RaftNode[Int]#Result] = cluster.sendMessages(a.nodeKey, requestVotes)
       replies.keySet should contain only (b.nodeKey, c.nodeKey)
 
       When(s"${a.nodeKey} gets its replies from ${b.nodeKey} and ${c.nodeKey}")

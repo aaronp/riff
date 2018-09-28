@@ -120,10 +120,10 @@ class LeaderNodeTest extends RiffSpec {
       // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
       cluster.sendMessages(a.nodeKey, cluster.electLeader(a).toList)
       val AddressedRequest(appendRequestsFromLeader)                       = a.createAppend((100 until 110).toArray)
-      val appendResponses: Map[String, RaftNode[String, LogIndex]#Result] = cluster.sendMessages(a.nodeKey, appendRequestsFromLeader.toList)
+      val appendResponses: Map[String, RaftNode[LogIndex]#Result] = cluster.sendMessages(a.nodeKey, appendRequestsFromLeader.toList)
 
       withClue("Before receiving the append responses the leader should assume a default view of the cluster") {
-        val initialView: LeadersClusterView[String] = a.state().asLeader.get.clusterView
+        val initialView: LeadersClusterView = a.state().asLeader.get.clusterView
         initialView.numberOfPeers shouldBe 2
         initialView.stateForPeer(b.nodeKey) shouldBe Some(Peer.Empty)
         initialView.stateForPeer(c.nodeKey) shouldBe Some(Peer.Empty)
@@ -132,7 +132,7 @@ class LeaderNodeTest extends RiffSpec {
       cluster.sendResponses(appendResponses)
 
       withClue("After receiving the followers' AppendEntriesResponses it should update its view") {
-        val afterFirst10AckView: LeadersClusterView[String] = a.state().asLeader.get.clusterView
+        val afterFirst10AckView: LeadersClusterView = a.state().asLeader.get.clusterView
         afterFirst10AckView.numberOfPeers shouldBe 2
         afterFirst10AckView.stateForPeer(b.nodeKey) shouldBe Some(Peer.withMatchIndex(10))
         afterFirst10AckView.stateForPeer(c.nodeKey) shouldBe Some(Peer.withMatchIndex(10))
@@ -161,7 +161,7 @@ class LeaderNodeTest extends RiffSpec {
       Then(s"it should send an append msg which contains entries from 11 to ${11 + a.maxAppendSize}")
       // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
-      val bResp: Map[String, RaftNode[String, LogIndex]#Result] = cluster.sendMessages(a.nodeKey, heartbeatForB.toList)
+      val bResp: Map[String, RaftNode[LogIndex]#Result] = cluster.sendMessages(a.nodeKey, heartbeatForB.toList)
       b.log.entriesFrom(1).map(_.data).toList shouldBe (100 until 120).toList
 
       bResp.keySet shouldBe Set(b.nodeKey, c.nodeKey)
@@ -283,21 +283,21 @@ class LeaderNodeTest extends RiffSpec {
         // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
         import RichNodeState._
 
-        val leaderState = new LeaderNodeState[String]("the leader", LeadersClusterView(peerNames.toList: _*))
+        val leaderState = new LeaderNodeState("the leader", LeadersClusterView(peerNames.toList: _*))
 
         val thisTerm = 2
 
-        val leaderTimer = new LoggedInvocationTimer[String]
+        val leaderTimer = new LoggedInvocationTimer
         val leader = {
           implicit val timer = leaderTimer
-          RaftNode.inMemory[String, String](leaderState.id).withRaftNode(leaderState).withTerm(thisTerm)
+          RaftNode.inMemory[String](leaderState.id).withRaftNode(leaderState).withTerm(thisTerm)
         }
 
         // just for fun, let's also create some instance to which we can apply the requests
-        val peerInstancesByName: Map[String, RaftNode[String, String]] = peerNames.map { name =>
+        val peerInstancesByName: Map[String, RaftNode[String]] = peerNames.map { name =>
           val peersToThisNode    = (peerNames - name) + leaderState.id
-          implicit val peerTimer = new LoggedInvocationTimer[String]
-          val peerState          = RaftNode.inMemory[String, String](name).withCluster(RaftCluster(peersToThisNode)).withTerm(thisTerm)
+          implicit val peerTimer = new LoggedInvocationTimer
+          val peerState          = RaftNode.inMemory[String](name).withCluster(RaftCluster(peersToThisNode)).withTerm(thisTerm)
           name -> peerState
         }.toMap
 
@@ -335,7 +335,7 @@ class LeaderNodeTest extends RiffSpec {
 
           val peerState = peerInstancesByName(peerName)
 
-          val peerTimer   = peerState.timers.timer.asInstanceOf[LoggedInvocationTimer[String]]
+          val peerTimer   = peerState.timers.timer.asInstanceOf[LoggedInvocationTimer]
           val callsBefore = peerTimer.resetReceiveHeartbeatCalls()
           callsBefore shouldBe (empty)
 

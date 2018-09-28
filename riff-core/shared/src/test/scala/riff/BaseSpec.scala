@@ -32,9 +32,9 @@ abstract class BaseSpec extends WordSpec with Matchers with ScalaFutures with Gi
 
   case class TestCluster(ofSize: Int) {
 
-    lazy val byName: Map[String, RaftNode[String, Int]] = clusterNodes.map(n => n.nodeKey -> n).toMap.ensuring(_.size == clusterNodes.size)
+    lazy val byName: Map[String, RaftNode[Int]] = clusterNodes.map(n => n.nodeKey -> n).toMap.ensuring(_.size == clusterNodes.size)
 
-    val clusterNodes: List[RaftNode[String, Int]] = {
+    val clusterNodes: List[RaftNode[Int]] = {
       val nodes = (1 to ofSize).map { i => newNode(s"node $i")
       }
       val nodeNames = nodes.map(_.nodeKey).toSet
@@ -42,7 +42,7 @@ abstract class BaseSpec extends WordSpec with Matchers with ScalaFutures with Gi
       }.toList
     }
 
-    def testTimerFor(nodeKey: String) = byName(nodeKey).timers.timer.asInstanceOf[LoggedInvocationTimer[String]]
+    def testTimerFor(nodeKey: String): LoggedInvocationTimer = byName(nodeKey).timers.timer.asInstanceOf[LoggedInvocationTimer]
 
     /** Convenience method to:
       * 1) timeout the given node
@@ -54,7 +54,7 @@ abstract class BaseSpec extends WordSpec with Matchers with ScalaFutures with Gi
       */
     def electLeader(member: String): Map[String, AppendEntries[Int]] = electLeader(byName(member))
 
-    def electLeader(member: RaftNode[String, Int]): Map[String, AppendEntries[Int]] = {
+    def electLeader(member: RaftNode[Int]): Map[String, AppendEntries[Int]] = {
       val leaderResultsAfterHavingAppliedTheResponses = attemptToElectLeader(member).map(_._2)
       asHeartbeats(leaderResultsAfterHavingAppliedTheResponses)
     }
@@ -66,7 +66,7 @@ abstract class BaseSpec extends WordSpec with Matchers with ScalaFutures with Gi
       * @param member the member to transition
       * @return the vote responses
       */
-    def attemptToElectLeader(candidate: RaftNode[String, Int]): List[(RaftResponse, candidate.Result)] = {
+    def attemptToElectLeader(candidate: RaftNode[Int]): List[(RaftResponse, candidate.Result)] = {
       val AddressedRequest(requestVotes) = candidate.onTimerMessage(ReceiveHeartbeatTimeout)
       val replies                        = sendMessages(candidate.nodeKey, requestVotes)
 
@@ -79,7 +79,7 @@ abstract class BaseSpec extends WordSpec with Matchers with ScalaFutures with Gi
     }
 
     // convenience method for converting leader replies to hb messages
-    def asHeartbeats(leaderResultsAfterHavingAppliedTheResponses: immutable.Iterable[RaftNodeResult[String, Int]]) = {
+    def asHeartbeats(leaderResultsAfterHavingAppliedTheResponses: immutable.Iterable[RaftNodeResult[Int]]) = {
       val all = leaderResultsAfterHavingAppliedTheResponses.collect {
         case AddressedRequest(requests) => requests
       }
@@ -92,13 +92,13 @@ abstract class BaseSpec extends WordSpec with Matchers with ScalaFutures with Gi
       }
     }
 
-    def sendMessages(originator: String, requests: Iterable[(String, RaftRequest[Int])]): Map[String, RaftNode[String, Int]#Result] = {
+    def sendMessages(originator: String, requests: Iterable[(String, RaftRequest[Int])]): Map[String, RaftNode[Int]#Result] = {
       val all = requests.toList.collect {
         case (name, req) if name != originator => name -> byName(name).onMessage(originator, req)
       }
       all.toMap.ensuring(_.size == all.size, "test case doesn't support multiple requests from the same node - do it in separate calls")
     }
-    def sendResponses(responses: Map[String, RaftNode[String, Int]#Result]) = {
+    def sendResponses(responses: Map[String, RaftNode[Int]#Result]) = {
       val all = responses.collect {
         case (from, AddressedResponse(backTo, resp)) => from -> byName(backTo).onMessage(from, resp)
       }
@@ -106,9 +106,9 @@ abstract class BaseSpec extends WordSpec with Matchers with ScalaFutures with Gi
     }
 
   }
-  protected def newNode(name: String = "test"): RaftNode[String, Int] = {
-    implicit val timer = new LoggedInvocationTimer[String]
-    RaftNode.inMemory[String, Int](name)
+  protected def newNode(name: String = "test"): RaftNode[Int] = {
+    implicit val timer = new LoggedInvocationTimer
+    RaftNode.inMemory[Int](name)
   }
 }
 

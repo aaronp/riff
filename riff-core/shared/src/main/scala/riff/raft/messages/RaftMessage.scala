@@ -8,11 +8,11 @@ import riff.raft.{LogIndex, Term}
   *
   * @tparam A
   */
-sealed trait RaftMessage[+NodeKey, +A]
+sealed trait RaftMessage[+A]
 
-sealed trait RequestOrResponse[+NodeKey, +A] extends RaftMessage[NodeKey, A]
+sealed trait RequestOrResponse[+A] extends RaftMessage[A]
 
-sealed trait TimerMessage extends RaftMessage[Nothing, Nothing]
+sealed trait TimerMessage extends RaftMessage[Nothing]
 
 /** Marks a timeout of not hearing from a leader
   */
@@ -27,7 +27,7 @@ case object SendHeartbeatTimeout extends TimerMessage
   *
   * @tparam A
   */
-sealed trait RaftRequest[+A] extends RequestOrResponse[Nothing, A]
+sealed trait RaftRequest[+A] extends RequestOrResponse[A]
 
 final case class AppendEntries[A](previous: LogCoords, term: Term, commitIndex: LogIndex, entries: Array[LogEntry[A]] = Array.empty[LogEntry[A]])
     extends RaftRequest[A] {
@@ -62,7 +62,7 @@ final case class RequestVote(term: Term, logState: LogCoords) extends RaftReques
 /**
   * Raft Response
   */
-sealed trait RaftResponse extends RequestOrResponse[Nothing, Nothing]
+sealed trait RaftResponse extends RequestOrResponse[Nothing]
 
 final case class RequestVoteResponse(term: Term, granted: Boolean) extends RaftResponse
 

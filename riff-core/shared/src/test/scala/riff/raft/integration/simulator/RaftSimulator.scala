@@ -34,7 +34,7 @@ class RaftSimulator private (nextSendTimeout: Iterator[FiniteDuration],
                              nextReceiveTimeout: Iterator[FiniteDuration],
                              clusterNodes: List[String],
                              val defaultLatency: FiniteDuration,
-                             newNode: (String, RaftCluster[String], RaftTimer[String]) => RaftNode[String, String])
+                             newNode: (String, RaftCluster, RaftTimer) => RaftNode[String])
     extends HasTimeline[TimelineType] {
 
   /** Simulates the effect of making a node un responsive by not sending requests/responses to the node.
@@ -69,7 +69,7 @@ class RaftSimulator private (nextSendTimeout: Iterator[FiniteDuration],
   // map, as we still want the cluster view to be correct (e.g. the leader node should still know about the stopped/unresponsive members)
   private var stoppedNodes: Set[String] = Set.empty
 
-  private var clusterByName: Map[String, RaftNode[String, String]] = {
+  private var clusterByName: Map[String, RaftNode[String]] = {
     clusterNodes
       .ensuring(_.distinct.size == clusterNodes.size)
       .map { name => name -> makeNode(name)
@@ -134,12 +134,12 @@ class RaftSimulator private (nextSendTimeout: Iterator[FiniteDuration],
   /** @param name the node whose RaftCluster this is
     * @return an implementation of RaftCluster for each node as a view onto the simulator
     */
-  private def clusterForNode(name: String) = new RaftCluster[String] {
+  private def clusterForNode(name: String) = new RaftCluster {
     override def peers: Iterable[String]        = clusterByName.keySet - name
     override def contains(key: String): Boolean = clusterByName.contains(key)
   }
 
-  private def makeNode(name: String): RaftNode[String, String] = {
+  private def makeNode(name: String): RaftNode[String] = {
     val node = newNode(name, clusterForNode(name), new SimulatedTimer(name))
     val newLog = node.log.onCommit { entry => updateCluster(entry.data)
     }
@@ -158,19 +158,19 @@ class RaftSimulator private (nextSendTimeout: Iterator[FiniteDuration],
     this
   }
 
-  def currentLeader(): RaftNode[String, String] = clusterByName(leaderState.id)
+  def currentLeader(): RaftNode[String] = clusterByName(leaderState.id)
 
-  def nodesWithRole(role: NodeRole): List[RaftNode[String, String]] = nodes.filter(_.state().role == role)
+  def nodesWithRole(role: NodeRole): List[RaftNode[String]] = nodes.filter(_.state().role == role)
 
-  def nodes(): List[RaftNode[String, String]] = clusterByName.values.toList
+  def nodes(): List[RaftNode[String]] = clusterByName.values.toList
 
-  def leaderState(): LeaderNodeState[String] = leaderStateOpt.get
+  def leaderState(): LeaderNodeState = leaderStateOpt.get
 
   /** @return the current leader (if there is one)
     */
-  def leaderStateOpt(): Option[LeaderNodeState[String]] = {
+  def leaderStateOpt(): Option[LeaderNodeState] = {
     val leaders = clusterByName.values.map(_.state()) collect {
-      case leader: LeaderNodeState[String] => leader
+      case leader: LeaderNodeState => leader
     }
     leaders.toList match {
       case Nil          => None
@@ -276,11 +276,12 @@ class RaftSimulator private (nextSendTimeout: Iterator[FiniteDuration],
         // first ensure the latest timeline is the advanced, popped one
         updateTimeline(newTimeline)
         val (recipient, result) = applyTimelineEvent(e, latency)
+        val x: RaftNode[String]#Result = result
         AdvanceResult(recipient, beforeState, beforeTimeline, e, result, currentTimeline, undeliveredTimeline, takeSnapshot())
     }
   }
 
-  def nodeFor(idx: Int): RaftNode[String, String] = {
+  def nodeFor(idx: Int): RaftNode[String] = {
     clusterByName.getOrElse(nameForIdx(idx), sys.error(s"Couldn't find ${nameForIdx(idx)} in ${clusterByName.keySet}"))
   }
   def snapshotFor(idx: Int): NodeSnapshot[String] = NodeSnapshot(nodeFor(idx))
@@ -296,13 +297,13 @@ class RaftSimulator private (nextSendTimeout: Iterator[FiniteDuration],
     * @param currentTime
     * @param latency
     */
-  def applyTimelineEvent(nextEvent: TimelineType, latency: FiniteDuration = defaultLatency, currentTime: Long = currentTimeline().currentTime) = {
+  def applyTimelineEvent(nextEvent: TimelineType, latency: FiniteDuration = defaultLatency, currentTime: Long = currentTimeline().currentTime): (String, RaftNode[String]#Result) = {
     val res @ (recipient, result) = processNextEvent(nextEvent, currentTime)
     applyResult(latency, recipient, result)
     res
   }
 
-  private def applyResult(latency: FiniteDuration, node: String, result: RaftNode[String, String]#Result) = {
+  private def applyResult(latency: FiniteDuration, node: String, result: RaftNode[String]#Result) = {
     result match {
       case _: NoOpResult =>
       case AddressedRequest(msgs) =>
@@ -328,9 +329,9 @@ class RaftSimulator private (nextSendTimeout: Iterator[FiniteDuration],
     *
     * @return a tuple of the next event, recipient of the event, and result in an option, or None if no events are enqueued (which should never be the case, as we should always be sending heartbeats)
     */
-  private def processNextEvent(nextEvent: TimelineType, currentTime: Long = currentTimeline().currentTime): (String, RaftNode[String, String]#Result) = {
+  private def processNextEvent(nextEvent: TimelineType, currentTime: Long = currentTimeline().currentTime): (String, RaftNode[String]#Result) = {
 
-    def deliverMsg(from: String, to: String, msg: RequestOrResponse[String, String]) = {
+    def deliverMsg(from: String, to: String, msg: RequestOrResponse[String]) = {
       clusterByName.get(to) match {
         case Some(node) if !stoppedNodes.contains(to) =>
           node.onMessage(from, msg)
@@ -365,7 +366,7 @@ class RaftSimulator private (nextSendTimeout: Iterator[FiniteDuration],
     *
     * @param forNode
     */
-  private class SimulatedTimer(forNode: String) extends RaftTimer[String] {
+  private class SimulatedTimer(forNode: String) extends RaftTimer {
 
     override type CancelT = (Long, TimelineType)
 
@@ -405,7 +406,7 @@ class RaftSimulator private (nextSendTimeout: Iterator[FiniteDuration],
 
 object RaftSimulator {
 
-  type NodeResult = RaftNodeResult[String, String]
+  type NodeResult = RaftNodeResult[String]
 
   /**
     * Our log has the simple 'string' type. Our RaftSimulator's state machine will check those entries against these commands
@@ -421,8 +422,8 @@ object RaftSimulator {
     sendHeartbeatTimeouts.map(_ * 3)
   }
 
-  def newNode(name: String, cluster: RaftCluster[String], timer: RaftTimer[String]): RaftNode[String, String] = {
-    val st8: RaftNode[String, String] = RaftNode.inMemory[String, String](name)(timer).withCluster(cluster)
+  def newNode(name: String, cluster: RaftCluster, timer: RaftTimer): RaftNode[String] = {
+    val st8: RaftNode[String] = RaftNode.inMemory[String](name)(timer).withCluster(cluster)
     st8.timers.receiveHeartbeat.reset(name)
     st8
   }

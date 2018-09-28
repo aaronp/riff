@@ -1,5 +1,5 @@
 package riff.raft.node
-import riff.raft.LogIndex
+import riff.raft.{LogIndex, NodeId}
 import riff.raft.log.LogCoords
 import riff.raft.messages.AppendEntriesResponse
 
@@ -9,13 +9,13 @@ import scala.collection.immutable
   * Keeps track of the leader's ephemeral view of the cluster
   *
   * @param initialPeersByKey the known cluster state
-  * @tparam NodeKey the type representing this peer node. Typically just a String identifier,
+  * @tparam NodeId the type representing this peer node. Typically just a String identifier,
   *                 though could be something more meaningful/useful, like a websocket. Just so long as it provides a meaningful hashCode/equals
   */
-private[node] class LeadersClusterView[NodeKey](cluster: RaftCluster[NodeKey]) {
-  private var peersByKey = Map[NodeKey, Peer]()
+private[node] class LeadersClusterView(cluster: RaftCluster) {
+  private var peersByKey = Map[NodeId, Peer]()
 
-  def eligibleNodesForPreviousEntry(previous: LogCoords): immutable.Iterable[NodeKey] = {
+  def eligibleNodesForPreviousEntry(previous: LogCoords): immutable.Iterable[NodeId] = {
     toMap.collect {
       case (key, peer) if peer.matchIndex == previous.index => key
     }
@@ -29,18 +29,18 @@ private[node] class LeadersClusterView[NodeKey](cluster: RaftCluster[NodeKey]) {
     }
   }
 
-  def toMap(): Map[NodeKey, Peer] = cluster.peers.foldLeft(Map[NodeKey, Peer]()) {
+  def toMap(): Map[NodeId, Peer] = cluster.peers.foldLeft(Map[NodeId, Peer]()) {
     case (map, id) => map.updated(id, peersByKey.getOrElse(id, Peer.Empty))
   }
 
-  def stateForPeer(peer: NodeKey): Option[Peer] =
+  def stateForPeer(peer: NodeId): Option[Peer] =
     if (cluster.contains(peer)) {
       peersByKey.get(peer).orElse(Option(Peer.Empty))
     } else {
       None
     }
 
-  def update(node: NodeKey, response: AppendEntriesResponse): Option[Peer] = {
+  def update(node: NodeId, response: AppendEntriesResponse): Option[Peer] = {
     if (!cluster.contains(node)) {
       peersByKey = peersByKey - node
       None
@@ -61,7 +61,7 @@ private[node] class LeadersClusterView[NodeKey](cluster: RaftCluster[NodeKey]) {
     }
   }
 
-  private def update(key: NodeKey, peer: Peer) = {
+  private def update(key: NodeId, peer: Peer) = {
     peersByKey = peersByKey.updated(key, peer)
   }
 
@@ -75,10 +75,10 @@ private[node] class LeadersClusterView[NodeKey](cluster: RaftCluster[NodeKey]) {
 
 object LeadersClusterView {
 
-  def apply[NodeKey](keys: NodeKey*): LeadersClusterView[NodeKey] = apply(RaftCluster(keys.toIterable))
+  def apply(keys: NodeId*): LeadersClusterView = apply(RaftCluster(keys.toIterable))
 
-  def apply[NodeKey](first: (NodeKey, Peer), theRest: (NodeKey, Peer)*): LeadersClusterView[NodeKey] = {
-    val view = LeadersClusterView(RaftCluster[NodeKey](first._1, theRest.map(_._1): _*))
+  def apply(first: (NodeId, Peer), theRest: (NodeId, Peer)*): LeadersClusterView = {
+    val view = LeadersClusterView(RaftCluster(first._1, theRest.map(_._1): _*))
     view.update(first._1, first._2)
     theRest.foreach {
       case (node, p) => view.update(node, p)
@@ -86,7 +86,7 @@ object LeadersClusterView {
     view
   }
 
-  def apply[NodeKey](cluster: RaftCluster[NodeKey]): LeadersClusterView[NodeKey] = {
-    new LeadersClusterView[NodeKey](cluster)
+  def apply(cluster: RaftCluster): LeadersClusterView = {
+    new LeadersClusterView(cluster)
   }
 }

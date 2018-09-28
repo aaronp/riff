@@ -49,8 +49,8 @@ object IndexedObservable {
 
   class Impl[A](lookUp: Long => A, firstIndex: Long)(implicit scheduler: Scheduler) extends IndexedObservable[A] {
 
-    @volatile private var counter                   = firstIndex
-    private val pipe                                = Pipe.publish[(Long, A)]
+    @volatile private var counter = firstIndex
+    private val pipe = Pipe.publish[(Long, A)]
     private val (sink, feed: Observable[(Long, A)]) = pipe.multicast
 
     override def latest() = feed
@@ -75,7 +75,7 @@ object IndexedObservable {
       * @return all the data (no gabs) from the subscribeFromIndex
       */
     def fromIndex(subscribeFromIndex: Int): Observable[(Long, A)] = {
-      val subject                             = PublishToOneSubject[(Long, A)]
+      val subject = PublishToOneSubject[(Long, A)]
       val c: ConnectableObservable[(Long, A)] = ConnectableObservable.cacheUntilConnect(feed, subject)
 
       // at this point we'll have all the data from 'counter'

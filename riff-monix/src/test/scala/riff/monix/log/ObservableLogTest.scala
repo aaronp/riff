@@ -11,7 +11,7 @@ class ObservableLogTest extends RiffSpec with Eventually {
 
   "ObservableLog.committedEntriesFrom" should {
     "not feed entries until they are committed" in {
-      val log       = RaftLog.inMemory[String]().asObservable
+      val log = RaftLog.inMemory[String]().asObservable
       val committed = log.committedEntriesFrom(0)
 
       val entries = ListBuffer[(LogCoords, String)]()
@@ -147,7 +147,7 @@ class ObservableLogTest extends RiffSpec with Eventually {
       Given("An observable log with an observer")
       val ol = RaftLog.inMemory[String]().asObservable
 
-      val appendedList  = ListBuffer[(LogCoords, String)]()
+      val appendedList = ListBuffer[(LogCoords, String)]()
       val committedList = ListBuffer[(LogCoords, String)]()
       ol.committedEntries.foreach { msg => //
         committedList += msg
@@ -185,9 +185,9 @@ class ObservableLogTest extends RiffSpec with Eventually {
       eventually {
         appendedList should contain only (
           LogCoords(10, 4) -> "first entry in term 10", //
-          LogCoords(2, 3)  -> "third", //
-          LogCoords(2, 2)  -> "second", //
-          LogCoords(2, 1)  -> "first" //
+          LogCoords(2, 3) -> "third", //
+          LogCoords(2, 2) -> "second", //
+          LogCoords(2, 1) -> "first" //
         )
         committedList should contain only (LogCoords(2, 1) -> "first")
       }
@@ -199,15 +199,15 @@ class ObservableLogTest extends RiffSpec with Eventually {
       eventually {
         committedList should contain only (
           LogCoords(10, 4) -> "first entry in term 10", //
-          LogCoords(2, 3)  -> "third", //
-          LogCoords(2, 2)  -> "second", //
-          LogCoords(2, 1)  -> "first" //
+          LogCoords(2, 3) -> "third", //
+          LogCoords(2, 2) -> "second", //
+          LogCoords(2, 1) -> "first" //
         )
         appendedList should contain only (
           LogCoords(10, 4) -> "first entry in term 10", //
-          LogCoords(2, 3)  -> "third", //
-          LogCoords(2, 2)  -> "second", //
-          LogCoords(2, 1)  -> "first" //
+          LogCoords(2, 3) -> "third", //
+          LogCoords(2, 2) -> "second", //
+          LogCoords(2, 1) -> "first" //
         )
       }
     }
@@ -238,9 +238,10 @@ class ObservableLogTest extends RiffSpec with Eventually {
       ol.latestAppended() shouldBe LogCoords(2, 3)
 
       val result2: LogAppendResult = ol.append(LogCoords(3, 2), "replaced second", "replaced third", "new fourth")
-      result2 shouldBe LogAppendResult(firstIndex = LogCoords(3, 2),
-                                       lastIndex = LogCoords(3, 4),
-                                       replacedIndices = Seq(2, 3))
+      result2 shouldBe LogAppendResult(
+        firstIndex = LogCoords(3, 2),
+        lastIndex = LogCoords(3, 4),
+        replacedIndices = Seq(2, 3))
 
       eventually {
         received.toList should contain inOrderOnly (//

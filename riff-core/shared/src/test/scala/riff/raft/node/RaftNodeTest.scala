@@ -45,7 +45,7 @@ class RaftNodeTest extends RiffSpec {
           .onCommit { x => anotherCommittedList = anotherCommittedList :+ x
           }
       }
-      val node: RaftNode[String, Int] = newNode().withLog(stateMachineLog).withTerm(ourTerm)
+      val node: RaftNode[Int] = newNode().withLog(stateMachineLog).withTerm(ourTerm)
       node.state().role shouldBe Follower
 
       // ---------------------------------------------------------------------------------------
@@ -99,7 +99,7 @@ class RaftNodeTest extends RiffSpec {
       node.persistentState.currentTerm shouldBe 1
     }
     "become a candidate in a cluster of 2 when it receives a receive heartbeat timeout as a follower" in {
-      val node: RaftNode[String, Int] = newNode().withCluster(RaftCluster("neighbor"))
+      val node: RaftNode[Int] = newNode().withCluster(RaftCluster("neighbor"))
       node.state().isFollower shouldBe true
       node.persistentState.currentTerm shouldBe 0
 

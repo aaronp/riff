@@ -1,5 +1,7 @@
 package riff.raft.timer
 
+import riff.raft.NodeId
+
 import scala.concurrent.duration.FiniteDuration
 
 /**
@@ -11,7 +13,7 @@ import scala.concurrent.duration.FiniteDuration
   * The intention being to reduce the likelihood of multiple nodes becoming candidates at the same time.
   *
   */
-trait RaftTimer[A] {
+trait RaftTimer {
 
   /**
     * Some token which can be used to cancel an existing timeout
@@ -28,7 +30,7 @@ trait RaftTimer[A] {
     * @param raftNode the node which should be timed-out should another 'reset 'or 'cancelTimeout' be called on the returned value
     * @param previous An optional previous cancelation token to cancel
     */
-  def resetReceiveHeartbeatTimeout(raftNode: A, previous: Option[CancelT]): CancelT
+  def resetReceiveHeartbeatTimeout(raftNode: NodeId, previous: Option[CancelT]): CancelT
 
   /**
     * Resets a leader's send heartbeat timeout for a given node.
@@ -39,7 +41,7 @@ trait RaftTimer[A] {
     * @param raftNode the node which should be timed-out should another 'reset 'or 'cancelTimeout' be called on the returned value
     * @param previous An optional previous cancelation token to cancel
     */
-  def resetSendHeartbeatTimeout(raftNode: A, previous: Option[CancelT]): CancelT
+  def resetSendHeartbeatTimeout(raftNode: NodeId, previous: Option[CancelT]): CancelT
 
   /** @param c the token to cancel
     */
@@ -49,7 +51,7 @@ trait RaftTimer[A] {
 
 object RaftTimer {
 
-  def apply[A: TimerCallback](sendHeartbeatTimeout: FiniteDuration, receiveHeartbeatTimeout: FiniteDuration) = {
-    DefaultTimer[A](sendHeartbeatTimeout, receiveHeartbeatTimeout)
+  def apply(callback: TimerCallback, sendHeartbeatTimeout: FiniteDuration, receiveHeartbeatTimeout: FiniteDuration): RaftTimer = {
+    DefaultTimer(callback, sendHeartbeatTimeout, receiveHeartbeatTimeout)
   }
 }

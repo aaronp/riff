@@ -18,7 +18,7 @@ class EventSourceTest extends RiffSpec with Eventually {
       withDir { dataDir =>
         Given("A means of reading/writing our state (a set of strings)")
         implicit val setFromBytes = FromBytes.Utf8String.map(_.lines.toSet)
-        implicit val setToBytes   = ToBytes.Utf8String.contramap[Set[String]](_.mkString(Platform.EOL))
+        implicit val setToBytes = ToBytes.Utf8String.contramap[Set[String]](_.mkString(Platform.EOL))
 
         And("an observable log of events")
         import riff.monix.log.ObservableLog._

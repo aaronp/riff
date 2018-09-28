@@ -6,7 +6,7 @@ import scala.concurrent.duration._
 
 trait RaftTimerTCK extends RiffSpec {
 
-  def newTimer[A](sendHeartbeatTimeout: FiniteDuration, receiveHeartbeatTimeout: FiniteDuration)(implicit callback: TimerCallback[A]): RaftTimer[A]
+  def newTimer(sendHeartbeatTimeout: FiniteDuration, receiveHeartbeatTimeout: FiniteDuration)(implicit callback: TimerCallback): RaftTimer
 
   def falseHeartbeatTimeout = 10.millis
   def slowHeartbeatTimeout  = 100.millis
@@ -19,7 +19,7 @@ trait RaftTimerTCK extends RiffSpec {
       val heartbeatTimeout = falseHeartbeatTimeout
 
       // create a timer which we don't reset
-      newTimer[String](
+      newTimer(
         sendHeartbeatTimeout = heartbeatTimeout,
         receiveHeartbeatTimeout = heartbeatTimeout
       )
@@ -34,7 +34,7 @@ trait RaftTimerTCK extends RiffSpec {
       implicit val callback = new TestCallback
 
       val heartbeatTimeout = slowHeartbeatTimeout
-      val timer: RaftTimer[String] = newTimer[String](
+      val timer: RaftTimer = newTimer(
         sendHeartbeatTimeout = heartbeatTimeout,
         receiveHeartbeatTimeout = 1.minute
       )
@@ -59,7 +59,7 @@ trait RaftTimerTCK extends RiffSpec {
       implicit val callback = new TestCallback
 
       val heartbeatTimeout = slowHeartbeatTimeout
-      val timer: RaftTimer[String] = newTimer[String](
+      val timer: RaftTimer = newTimer(
         sendHeartbeatTimeout = heartbeatTimeout,
         receiveHeartbeatTimeout = heartbeatTimeout
       )
@@ -87,7 +87,7 @@ trait RaftTimerTCK extends RiffSpec {
       implicit val callback = new TestCallback
 
       val heartbeatTimeout = slowHeartbeatTimeout
-      val timer: RaftTimer[String] = newTimer[String](
+      val timer: RaftTimer = newTimer(
         sendHeartbeatTimeout = heartbeatTimeout,
         receiveHeartbeatTimeout = heartbeatTimeout
       )
@@ -111,7 +111,7 @@ trait RaftTimerTCK extends RiffSpec {
 
   def assertAfter[T](time : FiniteDuration)(f : => T)
 
-  class TestCallback extends TimerCallback[String] {
+  class TestCallback extends TimerCallback {
     var sentCalls     = List[String]()
     var receivedCalls = List[String]()
     private object Lock

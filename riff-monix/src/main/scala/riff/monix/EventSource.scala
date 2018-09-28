@@ -44,11 +44,12 @@ object EventSource {
     * @tparam S the snapshot type
     * @tparam A the log entry type
     */
-  def apply[S: FromBytes: ToBytes, A](dataDir: Path,
-                                      initial: => S,
-                                      log: CommittedOps[A],
-                                      snapEvery: Int,
-                                      numberToKeep: Option[Int] = None)(combine: (S, A) => S): Try[Observable[S]] = {
+  def apply[S: FromBytes: ToBytes, A](
+    dataDir: Path,
+    initial: => S,
+    log: CommittedOps[A],
+    snapEvery: Int,
+    numberToKeep: Option[Int] = None)(combine: (S, A) => S): Try[Observable[S]] = {
     apply(dao(dataDir, initial, numberToKeep), log, snapEvery)(combine)
   }
 
@@ -127,7 +128,7 @@ object EventSource {
     override def latestSnapshot(): Try[(LogIndex, S)] = {
       val index = latestSnapshotIndexFile.text match {
         case LogCoords.FromKey(coords) => coords.index
-        case _                         => 0
+        case _ => 0
       }
 
       if (index == 0) {

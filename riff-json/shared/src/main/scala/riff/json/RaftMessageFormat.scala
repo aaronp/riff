@@ -4,13 +4,13 @@ import io.circe._
 import io.circe.syntax._
 import riff.raft.messages._
 
-class RaftMessageFormat[NodeKey, A](implicit nodeKeyEnc: Encoder[NodeKey], nodeKeyDec: Decoder[NodeKey], logEnc: Encoder[A], logDec: Decoder[A])
-    extends Encoder[RaftMessage[NodeKey, A]]
-    with Decoder[RaftMessage[NodeKey, A]] {
+class RaftMessageFormat[A](implicit logEnc: Encoder[A], logDec: Decoder[A])
+    extends Encoder[RaftMessage[A]]
+    with Decoder[RaftMessage[A]] {
   private val SendHeartbeatTimeoutName    = "SendHeartbeatTimeout"
   private val ReceiveHeartbeatTimeoutName = "ReceiveHeartbeatTimeout"
 
-  override def apply(input: RaftMessage[NodeKey, A]): Json = {
+  override def apply(input: RaftMessage[A]): Json = {
     input match {
       case msg: AppendEntries[A] =>
         import io.circe.generic.auto._
@@ -36,7 +36,7 @@ class RaftMessageFormat[NodeKey, A](implicit nodeKeyEnc: Encoder[NodeKey], nodeK
         Json.obj("AppendEntriesResponse" -> msg.asJson)
     }
   }
-  override def apply(c: HCursor): Result[RaftMessage[NodeKey, A]] = {
+  override def apply(c: HCursor): Result[RaftMessage[A]] = {
     c.as[String] match {
       case Right(SendHeartbeatTimeoutName)    => Right(SendHeartbeatTimeout)
       case Right(ReceiveHeartbeatTimeoutName) => Right(ReceiveHeartbeatTimeout)
@@ -57,7 +57,7 @@ class RaftMessageFormat[NodeKey, A](implicit nodeKeyEnc: Encoder[NodeKey], nodeK
         opt.getOrElse(Left(DecodingFailure(s"Invalid json string '${c.focus}'", c.history)))
     }
   }
-  def decodeAppendEntries(hcursor: HCursor): Result[RaftMessage[NodeKey, A]] = {
+  def decodeAppendEntries(hcursor: HCursor): Result[RaftMessage[A]] = {
     import io.circe.generic.auto._
     hcursor.as[AppendEntries[A]]
   }

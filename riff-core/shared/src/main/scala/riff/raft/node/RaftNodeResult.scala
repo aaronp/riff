@@ -1,4 +1,5 @@
 package riff.raft.node
+import riff.raft.NodeId
 import riff.raft.messages.{RaftRequest, RaftResponse}
 
 /**
@@ -7,7 +8,7 @@ import riff.raft.messages.{RaftRequest, RaftResponse}
   * @tparam NodeKey the node type
   * @tparam A the log type
   */
-sealed trait RaftNodeResult[+NodeKey, +A]
+sealed trait RaftNodeResult[+A]
 
 /**
   * Marker interface for a no-op result of a node having processed an event or message.
@@ -15,7 +16,7 @@ sealed trait RaftNodeResult[+NodeKey, +A]
   * At the moment there is just a 'log message' implementation, but we could make the results more strongly-typed
   * if needed (e.g. as a candidate advances through its votes, or the detail from some invalid action)
   */
-sealed trait NoOpResult extends RaftNodeResult[Nothing, Nothing]
+sealed trait NoOpResult extends RaftNodeResult[Nothing]
 
 object NoOpResult {
   case class LogMessageResult(msg: String) extends NoOpResult
@@ -28,11 +29,11 @@ object NoOpResult {
   * @tparam NodeKey the node type
   * @tparam A the log type
   */
-final case class AddressedRequest[NodeKey, A](requests: Iterable[(NodeKey, RaftRequest[A])]) extends RaftNodeResult[NodeKey, A]
+final case class AddressedRequest[A](requests: Iterable[(NodeId, RaftRequest[A])]) extends RaftNodeResult[A]
 
 object AddressedRequest {
-  def apply[NodeKey, A](requests: (NodeKey, RaftRequest[A])*): AddressedRequest[NodeKey, A] = new AddressedRequest(requests)
-  def apply[NodeKey, A](key: NodeKey, request: RaftRequest[A]): AddressedRequest[NodeKey, A] = new AddressedRequest(Iterable(key -> request))
+  def apply[A](requests: (NodeId, RaftRequest[A])*): AddressedRequest[A] = new AddressedRequest(requests)
+  def apply[A](key: NodeId, request: RaftRequest[A]): AddressedRequest[A] = new AddressedRequest(Iterable(key -> request))
 }
 
 /** Combines a 'replyTo' node with a response
@@ -41,4 +42,4 @@ object AddressedRequest {
   * @param msg the response, presumably to a request sent from the 'replyTo' node
   * @tparam NodeKey the raft node
   */
-final case class AddressedResponse[NodeKey](replyTo: NodeKey, msg: RaftResponse) extends RaftNodeResult[NodeKey, Nothing]
+final case class AddressedResponse(replyTo: NodeId, msg: RaftResponse) extends RaftNodeResult[Nothing]

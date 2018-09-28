@@ -5,7 +5,7 @@ import riff.raft.messages.{RequestVote, RequestVoteResponse}
 
 trait PersistentStateTCK extends RiffSpec {
 
-  def withPersistentState(test: PersistentState[String] => Unit) : Unit
+  def withPersistentState(test: PersistentState => Unit) : Unit
 
   "PersistentState onRequestVote" should {
     "increment its term to the max of the request and its current term, even if it doesn't grant the vote" in {

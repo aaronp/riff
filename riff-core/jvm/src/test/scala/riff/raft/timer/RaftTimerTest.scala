@@ -6,9 +6,10 @@ import scala.concurrent.duration._
   * and plug in your implementation like here
   */
 class RaftTimerTest extends RaftTimerTCK {
-  override def newTimer[A](sendHeartbeatTimeout: FiniteDuration, receiveHeartbeatTimeout: FiniteDuration)(
-      implicit callback: TimerCallback[A]) =
-    RaftTimer[A](sendHeartbeatTimeout, receiveHeartbeatTimeout)
+  override def newTimer(sendHeartbeatTimeout: FiniteDuration, receiveHeartbeatTimeout: FiniteDuration)(
+    implicit callback: TimerCallback): RaftTimer = {
+    RaftTimer(callback, sendHeartbeatTimeout, receiveHeartbeatTimeout)
+  }
 
   override def assertAfter[T](time: FiniteDuration)(f: => T) = {
     Thread.sleep(time.toMillis)
