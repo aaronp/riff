@@ -1,13 +1,13 @@
 package riff.monix.example
 import java.nio.file.Path
 
-import riff.monix.MonixCluster
-import riff.raft.node.RaftNode
+import riff.monix.MonixNode
+import riff.monix.RiffSchedulers.computation._
 
 object Main extends App {
 
   def cluster(dir: Path) = {
-    MonixCluster.of(4) { name =>
+    MonixNode.of(4) { name =>
       val dataDir = dir.resolve(name)
       //RaftNode[String](dataDir, name)
 

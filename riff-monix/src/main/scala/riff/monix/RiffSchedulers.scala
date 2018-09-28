@@ -3,6 +3,12 @@ import monix.execution.Scheduler
 
 object RiffSchedulers {
 
-  implicit val DefaultScheduler = Scheduler.computation()
+  object computation {
+    implicit val scheduler = Scheduler.computation()
+  }
+
+  object io {
+    implicit val scheduler = Scheduler.io()
+  }
 
 }
