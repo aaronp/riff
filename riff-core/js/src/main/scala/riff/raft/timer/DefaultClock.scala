@@ -4,7 +4,7 @@ import org.scalajs.dom.window
 
 import scala.concurrent.duration.FiniteDuration
 
-class DefaultTimer(sendHeartbeatTimeout: FiniteDuration, receiveHeartbeatTimeout: FiniteDuration) extends RaftClock {
+class DefaultClock(sendHeartbeatTimeout: FiniteDuration, receiveHeartbeatTimeout: FiniteDuration) extends RaftClock {
 
   type CancelT = Int
 
@@ -21,9 +21,9 @@ class DefaultTimer(sendHeartbeatTimeout: FiniteDuration, receiveHeartbeatTimeout
   }
 }
 
-object DefaultTimer {
+object DefaultClock {
 
   def apply(sendHeartbeatTimeout: FiniteDuration, receiveHeartbeatTimeout: FiniteDuration) = {
-    new DefaultTimer(sendHeartbeatTimeout, receiveHeartbeatTimeout)
+    new DefaultClock(sendHeartbeatTimeout, receiveHeartbeatTimeout)
   }
 }

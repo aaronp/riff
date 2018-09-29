@@ -50,6 +50,6 @@ trait RaftClock {
 object RaftClock {
 
   def apply(sendHeartbeatTimeout: FiniteDuration, receiveHeartbeatTimeout: FiniteDuration): RaftClock = {
-    DefaultClock(sendHeartbeatTimeout, receiveHeartbeatTimeout)
+    new DefaultClock(sendHeartbeatTimeout, receiveHeartbeatTimeout)
   }
 }

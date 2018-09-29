@@ -32,9 +32,9 @@ class Fs2Clock(sendHeartbeatTimeout: FiniteDuration, receiveHeartbeatTimeout: Fi
 
 object Fs2Clock {
 
-  def apply(callback: TimerCallback, sendHeartbeatTimeout: FiniteDuration, receiveHeartbeatTimeout: FiniteDuration)(
+  def apply(sendHeartbeatTimeout: FiniteDuration, receiveHeartbeatTimeout: FiniteDuration)(
     implicit sched: Scheduler) = {
 
-    new Fs2Clock(callback, sendHeartbeatTimeout, receiveHeartbeatTimeout)
+    new Fs2Clock(sendHeartbeatTimeout, receiveHeartbeatTimeout)
   }
 }

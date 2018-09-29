@@ -57,34 +57,6 @@ trait RaftClockTCK extends RiffSpec {
         }
       }
     }
-    "not invoke the callbacks if continually reset" in {
-      implicit val callback = new TestCallback
-
-      val heartbeatTimeout = slowHeartbeatTimeout
-      val timer: RaftClock = newTimer(
-        sendHeartbeatTimeout = heartbeatTimeout,
-        receiveHeartbeatTimeout = heartbeatTimeout
-      )
-
-      var lastResetTime   = System.currentTimeMillis()
-      var previousSend    = Option(timer.resetSendHeartbeatTimeout(callback))
-      var previousReceive = Option(timer.resetReceiveHeartbeatTimeout(callback))
-
-      val deadline = (heartbeatTimeout * scalingFactor).fromNow
-      while (!deadline.isOverdue()) {
-        assertAfter(heartbeatTimeout / scalingFactor) {
-          previousSend = Option(timer.resetSendHeartbeatTimeout(callback))
-          previousReceive = Option(timer.resetReceiveHeartbeatTimeout(callback))
-
-          withClue(s"the callback(s) were invoked even after a reset was called at ${lastResetTime}, w/ hb timeout $heartbeatTimeout") {
-            callback.sentCalls.get shouldBe 0
-            callback.receivedCalls.get shouldBe 0
-          }
-
-          lastResetTime = System.currentTimeMillis()
-        }
-      }
-    }
     "invoke callbacks if not reset within the timeout" in {
       implicit val callback = new TestCallback
 

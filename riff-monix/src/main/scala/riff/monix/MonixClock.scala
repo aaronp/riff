@@ -11,7 +11,7 @@ class MonixClock(sendHeartbeatTimeout: FiniteDuration, receiveHeartbeatTimeout: 
 
   override def cancelTimeout(c: Cancelable): Unit = c.cancel()
 
-  override def resetSendHeartbeatTimeout(callback: TimerCallback): Cancelable = {
+  override def resetSendHeartbeatTimeout(callback: TimerCallback[_]): Cancelable = {
     val cancel: Cancelable = sched.scheduleOnce(sendHeartbeatTimeout) {
       callback.onSendHeartbeatTimeout()
       ()
@@ -19,7 +19,7 @@ class MonixClock(sendHeartbeatTimeout: FiniteDuration, receiveHeartbeatTimeout: 
     cancel
   }
 
-  override def resetReceiveHeartbeatTimeout(callback: TimerCallback): Cancelable = {
+  override def resetReceiveHeartbeatTimeout(callback: TimerCallback[_]): Cancelable = {
     val cancel: Cancelable = sched.scheduleOnce(receiveHeartbeatTimeout) {
       callback.onReceiveHeartbeatTimeout()
       ()
