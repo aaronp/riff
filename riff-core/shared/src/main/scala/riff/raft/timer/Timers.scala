@@ -2,10 +2,10 @@ package riff.raft.timer
 
 class Timers(val clock: RaftClock) {
 
-  class CancelableMap(doReset: TimerCallback[_] => clock.CancelT) {
+  class CancelableMap(name : String, doReset: TimerCallback[_] => clock.CancelT) {
     private var cancelable = Option.empty[clock.CancelT]
 
-    def cancel() = {
+    def cancel(): Unit = {
       cancelable.foreach { c =>
         clock.cancelTimeout(c)
         cancelable = None
@@ -20,7 +20,7 @@ class Timers(val clock: RaftClock) {
     }
   }
 
-  object receiveHeartbeat extends CancelableMap(clock.resetReceiveHeartbeatTimeout)
+  object receiveHeartbeat extends CancelableMap("receiveHeartbeat", clock.resetReceiveHeartbeatTimeout)
 
-  object sendHeartbeat extends CancelableMap(clock.resetSendHeartbeatTimeout)
+  object sendHeartbeat extends CancelableMap("sendHeartbeat", clock.resetSendHeartbeatTimeout)
 }

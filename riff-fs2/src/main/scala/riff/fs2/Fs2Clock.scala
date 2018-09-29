@@ -5,8 +5,7 @@ import riff.raft.timer.{RaftClock, TimerCallback}
 
 import scala.concurrent.duration.FiniteDuration
 
-class Fs2Clock(callback: TimerCallback, sendHeartbeatTimeout: FiniteDuration, receiveHeartbeatTimeout: FiniteDuration)(
-  implicit sched: Scheduler)
+class Fs2Clock(sendHeartbeatTimeout: FiniteDuration, receiveHeartbeatTimeout: FiniteDuration)(implicit sched: Scheduler)
     extends RaftClock {
   type CancelT = Int //Cancelable
 
@@ -15,15 +14,13 @@ class Fs2Clock(callback: TimerCallback, sendHeartbeatTimeout: FiniteDuration, re
     ???
   }
 
-  override def resetSendHeartbeatTimeout(node: NodeId, previous: Option[CancelT]): CancelT = {
-    previous.foreach(cancelTimeout)
+  override def resetSendHeartbeatTimeout(callback: TimerCallback[_]): CancelT = {
 //    sched.delayCancellable(sendHeartbeatTimeout)
 //    cancel
     ???
   }
 
-  override def resetReceiveHeartbeatTimeout(node: NodeId, previous: Option[CancelT]): CancelT = {
-    previous.foreach(cancelTimeout)
+  override def resetReceiveHeartbeatTimeout(callback: TimerCallback[_]): CancelT = {
 //    val cancel: Cancelable = sched.scheduleOnce(receiveHeartbeatTimeout) {
 //      TimerCallback[A].onReceiveHeartbeatTimeout(node)
 //      ()

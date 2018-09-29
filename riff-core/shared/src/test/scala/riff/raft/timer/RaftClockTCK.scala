@@ -70,9 +70,9 @@ trait RaftClockTCK extends RiffSpec {
       var previousSend    = Option(timer.resetSendHeartbeatTimeout(callback))
       var previousReceive = Option(timer.resetReceiveHeartbeatTimeout(callback))
 
-      val deadline = (heartbeatTimeout * 3).fromNow
+      val deadline = (heartbeatTimeout * scalingFactor).fromNow
       while (!deadline.isOverdue()) {
-        assertAfter(heartbeatTimeout / 2) {
+        assertAfter(heartbeatTimeout / scalingFactor) {
           previousSend = Option(timer.resetSendHeartbeatTimeout(callback))
           previousReceive = Option(timer.resetReceiveHeartbeatTimeout(callback))
 

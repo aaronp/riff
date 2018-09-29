@@ -10,7 +10,7 @@ object Main extends App {
 
   def cluster(dir: Path) = {
     MonixNode.of(4) { name =>
-    implicit val timer = MonixClock()
+      implicit val timer = MonixClock()
       val dataDir = dir.resolve(name)
       val node = mkNode[String](dataDir, name)
       node

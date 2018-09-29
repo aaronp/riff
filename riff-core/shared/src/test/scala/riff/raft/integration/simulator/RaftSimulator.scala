@@ -399,20 +399,9 @@ class RaftSimulator private (
       updateTimeline(newTimeline)
       entry
     }
-
-//    override def resetReceiveHeartbeatTimeout(raftNode: String, previous: Option[(Long, TimelineType)]): (Long, TimelineType) = {
-//      previous.foreach(cancelTimeout)
-//      val timeout = nextReceiveTimeout.next()
-//      require(raftNode == forNode, s"$forNode trying to reset a receive heartbeat for $raftNode")
-//      scheduleTimeout(timeout, ReceiveTimeout(raftNode))
-//    }
-//    override def resetSendHeartbeatTimeout(raftNode: String, previous: Option[(Long, TimelineType)]): (Long, TimelineType) = {
-//      previous.foreach(cancelTimeout)
-//      val timeout = nextSendTimeout.next()
-//      scheduleTimeout(timeout, SendTimeout(raftNode))
-//    }
     override def cancelTimeout(c: (Long, TimelineType)): Unit = {
-      updateTimeline(currentTimeline.remove(c))
+      val updated = currentTimeline.remove(c)
+      updateTimeline(updated)
     }
 
     override def resetReceiveHeartbeatTimeout(callback: TimerCallback[_]): (Long, TimelineType) = {

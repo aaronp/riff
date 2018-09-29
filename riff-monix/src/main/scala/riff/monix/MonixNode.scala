@@ -42,7 +42,7 @@ class MonixNode[A] private (val underlying: RaftNode[A])(implicit sched: Schedul
 
   def subscribeToCluster(byId: Map[NodeId, MonixNode[A]]) = {
     val obs = new Observer[(NodeId, RequestOrResponse[A])] {
-      override def onNext(elem: (NodeId, RequestOrResponse[A])) : Future[Ack] = {
+      override def onNext(elem: (NodeId, RequestOrResponse[A])): Future[Ack] = {
         handle(elem, byId)
       }
       override def onError(ex: Throwable): Unit = {
@@ -62,7 +62,8 @@ class MonixNode[A] private (val underlying: RaftNode[A])(implicit sched: Schedul
 object MonixNode {
 
   def of[A](nrNodes: Int)(newNode: String => RaftNode[A])(implicit s: Scheduler) = {
-    val nodesNames = (1 to nrNodes).map { id => s"node $id"
+    val nodesNames = (1 to nrNodes).map { id =>
+      s"node $id"
     }.toSet
 
     val nodes: List[MonixNode[A]] = nodesNames.toList.map { name =>

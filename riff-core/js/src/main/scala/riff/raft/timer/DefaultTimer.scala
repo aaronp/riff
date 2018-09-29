@@ -4,16 +4,16 @@ import org.scalajs.dom.window
 
 import scala.concurrent.duration.FiniteDuration
 
-class DefaultTimer(sendHeartbeatTimeout: FiniteDuration, receiveHeartbeatTimeout: FiniteDuration) extends RaftTimer {
+class DefaultTimer(sendHeartbeatTimeout: FiniteDuration, receiveHeartbeatTimeout: FiniteDuration) extends RaftClock {
 
   type CancelT = Int
 
-  def resetReceiveHeartbeatTimeout(callback: TimerCallback): CancelT = {
+  def resetReceiveHeartbeatTimeout(callback: TimerCallback[_]): CancelT = {
     window.setTimeout(() => callback.onReceiveHeartbeatTimeout(), sendHeartbeatTimeout.toMillis)
   }
 
-  def resetSendHeartbeatTimeout(callback: TimerCallback): CancelT = {
-    window.setTimeout(() => callback.onSendHeartbeatTimeout(raftNode), sendHeartbeatTimeout.toMillis)
+  def resetSendHeartbeatTimeout(callback: TimerCallback[_]): CancelT = {
+    window.setTimeout(() => callback.onSendHeartbeatTimeout(), sendHeartbeatTimeout.toMillis)
   }
 
   def cancelTimeout(c: CancelT): Unit = {
@@ -23,9 +23,7 @@ class DefaultTimer(sendHeartbeatTimeout: FiniteDuration, receiveHeartbeatTimeout
 
 object DefaultTimer {
 
-  def apply(
-    sendHeartbeatTimeout: FiniteDuration,
-    receiveHeartbeatTimeout: FiniteDuration): RaftTimer = {
+  def apply(sendHeartbeatTimeout: FiniteDuration, receiveHeartbeatTimeout: FiniteDuration) = {
     new DefaultTimer(sendHeartbeatTimeout, receiveHeartbeatTimeout)
   }
 }

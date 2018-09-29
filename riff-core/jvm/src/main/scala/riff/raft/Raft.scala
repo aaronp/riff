@@ -10,11 +10,11 @@ import riff.raft.timer.{RaftClock, Timers}
 object Raft {
 
   def apply[A: FromBytes: ToBytes](id: NodeId, dataDir: Path, maxAppendSize: Int = 10)(
-    implicit timer: RaftClock): RaftNode[A] = {
+    implicit clock: RaftClock): RaftNode[A] = {
     new RaftNode[A](
       NIOPersistentState(dataDir.resolve("state"), true).cached(),
       RaftLog[A](dataDir.resolve("data"), true),
-      timer,
+      new Timers(clock),
       RaftCluster(Nil),
       node.FollowerNodeState(id, None),
       maxAppendSize

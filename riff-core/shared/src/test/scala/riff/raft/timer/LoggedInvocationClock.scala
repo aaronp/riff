@@ -6,13 +6,17 @@ class LoggedInvocationClock extends RaftClock {
   private var sendCalls = 0
   private var cancelCalls = 0
 
-  def resetReceiveHeartbeatCalls() = receiveCalls = 0
-  def resetSendHeartbeatCalls() = {
+  def resetReceiveHeartbeatCalls(): Int = {
+    val b4 = receiveCalls
+    receiveCalls = 0
+    b4
+  }
+  def resetSendHeartbeatCalls(): Int = {
     val b4 = sendCalls
     sendCalls = 0
     b4
   }
-  def cancelHeartbeatCall() = {
+  def cancelHeartbeatCall(): Int = {
     val b4 = cancelCalls
     cancelCalls = 0
     b4

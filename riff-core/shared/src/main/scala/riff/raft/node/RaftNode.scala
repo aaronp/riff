@@ -6,11 +6,11 @@ import riff.raft.{NodeId, Term, node}
 
 object RaftNode {
 
-  def inMemory[A](id: NodeId, maxAppendSize: Int = 10)(implicit timer: RaftClock): RaftNode[A] = {
+  def inMemory[A](id: NodeId, maxAppendSize: Int = 10)(implicit clock: RaftClock): RaftNode[A] = {
     new RaftNode[A](
       PersistentState.inMemory().cached(),
       RaftLog.inMemory[A](),
-      timer,
+      new Timers(clock),
       RaftCluster(Nil),
       node.FollowerNodeState(id, None),
       maxAppendSize
@@ -38,13 +38,12 @@ object RaftNode {
 class RaftNode[A](
   val persistentState: PersistentState,
   val log: RaftLog[A],
-  val clock: RaftClock,
+  val timers: Timers,
   val cluster: RaftCluster,
   initialState: NodeState,
   val maxAppendSize: Int)
     extends RaftMessageHandler[A] with TimerCallback[RaftNodeResult[A]] { self =>
 
-  val timers = new Timers(clock)
   private var currentState: NodeState = initialState
 
   /** This function may be used as a convenience to generate append requests for a
@@ -329,7 +328,7 @@ class RaftNode[A](
     * @return a new node state
     */
   def withLog(newLog: RaftLog[A]): RaftNode[A] = {
-    new RaftNode(persistentState, newLog, clock, cluster, state, maxAppendSize)
+    new RaftNode(persistentState, newLog, timers, cluster, state, maxAppendSize)
   }
 
   /** a convenience builder method to create a new raft node w/ the given cluster
@@ -337,7 +336,7 @@ class RaftNode[A](
     * @return a new node state
     */
   def withCluster(newCluster: RaftCluster): RaftNode[A] = {
-    new RaftNode(persistentState, log, clock, newCluster, state, maxAppendSize)
+    new RaftNode(persistentState, log, timers, newCluster, state, maxAppendSize)
   }
 
   override def toString() = {
