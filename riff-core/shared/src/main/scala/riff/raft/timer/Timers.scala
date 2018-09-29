@@ -1,31 +1,26 @@
 package riff.raft.timer
-import riff.raft.NodeId
 
-class Timers()(implicit val timer: RaftTimer) {
-  class cancelableMap(doReset: (NodeId, Option[timer.CancelT]) => timer.CancelT) {
-    private var cancelableTaskByKey = Map[NodeId, timer.CancelT]()
-    def cancel(node: NodeId) = {
-      cancelableTaskByKey.get(node).foreach { c =>
+class Timers(val timer: RaftTimer) {
+
+  class CancelableMap(doReset: TimerCallback => timer.CancelT) {
+    private var cancelable = Option.empty[timer.CancelT]
+
+    def cancel() = {
+      cancelable.foreach { c =>
         timer.cancelTimeout(c)
-        cancelableTaskByKey = cancelableTaskByKey.updated(node, c)
+        cancelable = None
       }
     }
 
-    def reset(node: NodeId): timer.CancelT = {
-      val cancelable = cancelableTaskByKey.get(node)
-      val c          = doReset(node, cancelable)
-      cancelableTaskByKey = cancelableTaskByKey.updated(node, c)
+    def reset(callback: TimerCallback): timer.CancelT = {
+      cancel()
+      val c = doReset(callback)
+      cancelable = Option(c)
       c
     }
   }
 
-  object receiveHeartbeat
-      extends cancelableMap({
-        case (node: NodeId, cancelable: Option[timer.CancelT]) => timer.resetReceiveHeartbeatTimeout(node, cancelable)
-      })
+  object receiveHeartbeat extends CancelableMap(timer.resetReceiveHeartbeatTimeout)
 
-  object sendHeartbeat
-      extends cancelableMap({
-        case (node: NodeId, cancelable: Option[timer.CancelT]) => timer.resetSendHeartbeatTimeout(node, cancelable)
-      })
+  object sendHeartbeat extends CancelableMap(timer.resetSendHeartbeatTimeout)
 }

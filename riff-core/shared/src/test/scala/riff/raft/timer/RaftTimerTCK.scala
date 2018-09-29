@@ -1,12 +1,14 @@
 package riff.raft.timer
 
+import java.util.concurrent.atomic.AtomicInteger
+
 import riff.RiffSpec
 
 import scala.concurrent.duration._
 
 trait RaftTimerTCK extends RiffSpec {
 
-  def newTimer(sendHeartbeatTimeout: FiniteDuration, receiveHeartbeatTimeout: FiniteDuration)(implicit callback: TimerCallback): RaftTimer
+  def newTimer(sendHeartbeatTimeout: FiniteDuration, receiveHeartbeatTimeout: FiniteDuration): RaftTimer
 
   def falseHeartbeatTimeout = 10.millis
   def slowHeartbeatTimeout  = 100.millis
@@ -26,8 +28,8 @@ trait RaftTimerTCK extends RiffSpec {
 
       // give it adequate time to invoke our timeout
       assertAfter(heartbeatTimeout * scalingFactor) {
-        callback.sentCalls shouldBe empty
-        callback.receivedCalls shouldBe empty
+        callback.sentCalls.get shouldBe 0
+        callback.receivedCalls.get shouldBe 0
       }
     }
     "not invoke the send callback if cancelled within the timeout" in {
@@ -42,7 +44,7 @@ trait RaftTimerTCK extends RiffSpec {
       When("The send heartbeat is reset")
 
       val resetTime = System.currentTimeMillis()
-      val c         = timer.resetSendHeartbeatTimeout("test", None)
+      val c         = timer.resetSendHeartbeatTimeout(callback)
 
       assertAfter(heartbeatTimeout / scalingFactor) {
         And("then cancelled before the timeout is reached")
@@ -50,8 +52,8 @@ trait RaftTimerTCK extends RiffSpec {
         timer.cancelTimeout(c)
 
         withClue(s"cancel failed after a reset was called at ${resetTime}, then cancelled at $cancelTime w/ timeout of $heartbeatTimeout") {
-          callback.sentCalls shouldBe empty
-          callback.receivedCalls shouldBe empty
+          callback.sentCalls.get shouldBe 0
+          callback.receivedCalls.get shouldBe 0
         }
       }
     }
@@ -65,18 +67,18 @@ trait RaftTimerTCK extends RiffSpec {
       )
 
       var lastResetTime   = System.currentTimeMillis()
-      var previousSend    = Option(timer.resetSendHeartbeatTimeout("test", None))
-      var previousReceive = Option(timer.resetReceiveHeartbeatTimeout("test", None))
+      var previousSend    = Option(timer.resetSendHeartbeatTimeout(callback))
+      var previousReceive = Option(timer.resetReceiveHeartbeatTimeout(callback))
 
       val deadline = (heartbeatTimeout * 3).fromNow
       while (!deadline.isOverdue()) {
         assertAfter(heartbeatTimeout / 2) {
-          previousSend = Option(timer.resetSendHeartbeatTimeout("test", previousSend))
-          previousReceive = Option(timer.resetReceiveHeartbeatTimeout("test", previousReceive))
+          previousSend = Option(timer.resetSendHeartbeatTimeout(callback))
+          previousReceive = Option(timer.resetReceiveHeartbeatTimeout(callback))
 
           withClue(s"the callback(s) were invoked even after a reset was called at ${lastResetTime}, w/ hb timeout $heartbeatTimeout") {
-            callback.sentCalls shouldBe empty
-            callback.receivedCalls shouldBe empty
+            callback.sentCalls.get shouldBe 0
+            callback.receivedCalls.get shouldBe 0
           }
 
           lastResetTime = System.currentTimeMillis()
@@ -94,15 +96,15 @@ trait RaftTimerTCK extends RiffSpec {
 
       val lastResetTime = System.currentTimeMillis()
 
-      timer.resetSendHeartbeatTimeout("test", None)
-      timer.resetReceiveHeartbeatTimeout("test", None)
+      timer.resetSendHeartbeatTimeout(callback)
+      timer.resetReceiveHeartbeatTimeout(callback)
 
       assertAfter((heartbeatTimeout * 1.5).asInstanceOf[FiniteDuration]) {
 
         withClue(
           s"the callback(s) were invoked even after a reset was called at ${lastResetTime}, time now is ${System.currentTimeMillis()} w/ hb timeout $heartbeatTimeout") {
-          callback.sentCalls should not be empty
-          callback.receivedCalls should not be empty
+          callback.sentCalls.get should be > 0
+          callback.receivedCalls.get should be > 0
         }
       }
     }
@@ -112,18 +114,13 @@ trait RaftTimerTCK extends RiffSpec {
   def assertAfter[T](time : FiniteDuration)(f : => T)
 
   class TestCallback extends TimerCallback {
-    var sentCalls     = List[String]()
-    var receivedCalls = List[String]()
-    private object Lock
-    override def onSendHeartbeatTimeout(node: String): Unit = {
-      Lock.synchronized {
-        sentCalls = node :: sentCalls
-      }
+    var sentCalls     = new AtomicInteger(0)
+    var receivedCalls = new AtomicInteger(0)
+    override def onSendHeartbeatTimeout(): Unit = {
+        sentCalls.incrementAndGet()
     }
-    override def onReceiveHeartbeatTimeout(node: String): Unit = {
-      Lock.synchronized {
-        receivedCalls = node :: receivedCalls
-      }
+    override def onReceiveHeartbeatTimeout(): Unit = {
+      receivedCalls.incrementAndGet()
     }
   }
 }

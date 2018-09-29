@@ -1,7 +1,7 @@
 package riff.raft.node
 import riff.raft.log.{LogAppendResult, LogCoords, LogEntry, RaftLog}
 import riff.raft.messages.{RaftResponse, _}
-import riff.raft.timer.{RaftTimer, Timers}
+import riff.raft.timer.{RaftTimer, TimerCallback, Timers}
 import riff.raft.{NodeId, Term, node}
 
 object RaftNode {
@@ -10,7 +10,7 @@ object RaftNode {
     new RaftNode[A](
       PersistentState.inMemory().cached(),
       RaftLog.inMemory[A](),
-      new Timers(),
+      timer,
       RaftCluster(Nil),
       node.FollowerNodeState(id, None),
       maxAppendSize
@@ -38,12 +38,21 @@ object RaftNode {
 class RaftNode[A](
   val persistentState: PersistentState,
   val log: RaftLog[A],
-  val timers: Timers,
+  val timer: RaftTimer,
   val cluster: RaftCluster,
   initialState: NodeState,
   val maxAppendSize: Int)
-    extends RaftMessageHandler[A] {
+    extends RaftMessageHandler[A] { self =>
 
+  private object callback extends TimerCallback {
+    override def onSendHeartbeatTimeout(): Unit = {
+      self.onSendHeartbeatTimeout()
+    }
+    override def onReceiveHeartbeatTimeout(): Unit = {
+      self.onReceiveHeartbeatTimeout()
+    }
+  }
+  val timers = new Timers(timer)
   private var currentState: NodeState = initialState
 
   /** This function may be used as a convenience to generate append requests for a
@@ -182,7 +191,7 @@ class RaftNode[A](
   def onSendHeartbeatTimeout(): Result = {
     currentState match {
       case leader: LeaderNodeState =>
-        timers.sendHeartbeat.reset(nodeKey)
+        timers.sendHeartbeat.reset(callback)
 
         val msgs = cluster.peers.map { toNode =>
           val heartbeat = createAppendOnHeartbeatTimeout(leader, toNode)
@@ -222,7 +231,7 @@ class RaftNode[A](
       currentState match {
         case _: LeaderNodeState => false
         case _ =>
-          timers.receiveHeartbeat.reset(nodeKey)
+          timers.receiveHeartbeat.reset(callback)
           true
       }
     }
@@ -269,7 +278,7 @@ class RaftNode[A](
 
     // this election may end up being a split-brain, or we may have been disconnected. At any rate,
     // we need to reset our heartbeat timeout
-    timers.receiveHeartbeat.reset(nodeKey)
+    timers.receiveHeartbeat.reset(callback)
 
     cluster.numberOfPeers match {
       case 0 =>
@@ -286,17 +295,17 @@ class RaftNode[A](
   def onBecomeFollower(newLeader: Option[NodeId], newTerm: Term) = {
     if (currentState.isLeader) {
       // cancel HB for all nodes
-      timers.sendHeartbeat.cancel(nodeKey)
+      timers.sendHeartbeat.cancel()
     }
-    timers.receiveHeartbeat.reset(nodeKey)
+    timers.receiveHeartbeat.reset(callback)
     persistentState.currentTerm = newTerm
     currentState = currentState.becomeFollower(newLeader)
   }
 
   def onBecomeLeader(state: NodeState): AddressedRequest[A] = {
     val hb = makeDefaultHeartbeat()
-    timers.receiveHeartbeat.cancel(nodeKey)
-    timers.sendHeartbeat.reset(nodeKey)
+    timers.receiveHeartbeat.cancel()
+    timers.sendHeartbeat.reset(callback)
 
     AddressedRequest(cluster.peers.map(_ -> hb))
   }
@@ -312,7 +321,7 @@ class RaftNode[A](
     * @return a new node state
     */
   def withLog(newLog: RaftLog[A]): RaftNode[A] = {
-    new RaftNode(persistentState, newLog, timers, cluster, state, maxAppendSize)
+    new RaftNode(persistentState, newLog, timer, cluster, state, maxAppendSize)
   }
 
   /** a convenience builder method to create a new raft node w/ the given cluster
@@ -320,7 +329,7 @@ class RaftNode[A](
     * @return a new node state
     */
   def withCluster(newCluster: RaftCluster): RaftNode[A] = {
-    new RaftNode(persistentState, log, timers, newCluster, state, maxAppendSize)
+    new RaftNode(persistentState, log, timer, newCluster, state, maxAppendSize)
   }
 
   override def toString() = {

@@ -6,7 +6,7 @@ package object raft {
   type LogIndex = Int
   type NodeId = String
 
-  def isMajority(numberReceived: Int, clusterSize: Int) = {
+  def isMajority(numberReceived: Int, clusterSize: Int): Boolean = {
     numberReceived > clusterSize / 2
   }
 

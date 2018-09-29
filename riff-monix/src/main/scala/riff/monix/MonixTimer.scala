@@ -1,30 +1,27 @@
 package riff.monix
 import monix.execution.{Cancelable, Scheduler}
-import riff.raft.NodeId
 import riff.raft.timer.{RaftTimer, TimerCallback}
 
-import scala.concurrent.duration.FiniteDuration
+import scala.concurrent.duration._
 
-class MonixTimer(callback: TimerCallback, sendHeartbeatTimeout: FiniteDuration, receiveHeartbeatTimeout: FiniteDuration)(
+class MonixTimer(sendHeartbeatTimeout: FiniteDuration, receiveHeartbeatTimeout: FiniteDuration)(
   implicit sched: Scheduler)
     extends RaftTimer {
   type CancelT = Cancelable
 
   override def cancelTimeout(c: Cancelable): Unit = c.cancel()
 
-  override def resetSendHeartbeatTimeout(node: NodeId, previous: Option[Cancelable]): Cancelable = {
-    previous.foreach(cancelTimeout)
+  override def resetSendHeartbeatTimeout(callback: TimerCallback): Cancelable = {
     val cancel: Cancelable = sched.scheduleOnce(sendHeartbeatTimeout) {
-      callback.onSendHeartbeatTimeout(node)
+      callback.onSendHeartbeatTimeout()
       ()
     }
     cancel
   }
 
-  override def resetReceiveHeartbeatTimeout(node: NodeId, previous: Option[Cancelable]): Cancelable = {
-    previous.foreach(cancelTimeout)
+  override def resetReceiveHeartbeatTimeout(callback: TimerCallback): Cancelable = {
     val cancel: Cancelable = sched.scheduleOnce(receiveHeartbeatTimeout) {
-      callback.onReceiveHeartbeatTimeout(node)
+      callback.onReceiveHeartbeatTimeout()
       ()
     }
     cancel
@@ -33,8 +30,10 @@ class MonixTimer(callback: TimerCallback, sendHeartbeatTimeout: FiniteDuration, 
 
 object MonixTimer {
 
-  def apply(callback: TimerCallback, sendHeartbeatTimeout: FiniteDuration, receiveHeartbeatTimeout: FiniteDuration)(
-    implicit sched: Scheduler = RiffSchedulers.DefaultScheduler): RaftTimer = {
-    new MonixTimer(callback, sendHeartbeatTimeout, receiveHeartbeatTimeout)
+  def apply() = apply(300.millis, 100.millis)
+
+  def apply(sendHeartbeatTimeout: FiniteDuration, receiveHeartbeatTimeout: FiniteDuration)(
+    implicit sched: Scheduler = RiffSchedulers.computation.scheduler): RaftTimer = {
+    new MonixTimer(sendHeartbeatTimeout, receiveHeartbeatTimeout)
   }
 }

@@ -2,12 +2,9 @@ package riff.raft.timer
 
 import java.util.concurrent.{ScheduledExecutorService, ScheduledFuture, TimeUnit}
 
-import riff.raft.NodeId
-
 import scala.concurrent.duration.FiniteDuration
 
 class DefaultTimer(
-  callback: TimerCallback,
   sendHeartbeatTimeout: FiniteDuration,
   receiveHeartbeatTimeout: FiniteDuration,
   schedulerService: ScheduledExecutorService = java.util.concurrent.Executors.newScheduledThreadPool(1),
@@ -17,33 +14,26 @@ class DefaultTimer(
 
   override def cancelTimeout(c: ScheduledFuture[Unit]): Unit = c.cancel(cancelMayInterruptIfRunning)
 
-  override def resetSendHeartbeatTimeout(
-    raftNode: NodeId,
-    previous: Option[ScheduledFuture[Unit]]): ScheduledFuture[Unit] = {
+  override def resetSendHeartbeatTimeout(callback: TimerCallback): ScheduledFuture[Unit] = {
     val next = schedulerService
       .schedule(new Runnable() {
         override def run(): Unit = {
-          callback.onSendHeartbeatTimeout(raftNode)
+          callback.onSendHeartbeatTimeout()
           ()
 
         }
       }, sendHeartbeatTimeout.toMillis, TimeUnit.MILLISECONDS)
       .asInstanceOf[ScheduledFuture[Unit]]
 
-    previous.foreach(cancelTimeout)
 
     next
   }
 
-  override def resetReceiveHeartbeatTimeout(
-    raftNode: NodeId,
-    previous: Option[ScheduledFuture[Unit]]): ScheduledFuture[Unit] = {
-    previous.foreach(cancelTimeout)
-
+  override def resetReceiveHeartbeatTimeout(callback: TimerCallback): ScheduledFuture[Unit] = {
     val next = schedulerService
       .schedule(new Runnable() {
         override def run(): Unit = {
-          callback.onReceiveHeartbeatTimeout(raftNode)
+          callback.onReceiveHeartbeatTimeout()
           ()
 
         }
@@ -57,13 +47,11 @@ class DefaultTimer(
 object DefaultTimer {
 
   def apply(
-    callback: TimerCallback,
     sendHeartbeatTimeout: FiniteDuration,
     receiveHeartbeatTimeout: FiniteDuration,
     schedulerService: ScheduledExecutorService = java.util.concurrent.Executors.newScheduledThreadPool(1),
     cancelMayInterruptIfRunning: Boolean = true): RaftTimer = {
     new DefaultTimer(
-      callback,
       sendHeartbeatTimeout,
       receiveHeartbeatTimeout,
       schedulerService,
