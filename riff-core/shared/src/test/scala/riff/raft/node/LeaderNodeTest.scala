@@ -5,7 +5,7 @@ import riff.raft._
 import riff.raft.log.{LogAppendResult, LogCoords, LogEntry, RaftLog}
 import riff.raft.messages.{AppendEntries, _}
 import riff.raft.node.NoOpResult.LogMessageResult
-import riff.raft.timer.LoggedInvocationTimer
+import riff.raft.timer.LoggedInvocationClock
 
 class LeaderNodeTest extends RiffSpec {
 
@@ -287,7 +287,7 @@ class LeaderNodeTest extends RiffSpec {
 
         val thisTerm = 2
 
-        val leaderTimer = new LoggedInvocationTimer
+        val leaderTimer = new LoggedInvocationClock
         val leader = {
           implicit val timer = leaderTimer
           RaftNode.inMemory[String](leaderState.id).withRaftNode(leaderState).withTerm(thisTerm)
@@ -296,7 +296,7 @@ class LeaderNodeTest extends RiffSpec {
         // just for fun, let's also create some instance to which we can apply the requests
         val peerInstancesByName: Map[String, RaftNode[String]] = peerNames.map { name =>
           val peersToThisNode    = (peerNames - name) + leaderState.id
-          implicit val peerTimer = new LoggedInvocationTimer
+          implicit val peerTimer = new LoggedInvocationClock
           val peerState          = RaftNode.inMemory[String](name).withCluster(RaftCluster(peersToThisNode)).withTerm(thisTerm)
           name -> peerState
         }.toMap
@@ -333,11 +333,11 @@ class LeaderNodeTest extends RiffSpec {
           appendRequest.commitIndex shouldBe 0
           appendRequest.entries should contain allOf (LogEntry(thisTerm, "foo"), LogEntry(thisTerm, "bar"), LogEntry(thisTerm, "bazz"))
 
-          val peerState = peerInstancesByName(peerName)
+          val peerState: RaftNode[String] = peerInstancesByName(peerName)
 
-          val peerTimer   = peerState.timers.timer.asInstanceOf[LoggedInvocationTimer]
+          val peerTimer   = peerState.timers.clock.asInstanceOf[LoggedInvocationClock]
           val callsBefore = peerTimer.resetReceiveHeartbeatCalls()
-          callsBefore shouldBe (empty)
+          callsBefore shouldBe 0
 
           // the peer should immediately update its term to the leaders term and reset its append heartbeat
           val AddressedResponse(from, resp: AppendEntriesResponse) = peerState.onMessage(leaderState.id, appendRequest)

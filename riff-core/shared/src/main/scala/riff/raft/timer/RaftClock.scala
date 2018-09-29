@@ -11,7 +11,7 @@ import scala.concurrent.duration.FiniteDuration
   * The intention being to reduce the likelihood of multiple nodes becoming candidates at the same time.
   *
   */
-trait RaftTimer {
+trait RaftClock {
 
   /**
     * Some token which can be used to cancel an existing timeout
@@ -28,7 +28,7 @@ trait RaftTimer {
     * @param callback
     * @param previous An optional previous cancelation token to cancel
     */
-  def resetReceiveHeartbeatTimeout(callback: TimerCallback): CancelT
+  def resetReceiveHeartbeatTimeout(callback: TimerCallback[_]): CancelT
 
   /**
     * Resets a leader's send heartbeat timeout for a given node.
@@ -39,7 +39,7 @@ trait RaftTimer {
     * @param callback
     * @param previous An optional previous cancelation token to cancel
     */
-  def resetSendHeartbeatTimeout(callback: TimerCallback): CancelT
+  def resetSendHeartbeatTimeout(callback: TimerCallback[_]): CancelT
 
   /** @param c the token to cancel
     */
@@ -47,9 +47,9 @@ trait RaftTimer {
 
 }
 
-object RaftTimer {
+object RaftClock {
 
-  def apply(sendHeartbeatTimeout: FiniteDuration, receiveHeartbeatTimeout: FiniteDuration): RaftTimer = {
-    DefaultTimer(sendHeartbeatTimeout, receiveHeartbeatTimeout)
+  def apply(sendHeartbeatTimeout: FiniteDuration, receiveHeartbeatTimeout: FiniteDuration): RaftClock = {
+    DefaultClock(sendHeartbeatTimeout, receiveHeartbeatTimeout)
   }
 }

@@ -4,17 +4,17 @@ import java.util.concurrent.{ScheduledExecutorService, ScheduledFuture, TimeUnit
 
 import scala.concurrent.duration.FiniteDuration
 
-class DefaultTimer(
+class DefaultClock(
   sendHeartbeatTimeout: FiniteDuration,
   receiveHeartbeatTimeout: FiniteDuration,
   schedulerService: ScheduledExecutorService = java.util.concurrent.Executors.newScheduledThreadPool(1),
   cancelMayInterruptIfRunning: Boolean = true)
-    extends RaftTimer {
+    extends RaftClock {
   override type CancelT = ScheduledFuture[Unit]
 
   override def cancelTimeout(c: ScheduledFuture[Unit]): Unit = c.cancel(cancelMayInterruptIfRunning)
 
-  override def resetSendHeartbeatTimeout(callback: TimerCallback): ScheduledFuture[Unit] = {
+  override def resetSendHeartbeatTimeout(callback: TimerCallback[_]): ScheduledFuture[Unit] = {
     val next = schedulerService
       .schedule(new Runnable() {
         override def run(): Unit = {
@@ -29,7 +29,7 @@ class DefaultTimer(
     next
   }
 
-  override def resetReceiveHeartbeatTimeout(callback: TimerCallback): ScheduledFuture[Unit] = {
+  override def resetReceiveHeartbeatTimeout(callback: TimerCallback[_]): ScheduledFuture[Unit] = {
     val next = schedulerService
       .schedule(new Runnable() {
         override def run(): Unit = {
@@ -44,14 +44,14 @@ class DefaultTimer(
   }
 }
 
-object DefaultTimer {
+object DefaultClock {
 
   def apply(
     sendHeartbeatTimeout: FiniteDuration,
     receiveHeartbeatTimeout: FiniteDuration,
     schedulerService: ScheduledExecutorService = java.util.concurrent.Executors.newScheduledThreadPool(1),
-    cancelMayInterruptIfRunning: Boolean = true): RaftTimer = {
-    new DefaultTimer(
+    cancelMayInterruptIfRunning: Boolean = true): RaftClock = {
+    new DefaultClock(
       sendHeartbeatTimeout,
       receiveHeartbeatTimeout,
       schedulerService,

@@ -6,15 +6,15 @@ import riff.RiffSpec
 
 import scala.concurrent.duration._
 
-trait RaftTimerTCK extends RiffSpec {
+trait RaftClockTCK extends RiffSpec {
 
-  def newTimer(sendHeartbeatTimeout: FiniteDuration, receiveHeartbeatTimeout: FiniteDuration): RaftTimer
+  def newTimer(sendHeartbeatTimeout: FiniteDuration, receiveHeartbeatTimeout: FiniteDuration): RaftClock
 
   def falseHeartbeatTimeout = 10.millis
   def slowHeartbeatTimeout  = 100.millis
 
   val scalingFactor = 5
-  "RaftTimer" should {
+  "RaftClock" should {
     "not immediately timeout upon creation" in {
       implicit val callback = new TestCallback
 
@@ -36,7 +36,7 @@ trait RaftTimerTCK extends RiffSpec {
       implicit val callback = new TestCallback
 
       val heartbeatTimeout = slowHeartbeatTimeout
-      val timer: RaftTimer = newTimer(
+      val timer: RaftClock = newTimer(
         sendHeartbeatTimeout = heartbeatTimeout,
         receiveHeartbeatTimeout = 1.minute
       )
@@ -61,7 +61,7 @@ trait RaftTimerTCK extends RiffSpec {
       implicit val callback = new TestCallback
 
       val heartbeatTimeout = slowHeartbeatTimeout
-      val timer: RaftTimer = newTimer(
+      val timer: RaftClock = newTimer(
         sendHeartbeatTimeout = heartbeatTimeout,
         receiveHeartbeatTimeout = heartbeatTimeout
       )
@@ -89,7 +89,7 @@ trait RaftTimerTCK extends RiffSpec {
       implicit val callback = new TestCallback
 
       val heartbeatTimeout = slowHeartbeatTimeout
-      val timer: RaftTimer = newTimer(
+      val timer: RaftClock = newTimer(
         sendHeartbeatTimeout = heartbeatTimeout,
         receiveHeartbeatTimeout = heartbeatTimeout
       )
@@ -113,14 +113,10 @@ trait RaftTimerTCK extends RiffSpec {
 
   def assertAfter[T](time : FiniteDuration)(f : => T)
 
-  class TestCallback extends TimerCallback {
+  class TestCallback extends TimerCallback[Int] {
     var sentCalls     = new AtomicInteger(0)
     var receivedCalls = new AtomicInteger(0)
-    override def onSendHeartbeatTimeout(): Unit = {
-        sentCalls.incrementAndGet()
-    }
-    override def onReceiveHeartbeatTimeout(): Unit = {
-      receivedCalls.incrementAndGet()
-    }
+    override def onSendHeartbeatTimeout() = sentCalls.incrementAndGet()
+    override def onReceiveHeartbeatTimeout() = receivedCalls.incrementAndGet()
   }
 }

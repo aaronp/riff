@@ -1,13 +1,13 @@
 package riff.fs2
 import fs2.Scheduler
 import riff.raft.NodeId
-import riff.raft.timer.{RaftTimer, TimerCallback}
+import riff.raft.timer.{RaftClock, TimerCallback}
 
 import scala.concurrent.duration.FiniteDuration
 
-class Fs2Timer(callback: TimerCallback, sendHeartbeatTimeout: FiniteDuration, receiveHeartbeatTimeout: FiniteDuration)(
+class Fs2Clock(callback: TimerCallback, sendHeartbeatTimeout: FiniteDuration, receiveHeartbeatTimeout: FiniteDuration)(
   implicit sched: Scheduler)
-    extends RaftTimer {
+    extends RaftClock {
   type CancelT = Int //Cancelable
 
   override def cancelTimeout(c: CancelT): Unit = {
@@ -33,11 +33,11 @@ class Fs2Timer(callback: TimerCallback, sendHeartbeatTimeout: FiniteDuration, re
   }
 }
 
-object Fs2Timer {
+object Fs2Clock {
 
   def apply(callback: TimerCallback, sendHeartbeatTimeout: FiniteDuration, receiveHeartbeatTimeout: FiniteDuration)(
     implicit sched: Scheduler) = {
 
-    new Fs2Timer(callback, sendHeartbeatTimeout, receiveHeartbeatTimeout)
+    new Fs2Clock(callback, sendHeartbeatTimeout, receiveHeartbeatTimeout)
   }
 }

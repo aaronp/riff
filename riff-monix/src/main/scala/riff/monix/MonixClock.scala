@@ -1,12 +1,12 @@
 package riff.monix
 import monix.execution.{Cancelable, Scheduler}
-import riff.raft.timer.{RaftTimer, TimerCallback}
+import riff.raft.timer.{RaftClock, TimerCallback}
 
 import scala.concurrent.duration._
 
-class MonixTimer(sendHeartbeatTimeout: FiniteDuration, receiveHeartbeatTimeout: FiniteDuration)(
+class MonixClock(sendHeartbeatTimeout: FiniteDuration, receiveHeartbeatTimeout: FiniteDuration)(
   implicit sched: Scheduler)
-    extends RaftTimer {
+    extends RaftClock {
   type CancelT = Cancelable
 
   override def cancelTimeout(c: Cancelable): Unit = c.cancel()
@@ -28,12 +28,12 @@ class MonixTimer(sendHeartbeatTimeout: FiniteDuration, receiveHeartbeatTimeout: 
   }
 }
 
-object MonixTimer {
+object MonixClock {
 
   def apply() = apply(300.millis, 100.millis)
 
   def apply(sendHeartbeatTimeout: FiniteDuration, receiveHeartbeatTimeout: FiniteDuration)(
-    implicit sched: Scheduler = RiffSchedulers.computation.scheduler): RaftTimer = {
-    new MonixTimer(sendHeartbeatTimeout, receiveHeartbeatTimeout)
+    implicit sched: Scheduler = RiffSchedulers.computation.scheduler): RaftClock = {
+    new MonixClock(sendHeartbeatTimeout, receiveHeartbeatTimeout)
   }
 }

@@ -6,7 +6,7 @@ import org.scalatest.{GivenWhenThen, Matchers, WordSpec}
 import riff.raft.log.{LogCoords, RaftLog}
 import riff.raft.messages.{AppendEntries, RaftRequest, RaftResponse, ReceiveHeartbeatTimeout}
 import riff.raft.node._
-import riff.raft.timer.LoggedInvocationTimer
+import riff.raft.timer.LoggedInvocationClock
 
 import scala.collection.immutable
 import scala.concurrent.duration._
@@ -42,7 +42,7 @@ abstract class BaseSpec extends WordSpec with Matchers with ScalaFutures with Gi
       }.toList
     }
 
-    def testTimerFor(nodeKey: String): LoggedInvocationTimer = byName(nodeKey).timers.timer.asInstanceOf[LoggedInvocationTimer]
+    def testTimerFor(nodeKey: String): LoggedInvocationClock = byName(nodeKey).timers.clock.asInstanceOf[LoggedInvocationClock]
 
     /** Convenience method to:
       * 1) timeout the given node
@@ -107,7 +107,7 @@ abstract class BaseSpec extends WordSpec with Matchers with ScalaFutures with Gi
 
   }
   protected def newNode(name: String = "test"): RaftNode[Int] = {
-    implicit val timer = new LoggedInvocationTimer
+    implicit val timer = new LoggedInvocationClock
     RaftNode.inMemory[Int](name)
   }
 }

@@ -1,12 +1,12 @@
 package riff.raft.node
 import riff.raft.log.{LogAppendResult, LogCoords, LogEntry, RaftLog}
 import riff.raft.messages.{RaftResponse, _}
-import riff.raft.timer.{RaftTimer, TimerCallback, Timers}
+import riff.raft.timer.{RaftClock, TimerCallback, Timers}
 import riff.raft.{NodeId, Term, node}
 
 object RaftNode {
 
-  def inMemory[A](id: NodeId, maxAppendSize: Int = 10)(implicit timer: RaftTimer): RaftNode[A] = {
+  def inMemory[A](id: NodeId, maxAppendSize: Int = 10)(implicit timer: RaftClock): RaftNode[A] = {
     new RaftNode[A](
       PersistentState.inMemory().cached(),
       RaftLog.inMemory[A](),
@@ -29,7 +29,7 @@ object RaftNode {
   *
   * @param persistentState the state used to track the currentTerm and vote state
   * @param log the RaftLog which stores the log entries
-  * @param timers the timing apparatus for controlling timeouts
+  * @param clock the timing apparatus for controlling timeouts
   * @param cluster this node's view of the cluster
   * @param initialState the initial role
   * @param maxAppendSize the maximum number of entries to send to a follower at a time when catching up the log
@@ -38,21 +38,13 @@ object RaftNode {
 class RaftNode[A](
   val persistentState: PersistentState,
   val log: RaftLog[A],
-  val timer: RaftTimer,
+  val clock: RaftClock,
   val cluster: RaftCluster,
   initialState: NodeState,
   val maxAppendSize: Int)
-    extends RaftMessageHandler[A] { self =>
+    extends RaftMessageHandler[A] with TimerCallback[RaftNodeResult[A]] { self =>
 
-  private object callback extends TimerCallback {
-    override def onSendHeartbeatTimeout(): Unit = {
-      self.onSendHeartbeatTimeout()
-    }
-    override def onReceiveHeartbeatTimeout(): Unit = {
-      self.onReceiveHeartbeatTimeout()
-    }
-  }
-  val timers = new Timers(timer)
+  val timers = new Timers(clock)
   private var currentState: NodeState = initialState
 
   /** This function may be used as a convenience to generate append requests for a
@@ -191,7 +183,7 @@ class RaftNode[A](
   def onSendHeartbeatTimeout(): Result = {
     currentState match {
       case leader: LeaderNodeState =>
-        timers.sendHeartbeat.reset(callback)
+        resetSendHeartbeat()
 
         val msgs = cluster.peers.map { toNode =>
           val heartbeat = createAppendOnHeartbeatTimeout(leader, toNode)
@@ -231,7 +223,7 @@ class RaftNode[A](
       currentState match {
         case _: LeaderNodeState => false
         case _ =>
-          timers.receiveHeartbeat.reset(callback)
+          resetReceiveHeartbeat()
           true
       }
     }
@@ -278,7 +270,7 @@ class RaftNode[A](
 
     // this election may end up being a split-brain, or we may have been disconnected. At any rate,
     // we need to reset our heartbeat timeout
-    timers.receiveHeartbeat.reset(callback)
+    resetReceiveHeartbeat()
 
     cluster.numberOfPeers match {
       case 0 =>
@@ -295,17 +287,17 @@ class RaftNode[A](
   def onBecomeFollower(newLeader: Option[NodeId], newTerm: Term) = {
     if (currentState.isLeader) {
       // cancel HB for all nodes
-      timers.sendHeartbeat.cancel()
+      cancelSendHeartbeat()
     }
-    timers.receiveHeartbeat.reset(callback)
+    resetReceiveHeartbeat()
     persistentState.currentTerm = newTerm
     currentState = currentState.becomeFollower(newLeader)
   }
 
   def onBecomeLeader(state: NodeState): AddressedRequest[A] = {
     val hb = makeDefaultHeartbeat()
-    timers.receiveHeartbeat.cancel()
-    timers.sendHeartbeat.reset(callback)
+    cancelReceiveHeartbeat()
+    resetSendHeartbeat()
 
     AddressedRequest(cluster.peers.map(_ -> hb))
   }
@@ -314,6 +306,22 @@ class RaftNode[A](
 
   def state(): NodeState = currentState
 
+  def cancelReceiveHeartbeat() = {
+    timers.receiveHeartbeat.cancel()
+  }
+
+  def cancelSendHeartbeat() = {
+    timers.sendHeartbeat.cancel()
+  }
+
+  def resetSendHeartbeat() = {
+    timers.sendHeartbeat.reset(this)
+  }
+
+  def resetReceiveHeartbeat() = {
+    timers.receiveHeartbeat.reset(this)
+  }
+
   protected def thisTerm() = persistentState.currentTerm
 
   /** a convenience builder method to create a new raft node w/ the given raft log
@@ -321,7 +329,7 @@ class RaftNode[A](
     * @return a new node state
     */
   def withLog(newLog: RaftLog[A]): RaftNode[A] = {
-    new RaftNode(persistentState, newLog, timer, cluster, state, maxAppendSize)
+    new RaftNode(persistentState, newLog, clock, cluster, state, maxAppendSize)
   }
 
   /** a convenience builder method to create a new raft node w/ the given cluster
@@ -329,7 +337,7 @@ class RaftNode[A](
     * @return a new node state
     */
   def withCluster(newCluster: RaftCluster): RaftNode[A] = {
-    new RaftNode(persistentState, log, timer, newCluster, state, maxAppendSize)
+    new RaftNode(persistentState, log, clock, newCluster, state, maxAppendSize)
   }
 
   override def toString() = {
