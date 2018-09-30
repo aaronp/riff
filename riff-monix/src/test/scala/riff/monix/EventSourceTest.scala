@@ -3,7 +3,7 @@ import eie.io._
 import org.scalatest.concurrent.Eventually
 import riff.RiffSpec
 import riff.monix.EventSource.StateDao
-import riff.monix.RiffSchedulers.DefaultScheduler
+import riff.monix.RiffSchedulers.computation.scheduler
 import riff.raft.LogIndex
 import riff.raft.log.{LogCoords, RaftLog}
 

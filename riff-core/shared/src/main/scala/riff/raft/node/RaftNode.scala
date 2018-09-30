@@ -41,8 +41,11 @@ class RaftNode[A](
   val timers: Timers,
   val cluster: RaftCluster,
   initialState: NodeState,
-  val maxAppendSize: Int)
+  val maxAppendSize: Int,
+  initialTimerCallback : TimerCallback[_] = null)
     extends RaftMessageHandler[A] with TimerCallback[RaftNodeResult[A]] { self =>
+
+  private val timerCallback = Option(initialTimerCallback).getOrElse(this)
 
   private var currentState: NodeState = initialState
 
@@ -314,11 +317,11 @@ class RaftNode[A](
   }
 
   def resetSendHeartbeat() = {
-    timers.sendHeartbeat.reset(this)
+    timers.sendHeartbeat.reset(timerCallback)
   }
 
   def resetReceiveHeartbeat() = {
-    timers.receiveHeartbeat.reset(this)
+    timers.receiveHeartbeat.reset(timerCallback)
   }
 
   protected def thisTerm() = persistentState.currentTerm
@@ -328,7 +331,7 @@ class RaftNode[A](
     * @return a new node state
     */
   def withLog(newLog: RaftLog[A]): RaftNode[A] = {
-    new RaftNode(persistentState, newLog, timers, cluster, state, maxAppendSize)
+    new RaftNode(persistentState, newLog, timers, cluster, state, maxAppendSize, timerCallback)
   }
 
   /** a convenience builder method to create a new raft node w/ the given cluster
@@ -336,7 +339,11 @@ class RaftNode[A](
     * @return a new node state
     */
   def withCluster(newCluster: RaftCluster): RaftNode[A] = {
-    new RaftNode(persistentState, log, timers, newCluster, state, maxAppendSize)
+    new RaftNode(persistentState, log, timers, newCluster, state, maxAppendSize, timerCallback)
+  }
+
+  def withTimerCallback(newTimerCallback : TimerCallback[_]): RaftNode[A] = {
+    new RaftNode(persistentState, log, timers, cluster, state, maxAppendSize, newTimerCallback)
   }
 
   override def toString() = {

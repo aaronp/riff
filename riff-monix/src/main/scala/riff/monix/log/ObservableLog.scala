@@ -23,7 +23,8 @@ import riff.raft.{LogIndex, Term}
   * @param scheduler the scheduler to use for the observables
   * @tparam A
   */
-case class ObservableLog[A](underlying: RaftLog[A])(implicit scheduler: Scheduler = RiffSchedulers.DefaultScheduler)
+case class ObservableLog[A](underlying: RaftLog[A])(
+  implicit scheduler: Scheduler = RiffSchedulers.computation.scheduler)
     extends RaftLog[A] with CommittedOps[A] with AppendOps[A] {
 
   private val appendedVar = Var[LogAppendSuccess](null: LogAppendSuccess)

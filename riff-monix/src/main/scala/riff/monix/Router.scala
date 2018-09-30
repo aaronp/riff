@@ -1,41 +1,41 @@
 package riff.monix
 import monix.execution.Scheduler
-import monix.reactive.{Observable, Observer, Pipe}
+import monix.reactive.observers.{BufferedSubscriber, Subscriber}
+import monix.reactive.{Observable, Observer, OverflowStrategy, Pipe}
 
-import scala.collection.mutable
-
-/** @param name the name of this pipe
-  * @param sink
-  * @param source
+/**
+  *
+  * @param name
+  * @param bufferedSubscriber the input to this pipe, which can be subscribed to multiple sources
+  * @param output an output
   * @tparam A
   */
-class NamedPipe[A](name: String, input: Observer[A]) {
-  private val outputByName = mutable.HashMap[String, Observable[A]]()
+class NamedPipe[In, Out](val name: String, val bufferedSubscriber: Subscriber[In], val output: Observable[Out])
 
-  def outputFor(target: String, default: => Observable[A]): Observable[A] = {
-    outputByName.getOrElseUpdate(target, default)
+object NamedPipe {
+
+  def apply[A](name: String)(implicit sched: Scheduler): NamedPipe[A, A] = {
+    val (feed: Observer[A], sink: Observable[A]) = Pipe.publishToOne[A].unicast
+    val s: Subscriber[A] = Subscriber(feed, sched)
+    val input: Subscriber[A] = BufferedSubscriber(s, OverflowStrategy.BackPressure(10))
+    new NamedPipe[A, A](name, input, sink)
   }
+}
+
+class Router[In, Out](val pipes: Map[String, NamedPipe[In, Out]]) {
+  def apply(name: String): NamedPipe[In, Out] = pipes(name)
 }
 
 object Router {
 
-  /**
-    * If we have 3 nodes A, B and C, then we should be able to subscribe the input each to the output of another.
-    *
-    *
-    * @param name
-    * @param theRest
-    * @param sched
-    * @tparam A
-    */
-  def forNames[A](name: String, theRest: String*)(implicit sched: Scheduler) = {
-    val names = theRest.toSet + name
-
-    val (sink: Observer[A], source: Observable[A]) = Pipe.publish[A].multicast
-
+  def apply[A](firstName: String, theRest: String*)(implicit sched: Scheduler): Router[A, A] = {
+    apply(theRest.toSet + firstName)
   }
 
-  def forNames[A](names: Set[String])(newPipe: () => (Observer[A], Observable[A])) = {}
+  def apply[A](names: Set[String])(implicit sched: Scheduler): Router[A, A] = {
+    val map = names.map { name => //
+      name -> NamedPipe[A](name)
+    }.toMap
+    new Router(map)
+  }
 }
-
-class Router[A](names: Set[String], newPipe: () => (Observer[A], Observable[A])) {}

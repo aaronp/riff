@@ -1,7 +1,7 @@
 package riff.monix.log
 import org.scalatest.concurrent.Eventually
 import riff.RiffSpec
-import riff.monix.RiffSchedulers.DefaultScheduler
+import riff.monix.RiffSchedulers.computation._
 import riff.raft.log.{LogAppendResult, LogCoords, RaftLog}
 
 import scala.collection.mutable.ListBuffer
