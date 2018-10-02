@@ -2,7 +2,7 @@
 <html class="no-js" lang="en">
 
 <head>
-<title>NodeKey is dead! · Riff</title>
+<title>Over-Parameterization: NodeKey is Dead · Riff</title>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <meta name="description" content='riff'/>
@@ -45,8 +45,8 @@
   <li><a href="../blog/index.html" class="page">Project Blog</a>
   <ul>
     <li><a href="../blog/01_raftSimulatorForTheWin.html" class="page">Meaningful Integration Testing</a></li>
-    <li><a href="../blog/02_eventSourceAGoGo.html" class="page">Event Sourcing !</a></li>
-    <li><a href="../blog/03_NodeKeyIsDead.html" class="active page">NodeKey is dead!</a></li>
+    <li><a href="../blog/02_eventSourceAGoGo.html" class="page">Event Sourcing</a></li>
+    <li><a href="../blog/03_NodeKeyIsDead.html" class="active page">Over-Parameterization: <del>NodeKey</del> is Dead</a></li>
   </ul></li>
 </ul>
 </div>
@@ -93,8 +93,8 @@ C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.
   <li><a href="../blog/index.html" class="page">Project Blog</a>
   <ul>
     <li><a href="../blog/01_raftSimulatorForTheWin.html" class="page">Meaningful Integration Testing</a></li>
-    <li><a href="../blog/02_eventSourceAGoGo.html" class="page">Event Sourcing !</a></li>
-    <li><a href="../blog/03_NodeKeyIsDead.html" class="active page">NodeKey is dead!</a></li>
+    <li><a href="../blog/02_eventSourceAGoGo.html" class="page">Event Sourcing</a></li>
+    <li><a href="../blog/03_NodeKeyIsDead.html" class="active page">Over-Parameterization: <del>NodeKey</del> is Dead</a></li>
   </ul></li>
 </ul>
 </div>
@@ -113,7 +113,7 @@ C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.
 <ul>
   <li><a href="../index.html">Riff</a></li>
   <li><a href="../blog/index.html">Project Blog</a></li>
-  <li>NodeKey is dead!</li>
+  <li>Over-Parameterization: <del>NodeKey</del> is Dead</li>
 </ul>
 </div>
 </div>
@@ -121,7 +121,7 @@ C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.
 
 <div class="page-content row">
 <div class="small-12 large-9 column" id="docs">
-<h1><a href="#nodekey-is-dead-" name="nodekey-is-dead-" class="anchor"><span class="anchor-link"></span></a>NodeKey is dead!</h1>
+<h1><a href="#over-parameterization-is-dead" name="over-parameterization-is-dead" class="anchor"><span class="anchor-link"></span></a>Over-Parameterization: <del>NodeKey</del> is Dead</h1>
 <p>This project blog is becoming an omage to my favourite playlist of scala heros and tech talks, and so I guess at this point I should give <a href="https://www.youtube.com/watch?v=7xSfLPD6tiQ">Rob Norris&rsquo;s Fixpoint Talk</a> a shout-out.</p>
 <p>Rob makes the point that, when in doubt, parameterize the property types. I&rsquo;ve found that to be generally a good rule as well, and so is what I did when representing the underlying nodes in the cluster.</p>
 <p>I already had one parameter type &lsquo;A&rsquo; to use as log type, which makes sense and will always be there. The second parameter type RaftNode had was &lsquo;NodeKey&rsquo;.</p>
