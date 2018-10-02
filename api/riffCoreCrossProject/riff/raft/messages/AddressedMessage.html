@@ -101,10 +101,10 @@
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../../index.html" class="extype" name="riff">riff</a></dd></dl></div>
-    </li><li name="riff.raft.timer" visbl="pub" class="indented3 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="timer"></a><a id="timer:timer"></a>
+    </li><li name="riff.raft.messages" visbl="pub" class="indented3 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="messages"></a><a id="messages:messages"></a>
       <span class="permalink">
-      <a href="../../riff/raft/index.html#timer" title="Permalink">
+      <a href="../../riff/raft/index.html#messages" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -113,38 +113,62 @@
         <span class="kind">package</span>
       </span>
       <span class="symbol">
-        <a title="" href="index.html"><span class="name">timer</span></a>
+        <a title="" href="index.html"><span class="name">messages</span></a>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../index.html" class="extype" name="riff.raft">raft</a></dd></dl></div>
-    </li><li name="riff.raft.timer.Timers" visbl="pub" class="indented4 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="Timers[NodeKey]extendsAnyRef"></a><a id="Timers[NodeKey]:Timers[NodeKey]"></a>
-      <span class="permalink">
-      <a href="../../../riff/raft/timer/index.html#Timers[NodeKey]extendsAnyRef" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">class</span>
-      </span>
-      <span class="symbol">
-        <a title="" href="Timers.html"><span class="name">Timers</span></a><span class="tparams">[<span name="NodeKey">NodeKey</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
-      </span>
-      
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="index.html" class="extype" name="riff.raft.timer">timer</a></dd></dl></div>
-    </li><li class="current-entities indented4">
+    </li><li class="current-entities indented3">
                         <span class="separator"></span>
                         <a class="class" href="" title=""></a>
-                        <a href="" title="">cancelableMap</a>
-                      </li><li class="current-entities indented4">
+                        <a href="" title="">AddressedMessage</a>
+                      </li><li class="current-entities indented3">
+                        <a class="object" href="AppendData$.html" title=""></a>
+                        <a class="class" href="AppendData.html" title="Represents input from a client of the cluster"></a>
+                        <a href="AppendData.html" title="Represents input from a client of the cluster">AppendData</a>
+                      </li><li class="current-entities indented3">
                         <span class="separator"></span>
-                        <a class="object" href="Timers$receiveHeartbeat$.html" title=""></a>
-                        <a href="Timers$receiveHeartbeat$.html" title="">receiveHeartbeat</a>
-                      </li><li class="current-entities indented4">
+                        <a class="class" href="AppendEntries.html" title=""></a>
+                        <a href="AppendEntries.html" title="">AppendEntries</a>
+                      </li><li class="current-entities indented3">
+                        <a class="object" href="AppendEntriesResponse$.html" title=""></a>
+                        <a class="class" href="AppendEntriesResponse.html" title=""></a>
+                        <a href="AppendEntriesResponse.html" title="">AppendEntriesResponse</a>
+                      </li><li class="current-entities indented3">
                         <span class="separator"></span>
-                        <a class="object" href="Timers$sendHeartbeat$.html" title=""></a>
-                        <a href="Timers$sendHeartbeat$.html" title="">sendHeartbeat</a>
+                        <a class="trait" href="RaftMessage.html" title="Represents the possible input types into a riff.raft.node.RaftNode"></a>
+                        <a href="RaftMessage.html" title="Represents the possible input types into a riff.raft.node.RaftNode">RaftMessage</a>
+                      </li><li class="current-entities indented3">
+                        <span class="separator"></span>
+                        <a class="trait" href="RaftRequest.html" title="RaftRequest"></a>
+                        <a href="RaftRequest.html" title="RaftRequest">RaftRequest</a>
+                      </li><li class="current-entities indented3">
+                        <span class="separator"></span>
+                        <a class="trait" href="RaftResponse.html" title="Raft Response"></a>
+                        <a href="RaftResponse.html" title="Raft Response">RaftResponse</a>
+                      </li><li class="current-entities indented3">
+                        <span class="separator"></span>
+                        <a class="object" href="ReceiveHeartbeatTimeout$.html" title="Marks a timeout of not hearing from a leader"></a>
+                        <a href="ReceiveHeartbeatTimeout$.html" title="Marks a timeout of not hearing from a leader">ReceiveHeartbeatTimeout</a>
+                      </li><li class="current-entities indented3">
+                        <span class="separator"></span>
+                        <a class="trait" href="RequestOrResponse.html" title=""></a>
+                        <a href="RequestOrResponse.html" title="">RequestOrResponse</a>
+                      </li><li class="current-entities indented3">
+                        <span class="separator"></span>
+                        <a class="class" href="RequestVote.html" title=""></a>
+                        <a href="RequestVote.html" title="">RequestVote</a>
+                      </li><li class="current-entities indented3">
+                        <span class="separator"></span>
+                        <a class="class" href="RequestVoteResponse.html" title=""></a>
+                        <a href="RequestVoteResponse.html" title="">RequestVoteResponse</a>
+                      </li><li class="current-entities indented3">
+                        <span class="separator"></span>
+                        <a class="object" href="SendHeartbeatTimeout$.html" title="Marks a timeout for a leader indicating it should sent a heartbeat to the given follower"></a>
+                        <a href="SendHeartbeatTimeout$.html" title="Marks a timeout for a leader indicating it should sent a heartbeat to the given follower">SendHeartbeatTimeout</a>
+                      </li><li class="current-entities indented3">
+                        <span class="separator"></span>
+                        <a class="trait" href="TimerMessage.html" title=""></a>
+                        <a href="TimerMessage.html" title="">TimerMessage</a>
                       </li>
               </ul>
             </div>
@@ -153,9 +177,9 @@
             <body class="class type">
       <div id="definition">
         <div class="big-circle class">c</div>
-        <p id="owner"><a href="../../index.html" class="extype" name="riff">riff</a>.<a href="../index.html" class="extype" name="riff.raft">raft</a>.<a href="index.html" class="extype" name="riff.raft.timer">timer</a>.<a href="Timers.html" class="extype" name="riff.raft.timer.Timers">Timers</a></p>
-        <h1>cancelableMap<span class="permalink">
-      <a href="../../../riff/raft/timer/Timers$cancelableMap.html" title="Permalink">
+        <p id="owner"><a href="../../index.html" class="extype" name="riff">riff</a>.<a href="../index.html" class="extype" name="riff.raft">raft</a>.<a href="index.html" class="extype" name="riff.raft.messages">messages</a></p>
+        <h1>AddressedMessage<span class="permalink">
+      <a href="../../../riff/raft/messages/AddressedMessage.html" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span></h1>
@@ -164,26 +188,21 @@
 
       <h4 id="signature" class="signature">
       <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">class</span>
+        <span class="modifier">final </span>
+        <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">cancelableMap</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+        <span class="name">AddressedMessage</span><span class="tparams">[<span name="A">+A</span>]</span><span class="params">(<span name="from">from: <a href="../index.html#NodeId=String" class="extmbr" name="riff.raft.NodeId">NodeId</a></span>, <span name="message">message: <a href="RequestOrResponse.html" class="extype" name="riff.raft.messages.RequestOrResponse">RequestOrResponse</a>[<span class="extype" name="riff.raft.messages.AddressedMessage.A">A</span>]</span>)</span><span class="result"> extends <a href="RaftMessage.html" class="extype" name="riff.raft.messages.RaftMessage">RaftMessage</a>[<span class="extype" name="riff.raft.messages.AddressedMessage.A">A</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
 
       
-          <div id="comment" class="fullcommenttop"><div class="toggleContainer block">
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">from</dt><dd class="cmt"><p>represents the source of the message</p></dd><dt class="param">message</dt><dd class="cmt"><p>the message</p></dd></dl><div class="toggleContainer block">
           <span class="toggle">
             Linear Supertypes
           </span>
-          <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
-        </div><div class="toggleContainer block">
-            <span class="toggle">
-              Known Subclasses
-            </span>
-            <div class="subClasses hiddenContent"><a href="Timers$receiveHeartbeat$.html" class="extype" name="riff.raft.timer.Timers.receiveHeartbeat">receiveHeartbeat</a>, <a href="Timers$sendHeartbeat$.html" class="extype" name="riff.raft.timer.Timers.sendHeartbeat">sendHeartbeat</a></div>
-          </div></div>
+          <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <a href="RaftMessage.html" class="extype" name="riff.raft.messages.RaftMessage">RaftMessage</a>[<span class="extype" name="riff.raft.messages.AddressedMessage.A">A</span>], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+        </div></div>
         
 
       <div id="mbrsel">
@@ -208,7 +227,7 @@
                   <span class="filtertype">Inherited<br />
                   </span>
                   <ol id="linearization">
-                    <li class="in" name="riff.raft.timer.Timers.cancelableMap"><span>cancelableMap</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                    <li class="in" name="riff.raft.messages.AddressedMessage"><span>AddressedMessage</span></li><li class="in" name="scala.Serializable"><span>Serializable</span></li><li class="in" name="java.io.Serializable"><span>Serializable</span></li><li class="in" name="scala.Product"><span>Product</span></li><li class="in" name="scala.Equals"><span>Equals</span></li><li class="in" name="riff.raft.messages.RaftMessage"><span>RaftMessage</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                   </ol>
                 </div><div class="ancestors">
               <span class="filtertype"></span>
@@ -228,10 +247,10 @@
         <div id="allMembers">
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
-              <ol><li name="riff.raft.timer.Timers.cancelableMap#&lt;init&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="&lt;init&gt;(doReset:(NodeKey,Option[Timers.this.timer.CancelT])=&gt;Timers.this.timer.CancelT):Timers.this.cancelableMap"></a><a id="&lt;init&gt;:cancelableMap"></a>
+              <ol><li name="riff.raft.messages.AddressedMessage#&lt;init&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="&lt;init&gt;(from:riff.raft.NodeId,message:riff.raft.messages.RequestOrResponse[A]):riff.raft.messages.AddressedMessage[A]"></a><a id="&lt;init&gt;:AddressedMessage[A]"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/timer/Timers$cancelableMap.html#&lt;init&gt;(doReset:(NodeKey,Option[Timers.this.timer.CancelT])=&gt;Timers.this.timer.CancelT):Timers.this.cancelableMap" title="Permalink">
+      <a href="../../../riff/raft/messages/AddressedMessage.html#&lt;init&gt;(from:riff.raft.NodeId,message:riff.raft.messages.RequestOrResponse[A]):riff.raft.messages.AddressedMessage[A]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -240,10 +259,10 @@
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">cancelableMap</span><span class="params">(<span name="doReset">doReset: (<span class="extype" name="riff.raft.timer.Timers.NodeKey">NodeKey</span>, <span class="extype" name="scala.Option">Option</span>[<a href="RaftTimer.html#CancelT" class="extmbr" name="riff.raft.timer.RaftTimer.CancelT">CancelT</a>]) ⇒ <a href="RaftTimer.html#CancelT" class="extmbr" name="riff.raft.timer.RaftTimer.CancelT">CancelT</a></span>)</span>
+        <span class="name">AddressedMessage</span><span class="params">(<span name="from">from: <a href="../index.html#NodeId=String" class="extmbr" name="riff.raft.NodeId">NodeId</a></span>, <span name="message">message: <a href="RequestOrResponse.html" class="extype" name="riff.raft.messages.RequestOrResponse">RequestOrResponse</a>[<span class="extype" name="riff.raft.messages.AddressedMessage.A">A</span>]</span>)</span>
       </span>
       
-      
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">from</dt><dd class="cmt"><p>represents the source of the message</p></dd><dt class="param">message</dt><dd class="cmt"><p>the message</p></dd></dl></div>
     </li></ol>
             </div>
 
@@ -257,7 +276,7 @@
                 <li name="scala.AnyRef#!=" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="!=(x$1:Any):Boolean"></a><a id="!=(Any):Boolean"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/timer/Timers$cancelableMap.html#!=(x$1:Any):Boolean" title="Permalink">
+      <a href="../../../riff/raft/messages/AddressedMessage.html#!=(x$1:Any):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -273,7 +292,7 @@
     </li><li name="scala.AnyRef###" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="##():Int"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/timer/Timers$cancelableMap.html###():Int" title="Permalink">
+      <a href="../../../riff/raft/messages/AddressedMessage.html###():Int" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -289,7 +308,7 @@
     </li><li name="scala.AnyRef#==" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="==(x$1:Any):Boolean"></a><a id="==(Any):Boolean"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/timer/Timers$cancelableMap.html#==(x$1:Any):Boolean" title="Permalink">
+      <a href="../../../riff/raft/messages/AddressedMessage.html#==(x$1:Any):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -305,7 +324,7 @@
     </li><li name="scala.Any#asInstanceOf" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="asInstanceOf[T0]:T0"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/timer/Timers$cancelableMap.html#asInstanceOf[T0]:T0" title="Permalink">
+      <a href="../../../riff/raft/messages/AddressedMessage.html#asInstanceOf[T0]:T0" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -318,26 +337,10 @@
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
-    </li><li name="riff.raft.timer.Timers.cancelableMap#cancel" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="cancel(node:NodeKey):Unit"></a><a id="cancel(NodeKey):Unit"></a>
-      <span class="permalink">
-      <a href="../../../riff/raft/timer/Timers$cancelableMap.html#cancel(node:NodeKey):Unit" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">cancel</span><span class="params">(<span name="node">node: <span class="extype" name="riff.raft.timer.Timers.NodeKey">NodeKey</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
-      </span>
-      
-      
     </li><li name="scala.AnyRef#clone" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="clone():Object"></a><a id="clone():AnyRef"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/timer/Timers$cancelableMap.html#clone():Object" title="Permalink">
+      <a href="../../../riff/raft/messages/AddressedMessage.html#clone():Object" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -361,7 +364,7 @@
     </li><li name="scala.AnyRef#eq" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a><a id="eq(AnyRef):Boolean"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/timer/Timers$cancelableMap.html#eq(x$1:AnyRef):Boolean" title="Permalink">
+      <a href="../../../riff/raft/messages/AddressedMessage.html#eq(x$1:AnyRef):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -374,26 +377,10 @@
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="scala.AnyRef#equals" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="equals(x$1:Any):Boolean"></a><a id="equals(Any):Boolean"></a>
-      <span class="permalink">
-      <a href="../../../riff/raft/timer/Timers$cancelableMap.html#equals(x$1:Any):Boolean" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">equals</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
-      </span>
-      
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#finalize" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="finalize():Unit"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/timer/Timers$cancelableMap.html#finalize():Unit" title="Permalink">
+      <a href="../../../riff/raft/messages/AddressedMessage.html#finalize():Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -412,10 +399,26 @@
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="riff.raft.messages.AddressedMessage#from" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="from:riff.raft.NodeId"></a><a id="from:NodeId"></a>
+      <span class="permalink">
+      <a href="../../../riff/raft/messages/AddressedMessage.html#from:riff.raft.NodeId" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">from</span><span class="result">: <a href="../index.html#NodeId=String" class="extmbr" name="riff.raft.NodeId">NodeId</a></span>
+      </span>
+      
+      
     </li><li name="scala.AnyRef#getClass" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="getClass():Class[_]"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/timer/Timers$cancelableMap.html#getClass():Class[_]" title="Permalink">
+      <a href="../../../riff/raft/messages/AddressedMessage.html#getClass():Class[_]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -431,29 +434,10 @@
                 <span class="name">@native</span><span class="args">()</span>
               
         </dd></dl></div>
-    </li><li name="scala.AnyRef#hashCode" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="hashCode():Int"></a>
-      <span class="permalink">
-      <a href="../../../riff/raft/timer/Timers$cancelableMap.html#hashCode():Int" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">hashCode</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
-      </span>
-      
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd><dt>Annotations</dt><dd>
-                <span class="name">@native</span><span class="args">()</span>
-              
-        </dd></dl></div>
     </li><li name="scala.Any#isInstanceOf" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="isInstanceOf[T0]:Boolean"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/timer/Timers$cancelableMap.html#isInstanceOf[T0]:Boolean" title="Permalink">
+      <a href="../../../riff/raft/messages/AddressedMessage.html#isInstanceOf[T0]:Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -466,10 +450,26 @@
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="riff.raft.messages.AddressedMessage#message" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="message:riff.raft.messages.RequestOrResponse[A]"></a><a id="message:RequestOrResponse[A]"></a>
+      <span class="permalink">
+      <a href="../../../riff/raft/messages/AddressedMessage.html#message:riff.raft.messages.RequestOrResponse[A]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">message</span><span class="result">: <a href="RequestOrResponse.html" class="extype" name="riff.raft.messages.RequestOrResponse">RequestOrResponse</a>[<span class="extype" name="riff.raft.messages.AddressedMessage.A">A</span>]</span>
+      </span>
+      
+      
     </li><li name="scala.AnyRef#ne" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a><a id="ne(AnyRef):Boolean"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/timer/Timers$cancelableMap.html#ne(x$1:AnyRef):Boolean" title="Permalink">
+      <a href="../../../riff/raft/messages/AddressedMessage.html#ne(x$1:AnyRef):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -485,7 +485,7 @@
     </li><li name="scala.AnyRef#notify" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notify():Unit"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/timer/Timers$cancelableMap.html#notify():Unit" title="Permalink">
+      <a href="../../../riff/raft/messages/AddressedMessage.html#notify():Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -504,7 +504,7 @@
     </li><li name="scala.AnyRef#notifyAll" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notifyAll():Unit"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/timer/Timers$cancelableMap.html#notifyAll():Unit" title="Permalink">
+      <a href="../../../riff/raft/messages/AddressedMessage.html#notifyAll():Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -520,26 +520,10 @@
                 <span class="name">@native</span><span class="args">()</span>
               
         </dd></dl></div>
-    </li><li name="riff.raft.timer.Timers.cancelableMap#reset" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="reset(node:NodeKey):Timers.this.timer.CancelT"></a><a id="reset(NodeKey):CancelT"></a>
-      <span class="permalink">
-      <a href="../../../riff/raft/timer/Timers$cancelableMap.html#reset(node:NodeKey):Timers.this.timer.CancelT" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">reset</span><span class="params">(<span name="node">node: <span class="extype" name="riff.raft.timer.Timers.NodeKey">NodeKey</span></span>)</span><span class="result">: <a href="RaftTimer.html#CancelT" class="extmbr" name="riff.raft.timer.RaftTimer.CancelT">CancelT</a></span>
-      </span>
-      
-      
     </li><li name="scala.AnyRef#synchronized" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a><a id="synchronized[T0](⇒T0):T0"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/timer/Timers$cancelableMap.html#synchronized[T0](x$1:=&gt;T0):T0" title="Permalink">
+      <a href="../../../riff/raft/messages/AddressedMessage.html#synchronized[T0](x$1:=&gt;T0):T0" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -552,26 +536,10 @@
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="scala.AnyRef#toString" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="toString():String"></a>
-      <span class="permalink">
-      <a href="../../../riff/raft/timer/Timers$cancelableMap.html#toString():String" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
-      </span>
-      
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait():Unit"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/timer/Timers$cancelableMap.html#wait():Unit" title="Permalink">
+      <a href="../../../riff/raft/messages/AddressedMessage.html#wait():Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -593,7 +561,7 @@
     </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait(x$1:Long,x$2:Int):Unit"></a><a id="wait(Long,Int):Unit"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/timer/Timers$cancelableMap.html#wait(x$1:Long,x$2:Int):Unit" title="Permalink">
+      <a href="../../../riff/raft/messages/AddressedMessage.html#wait(x$1:Long,x$2:Int):Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -615,7 +583,7 @@
     </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait(x$1:Long):Unit"></a><a id="wait(Long):Unit"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/timer/Timers$cancelableMap.html#wait(x$1:Long):Unit" title="Permalink">
+      <a href="../../../riff/raft/messages/AddressedMessage.html#wait(x$1:Long):Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -646,7 +614,17 @@
         </div>
 
         <div id="inheritedMembers">
-        <div class="parent" name="scala.AnyRef">
+        <div class="parent" name="scala.Serializable">
+              <h3>Inherited from <span class="extype" name="scala.Serializable">Serializable</span></h3>
+            </div><div class="parent" name="java.io.Serializable">
+              <h3>Inherited from <span class="extype" name="java.io.Serializable">Serializable</span></h3>
+            </div><div class="parent" name="scala.Product">
+              <h3>Inherited from <span class="extype" name="scala.Product">Product</span></h3>
+            </div><div class="parent" name="scala.Equals">
+              <h3>Inherited from <span class="extype" name="scala.Equals">Equals</span></h3>
+            </div><div class="parent" name="riff.raft.messages.RaftMessage">
+              <h3>Inherited from <a href="RaftMessage.html" class="extype" name="riff.raft.messages.RaftMessage">RaftMessage</a>[<span class="extype" name="riff.raft.messages.AddressedMessage.A">A</span>]</h3>
+            </div><div class="parent" name="scala.AnyRef">
               <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
             </div><div class="parent" name="scala.Any">
               <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>

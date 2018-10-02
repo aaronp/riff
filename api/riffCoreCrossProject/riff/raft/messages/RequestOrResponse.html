@@ -119,6 +119,14 @@
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../index.html" class="extype" name="riff.raft">raft</a></dd></dl></div>
     </li><li class="current-entities indented3">
                         <span class="separator"></span>
+                        <a class="class" href="AddressedMessage.html" title=""></a>
+                        <a href="AddressedMessage.html" title="">AddressedMessage</a>
+                      </li><li class="current-entities indented3">
+                        <a class="object" href="AppendData$.html" title=""></a>
+                        <a class="class" href="AppendData.html" title="Represents input from a client of the cluster"></a>
+                        <a href="AppendData.html" title="Represents input from a client of the cluster">AppendData</a>
+                      </li><li class="current-entities indented3">
+                        <span class="separator"></span>
                         <a class="class" href="AppendEntries.html" title=""></a>
                         <a href="AppendEntries.html" title="">AppendEntries</a>
                       </li><li class="current-entities indented3">
@@ -127,8 +135,8 @@
                         <a href="AppendEntriesResponse.html" title="">AppendEntriesResponse</a>
                       </li><li class="current-entities indented3">
                         <span class="separator"></span>
-                        <a class="trait" href="RaftMessage.html" title="Represents all the inputs into a raft node"></a>
-                        <a href="RaftMessage.html" title="Represents all the inputs into a raft node">RaftMessage</a>
+                        <a class="trait" href="RaftMessage.html" title="Represents the possible input types into a riff.raft.node.RaftNode"></a>
+                        <a href="RaftMessage.html" title="Represents the possible input types into a riff.raft.node.RaftNode">RaftMessage</a>
                       </li><li class="current-entities indented3">
                         <span class="separator"></span>
                         <a class="trait" href="RaftRequest.html" title="RaftRequest"></a>
@@ -184,7 +192,7 @@
         <span class="kind">trait</span>
       </span>
       <span class="symbol">
-        <span class="name">RequestOrResponse</span><span class="tparams">[<span name="NodeKey">+NodeKey</span>, <span name="A">+A</span>]</span><span class="result"> extends <a href="RaftMessage.html" class="extype" name="riff.raft.messages.RaftMessage">RaftMessage</a>[<span class="extype" name="riff.raft.messages.RequestOrResponse.NodeKey">NodeKey</span>, <span class="extype" name="riff.raft.messages.RequestOrResponse.A">A</span>]</span>
+        <span class="name">RequestOrResponse</span><span class="tparams">[<span name="A">+A</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
       </h4>
 
@@ -193,7 +201,7 @@
           <span class="toggle">
             Linear Supertypes
           </span>
-          <div class="superTypes hiddenContent"><a href="RaftMessage.html" class="extype" name="riff.raft.messages.RaftMessage">RaftMessage</a>[<span class="extype" name="riff.raft.messages.RequestOrResponse.NodeKey">NodeKey</span>, <span class="extype" name="riff.raft.messages.RequestOrResponse.A">A</span>], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div><div class="toggleContainer block">
             <span class="toggle">
               Known Subclasses
@@ -224,7 +232,7 @@
                   <span class="filtertype">Inherited<br />
                   </span>
                   <ol id="linearization">
-                    <li class="in" name="riff.raft.messages.RequestOrResponse"><span>RequestOrResponse</span></li><li class="in" name="riff.raft.messages.RaftMessage"><span>RaftMessage</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                    <li class="in" name="riff.raft.messages.RequestOrResponse"><span>RequestOrResponse</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                   </ol>
                 </div><div class="ancestors">
               <span class="filtertype"></span>
@@ -393,6 +401,22 @@
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="riff.raft.messages.RequestOrResponse#from" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="from(name:riff.raft.NodeId):riff.raft.messages.AddressedMessage[A]"></a><a id="from(NodeId):AddressedMessage[A]"></a>
+      <span class="permalink">
+      <a href="../../../riff/raft/messages/RequestOrResponse.html#from(name:riff.raft.NodeId):riff.raft.messages.AddressedMessage[A]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">from</span><span class="params">(<span name="name">name: <a href="../index.html#NodeId=String" class="extmbr" name="riff.raft.NodeId">NodeId</a></span>)</span><span class="result">: <a href="AddressedMessage.html" class="extype" name="riff.raft.messages.AddressedMessage">AddressedMessage</a>[<span class="extype" name="riff.raft.messages.RequestOrResponse.A">A</span>]</span>
+      </span>
+      
+      
     </li><li name="scala.AnyRef#getClass" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="getClass():Class[_]"></a>
       <span class="permalink">
@@ -611,9 +635,7 @@
         </div>
 
         <div id="inheritedMembers">
-        <div class="parent" name="riff.raft.messages.RaftMessage">
-              <h3>Inherited from <a href="RaftMessage.html" class="extype" name="riff.raft.messages.RaftMessage">RaftMessage</a>[<span class="extype" name="riff.raft.messages.RequestOrResponse.NodeKey">NodeKey</span>, <span class="extype" name="riff.raft.messages.RequestOrResponse.A">A</span>]</h3>
-            </div><div class="parent" name="scala.AnyRef">
+        <div class="parent" name="scala.AnyRef">
               <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
             </div><div class="parent" name="scala.Any">
               <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>

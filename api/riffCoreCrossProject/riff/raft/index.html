@@ -191,8 +191,20 @@
                         <a href="LogCommitException.html" title="">LogCommitException</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
+                        <a class="class" href="NotTheLeaderException.html" title=""></a>
+                        <a href="NotTheLeaderException.html" title="">NotTheLeaderException</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="Raft$.html" title=""></a>
+                        <a href="Raft$.html" title="">Raft</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
                         <a class="trait" href="RaftClient.html" title="The external use-cases for a node in the Raft protocol are:"></a>
                         <a href="RaftClient.html" title="The external use-cases for a node in the Raft protocol are:">RaftClient</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="RoleCallback$.html" title=""></a>
+                        <a class="trait" href="RoleCallback.html" title="This is provided as a convenience to be added to a riff.raft.node.RaftNode for anything which cares about role transitions for a particular node."></a>
+                        <a href="RoleCallback.html" title="This is provided as a convenience to be added to a riff.raft.node.RaftNode for anything which cares about role transitions for a particular node.">RoleCallback</a>
                       </li>
               </ul>
             </div>
@@ -285,12 +297,12 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a title="Represents the current state of the cluster following an append" href="AppendStatus.html"><span class="name">AppendStatus</span></a><span class="params">(<span name="logCoods">logCoods: <a href="log/LogCoords.html" class="extype" name="riff.raft.log.LogCoords">LogCoords</a></span>, <span name="appended">appended: <span class="extype" name="scala.Predef.Map">Map</span>[<span class="extype" name="scala.Predef.String">String</span>, <span class="extype" name="scala.Boolean">Boolean</span>]</span>, <span name="committed">committed: <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="clusterSize">clusterSize: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a title="Represents the current state of the cluster following an append" href="AppendStatus.html"><span class="name">AppendStatus</span></a><span class="params">(<span name="leaderAppendResult">leaderAppendResult: <a href="log/LogAppendSuccess.html" class="extype" name="riff.raft.log.LogAppendSuccess">LogAppendSuccess</a></span>, <span name="appended">appended: <span class="extype" name="scala.Predef.Map">Map</span>[<span class="extype" name="scala.Predef.String">String</span>, <span class="extype" name="scala.Boolean">Boolean</span>]</span>, <span name="committed">committed: <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="clusterSize">clusterSize: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       
       <p class="shortcomment cmt">Represents the current state of the cluster following an append
 </p><div class="fullcomment"><div class="comment cmt"><p>Represents the current state of the cluster following an append
-</p></div><dl class="paramcmts block"><dt class="param">logCoods</dt><dd class="cmt"><p>the coords of the entry appended</p></dd><dt class="param">appended</dt><dd class="cmt"><p>a map of the cluster ids to a flag indicating whether or not the node has appended the entry</p></dd><dt class="param">committed</dt><dd class="cmt"><p>a flag to indicate whether the entry has been committed on the leader</p></dd><dt class="param">clusterSize</dt><dd class="cmt"><p>the size of the cluster</p></dd></dl></div>
+</p></div><dl class="paramcmts block"><dt class="param">appended</dt><dd class="cmt"><p>a map of the cluster ids to a flag indicating whether or not the node has appended the entry</p></dd><dt class="param">committed</dt><dd class="cmt"><p>a flag to indicate whether the entry has been committed on the leader</p></dd><dt class="param">clusterSize</dt><dd class="cmt"><p>the size of the cluster</p></dd></dl></div>
     </li><li name="riff.raft.AttemptToCommitMissingIndex" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="AttemptToCommitMissingIndexextendsExceptionwithProductwithSerializable"></a><a id="AttemptToCommitMissingIndex:AttemptToCommitMissingIndex"></a>
       <span class="permalink">
@@ -387,10 +399,42 @@
       </span>
       
       
-    </li><li name="riff.raft.RaftClient" visbl="pub" class="indented0 " data-isabs="true" fullComment="yes" group="Ungrouped">
-      <a id="RaftClient[A]extendsAnyRef"></a><a id="RaftClient[A]:RaftClient[A]"></a>
+    </li><li name="riff.raft.NodeId" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="NodeId=String"></a><a id="NodeId:NodeId"></a>
       <span class="permalink">
-      <a href="../../riff/raft/index.html#RaftClient[A]extendsAnyRef" title="Permalink">
+      <a href="../../riff/raft/index.html#NodeId=String" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">type</span>
+      </span>
+      <span class="symbol">
+        <span class="name">NodeId</span><span class="result alias"> = <span class="extype" name="java.lang.String">String</span></span>
+      </span>
+      
+      
+    </li><li name="riff.raft.NotTheLeaderException" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="NotTheLeaderExceptionextendsExceptionwithProductwithSerializable"></a><a id="NotTheLeaderException:NotTheLeaderException"></a>
+      <span class="permalink">
+      <a href="../../riff/raft/index.html#NotTheLeaderExceptionextendsExceptionwithProductwithSerializable" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="NotTheLeaderException.html"><span class="name">NotTheLeaderException</span></a><span class="params">(<span name="attemptedNodeId">attemptedNodeId: <a href="#NodeId=String" class="extmbr" name="riff.raft.NodeId">NodeId</a></span>, <span name="term">term: <a href="#Term=Int" class="extmbr" name="riff.raft.Term">Term</a></span>, <span name="leadIdOpt">leadIdOpt: <span class="extype" name="scala.Option">Option</span>[<a href="#NodeId=String" class="extmbr" name="riff.raft.NodeId">NodeId</a>]</span>)</span><span class="result"> extends <span class="extype" name="scala.Exception">Exception</span> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      
+    </li><li name="riff.raft.RaftClient" visbl="pub" class="indented0 " data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="RaftClient[F[_],A]extendsAnyRef"></a><a id="RaftClient[F[_],A]:RaftClient[F,A]"></a>
+      <span class="permalink">
+      <a href="../../riff/raft/index.html#RaftClient[F[_],A]extendsAnyRef" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -399,13 +443,33 @@
         <span class="kind">trait</span>
       </span>
       <span class="symbol">
-        <a title="The external use-cases for a node in the Raft protocol are:" href="RaftClient.html"><span class="name">RaftClient</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+        <a title="The external use-cases for a node in the Raft protocol are:" href="RaftClient.html"><span class="name">RaftClient</span></a><span class="tparams">[<span name="F">F<span class="tparams">[<span name="_">_</span>]</span></span>, <span name="A">A</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
       
       <p class="shortcomment cmt">The external use-cases for a node in the Raft protocol are:</p><div class="fullcomment"><div class="comment cmt"><p>The external use-cases for a node in the Raft protocol are:</p><p>1) adding/removing nodes
 2) appending data to the cluster, which should return either a new (pending) commit coords, a redirect, or a 'no known leader'
 3) subscribing to lifecycle events, which should return a Publisher which lets subscribers know about cluster and leadership changes
 4) subscribing to a commit log, which should return a Publisher which lets subscribers know when logs are appended or committed</p><p>All of these algebras don't necessarily have to be in the same trait
+</p></div></div>
+    </li><li name="riff.raft.RoleCallback" visbl="pub" class="indented0 " data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="RoleCallbackextendsAnyRef"></a><a id="RoleCallback:RoleCallback"></a>
+      <span class="permalink">
+      <a href="../../riff/raft/index.html#RoleCallbackextendsAnyRef" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a title="This is provided as a convenience to be added to a riff.raft.node.RaftNode for anything which cares about role transitions for a particular node." href="RoleCallback.html"><span class="name">RoleCallback</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      
+      <p class="shortcomment cmt">This is provided as a convenience to be added to a <a href="node/RaftNode.html" class="extype" name="riff.raft.node.RaftNode">riff.raft.node.RaftNode</a> for anything which cares about
+role transitions for a particular node.</p><div class="fullcomment"><div class="comment cmt"><p>This is provided as a convenience to be added to a <a href="node/RaftNode.html" class="extype" name="riff.raft.node.RaftNode">riff.raft.node.RaftNode</a> for anything which cares about
+role transitions for a particular node.</p><p>That behaviour could be done by subclassing the RaftNode, but subclassing brings in its own challenges/considerations.</p><p>By making this more explicit, in addition to obviating the need to to subclass <a href="node/RaftNode.html" class="extype" name="riff.raft.node.RaftNode">riff.raft.node.RaftNode</a>, it hopefully
+will make the code more navigable/readable
 </p></div></div>
     </li><li name="riff.raft.Term" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="Term=Int"></a><a id="Term:Term"></a>
@@ -444,6 +508,38 @@
       </span>
       <span class="symbol">
         <span class="name">isMajority</span><span class="params">(<span name="numberReceived">numberReceived: <span class="extype" name="scala.Int">Int</span></span>, <span name="clusterSize">clusterSize: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      
+      
+    </li><li name="riff.raft.Raft" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Raft"></a><a id="Raft:Raft"></a>
+      <span class="permalink">
+      <a href="../../riff/raft/index.html#Raft" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="Raft$.html"><span class="name">Raft</span></a>
+      </span>
+      
+      
+    </li><li name="riff.raft.RoleCallback" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="RoleCallback"></a><a id="RoleCallback:RoleCallback"></a>
+      <span class="permalink">
+      <a href="../../riff/raft/index.html#RoleCallback" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="RoleCallback$.html"><span class="name">RoleCallback</span></a>
       </span>
       
       

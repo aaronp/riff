@@ -118,15 +118,19 @@
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../index.html" class="extype" name="riff.raft">raft</a></dd></dl></div>
     </li><li class="current-entities indented3">
-                        <a class="object" href="DefaultTimer$.html" title=""></a>
-                        <a class="class" href="" title=""></a>
-                        <a href="" title="">DefaultTimer</a>
+                        <a class="object" href="DefaultClock$.html" title=""></a>
+                        <a class="class" href="DefaultClock.html" title=""></a>
+                        <a href="DefaultClock.html" title="">DefaultClock</a>
                       </li><li class="current-entities indented3">
-                        <a class="object" href="RaftTimer$.html" title=""></a>
-                        <a class="trait" href="RaftTimer.html" title="Represents the functions required to control a member node's election and heartbeat timeouts."></a>
-                        <a href="RaftTimer.html" title="Represents the functions required to control a member node's election and heartbeat timeouts.">RaftTimer</a>
+                        <a class="object" href="" title=""></a>
+                        <a class="trait" href="RaftClock.html" title="Represents the functions required to control a member node's election and heartbeat timeouts."></a>
+                        <a href="RaftClock.html" title="Represents the functions required to control a member node's election and heartbeat timeouts.">RaftClock</a>
                       </li><li class="current-entities indented3">
-                        <a class="object" href="TimerCallback$.html" title=""></a>
+                        <span class="separator"></span>
+                        <a class="class" href="RandomTimer.html" title="A utility class for use when implementing a RaftClock."></a>
+                        <a href="RandomTimer.html" title="A utility class for use when implementing a RaftClock.">RandomTimer</a>
+                      </li><li class="current-entities indented3">
+                        <span class="separator"></span>
                         <a class="trait" href="TimerCallback.html" title=""></a>
                         <a href="TimerCallback.html" title="">TimerCallback</a>
                       </li><li class="current-entities indented3">
@@ -138,27 +142,27 @@
             </div>
           </div>
           <div id="content">
-            <body class="class type">
+            <body class="object value">
       <div id="definition">
-        <a href="DefaultTimer$.html" title="See companion object"><div class="big-circle class-companion-object">c</div></a>
+        <a href="RaftClock.html" title="See companion trait"><div class="big-circle object-companion-trait">o</div></a>
         <p id="owner"><a href="../../index.html" class="extype" name="riff">riff</a>.<a href="../index.html" class="extype" name="riff.raft">raft</a>.<a href="index.html" class="extype" name="riff.raft.timer">timer</a></p>
-        <h1><a href="DefaultTimer$.html" title="See companion object">DefaultTimer</a><span class="permalink">
-      <a href="../../../riff/raft/timer/DefaultTimer.html" title="Permalink">
+        <h1><a href="RaftClock.html" title="See companion trait">RaftClock</a><span class="permalink">
+      <a href="../../../riff/raft/timer/RaftClock$.html" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span></h1>
         <h3><span class="morelinks"><div>
-            Companion <a href="DefaultTimer$.html" title="See companion object">object DefaultTimer</a>
+            Companion <a href="RaftClock.html" title="See companion trait">trait RaftClock</a>
           </div></span></h3>
       </div>
 
       <h4 id="signature" class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
-        <span class="kind">class</span>
+        <span class="kind">object</span>
       </span>
       <span class="symbol">
-        <span class="name">DefaultTimer</span><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends <a href="RaftTimer.html" class="extype" name="riff.raft.timer.RaftTimer">RaftTimer</a>[<span class="extype" name="riff.raft.timer.DefaultTimer.A">A</span>]</span>
+        <span class="name">RaftClock</span>
       </span>
       </h4>
 
@@ -167,7 +171,7 @@
           <span class="toggle">
             Linear Supertypes
           </span>
-          <div class="superTypes hiddenContent"><a href="RaftTimer.html" class="extype" name="riff.raft.timer.RaftTimer">RaftTimer</a>[<span class="extype" name="riff.raft.timer.DefaultTimer.A">A</span>], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
         
 
@@ -193,7 +197,7 @@
                   <span class="filtertype">Inherited<br />
                   </span>
                   <ol id="linearization">
-                    <li class="in" name="riff.raft.timer.DefaultTimer"><span>DefaultTimer</span></li><li class="in" name="riff.raft.timer.RaftTimer"><span>RaftTimer</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                    <li class="in" name="riff.raft.timer.RaftClock"><span>RaftClock</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                   </ol>
                 </div><div class="ancestors">
               <span class="filtertype"></span>
@@ -211,49 +215,9 @@
 
       <div id="template">
         <div id="allMembers">
-        <div id="constructors" class="members">
-              <h3>Instance Constructors</h3>
-              <ol><li name="riff.raft.timer.DefaultTimer#&lt;init&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="&lt;init&gt;(sendHeartbeatTimeout:scala.concurrent.duration.FiniteDuration,receiveHeartbeatTimeout:scala.concurrent.duration.FiniteDuration,schedulerService:java.util.concurrent.ScheduledExecutorService,cancelMayInterruptIfRunning:Boolean)(implicitevidence$1:riff.raft.timer.TimerCallback[A]):riff.raft.timer.DefaultTimer[A]"></a><a id="&lt;init&gt;:DefaultTimer[A]"></a>
-      <span class="permalink">
-      <a href="../../../riff/raft/timer/DefaultTimer.html#&lt;init&gt;(sendHeartbeatTimeout:scala.concurrent.duration.FiniteDuration,receiveHeartbeatTimeout:scala.concurrent.duration.FiniteDuration,schedulerService:java.util.concurrent.ScheduledExecutorService,cancelMayInterruptIfRunning:Boolean)(implicitevidence$1:riff.raft.timer.TimerCallback[A]):riff.raft.timer.DefaultTimer[A]" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">new</span>
-      </span>
-      <span class="symbol">
-        <span class="name">DefaultTimer</span><span class="params">(<span name="sendHeartbeatTimeout">sendHeartbeatTimeout: <span class="extype" name="scala.concurrent.duration.FiniteDuration">FiniteDuration</span></span>, <span name="receiveHeartbeatTimeout">receiveHeartbeatTimeout: <span class="extype" name="scala.concurrent.duration.FiniteDuration">FiniteDuration</span></span>, <span name="schedulerService">schedulerService: <span class="extype" name="java.util.concurrent.ScheduledExecutorService">ScheduledExecutorService</span> = <span class="defval" name="java.util.concurrent.Executors.newScheduledThreadPool(1)">...</span></span>, <span name="cancelMayInterruptIfRunning">cancelMayInterruptIfRunning: <span class="extype" name="scala.Boolean">Boolean</span> = <span class="symbol">true</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: <a href="TimerCallback.html" class="extype" name="riff.raft.timer.TimerCallback">TimerCallback</a>[<span class="extype" name="riff.raft.timer.DefaultTimer.A">A</span>]</span>)</span>
-      </span>
-      
-      
-    </li></ol>
-            </div>
+        
 
-        <div id="types" class="types members">
-              <h3>Type Members</h3>
-              <ol><li name="riff.raft.timer.DefaultTimer.CancelT" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="CancelT=java.util.concurrent.ScheduledFuture[Unit]"></a><a id="CancelT:CancelT"></a>
-      <span class="permalink">
-      <a href="../../../riff/raft/timer/DefaultTimer.html#CancelT=java.util.concurrent.ScheduledFuture[Unit]" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">type</span>
-      </span>
-      <span class="symbol">
-        <span class="name">CancelT</span><span class="result alias"> = <span class="extype" name="java.util.concurrent.ScheduledFuture">ScheduledFuture</span>[<span class="extype" name="scala.Unit">Unit</span>]</span>
-      </span>
-      
-      <p class="shortcomment cmt">Some token which can be used to cancel an existing timeout
-</p><div class="fullcomment"><div class="comment cmt"><p>Some token which can be used to cancel an existing timeout
-</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="riff.raft.timer.DefaultTimer">DefaultTimer</a> → <a href="RaftTimer.html" class="extype" name="riff.raft.timer.RaftTimer">RaftTimer</a></dd></dl></div>
-    </li></ol>
-            </div>
+        
 
         
 
@@ -263,7 +227,7 @@
                 <li name="scala.AnyRef#!=" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="!=(x$1:Any):Boolean"></a><a id="!=(Any):Boolean"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/timer/DefaultTimer.html#!=(x$1:Any):Boolean" title="Permalink">
+      <a href="../../../riff/raft/timer/RaftClock$.html#!=(x$1:Any):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -279,7 +243,7 @@
     </li><li name="scala.AnyRef###" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="##():Int"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/timer/DefaultTimer.html###():Int" title="Permalink">
+      <a href="../../../riff/raft/timer/RaftClock$.html###():Int" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -295,7 +259,7 @@
     </li><li name="scala.AnyRef#==" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="==(x$1:Any):Boolean"></a><a id="==(Any):Boolean"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/timer/DefaultTimer.html#==(x$1:Any):Boolean" title="Permalink">
+      <a href="../../../riff/raft/timer/RaftClock$.html#==(x$1:Any):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -308,10 +272,26 @@
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="riff.raft.timer.RaftClock#apply" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="apply(sendHeartbeatTimeout:scala.concurrent.duration.FiniteDuration,receiveHeartbeatTimeout:scala.concurrent.duration.FiniteDuration):riff.raft.timer.RaftClock"></a><a id="apply(FiniteDuration,FiniteDuration):RaftClock"></a>
+      <span class="permalink">
+      <a href="../../../riff/raft/timer/RaftClock$.html#apply(sendHeartbeatTimeout:scala.concurrent.duration.FiniteDuration,receiveHeartbeatTimeout:scala.concurrent.duration.FiniteDuration):riff.raft.timer.RaftClock" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">apply</span><span class="params">(<span name="sendHeartbeatTimeout">sendHeartbeatTimeout: <span class="extype" name="scala.concurrent.duration.FiniteDuration">FiniteDuration</span></span>, <span name="receiveHeartbeatTimeout">receiveHeartbeatTimeout: <span class="extype" name="scala.concurrent.duration.FiniteDuration">FiniteDuration</span></span>)</span><span class="result">: <a href="RaftClock.html" class="extype" name="riff.raft.timer.RaftClock">RaftClock</a></span>
+      </span>
+      
+      
     </li><li name="scala.Any#asInstanceOf" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="asInstanceOf[T0]:T0"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/timer/DefaultTimer.html#asInstanceOf[T0]:T0" title="Permalink">
+      <a href="../../../riff/raft/timer/RaftClock$.html#asInstanceOf[T0]:T0" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -324,26 +304,10 @@
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
-    </li><li name="riff.raft.timer.DefaultTimer#cancelTimeout" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="cancelTimeout(c:java.util.concurrent.ScheduledFuture[Unit]):Unit"></a><a id="cancelTimeout(ScheduledFuture[Unit]):Unit"></a>
-      <span class="permalink">
-      <a href="../../../riff/raft/timer/DefaultTimer.html#cancelTimeout(c:java.util.concurrent.ScheduledFuture[Unit]):Unit" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">cancelTimeout</span><span class="params">(<span name="c">c: <span class="extype" name="java.util.concurrent.ScheduledFuture">ScheduledFuture</span>[<span class="extype" name="scala.Unit">Unit</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
-      </span>
-      
-      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">c</dt><dd class="cmt"><p>the token to cancel</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="riff.raft.timer.DefaultTimer">DefaultTimer</a> → <a href="RaftTimer.html" class="extype" name="riff.raft.timer.RaftTimer">RaftTimer</a></dd></dl></div>
     </li><li name="scala.AnyRef#clone" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="clone():Object"></a><a id="clone():AnyRef"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/timer/DefaultTimer.html#clone():Object" title="Permalink">
+      <a href="../../../riff/raft/timer/RaftClock$.html#clone():Object" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -367,7 +331,7 @@
     </li><li name="scala.AnyRef#eq" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a><a id="eq(AnyRef):Boolean"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/timer/DefaultTimer.html#eq(x$1:AnyRef):Boolean" title="Permalink">
+      <a href="../../../riff/raft/timer/RaftClock$.html#eq(x$1:AnyRef):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -383,7 +347,7 @@
     </li><li name="scala.AnyRef#equals" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="equals(x$1:Any):Boolean"></a><a id="equals(Any):Boolean"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/timer/DefaultTimer.html#equals(x$1:Any):Boolean" title="Permalink">
+      <a href="../../../riff/raft/timer/RaftClock$.html#equals(x$1:Any):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -399,7 +363,7 @@
     </li><li name="scala.AnyRef#finalize" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="finalize():Unit"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/timer/DefaultTimer.html#finalize():Unit" title="Permalink">
+      <a href="../../../riff/raft/timer/RaftClock$.html#finalize():Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -421,7 +385,7 @@
     </li><li name="scala.AnyRef#getClass" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="getClass():Class[_]"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/timer/DefaultTimer.html#getClass():Class[_]" title="Permalink">
+      <a href="../../../riff/raft/timer/RaftClock$.html#getClass():Class[_]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -440,7 +404,7 @@
     </li><li name="scala.AnyRef#hashCode" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="hashCode():Int"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/timer/DefaultTimer.html#hashCode():Int" title="Permalink">
+      <a href="../../../riff/raft/timer/RaftClock$.html#hashCode():Int" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -459,7 +423,7 @@
     </li><li name="scala.Any#isInstanceOf" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="isInstanceOf[T0]:Boolean"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/timer/DefaultTimer.html#isInstanceOf[T0]:Boolean" title="Permalink">
+      <a href="../../../riff/raft/timer/RaftClock$.html#isInstanceOf[T0]:Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -475,7 +439,7 @@
     </li><li name="scala.AnyRef#ne" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a><a id="ne(AnyRef):Boolean"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/timer/DefaultTimer.html#ne(x$1:AnyRef):Boolean" title="Permalink">
+      <a href="../../../riff/raft/timer/RaftClock$.html#ne(x$1:AnyRef):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -491,7 +455,7 @@
     </li><li name="scala.AnyRef#notify" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notify():Unit"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/timer/DefaultTimer.html#notify():Unit" title="Permalink">
+      <a href="../../../riff/raft/timer/RaftClock$.html#notify():Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -510,7 +474,7 @@
     </li><li name="scala.AnyRef#notifyAll" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notifyAll():Unit"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/timer/DefaultTimer.html#notifyAll():Unit" title="Permalink">
+      <a href="../../../riff/raft/timer/RaftClock$.html#notifyAll():Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -526,47 +490,10 @@
                 <span class="name">@native</span><span class="args">()</span>
               
         </dd></dl></div>
-    </li><li name="riff.raft.timer.DefaultTimer#resetReceiveHeartbeatTimeout" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="resetReceiveHeartbeatTimeout(raftNode:A,previous:Option[java.util.concurrent.ScheduledFuture[Unit]]):java.util.concurrent.ScheduledFuture[Unit]"></a><a id="resetReceiveHeartbeatTimeout(A,Option[ScheduledFuture[Unit]]):ScheduledFuture[Unit]"></a>
-      <span class="permalink">
-      <a href="../../../riff/raft/timer/DefaultTimer.html#resetReceiveHeartbeatTimeout(raftNode:A,previous:Option[java.util.concurrent.ScheduledFuture[Unit]]):java.util.concurrent.ScheduledFuture[Unit]" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">resetReceiveHeartbeatTimeout</span><span class="params">(<span name="raftNode">raftNode: <span class="extype" name="riff.raft.timer.DefaultTimer.A">A</span></span>, <span name="previous">previous: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="java.util.concurrent.ScheduledFuture">ScheduledFuture</span>[<span class="extype" name="scala.Unit">Unit</span>]]</span>)</span><span class="result">: <span class="extype" name="java.util.concurrent.ScheduledFuture">ScheduledFuture</span>[<span class="extype" name="scala.Unit">Unit</span>]</span>
-      </span>
-      
-      <p class="shortcomment cmt">Resets the heartbeat timeout for the given node.</p><div class="fullcomment"><div class="comment cmt"><p>Resets the heartbeat timeout for the given node.</p><p>It is assumed that this function will be called periodically from the node passed in,
-and it is up to the implementation trigger an election timeout on the node should it not be reset or cancelled
-within a certain (presumably randomized) time.
-</p></div><dl class="paramcmts block"><dt class="param">raftNode</dt><dd class="cmt"><p>the node which should be timed-out should another 'reset 'or 'cancelTimeout' be called on the returned value</p></dd><dt class="param">previous</dt><dd class="cmt"><p>An optional previous cancelation token to cancel</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="riff.raft.timer.DefaultTimer">DefaultTimer</a> → <a href="RaftTimer.html" class="extype" name="riff.raft.timer.RaftTimer">RaftTimer</a></dd></dl></div>
-    </li><li name="riff.raft.timer.DefaultTimer#resetSendHeartbeatTimeout" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="resetSendHeartbeatTimeout(raftNode:A,previous:Option[java.util.concurrent.ScheduledFuture[Unit]]):java.util.concurrent.ScheduledFuture[Unit]"></a><a id="resetSendHeartbeatTimeout(A,Option[ScheduledFuture[Unit]]):ScheduledFuture[Unit]"></a>
-      <span class="permalink">
-      <a href="../../../riff/raft/timer/DefaultTimer.html#resetSendHeartbeatTimeout(raftNode:A,previous:Option[java.util.concurrent.ScheduledFuture[Unit]]):java.util.concurrent.ScheduledFuture[Unit]" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">resetSendHeartbeatTimeout</span><span class="params">(<span name="raftNode">raftNode: <span class="extype" name="riff.raft.timer.DefaultTimer.A">A</span></span>, <span name="previous">previous: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="java.util.concurrent.ScheduledFuture">ScheduledFuture</span>[<span class="extype" name="scala.Unit">Unit</span>]]</span>)</span><span class="result">: <span class="extype" name="java.util.concurrent.ScheduledFuture">ScheduledFuture</span>[<span class="extype" name="scala.Unit">Unit</span>]</span>
-      </span>
-      
-      <p class="shortcomment cmt">Resets a leader's send heartbeat timeout for a given node.</p><div class="fullcomment"><div class="comment cmt"><p>Resets a leader's send heartbeat timeout for a given node.</p><p>It is assumed that this function will be called periodically from the node passed in order to send a heartbeat
-to the given 'state'
-</p></div><dl class="paramcmts block"><dt class="param">raftNode</dt><dd class="cmt"><p>the node which should be timed-out should another 'reset 'or 'cancelTimeout' be called on the returned value</p></dd><dt class="param">previous</dt><dd class="cmt"><p>An optional previous cancelation token to cancel</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="riff.raft.timer.DefaultTimer">DefaultTimer</a> → <a href="RaftTimer.html" class="extype" name="riff.raft.timer.RaftTimer">RaftTimer</a></dd></dl></div>
     </li><li name="scala.AnyRef#synchronized" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a><a id="synchronized[T0](⇒T0):T0"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/timer/DefaultTimer.html#synchronized[T0](x$1:=&gt;T0):T0" title="Permalink">
+      <a href="../../../riff/raft/timer/RaftClock$.html#synchronized[T0](x$1:=&gt;T0):T0" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -582,7 +509,7 @@ to the given 'state'
     </li><li name="scala.AnyRef#toString" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="toString():String"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/timer/DefaultTimer.html#toString():String" title="Permalink">
+      <a href="../../../riff/raft/timer/RaftClock$.html#toString():String" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -598,7 +525,7 @@ to the given 'state'
     </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait():Unit"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/timer/DefaultTimer.html#wait():Unit" title="Permalink">
+      <a href="../../../riff/raft/timer/RaftClock$.html#wait():Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -620,7 +547,7 @@ to the given 'state'
     </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait(x$1:Long,x$2:Int):Unit"></a><a id="wait(Long,Int):Unit"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/timer/DefaultTimer.html#wait(x$1:Long,x$2:Int):Unit" title="Permalink">
+      <a href="../../../riff/raft/timer/RaftClock$.html#wait(x$1:Long,x$2:Int):Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -642,7 +569,7 @@ to the given 'state'
     </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait(x$1:Long):Unit"></a><a id="wait(Long):Unit"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/timer/DefaultTimer.html#wait(x$1:Long):Unit" title="Permalink">
+      <a href="../../../riff/raft/timer/RaftClock$.html#wait(x$1:Long):Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -673,9 +600,7 @@ to the given 'state'
         </div>
 
         <div id="inheritedMembers">
-        <div class="parent" name="riff.raft.timer.RaftTimer">
-              <h3>Inherited from <a href="RaftTimer.html" class="extype" name="riff.raft.timer.RaftTimer">RaftTimer</a>[<span class="extype" name="riff.raft.timer.DefaultTimer.A">A</span>]</h3>
-            </div><div class="parent" name="scala.AnyRef">
+        <div class="parent" name="scala.AnyRef">
               <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
             </div><div class="parent" name="scala.Any">
               <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>

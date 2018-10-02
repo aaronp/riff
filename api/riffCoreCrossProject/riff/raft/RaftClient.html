@@ -191,8 +191,20 @@
                         <a href="LogCommitException.html" title="">LogCommitException</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
+                        <a class="class" href="NotTheLeaderException.html" title=""></a>
+                        <a href="NotTheLeaderException.html" title="">NotTheLeaderException</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="Raft$.html" title=""></a>
+                        <a href="Raft$.html" title="">Raft</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
                         <a class="trait" href="" title="The external use-cases for a node in the Raft protocol are:"></a>
                         <a href="" title="The external use-cases for a node in the Raft protocol are:">RaftClient</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="RoleCallback$.html" title=""></a>
+                        <a class="trait" href="RoleCallback.html" title="This is provided as a convenience to be added to a riff.raft.node.RaftNode for anything which cares about role transitions for a particular node."></a>
+                        <a href="RoleCallback.html" title="This is provided as a convenience to be added to a riff.raft.node.RaftNode for anything which cares about role transitions for a particular node.">RoleCallback</a>
                       </li>
               </ul>
             </div>
@@ -216,7 +228,7 @@
         <span class="kind">trait</span>
       </span>
       <span class="symbol">
-        <span class="name">RaftClient</span><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+        <span class="name">RaftClient</span><span class="tparams">[<span name="F">F<span class="tparams">[<span name="_">_</span>]</span></span>, <span name="A">A</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
       </h4>
 
@@ -279,10 +291,10 @@
 
         <div class="values members">
               <h3>Abstract Value Members</h3>
-              <ol><li name="riff.raft.RaftClient#append" visbl="pub" class="indented0 " data-isabs="true" fullComment="yes" group="Ungrouped">
-      <a id="append(data:A):org.reactivestreams.Publisher[riff.raft.AppendStatus]"></a><a id="append(A):Publisher[AppendStatus]"></a>
+              <ol><li name="riff.raft.RaftClient#append" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="append(data:Array[A]):F[riff.raft.AppendStatus]"></a><a id="append(Array[A]):F[AppendStatus]"></a>
       <span class="permalink">
-      <a href="../../riff/raft/RaftClient.html#append(data:A):org.reactivestreams.Publisher[riff.raft.AppendStatus]" title="Permalink">
+      <a href="../../riff/raft/RaftClient.html#append(data:Array[A]):F[riff.raft.AppendStatus]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -291,12 +303,10 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">append</span><span class="params">(<span name="data">data: <span class="extype" name="riff.raft.RaftClient.A">A</span></span>)</span><span class="result">: <span class="extype" name="org.reactivestreams.Publisher">Publisher</span>[<a href="AppendStatus.html" class="extype" name="riff.raft.AppendStatus">AppendStatus</a>]</span>
+        <span class="name">append</span><span class="params">(<span name="data">data: <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="riff.raft.RaftClient.A">A</span>]</span>)</span><span class="result">: <span class="extype" name="riff.raft.RaftClient.F">F</span>[<a href="AppendStatus.html" class="extype" name="riff.raft.AppendStatus">AppendStatus</a>]</span>
       </span>
       
-      <p class="shortcomment cmt">This is a client's view of a raft cluster, which simply wants to write some data
-</p><div class="fullcomment"><div class="comment cmt"><p>This is a client's view of a raft cluster, which simply wants to write some data
-</p></div><dl class="paramcmts block"><dt class="param">data</dt><dd class="cmt"><p>the data to write</p></dd><dt>returns</dt><dd class="cmt"><p>an observable of the append results as they are appended/co</p></dd></dl></div>
+      
     </li></ol>
             </div>
 
@@ -351,6 +361,24 @@
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="riff.raft.RaftClient#append" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="append(data:A,theRest:A*)(implicitclassTag:scala.reflect.ClassTag[A]):F[riff.raft.AppendStatus]"></a><a id="append(A,A*)(ClassTag[A]):F[AppendStatus]"></a>
+      <span class="permalink">
+      <a href="../../riff/raft/RaftClient.html#append(data:A,theRest:A*)(implicitclassTag:scala.reflect.ClassTag[A]):F[riff.raft.AppendStatus]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">append</span><span class="params">(<span name="data">data: <span class="extype" name="riff.raft.RaftClient.A">A</span></span>, <span name="theRest">theRest: <span class="extype" name="riff.raft.RaftClient.A">A</span>*</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="classTag">classTag: <span class="extype" name="scala.reflect.ClassTag">ClassTag</span>[<span class="extype" name="riff.raft.RaftClient.A">A</span>]</span>)</span><span class="result">: <span class="extype" name="riff.raft.RaftClient.F">F</span>[<a href="AppendStatus.html" class="extype" name="riff.raft.AppendStatus">AppendStatus</a>]</span>
+      </span>
+      
+      <p class="shortcomment cmt">This is a client's view of a raft cluster, which simply wants to write some data
+</p><div class="fullcomment"><div class="comment cmt"><p>This is a client's view of a raft cluster, which simply wants to write some data
+</p></div><dl class="paramcmts block"><dt class="param">data</dt><dd class="cmt"><p>the data to write</p></dd><dt>returns</dt><dd class="cmt"><p>an observable of the append results as they are appended/co</p></dd></dl></div>
     </li><li name="scala.Any#asInstanceOf" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="asInstanceOf[T0]:T0"></a>
       <span class="permalink">

@@ -163,12 +163,12 @@
                         <a href="LogState.html" title="">LogState</a>
                       </li><li class="current-entities indented3">
                         <a class="object" href="RaftLog$.html" title=""></a>
-                        <a class="trait" href="RaftLog.html" title="Represents a persistent log"></a>
-                        <a href="RaftLog.html" title="Represents a persistent log">RaftLog</a>
+                        <a class="trait" href="RaftLog.html" title="The persistent log"></a>
+                        <a href="RaftLog.html" title="The persistent log">RaftLog</a>
                       </li><li class="current-entities indented3">
                         <span class="separator"></span>
-                        <a class="trait" href="RaftLogOps.html" title="Additional convenience operations which can be performed on a RaftLog"></a>
-                        <a href="RaftLogOps.html" title="Additional convenience operations which can be performed on a RaftLog">RaftLogOps</a>
+                        <a class="trait" href="RaftLogOps.html" title="A base type for the raft log."></a>
+                        <a href="RaftLogOps.html" title="A base type for the raft log.">RaftLogOps</a>
                       </li><li class="current-entities indented3">
                         <a class="object" href="StateMachineLog$.html" title=""></a>
                         <a class="class" href="StateMachineLog.html" title="Invokes a function when log entries are committed"></a>
@@ -409,7 +409,7 @@
         <span class="name">cached</span><span class="params">()</span><span class="result">: <a href="CachingLog.html" class="extype" name="riff.raft.log.CachingLog">CachingLog</a>[<span class="extype" name="riff.raft.log.InMemory.T">T</span>]</span>
       </span>
       
-      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>a caching version of this log</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="RaftLogOps.html" class="extype" name="riff.raft.log.RaftLogOps">RaftLogOps</a></dd></dl></div>
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>a caching version of this log -- an optimisation for keeping in-memory the latestCommit and latestAppended</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="RaftLogOps.html" class="extype" name="riff.raft.log.RaftLogOps">RaftLogOps</a></dd></dl></div>
     </li><li name="riff.raft.log.BaseLog#checkForOverwrite" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="checkForOverwrite(firstIndex:riff.raft.LogIndex,firstTerm:riff.raft.Term):Either[riff.raft.log.LogAppendResult,scala.collection.immutable.Seq[riff.raft.LogIndex]]"></a><a id="checkForOverwrite(LogIndex,Term):Either[LogAppendResult,Seq[LogIndex]]"></a>
       <span class="permalink">
@@ -814,7 +814,24 @@ index will be set to the request previous index + 1.
         <span class="name">onCommit</span><span class="params">(<span name="applyToStateMachine">applyToStateMachine: (<a href="LogEntry.html" class="extype" name="riff.raft.log.LogEntry">LogEntry</a>[<span class="extype" name="riff.raft.log.InMemory.T">T</span>]) ⇒ <span class="extype" name="scala.Unit">Unit</span></span>)</span><span class="result">: <a href="StateMachineLog.html" class="extype" name="riff.raft.log.StateMachineLog">StateMachineLog</a>[<span class="extype" name="riff.raft.log.InMemory.T">T</span>]</span>
       </span>
       
-      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>a caching version of this log</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="RaftLogOps.html" class="extype" name="riff.raft.log.RaftLogOps">RaftLogOps</a></dd></dl></div>
+      <p class="shortcomment cmt">This function is the main point of the Raft cluster -- it applies the provided function
+to the LogEntry[A] once the entry is committed.</p><div class="fullcomment"><div class="comment cmt"><p>This function is the main point of the Raft cluster -- it applies the provided function
+to the LogEntry[A] once the entry is committed. It is up to the application what to do with
+the side-effectful function.</p><p>You can chain these methods to do multiple things, but notice that this method returns a NEW
+log, and so all of this should be done prior to creating the RaftNode which will handle the
+cluster events.</p><p>For example:</p><pre><span class="kw">def</span> businessLogicOnCommit(json : Json) = ...
+
+<span class="kw">val</span> raftNode : RaftNode[<span class="std">String</span>, Json] = {
+   <span class="kw">val</span> dataDir : Path = ...
+   <span class="kw">val</span> node = RaftNode[Json](dataDir)
+   node.withLog(node.log.onCommit { entry <span class="kw">=&gt;</span>
+      businessLogicOnCommit(entry.data)
+  }
+}
+
+<span class="cmt">// put the raft node behind some REST routes of some framework....</span>
+<span class="kw">val</span> routes = createWebRouts(raftNode)
+Http.bind(<span class="num">8080</span>, routes)</pre></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>a log which applies the given function when the given log entry is committed.</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="RaftLogOps.html" class="extype" name="riff.raft.log.RaftLogOps">RaftLogOps</a></dd></dl></div>
     </li><li name="scala.AnyRef#synchronized" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a><a id="synchronized[T0](⇒T0):T0"></a>
       <span class="permalink">

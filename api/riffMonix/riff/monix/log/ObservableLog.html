@@ -119,20 +119,20 @@
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../index.html" class="extype" name="riff.monix">monix</a></dd></dl></div>
     </li><li class="current-entities indented3">
                         <span class="separator"></span>
-                        <a class="class" href="LogAppended.html" title="published when entries are committed"></a>
-                        <a href="LogAppended.html" title="published when entries are committed">LogAppended</a>
+                        <a class="trait" href="AppendOps.html" title=""></a>
+                        <a href="AppendOps.html" title="">AppendOps</a>
                       </li><li class="current-entities indented3">
                         <span class="separator"></span>
-                        <a class="class" href="LogCommitted.html" title="published when entries are committed"></a>
-                        <a href="LogCommitted.html" title="published when entries are committed">LogCommitted</a>
+                        <a class="trait" href="CommittedOps.html" title="Represents observable operations which can be performed on a riff.raft.log.RaftLog for committed log entries"></a>
+                        <a href="CommittedOps.html" title="Represents observable operations which can be performed on a riff.raft.log.RaftLog for committed log entries">CommittedOps</a>
                       </li><li class="current-entities indented3">
-                        <span class="separator"></span>
-                        <a class="trait" href="LogNotificationMessage.html" title="The messages emitted by an ObservableLog"></a>
-                        <a href="LogNotificationMessage.html" title="The messages emitted by an ObservableLog">LogNotificationMessage</a>
+                        <a class="object" href="IndexedObservable$.html" title=""></a>
+                        <a class="trait" href="IndexedObservable.html" title="Represents something which can be subscribed to from a particular index."></a>
+                        <a href="IndexedObservable.html" title="Represents something which can be subscribed to from a particular index.">IndexedObservable</a>
                       </li><li class="current-entities indented3">
-                        <span class="separator"></span>
-                        <a class="class" href="" title="Wraps a riff.raft.log.RaftLog for a local node which can be observed"></a>
-                        <a href="" title="Wraps a riff.raft.log.RaftLog for a local node which can be observed">ObservableLog</a>
+                        <a class="object" href="ObservableLog$.html" title=""></a>
+                        <a class="class" href="" title="Wraps a riff.raft.log.RaftLog for a local node which exposes Observable data publishers for: $ Appended LogCoords $ Appended LogEntry $ Appended LogCoords from a historic index $ Appended LogEntry from a historic index $ Committed LogCoords $ Committed LogEntry $ Committed LogCoords from a historic index $ Committed LogEntry from a historic index"></a>
+                        <a href="" title="Wraps a riff.raft.log.RaftLog for a local node which exposes Observable data publishers for: $ Appended LogCoords $ Appended LogEntry $ Appended LogCoords from a historic index $ Appended LogEntry from a historic index $ Committed LogCoords $ Committed LogEntry $ Committed LogCoords from a historic index $ Committed LogEntry from a historic index">ObservableLog</a>
                       </li>
               </ul>
             </div>
@@ -140,14 +140,16 @@
           <div id="content">
             <body class="class type">
       <div id="definition">
-        <div class="big-circle class">c</div>
+        <a href="ObservableLog$.html" title="See companion object"><div class="big-circle class-companion-object">c</div></a>
         <p id="owner"><a href="../../index.html" class="extype" name="riff">riff</a>.<a href="../index.html" class="extype" name="riff.monix">monix</a>.<a href="index.html" class="extype" name="riff.monix.log">log</a></p>
-        <h1>ObservableLog<span class="permalink">
+        <h1><a href="ObservableLog$.html" title="See companion object">ObservableLog</a><span class="permalink">
       <a href="../../../riff/monix/log/ObservableLog.html" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span></h1>
-        <h3><span class="morelinks"></span></h3>
+        <h3><span class="morelinks"><div>
+            Companion <a href="ObservableLog$.html" title="See companion object">object ObservableLog</a>
+          </div></span></h3>
       </div>
 
       <h4 id="signature" class="signature">
@@ -156,17 +158,25 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">ObservableLog</span><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="underlying">underlying: <span class="extype" name="riff.raft.log.RaftLog">RaftLog</span>[<span class="extype" name="riff.monix.log.ObservableLog.A">A</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="scheduler">scheduler: <span class="extype" name="monix.execution.Scheduler">Scheduler</span> = <span class="symbol"><span class="name"><a href="../../index.html">RiffSchedulers.DefaultScheduler</a></span></span></span>)</span><span class="result"> extends <span class="extype" name="riff.raft.log.RaftLog">RaftLog</span>[<span class="extype" name="riff.monix.log.ObservableLog.A">A</span>] with <a href="http://www.scala-lang.org/api/2.12.6/scala/Product.html#scala.Product" class="extype" name="scala.Product">Product</a> with <a href="http://www.scala-lang.org/api/2.12.6/scala/Serializable.html#scala.Serializable" class="extype" name="scala.Serializable">Serializable</a></span>
+        <span class="name">ObservableLog</span><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="underlying">underlying: <span class="extype" name="riff.raft.log.RaftLog">RaftLog</span>[<span class="extype" name="riff.monix.log.ObservableLog.A">A</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="scheduler">scheduler: <span class="extype" name="monix.execution.Scheduler">Scheduler</span></span>)</span><span class="result"> extends <span class="extype" name="riff.raft.log.DelegateLog">DelegateLog</span>[<span class="extype" name="riff.monix.log.ObservableLog.A">A</span>] with <a href="CommittedOps.html" class="extype" name="riff.monix.log.CommittedOps">CommittedOps</a>[<span class="extype" name="riff.monix.log.ObservableLog.A">A</span>] with <a href="AppendOps.html" class="extype" name="riff.monix.log.AppendOps">AppendOps</a>[<span class="extype" name="riff.monix.log.ObservableLog.A">A</span>] with <a href="http://www.scala-lang.org/api/2.12.7/scala/Product.html#scala.Product" class="extype" name="scala.Product">Product</a> with <a href="http://www.scala-lang.org/api/2.12.7/scala/Serializable.html#scala.Serializable" class="extype" name="scala.Serializable">Serializable</a></span>
       </span>
       </h4>
 
       
-          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Wraps a <span class="extype" name="riff.raft.log.RaftLog">riff.raft.log.RaftLog</span> for a local node which can be observed
-</p></div><div class="toggleContainer block">
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Wraps a <span class="extype" name="riff.raft.log.RaftLog">riff.raft.log.RaftLog</span> for a local node which exposes Observable data publishers for:
+$ Appended <span class="extype" name="LogCoords">LogCoords</span>
+$ Appended <span class="extype" name="LogEntry">LogEntry</span>
+$ Appended <span class="extype" name="LogCoords">LogCoords</span> from a historic index
+$ Appended <span class="extype" name="LogEntry">LogEntry</span> from a historic index
+$ Committed <span class="extype" name="LogCoords">LogCoords</span>
+$ Committed <span class="extype" name="LogEntry">LogEntry</span>
+$ Committed <span class="extype" name="LogCoords">LogCoords</span> from a historic index
+$ Committed <span class="extype" name="LogEntry">LogEntry</span> from a historic index
+</p></div><dl class="paramcmts block"><dt class="param">underlying</dt><dd class="cmt"><p>the wrapped log</p></dd><dt class="param">scheduler</dt><dd class="cmt"><p>the scheduler to use for the observables</p></dd></dl><div class="toggleContainer block">
           <span class="toggle">
             Linear Supertypes
           </span>
-          <div class="superTypes hiddenContent"><a href="http://www.scala-lang.org/api/2.12.6/scala/Serializable.html#scala.Serializable" class="extype" name="scala.Serializable">Serializable</a>, <span class="extype" name="java.io.Serializable">Serializable</span>, <a href="http://www.scala-lang.org/api/2.12.6/scala/Product.html#scala.Product" class="extype" name="scala.Product">Product</a>, <a href="http://www.scala-lang.org/api/2.12.6/scala/Equals.html#scala.Equals" class="extype" name="scala.Equals">Equals</a>, <span class="extype" name="riff.raft.log.RaftLog">RaftLog</span>[<span class="extype" name="riff.monix.log.ObservableLog.A">A</span>], <span class="extype" name="riff.raft.log.RaftLogOps">RaftLogOps</span>[<span class="extype" name="riff.monix.log.ObservableLog.A">A</span>], <a href="http://www.scala-lang.org/api/2.12.6/scala/AnyRef.html#scala.AnyRef" class="extype" name="scala.AnyRef">AnyRef</a>, <a href="http://www.scala-lang.org/api/2.12.6/scala/Any.html#scala.Any" class="extype" name="scala.Any">Any</a></div>
+          <div class="superTypes hiddenContent"><a href="http://www.scala-lang.org/api/2.12.7/scala/Serializable.html#scala.Serializable" class="extype" name="scala.Serializable">Serializable</a>, <span class="extype" name="java.io.Serializable">Serializable</span>, <a href="http://www.scala-lang.org/api/2.12.7/scala/Product.html#scala.Product" class="extype" name="scala.Product">Product</a>, <a href="http://www.scala-lang.org/api/2.12.7/scala/Equals.html#scala.Equals" class="extype" name="scala.Equals">Equals</a>, <a href="AppendOps.html" class="extype" name="riff.monix.log.AppendOps">AppendOps</a>[<span class="extype" name="riff.monix.log.ObservableLog.A">A</span>], <a href="CommittedOps.html" class="extype" name="riff.monix.log.CommittedOps">CommittedOps</a>[<span class="extype" name="riff.monix.log.ObservableLog.A">A</span>], <span class="extype" name="riff.raft.log.DelegateLog">DelegateLog</span>[<span class="extype" name="riff.monix.log.ObservableLog.A">A</span>], <span class="extype" name="riff.raft.log.RaftLog">RaftLog</span>[<span class="extype" name="riff.monix.log.ObservableLog.A">A</span>], <span class="extype" name="riff.raft.log.RaftLogOps">RaftLogOps</span>[<span class="extype" name="riff.monix.log.ObservableLog.A">A</span>], <a href="http://www.scala-lang.org/api/2.12.7/scala/AnyRef.html#scala.AnyRef" class="extype" name="scala.AnyRef">AnyRef</a>, <a href="http://www.scala-lang.org/api/2.12.7/scala/Any.html#scala.Any" class="extype" name="scala.Any">Any</a></div>
         </div></div>
         
 
@@ -192,7 +202,7 @@
                   <span class="filtertype">Inherited<br />
                   </span>
                   <ol id="linearization">
-                    <li class="in" name="riff.monix.log.ObservableLog"><span>ObservableLog</span></li><li class="in" name="scala.Serializable"><span>Serializable</span></li><li class="in" name="java.io.Serializable"><span>Serializable</span></li><li class="in" name="scala.Product"><span>Product</span></li><li class="in" name="scala.Equals"><span>Equals</span></li><li class="in" name="riff.raft.log.RaftLog"><span>RaftLog</span></li><li class="in" name="riff.raft.log.RaftLogOps"><span>RaftLogOps</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                    <li class="in" name="riff.monix.log.ObservableLog"><span>ObservableLog</span></li><li class="in" name="scala.Serializable"><span>Serializable</span></li><li class="in" name="java.io.Serializable"><span>Serializable</span></li><li class="in" name="scala.Product"><span>Product</span></li><li class="in" name="scala.Equals"><span>Equals</span></li><li class="in" name="riff.monix.log.AppendOps"><span>AppendOps</span></li><li class="in" name="riff.monix.log.CommittedOps"><span>CommittedOps</span></li><li class="in" name="riff.raft.log.DelegateLog"><span>DelegateLog</span></li><li class="in" name="riff.raft.log.RaftLog"><span>RaftLog</span></li><li class="in" name="riff.raft.log.RaftLogOps"><span>RaftLogOps</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                   </ol>
                 </div><div class="ancestors">
               <span class="filtertype"></span>
@@ -212,7 +222,7 @@
         <div id="allMembers">
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
-              <ol><li name="riff.monix.log.ObservableLog#&lt;init&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+              <ol><li name="riff.monix.log.ObservableLog#&lt;init&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="&lt;init&gt;(underlying:riff.raft.log.RaftLog[A])(implicitscheduler:monix.execution.Scheduler):riff.monix.log.ObservableLog[A]"></a><a id="&lt;init&gt;:ObservableLog[A]"></a>
       <span class="permalink">
       <a href="../../../riff/monix/log/ObservableLog.html#&lt;init&gt;(underlying:riff.raft.log.RaftLog[A])(implicitscheduler:monix.execution.Scheduler):riff.monix.log.ObservableLog[A]" title="Permalink">
@@ -224,10 +234,10 @@
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">ObservableLog</span><span class="params">(<span name="underlying">underlying: <span class="extype" name="riff.raft.log.RaftLog">RaftLog</span>[<span class="extype" name="riff.monix.log.ObservableLog.A">A</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="scheduler">scheduler: <span class="extype" name="monix.execution.Scheduler">Scheduler</span> = <span class="symbol"><span class="name"><a href="../../index.html">RiffSchedulers.DefaultScheduler</a></span></span></span>)</span>
+        <span class="name">ObservableLog</span><span class="params">(<span name="underlying">underlying: <span class="extype" name="riff.raft.log.RaftLog">RaftLog</span>[<span class="extype" name="riff.monix.log.ObservableLog.A">A</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="scheduler">scheduler: <span class="extype" name="monix.execution.Scheduler">Scheduler</span></span>)</span>
       </span>
       
-      
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">underlying</dt><dd class="cmt"><p>the wrapped log</p></dd><dt class="param">scheduler</dt><dd class="cmt"><p>the scheduler to use for the observables</p></dd></dl></div>
     </li></ol>
             </div>
 
@@ -250,7 +260,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <a href="http://www.scala-lang.org/api/2.12.6/scala/Any.html#scala.Any" class="extype" name="scala.Any">Any</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.12.6/scala/Boolean.html#scala.Boolean" class="extype" name="scala.Boolean">Boolean</a></span>
+        <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <a href="http://www.scala-lang.org/api/2.12.7/scala/Any.html#scala.Any" class="extype" name="scala.Any">Any</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.12.7/scala/Boolean.html#scala.Boolean" class="extype" name="scala.Boolean">Boolean</a></span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
@@ -266,7 +276,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span title="gt4s: $hash$hash" class="name">##</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.12.6/scala/Int.html#scala.Int" class="extype" name="scala.Int">Int</a></span>
+        <span title="gt4s: $hash$hash" class="name">##</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.12.7/scala/Int.html#scala.Int" class="extype" name="scala.Int">Int</a></span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
@@ -282,7 +292,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <a href="http://www.scala-lang.org/api/2.12.6/scala/Any.html#scala.Any" class="extype" name="scala.Any">Any</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.12.6/scala/Boolean.html#scala.Boolean" class="extype" name="scala.Boolean">Boolean</a></span>
+        <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <a href="http://www.scala-lang.org/api/2.12.7/scala/Any.html#scala.Any" class="extype" name="scala.Any">Any</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.12.7/scala/Boolean.html#scala.Boolean" class="extype" name="scala.Boolean">Boolean</a></span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
@@ -314,10 +324,90 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">appendAll</span><span class="params">(<span name="fromIndex">fromIndex: <span class="extype" name="riff.raft.LogIndex">LogIndex</span></span>, <span name="data">data: <a href="http://www.scala-lang.org/api/2.12.6/scala/Array.html#scala.Array" class="extype" name="scala.Array">Array</a>[<span class="extype" name="riff.raft.log.LogEntry">LogEntry</span>[<span class="extype" name="riff.monix.log.ObservableLog.A">A</span>]]</span>)</span><span class="result">: <span class="extype" name="riff.raft.log.LogAppendResult">LogAppendResult</span></span>
+        <span class="name">appendAll</span><span class="params">(<span name="fromIndex">fromIndex: <a href="../../raft/index.html#LogIndex=Int" class="extmbr" name="riff.raft.LogIndex">LogIndex</a></span>, <span name="data">data: <a href="http://www.scala-lang.org/api/2.12.7/scala/Array.html#scala.Array" class="extype" name="scala.Array">Array</a>[<span class="extype" name="riff.raft.log.LogEntry">LogEntry</span>[<span class="extype" name="riff.monix.log.ObservableLog.A">A</span>]]</span>)</span><span class="result">: <span class="extype" name="riff.raft.log.LogAppendResult">LogAppendResult</span></span>
       </span>
       
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="riff.monix.log.ObservableLog">ObservableLog</a> → RaftLogOps</dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="riff.monix.log.ObservableLog">ObservableLog</a> → DelegateLog → RaftLogOps</dd></dl></div>
+    </li><li name="riff.monix.log.AppendOps#appendCoords" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="appendCoords():monix.reactive.Observable[riff.raft.log.LogCoords]"></a><a id="appendCoords():Observable[LogCoords]"></a>
+      <span class="permalink">
+      <a href="../../../riff/monix/log/ObservableLog.html#appendCoords():monix.reactive.Observable[riff.raft.log.LogCoords]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">appendCoords</span><span class="params">()</span><span class="result">: <span class="extype" name="monix.reactive.Observable">Observable</span>[<span class="extype" name="riff.raft.log.LogCoords">LogCoords</span>]</span>
+      </span>
+      
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>an observable of the appended BUT NOT YET committed entries from the time of subscription</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="AppendOps.html" class="extype" name="riff.monix.log.AppendOps">AppendOps</a></dd></dl></div>
+    </li><li name="riff.monix.log.ObservableLog#appendResults" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="appendResults():monix.reactive.Observable[riff.raft.log.LogAppendSuccess]"></a><a id="appendResults():Observable[LogAppendSuccess]"></a>
+      <span class="permalink">
+      <a href="../../../riff/monix/log/ObservableLog.html#appendResults():monix.reactive.Observable[riff.raft.log.LogAppendSuccess]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">appendResults</span><span class="params">()</span><span class="result">: <span class="extype" name="monix.reactive.Observable">Observable</span>[<span class="extype" name="riff.raft.log.LogAppendSuccess">LogAppendSuccess</span>]</span>
+      </span>
+      
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>an observable of the appended BUT NOT YET committed entries</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="riff.monix.log.ObservableLog">ObservableLog</a> → <a href="AppendOps.html" class="extype" name="riff.monix.log.AppendOps">AppendOps</a></dd></dl></div>
+    </li><li name="riff.monix.log.ObservableLog#appendedCoordsFrom" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="appendedCoordsFrom(index:riff.raft.LogIndex):monix.reactive.Observable[riff.raft.log.LogCoords]"></a><a id="appendedCoordsFrom(LogIndex):Observable[LogCoords]"></a>
+      <span class="permalink">
+      <a href="../../../riff/monix/log/ObservableLog.html#appendedCoordsFrom(index:riff.raft.LogIndex):monix.reactive.Observable[riff.raft.log.LogCoords]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">appendedCoordsFrom</span><span class="params">(<span name="index">index: <a href="../../raft/index.html#LogIndex=Int" class="extmbr" name="riff.raft.LogIndex">LogIndex</a></span>)</span><span class="result">: <span class="extype" name="monix.reactive.Observable">Observable</span>[<span class="extype" name="riff.raft.log.LogCoords">LogCoords</span>]</span>
+      </span>
+      
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">index</dt><dd class="cmt"><p>the (one based!) index from which we'd like to read the appended coords</p></dd><dt>returns</dt><dd class="cmt"><p>an observable of all appended (not necessarily committed) entries from the given index</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="riff.monix.log.ObservableLog">ObservableLog</a> → <a href="AppendOps.html" class="extype" name="riff.monix.log.AppendOps">AppendOps</a></dd></dl></div>
+    </li><li name="riff.monix.log.AppendOps#appendedEntries" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="appendedEntries():monix.reactive.Observable[(riff.raft.log.LogCoords,A)]"></a><a id="appendedEntries():Observable[(LogCoords,A)]"></a>
+      <span class="permalink">
+      <a href="../../../riff/monix/log/ObservableLog.html#appendedEntries():monix.reactive.Observable[(riff.raft.log.LogCoords,A)]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">appendedEntries</span><span class="params">()</span><span class="result">: <span class="extype" name="monix.reactive.Observable">Observable</span>[(<span class="extype" name="riff.raft.log.LogCoords">LogCoords</span>, <span class="extype" name="riff.monix.log.ObservableLog.A">A</span>)]</span>
+      </span>
+      
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>an observable of the appended coordinates and data from the time of subscription</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="AppendOps.html" class="extype" name="riff.monix.log.AppendOps">AppendOps</a></dd></dl></div>
+    </li><li name="riff.monix.log.AppendOps#appendedEntriesFrom" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="appendedEntriesFrom(index:riff.raft.LogIndex):monix.reactive.Observable[(riff.raft.log.LogCoords,A)]"></a><a id="appendedEntriesFrom(LogIndex):Observable[(LogCoords,A)]"></a>
+      <span class="permalink">
+      <a href="../../../riff/monix/log/ObservableLog.html#appendedEntriesFrom(index:riff.raft.LogIndex):monix.reactive.Observable[(riff.raft.log.LogCoords,A)]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">appendedEntriesFrom</span><span class="params">(<span name="index">index: <a href="../../raft/index.html#LogIndex=Int" class="extmbr" name="riff.raft.LogIndex">LogIndex</a></span>)</span><span class="result">: <span class="extype" name="monix.reactive.Observable">Observable</span>[(<span class="extype" name="riff.raft.log.LogCoords">LogCoords</span>, <span class="extype" name="riff.monix.log.ObservableLog.A">A</span>)]</span>
+      </span>
+      
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>an observable of log entries from the given index</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="AppendOps.html" class="extype" name="riff.monix.log.AppendOps">AppendOps</a></dd></dl></div>
     </li><li name="scala.Any#asInstanceOf" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="asInstanceOf[T0]:T0"></a>
       <span class="permalink">
@@ -334,22 +424,6 @@
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
-    </li><li name="riff.monix.log.ObservableLog#asObservable" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="asObservable:monix.reactive.Observable[riff.monix.log.LogNotificationMessage]"></a><a id="asObservable:Observable[LogNotificationMessage]"></a>
-      <span class="permalink">
-      <a href="../../../riff/monix/log/ObservableLog.html#asObservable:monix.reactive.Observable[riff.monix.log.LogNotificationMessage]" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">asObservable</span><span class="result">: <span class="extype" name="monix.reactive.Observable">Observable</span>[<a href="LogNotificationMessage.html" class="extype" name="riff.monix.log.LogNotificationMessage">LogNotificationMessage</a>]</span>
-      </span>
-      
-      
     </li><li name="riff.raft.log.RaftLogOps#cached" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="cached():riff.raft.log.CachingLog[A]"></a><a id="cached():CachingLog[A]"></a>
       <span class="permalink">
@@ -378,7 +452,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">clone</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.12.6/scala/AnyRef.html#scala.AnyRef" class="extype" name="scala.AnyRef">AnyRef</a></span>
+        <span class="name">clone</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.12.7/scala/AnyRef.html#scala.AnyRef" class="extype" name="scala.AnyRef">AnyRef</a></span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../../../java/lang/index.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
@@ -402,10 +476,74 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">commit</span><span class="params">(<span name="index">index: <span class="extype" name="riff.raft.LogIndex">LogIndex</span></span>)</span><span class="result">: <span class="extype" name="scala.Seq">Seq</span>[<span class="extype" name="riff.raft.log.LogCoords">LogCoords</span>]</span>
+        <span class="name">commit</span><span class="params">(<span name="index">index: <a href="../../raft/index.html#LogIndex=Int" class="extmbr" name="riff.raft.LogIndex">LogIndex</a></span>)</span><span class="result">: <span class="extype" name="scala.Seq">Seq</span>[<span class="extype" name="riff.raft.log.LogCoords">LogCoords</span>]</span>
       </span>
       
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="riff.monix.log.ObservableLog">ObservableLog</a> → RaftLogOps</dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="riff.monix.log.ObservableLog">ObservableLog</a> → DelegateLog → RaftLogOps</dd></dl></div>
+    </li><li name="riff.monix.log.ObservableLog#committedCoords" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="committedCoords():monix.reactive.Observable[riff.raft.log.LogCoords]"></a><a id="committedCoords():Observable[LogCoords]"></a>
+      <span class="permalink">
+      <a href="../../../riff/monix/log/ObservableLog.html#committedCoords():monix.reactive.Observable[riff.raft.log.LogCoords]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">committedCoords</span><span class="params">()</span><span class="result">: <span class="extype" name="monix.reactive.Observable">Observable</span>[<span class="extype" name="riff.raft.log.LogCoords">LogCoords</span>]</span>
+      </span>
+      
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>an observable of committed coordinates from the point of subscription</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="riff.monix.log.ObservableLog">ObservableLog</a> → <a href="CommittedOps.html" class="extype" name="riff.monix.log.CommittedOps">CommittedOps</a></dd></dl></div>
+    </li><li name="riff.monix.log.ObservableLog#committedCoordsFrom" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="committedCoordsFrom(index:riff.raft.LogIndex):monix.reactive.Observable[riff.raft.log.LogCoords]"></a><a id="committedCoordsFrom(LogIndex):Observable[LogCoords]"></a>
+      <span class="permalink">
+      <a href="../../../riff/monix/log/ObservableLog.html#committedCoordsFrom(index:riff.raft.LogIndex):monix.reactive.Observable[riff.raft.log.LogCoords]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">committedCoordsFrom</span><span class="params">(<span name="index">index: <a href="../../raft/index.html#LogIndex=Int" class="extmbr" name="riff.raft.LogIndex">LogIndex</a></span>)</span><span class="result">: <span class="extype" name="monix.reactive.Observable">Observable</span>[<span class="extype" name="riff.raft.log.LogCoords">LogCoords</span>]</span>
+      </span>
+      
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">index</dt><dd class="cmt"><p>the (one based!) index from which we'd like to read the committed coords</p></dd><dt>returns</dt><dd class="cmt"><p>an observable of all committed entries from the given index</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="riff.monix.log.ObservableLog">ObservableLog</a> → <a href="CommittedOps.html" class="extype" name="riff.monix.log.CommittedOps">CommittedOps</a></dd></dl></div>
+    </li><li name="riff.monix.log.CommittedOps#committedEntries" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="committedEntries():monix.reactive.Observable[(riff.raft.log.LogCoords,A)]"></a><a id="committedEntries():Observable[(LogCoords,A)]"></a>
+      <span class="permalink">
+      <a href="../../../riff/monix/log/ObservableLog.html#committedEntries():monix.reactive.Observable[(riff.raft.log.LogCoords,A)]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">committedEntries</span><span class="params">()</span><span class="result">: <span class="extype" name="monix.reactive.Observable">Observable</span>[(<span class="extype" name="riff.raft.log.LogCoords">LogCoords</span>, <span class="extype" name="riff.monix.log.ObservableLog.A">A</span>)]</span>
+      </span>
+      
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>an Observable of the committed coords and their values from the moment of subscription</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="CommittedOps.html" class="extype" name="riff.monix.log.CommittedOps">CommittedOps</a></dd></dl></div>
+    </li><li name="riff.monix.log.CommittedOps#committedEntriesFrom" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="committedEntriesFrom(index:riff.raft.LogIndex):monix.reactive.Observable[(riff.raft.log.LogCoords,A)]"></a><a id="committedEntriesFrom(LogIndex):Observable[(LogCoords,A)]"></a>
+      <span class="permalink">
+      <a href="../../../riff/monix/log/ObservableLog.html#committedEntriesFrom(index:riff.raft.LogIndex):monix.reactive.Observable[(riff.raft.log.LogCoords,A)]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">committedEntriesFrom</span><span class="params">(<span name="index">index: <a href="../../raft/index.html#LogIndex=Int" class="extmbr" name="riff.raft.LogIndex">LogIndex</a></span>)</span><span class="result">: <span class="extype" name="monix.reactive.Observable">Observable</span>[(<span class="extype" name="riff.raft.log.LogCoords">LogCoords</span>, <span class="extype" name="riff.monix.log.ObservableLog.A">A</span>)]</span>
+      </span>
+      
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">index</dt><dd class="cmt"><p>the (one based!) index from which to observe</p></dd><dt>returns</dt><dd class="cmt"><p>an observable of the log entries from a particular index</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="CommittedOps.html" class="extype" name="riff.monix.log.CommittedOps">CommittedOps</a></dd></dl></div>
     </li><li name="riff.raft.log.RaftLogOps#contains" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="contains(entry:riff.raft.log.LogCoords):Boolean"></a><a id="contains(LogCoords):Boolean"></a>
       <span class="permalink">
@@ -418,7 +556,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">contains</span><span class="params">(<span name="entry">entry: <span class="extype" name="riff.raft.log.LogCoords">LogCoords</span></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.12.6/scala/Boolean.html#scala.Boolean" class="extype" name="scala.Boolean">Boolean</a></span>
+        <span class="name">contains</span><span class="params">(<span name="entry">entry: <span class="extype" name="riff.raft.log.LogCoords">LogCoords</span></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.12.7/scala/Boolean.html#scala.Boolean" class="extype" name="scala.Boolean">Boolean</a></span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>RaftLogOps</dd></dl></div>
@@ -434,7 +572,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">containsIndex</span><span class="params">(<span name="index">index: <span class="extype" name="riff.raft.log.LogCoords">LogCoords</span></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.12.6/scala/Boolean.html#scala.Boolean" class="extype" name="scala.Boolean">Boolean</a></span>
+        <span class="name">containsIndex</span><span class="params">(<span name="index">index: <span class="extype" name="riff.raft.log.LogCoords">LogCoords</span></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.12.7/scala/Boolean.html#scala.Boolean" class="extype" name="scala.Boolean">Boolean</a></span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Definition Classes</dt><dd>RaftLogOps</dd></dl></div>
@@ -450,10 +588,26 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">coordsForIndex</span><span class="params">(<span name="index">index: <span class="extype" name="riff.raft.LogIndex">LogIndex</span></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.12.6/scala/Option.html#scala.Option" class="extype" name="scala.Option">Option</a>[<span class="extype" name="riff.raft.log.LogCoords">LogCoords</span>]</span>
+        <span class="name">coordsForIndex</span><span class="params">(<span name="index">index: <a href="../../raft/index.html#LogIndex=Int" class="extmbr" name="riff.raft.LogIndex">LogIndex</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.12.7/scala/Option.html#scala.Option" class="extype" name="scala.Option">Option</a>[<span class="extype" name="riff.raft.log.LogCoords">LogCoords</span>]</span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>RaftLogOps</dd></dl></div>
+    </li><li name="riff.monix.log.ObservableLog#dataForIndex" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="dataForIndex(coords:riff.raft.log.LogCoords):monix.reactive.Observable[(riff.raft.log.LogCoords,A)]"></a><a id="dataForIndex(LogCoords):Observable[(LogCoords,A)]"></a>
+      <span class="permalink">
+      <a href="../../../riff/monix/log/ObservableLog.html#dataForIndex(coords:riff.raft.log.LogCoords):monix.reactive.Observable[(riff.raft.log.LogCoords,A)]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">dataForIndex</span><span class="params">(<span name="coords">coords: <span class="extype" name="riff.raft.log.LogCoords">LogCoords</span></span>)</span><span class="result">: <span class="extype" name="monix.reactive.Observable">Observable</span>[(<span class="extype" name="riff.raft.log.LogCoords">LogCoords</span>, <span class="extype" name="riff.monix.log.ObservableLog.A">A</span>)]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Definition Classes</dt><dd><a href="" class="extype" name="riff.monix.log.ObservableLog">ObservableLog</a> → <a href="AppendOps.html" class="extype" name="riff.monix.log.AppendOps">AppendOps</a> → <a href="CommittedOps.html" class="extype" name="riff.monix.log.CommittedOps">CommittedOps</a></dd></dl></div>
     </li><li name="riff.raft.log.RaftLogOps#entriesFrom" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="entriesFrom(firstIndex:riff.raft.LogIndex,max:Int):Array[riff.raft.log.LogEntry[A]]"></a><a id="entriesFrom(LogIndex,Int):Array[LogEntry[A]]"></a>
       <span class="permalink">
@@ -466,11 +620,11 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">entriesFrom</span><span class="params">(<span name="firstIndex">firstIndex: <span class="extype" name="riff.raft.LogIndex">LogIndex</span></span>, <span name="max">max: <a href="http://www.scala-lang.org/api/2.12.6/scala/Int.html#scala.Int" class="extype" name="scala.Int">Int</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.12.6/scala/Array.html#scala.Array" class="extype" name="scala.Array">Array</a>[<span class="extype" name="riff.raft.log.LogEntry">LogEntry</span>[<span class="extype" name="riff.monix.log.ObservableLog.A">A</span>]]</span>
+        <span class="name">entriesFrom</span><span class="params">(<span name="firstIndex">firstIndex: <a href="../../raft/index.html#LogIndex=Int" class="extmbr" name="riff.raft.LogIndex">LogIndex</a></span>, <span name="max">max: <a href="http://www.scala-lang.org/api/2.12.7/scala/Int.html#scala.Int" class="extype" name="scala.Int">Int</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.12.7/scala/Array.html#scala.Array" class="extype" name="scala.Array">Array</a>[<span class="extype" name="riff.raft.log.LogEntry">LogEntry</span>[<span class="extype" name="riff.monix.log.ObservableLog.A">A</span>]]</span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>RaftLogOps</dd></dl></div>
-    </li><li name="riff.monix.log.ObservableLog#entryForIndex" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+    </li><li name="riff.raft.log.DelegateLog#entryForIndex" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="entryForIndex(index:riff.raft.LogIndex):Option[riff.raft.log.LogEntry[A]]"></a><a id="entryForIndex(LogIndex):Option[LogEntry[A]]"></a>
       <span class="permalink">
       <a href="../../../riff/monix/log/ObservableLog.html#entryForIndex(index:riff.raft.LogIndex):Option[riff.raft.log.LogEntry[A]]" title="Permalink">
@@ -482,10 +636,10 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">entryForIndex</span><span class="params">(<span name="index">index: <span class="extype" name="riff.raft.LogIndex">LogIndex</span></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.12.6/scala/Option.html#scala.Option" class="extype" name="scala.Option">Option</a>[<span class="extype" name="riff.raft.log.LogEntry">LogEntry</span>[<span class="extype" name="riff.monix.log.ObservableLog.A">A</span>]]</span>
+        <span class="name">entryForIndex</span><span class="params">(<span name="index">index: <a href="../../raft/index.html#LogIndex=Int" class="extmbr" name="riff.raft.LogIndex">LogIndex</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.12.7/scala/Option.html#scala.Option" class="extype" name="scala.Option">Option</a>[<span class="extype" name="riff.raft.log.LogEntry">LogEntry</span>[<span class="extype" name="riff.monix.log.ObservableLog.A">A</span>]]</span>
       </span>
       
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="riff.monix.log.ObservableLog">ObservableLog</a> → RaftLogOps</dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>DelegateLog → RaftLogOps</dd></dl></div>
     </li><li name="scala.AnyRef#eq" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a><a id="eq(AnyRef):Boolean"></a>
       <span class="permalink">
@@ -498,7 +652,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">eq</span><span class="params">(<span name="arg0">arg0: <a href="http://www.scala-lang.org/api/2.12.6/scala/AnyRef.html#scala.AnyRef" class="extype" name="scala.AnyRef">AnyRef</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.12.6/scala/Boolean.html#scala.Boolean" class="extype" name="scala.Boolean">Boolean</a></span>
+        <span class="name">eq</span><span class="params">(<span name="arg0">arg0: <a href="http://www.scala-lang.org/api/2.12.7/scala/AnyRef.html#scala.AnyRef" class="extype" name="scala.AnyRef">AnyRef</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.12.7/scala/Boolean.html#scala.Boolean" class="extype" name="scala.Boolean">Boolean</a></span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
@@ -514,7 +668,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">finalize</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.12.6/scala/Unit.html#scala.Unit" class="extype" name="scala.Unit">Unit</a></span>
+        <span class="name">finalize</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.12.7/scala/Unit.html#scala.Unit" class="extype" name="scala.Unit">Unit</a></span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../../../java/lang/index.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
@@ -555,11 +709,11 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <a href="http://www.scala-lang.org/api/2.12.6/scala/Boolean.html#scala.Boolean" class="extype" name="scala.Boolean">Boolean</a></span>
+        <span class="name">isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <a href="http://www.scala-lang.org/api/2.12.7/scala/Boolean.html#scala.Boolean" class="extype" name="scala.Boolean">Boolean</a></span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
-    </li><li name="riff.monix.log.ObservableLog#latestAppended" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+    </li><li name="riff.raft.log.DelegateLog#latestAppended" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="latestAppended():riff.raft.log.LogCoords"></a><a id="latestAppended():LogCoords"></a>
       <span class="permalink">
       <a href="../../../riff/monix/log/ObservableLog.html#latestAppended():riff.raft.log.LogCoords" title="Permalink">
@@ -574,8 +728,24 @@
         <span class="name">latestAppended</span><span class="params">()</span><span class="result">: <span class="extype" name="riff.raft.log.LogCoords">LogCoords</span></span>
       </span>
       
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="riff.monix.log.ObservableLog">ObservableLog</a> → RaftLogOps</dd></dl></div>
-    </li><li name="riff.monix.log.ObservableLog#latestCommit" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>DelegateLog → RaftLogOps</dd></dl></div>
+    </li><li name="riff.monix.log.ObservableLog#latestAppendedIndex" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="latestAppendedIndex():riff.raft.LogIndex"></a><a id="latestAppendedIndex():LogIndex"></a>
+      <span class="permalink">
+      <a href="../../../riff/monix/log/ObservableLog.html#latestAppendedIndex():riff.raft.LogIndex" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">latestAppendedIndex</span><span class="params">()</span><span class="result">: <a href="../../raft/index.html#LogIndex=Int" class="extmbr" name="riff.raft.LogIndex">LogIndex</a></span>
+      </span>
+      
+      
+    </li><li name="riff.raft.log.DelegateLog#latestCommit" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="latestCommit():riff.raft.LogIndex"></a><a id="latestCommit():LogIndex"></a>
       <span class="permalink">
       <a href="../../../riff/monix/log/ObservableLog.html#latestCommit():riff.raft.LogIndex" title="Permalink">
@@ -587,10 +757,26 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">latestCommit</span><span class="params">()</span><span class="result">: <span class="extype" name="riff.raft.LogIndex">LogIndex</span></span>
+        <span class="name">latestCommit</span><span class="params">()</span><span class="result">: <a href="../../raft/index.html#LogIndex=Int" class="extmbr" name="riff.raft.LogIndex">LogIndex</a></span>
       </span>
       
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="riff.monix.log.ObservableLog">ObservableLog</a> → RaftLogOps</dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>DelegateLog → RaftLogOps</dd></dl></div>
+    </li><li name="riff.monix.log.ObservableLog#latestCommittedIndex" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="latestCommittedIndex():riff.raft.LogIndex"></a><a id="latestCommittedIndex():LogIndex"></a>
+      <span class="permalink">
+      <a href="../../../riff/monix/log/ObservableLog.html#latestCommittedIndex():riff.raft.LogIndex" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">latestCommittedIndex</span><span class="params">()</span><span class="result">: <a href="../../raft/index.html#LogIndex=Int" class="extmbr" name="riff.raft.LogIndex">LogIndex</a></span>
+      </span>
+      
+      
     </li><li name="riff.raft.log.RaftLogOps#logState" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="logState():riff.raft.log.LogState"></a><a id="logState():LogState"></a>
       <span class="permalink">
@@ -619,7 +805,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">ne</span><span class="params">(<span name="arg0">arg0: <a href="http://www.scala-lang.org/api/2.12.6/scala/AnyRef.html#scala.AnyRef" class="extype" name="scala.AnyRef">AnyRef</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.12.6/scala/Boolean.html#scala.Boolean" class="extype" name="scala.Boolean">Boolean</a></span>
+        <span class="name">ne</span><span class="params">(<span name="arg0">arg0: <a href="http://www.scala-lang.org/api/2.12.7/scala/AnyRef.html#scala.AnyRef" class="extype" name="scala.AnyRef">AnyRef</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.12.7/scala/Boolean.html#scala.Boolean" class="extype" name="scala.Boolean">Boolean</a></span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
@@ -635,7 +821,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">notify</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.12.6/scala/Unit.html#scala.Unit" class="extype" name="scala.Unit">Unit</a></span>
+        <span class="name">notify</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.12.7/scala/Unit.html#scala.Unit" class="extype" name="scala.Unit">Unit</a></span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
@@ -654,7 +840,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">notifyAll</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.12.6/scala/Unit.html#scala.Unit" class="extype" name="scala.Unit">Unit</a></span>
+        <span class="name">notifyAll</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.12.7/scala/Unit.html#scala.Unit" class="extype" name="scala.Unit">Unit</a></span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
@@ -673,7 +859,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">onAppend</span><span class="params">(<span name="currentTerm">currentTerm: <span class="extype" name="riff.raft.Term">Term</span></span>, <span name="request">request: <span class="extype" name="riff.raft.messages.AppendEntries">AppendEntries</span>[<span class="extype" name="riff.monix.log.ObservableLog.A">A</span>]</span>)</span><span class="result">: <span class="extype" name="riff.raft.messages.AppendEntriesResponse">AppendEntriesResponse</span></span>
+        <span class="name">onAppend</span><span class="params">(<span name="currentTerm">currentTerm: <a href="../../raft/index.html#Term=Int" class="extmbr" name="riff.raft.Term">Term</a></span>, <span name="request">request: <span class="extype" name="riff.raft.messages.AppendEntries">AppendEntries</span>[<span class="extype" name="riff.monix.log.ObservableLog.A">A</span>]</span>)</span><span class="result">: <span class="extype" name="riff.raft.messages.AppendEntriesResponse">AppendEntriesResponse</span></span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>RaftLogOps</dd></dl></div>
@@ -689,7 +875,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">onCommit</span><span class="params">(<span name="applyToStateMachine">applyToStateMachine: (<span class="extype" name="riff.raft.log.LogEntry">LogEntry</span>[<span class="extype" name="riff.monix.log.ObservableLog.A">A</span>]) ⇒ <a href="http://www.scala-lang.org/api/2.12.6/scala/Unit.html#scala.Unit" class="extype" name="scala.Unit">Unit</a></span>)</span><span class="result">: <span class="extype" name="riff.raft.log.StateMachineLog">StateMachineLog</span>[<span class="extype" name="riff.monix.log.ObservableLog.A">A</span>]</span>
+        <span class="name">onCommit</span><span class="params">(<span name="applyToStateMachine">applyToStateMachine: (<span class="extype" name="riff.raft.log.LogEntry">LogEntry</span>[<span class="extype" name="riff.monix.log.ObservableLog.A">A</span>]) ⇒ <a href="http://www.scala-lang.org/api/2.12.7/scala/Unit.html#scala.Unit" class="extype" name="scala.Unit">Unit</a></span>)</span><span class="result">: <span class="extype" name="riff.raft.log.StateMachineLog">StateMachineLog</span>[<span class="extype" name="riff.monix.log.ObservableLog.A">A</span>]</span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>RaftLogOps</dd></dl></div>
@@ -709,7 +895,7 @@
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="riff.monix.log.ObservableLog#termForIndex" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+    </li><li name="riff.raft.log.DelegateLog#termForIndex" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="termForIndex(index:riff.raft.LogIndex):Option[riff.raft.Term]"></a><a id="termForIndex(LogIndex):Option[Term]"></a>
       <span class="permalink">
       <a href="../../../riff/monix/log/ObservableLog.html#termForIndex(index:riff.raft.LogIndex):Option[riff.raft.Term]" title="Permalink">
@@ -721,11 +907,11 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">termForIndex</span><span class="params">(<span name="index">index: <span class="extype" name="riff.raft.LogIndex">LogIndex</span></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.12.6/scala/Option.html#scala.Option" class="extype" name="scala.Option">Option</a>[<span class="extype" name="riff.raft.Term">Term</span>]</span>
+        <span class="name">termForIndex</span><span class="params">(<span name="index">index: <a href="../../raft/index.html#LogIndex=Int" class="extmbr" name="riff.raft.LogIndex">LogIndex</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.12.7/scala/Option.html#scala.Option" class="extype" name="scala.Option">Option</a>[<a href="../../raft/index.html#Term=Int" class="extmbr" name="riff.raft.Term">Term</a>]</span>
       </span>
       
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="riff.monix.log.ObservableLog">ObservableLog</a> → RaftLogOps</dd></dl></div>
-    </li><li name="riff.monix.log.ObservableLog#underlying" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>DelegateLog → RaftLogOps</dd></dl></div>
+    </li><li name="riff.monix.log.ObservableLog#underlying" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="underlying:riff.raft.log.RaftLog[A]"></a><a id="underlying:RaftLog[A]"></a>
       <span class="permalink">
       <a href="../../../riff/monix/log/ObservableLog.html#underlying:riff.raft.log.RaftLog[A]" title="Permalink">
@@ -740,7 +926,7 @@
         <span class="name">underlying</span><span class="result">: <span class="extype" name="riff.raft.log.RaftLog">RaftLog</span>[<span class="extype" name="riff.monix.log.ObservableLog.A">A</span>]</span>
       </span>
       
-      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="riff.monix.log.ObservableLog">ObservableLog</a> → DelegateLog</dd></dl></div>
     </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait():Unit"></a>
       <span class="permalink">
@@ -753,7 +939,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">wait</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.12.6/scala/Unit.html#scala.Unit" class="extype" name="scala.Unit">Unit</a></span>
+        <span class="name">wait</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.12.7/scala/Unit.html#scala.Unit" class="extype" name="scala.Unit">Unit</a></span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
@@ -775,7 +961,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <a href="http://www.scala-lang.org/api/2.12.6/scala/Long.html#scala.Long" class="extype" name="scala.Long">Long</a></span>, <span name="arg1">arg1: <a href="http://www.scala-lang.org/api/2.12.6/scala/Int.html#scala.Int" class="extype" name="scala.Int">Int</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.12.6/scala/Unit.html#scala.Unit" class="extype" name="scala.Unit">Unit</a></span>
+        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <a href="http://www.scala-lang.org/api/2.12.7/scala/Long.html#scala.Long" class="extype" name="scala.Long">Long</a></span>, <span name="arg1">arg1: <a href="http://www.scala-lang.org/api/2.12.7/scala/Int.html#scala.Int" class="extype" name="scala.Int">Int</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.12.7/scala/Unit.html#scala.Unit" class="extype" name="scala.Unit">Unit</a></span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
@@ -797,7 +983,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <a href="http://www.scala-lang.org/api/2.12.6/scala/Long.html#scala.Long" class="extype" name="scala.Long">Long</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.12.6/scala/Unit.html#scala.Unit" class="extype" name="scala.Unit">Unit</a></span>
+        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <a href="http://www.scala-lang.org/api/2.12.7/scala/Long.html#scala.Long" class="extype" name="scala.Long">Long</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.12.7/scala/Unit.html#scala.Unit" class="extype" name="scala.Unit">Unit</a></span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
@@ -820,21 +1006,27 @@
 
         <div id="inheritedMembers">
         <div class="parent" name="scala.Serializable">
-              <h3>Inherited from <a href="http://www.scala-lang.org/api/2.12.6/scala/Serializable.html#scala.Serializable" class="extype" name="scala.Serializable">Serializable</a></h3>
+              <h3>Inherited from <a href="http://www.scala-lang.org/api/2.12.7/scala/Serializable.html#scala.Serializable" class="extype" name="scala.Serializable">Serializable</a></h3>
             </div><div class="parent" name="java.io.Serializable">
               <h3>Inherited from <span class="extype" name="java.io.Serializable">Serializable</span></h3>
             </div><div class="parent" name="scala.Product">
-              <h3>Inherited from <a href="http://www.scala-lang.org/api/2.12.6/scala/Product.html#scala.Product" class="extype" name="scala.Product">Product</a></h3>
+              <h3>Inherited from <a href="http://www.scala-lang.org/api/2.12.7/scala/Product.html#scala.Product" class="extype" name="scala.Product">Product</a></h3>
             </div><div class="parent" name="scala.Equals">
-              <h3>Inherited from <a href="http://www.scala-lang.org/api/2.12.6/scala/Equals.html#scala.Equals" class="extype" name="scala.Equals">Equals</a></h3>
+              <h3>Inherited from <a href="http://www.scala-lang.org/api/2.12.7/scala/Equals.html#scala.Equals" class="extype" name="scala.Equals">Equals</a></h3>
+            </div><div class="parent" name="riff.monix.log.AppendOps">
+              <h3>Inherited from <a href="AppendOps.html" class="extype" name="riff.monix.log.AppendOps">AppendOps</a>[<span class="extype" name="riff.monix.log.ObservableLog.A">A</span>]</h3>
+            </div><div class="parent" name="riff.monix.log.CommittedOps">
+              <h3>Inherited from <a href="CommittedOps.html" class="extype" name="riff.monix.log.CommittedOps">CommittedOps</a>[<span class="extype" name="riff.monix.log.ObservableLog.A">A</span>]</h3>
+            </div><div class="parent" name="riff.raft.log.DelegateLog">
+              <h3>Inherited from <span class="extype" name="riff.raft.log.DelegateLog">DelegateLog</span>[<span class="extype" name="riff.monix.log.ObservableLog.A">A</span>]</h3>
             </div><div class="parent" name="riff.raft.log.RaftLog">
               <h3>Inherited from <span class="extype" name="riff.raft.log.RaftLog">RaftLog</span>[<span class="extype" name="riff.monix.log.ObservableLog.A">A</span>]</h3>
             </div><div class="parent" name="riff.raft.log.RaftLogOps">
               <h3>Inherited from <span class="extype" name="riff.raft.log.RaftLogOps">RaftLogOps</span>[<span class="extype" name="riff.monix.log.ObservableLog.A">A</span>]</h3>
             </div><div class="parent" name="scala.AnyRef">
-              <h3>Inherited from <a href="http://www.scala-lang.org/api/2.12.6/scala/AnyRef.html#scala.AnyRef" class="extype" name="scala.AnyRef">AnyRef</a></h3>
+              <h3>Inherited from <a href="http://www.scala-lang.org/api/2.12.7/scala/AnyRef.html#scala.AnyRef" class="extype" name="scala.AnyRef">AnyRef</a></h3>
             </div><div class="parent" name="scala.Any">
-              <h3>Inherited from <a href="http://www.scala-lang.org/api/2.12.6/scala/Any.html#scala.Any" class="extype" name="scala.Any">Any</a></h3>
+              <h3>Inherited from <a href="http://www.scala-lang.org/api/2.12.7/scala/Any.html#scala.Any" class="extype" name="scala.Any">Any</a></h3>
             </div>
         
         </div>

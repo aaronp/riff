@@ -118,15 +118,19 @@
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../index.html" class="extype" name="riff.raft">raft</a></dd></dl></div>
     </li><li class="current-entities indented3">
-                        <a class="object" href="DefaultTimer$.html" title=""></a>
-                        <a class="class" href="DefaultTimer.html" title=""></a>
-                        <a href="DefaultTimer.html" title="">DefaultTimer</a>
+                        <a class="object" href="DefaultClock$.html" title=""></a>
+                        <a class="class" href="DefaultClock.html" title=""></a>
+                        <a href="DefaultClock.html" title="">DefaultClock</a>
                       </li><li class="current-entities indented3">
-                        <a class="object" href="RaftTimer$.html" title=""></a>
-                        <a class="trait" href="RaftTimer.html" title="Represents the functions required to control a member node's election and heartbeat timeouts."></a>
-                        <a href="RaftTimer.html" title="Represents the functions required to control a member node's election and heartbeat timeouts.">RaftTimer</a>
+                        <a class="object" href="RaftClock$.html" title=""></a>
+                        <a class="trait" href="RaftClock.html" title="Represents the functions required to control a member node's election and heartbeat timeouts."></a>
+                        <a href="RaftClock.html" title="Represents the functions required to control a member node's election and heartbeat timeouts.">RaftClock</a>
                       </li><li class="current-entities indented3">
-                        <a class="object" href="TimerCallback$.html" title=""></a>
+                        <span class="separator"></span>
+                        <a class="class" href="RandomTimer.html" title="A utility class for use when implementing a RaftClock."></a>
+                        <a href="RandomTimer.html" title="A utility class for use when implementing a RaftClock.">RandomTimer</a>
+                      </li><li class="current-entities indented3">
+                        <span class="separator"></span>
                         <a class="trait" href="" title=""></a>
                         <a href="" title="">TimerCallback</a>
                       </li><li class="current-entities indented3">
@@ -140,16 +144,14 @@
           <div id="content">
             <body class="trait type">
       <div id="definition">
-        <a href="TimerCallback$.html" title="See companion object"><div class="big-circle trait-companion-object">t</div></a>
+        <div class="big-circle trait">t</div>
         <p id="owner"><a href="../../index.html" class="extype" name="riff">riff</a>.<a href="../index.html" class="extype" name="riff.raft">raft</a>.<a href="index.html" class="extype" name="riff.raft.timer">timer</a></p>
-        <h1><a href="TimerCallback$.html" title="See companion object">TimerCallback</a><span class="permalink">
+        <h1>TimerCallback<span class="permalink">
       <a href="../../../riff/raft/timer/TimerCallback.html" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span></h1>
-        <h3><span class="morelinks"><div>
-            Companion <a href="TimerCallback$.html" title="See companion object">object TimerCallback</a>
-          </div></span></h3>
+        <h3><span class="morelinks"></span></h3>
       </div>
 
       <h4 id="signature" class="signature">
@@ -158,18 +160,22 @@
         <span class="kind">trait</span>
       </span>
       <span class="symbol">
-        <span class="name">TimerCallback</span><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+        <span class="name">TimerCallback</span><span class="tparams">[<span name="Result">Result</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
       </h4>
 
       
-          <div id="comment" class="fullcommenttop"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="tparam">A</dt><dd class="cmt"><p>the raft node type. A raft node and a timer go hand-in glove, but we'd have a chicken/egg problem if we
-          built the timer into the node</p></dd></dl><div class="toggleContainer block">
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"></div><div class="toggleContainer block">
           <span class="toggle">
             Linear Supertypes
           </span>
           <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
-        </div></div>
+        </div><div class="toggleContainer block">
+            <span class="toggle">
+              Known Subclasses
+            </span>
+            <div class="subClasses hiddenContent"><a href="../node/RaftNode.html" class="extype" name="riff.raft.node.RaftNode">RaftNode</a></div>
+          </div></div>
         
 
       <div id="mbrsel">
@@ -219,9 +225,9 @@
         <div class="values members">
               <h3>Abstract Value Members</h3>
               <ol><li name="riff.raft.timer.TimerCallback#onReceiveHeartbeatTimeout" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="onReceiveHeartbeatTimeout(node:A):Unit"></a><a id="onReceiveHeartbeatTimeout(A):Unit"></a>
+      <a id="onReceiveHeartbeatTimeout():Result"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/timer/TimerCallback.html#onReceiveHeartbeatTimeout(node:A):Unit" title="Permalink">
+      <a href="../../../riff/raft/timer/TimerCallback.html#onReceiveHeartbeatTimeout():Result" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -230,14 +236,14 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">onReceiveHeartbeatTimeout</span><span class="params">(<span name="node">node: <span class="extype" name="riff.raft.timer.TimerCallback.A">A</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+        <span class="name">onReceiveHeartbeatTimeout</span><span class="params">()</span><span class="result">: <span class="extype" name="riff.raft.timer.TimerCallback.Result">Result</span></span>
       </span>
       
       
     </li><li name="riff.raft.timer.TimerCallback#onSendHeartbeatTimeout" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="onSendHeartbeatTimeout(node:A):Unit"></a><a id="onSendHeartbeatTimeout(A):Unit"></a>
+      <a id="onSendHeartbeatTimeout():Result"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/timer/TimerCallback.html#onSendHeartbeatTimeout(node:A):Unit" title="Permalink">
+      <a href="../../../riff/raft/timer/TimerCallback.html#onSendHeartbeatTimeout():Result" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -246,7 +252,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">onSendHeartbeatTimeout</span><span class="params">(<span name="node">node: <span class="extype" name="riff.raft.timer.TimerCallback.A">A</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+        <span class="name">onSendHeartbeatTimeout</span><span class="params">()</span><span class="result">: <span class="extype" name="riff.raft.timer.TimerCallback.Result">Result</span></span>
       </span>
       
       

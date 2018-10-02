@@ -118,15 +118,19 @@
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../index.html" class="extype" name="riff.raft">raft</a></dd></dl></div>
     </li><li class="current-entities indented3">
-                        <a class="object" href="DefaultTimer$.html" title=""></a>
-                        <a class="class" href="DefaultTimer.html" title=""></a>
-                        <a href="DefaultTimer.html" title="">DefaultTimer</a>
+                        <a class="object" href="DefaultClock$.html" title=""></a>
+                        <a class="class" href="DefaultClock.html" title=""></a>
+                        <a href="DefaultClock.html" title="">DefaultClock</a>
                       </li><li class="current-entities indented3">
-                        <a class="object" href="RaftTimer$.html" title=""></a>
-                        <a class="trait" href="RaftTimer.html" title="Represents the functions required to control a member node's election and heartbeat timeouts."></a>
-                        <a href="RaftTimer.html" title="Represents the functions required to control a member node's election and heartbeat timeouts.">RaftTimer</a>
+                        <a class="object" href="RaftClock$.html" title=""></a>
+                        <a class="trait" href="RaftClock.html" title="Represents the functions required to control a member node's election and heartbeat timeouts."></a>
+                        <a href="RaftClock.html" title="Represents the functions required to control a member node's election and heartbeat timeouts.">RaftClock</a>
                       </li><li class="current-entities indented3">
-                        <a class="object" href="TimerCallback$.html" title=""></a>
+                        <span class="separator"></span>
+                        <a class="class" href="RandomTimer.html" title="A utility class for use when implementing a RaftClock."></a>
+                        <a href="RandomTimer.html" title="A utility class for use when implementing a RaftClock.">RandomTimer</a>
+                      </li><li class="current-entities indented3">
+                        <span class="separator"></span>
                         <a class="trait" href="TimerCallback.html" title=""></a>
                         <a href="TimerCallback.html" title="">TimerCallback</a>
                       </li><li class="current-entities indented3">
@@ -156,7 +160,7 @@
         <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <span class="name">Timers</span><span class="tparams">[<span name="NodeKey">NodeKey</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+        <span class="name">Timers</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
       </h4>
 
@@ -212,9 +216,9 @@
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
               <ol><li name="riff.raft.timer.Timers#&lt;init&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="&lt;init&gt;()(implicittimer:riff.raft.timer.RaftTimer[NodeKey]):riff.raft.timer.Timers[NodeKey]"></a><a id="&lt;init&gt;:Timers[NodeKey]"></a>
+      <a id="&lt;init&gt;(clock:riff.raft.timer.RaftClock):riff.raft.timer.Timers"></a><a id="&lt;init&gt;:Timers"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/timer/Timers.html#&lt;init&gt;()(implicittimer:riff.raft.timer.RaftTimer[NodeKey]):riff.raft.timer.Timers[NodeKey]" title="Permalink">
+      <a href="../../../riff/raft/timer/Timers.html#&lt;init&gt;(clock:riff.raft.timer.RaftClock):riff.raft.timer.Timers" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -223,7 +227,7 @@
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">Timers</span><span class="params">()</span><span class="params">(<span class="implicit">implicit </span><span name="timer">timer: <a href="RaftTimer.html" class="extype" name="riff.raft.timer.RaftTimer">RaftTimer</a>[<span class="extype" name="riff.raft.timer.Timers.NodeKey">NodeKey</span>]</span>)</span>
+        <span class="name">Timers</span><span class="params">(<span name="clock">clock: <a href="RaftClock.html" class="extype" name="riff.raft.timer.RaftClock">RaftClock</a></span>)</span>
       </span>
       
       
@@ -232,10 +236,10 @@
 
         <div id="types" class="types members">
               <h3>Type Members</h3>
-              <ol><li name="riff.raft.timer.Timers.cancelableMap" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="cancelableMapextendsAnyRef"></a><a id="cancelableMap:cancelableMap"></a>
+              <ol><li name="riff.raft.timer.Timers.CancelableMap" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="CancelableMapextendsAnyRef"></a><a id="CancelableMap:CancelableMap"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/timer/Timers.html#cancelableMapextendsAnyRef" title="Permalink">
+      <a href="../../../riff/raft/timer/Timers.html#CancelableMapextendsAnyRef" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -244,7 +248,7 @@
         <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <a title="" href="Timers$cancelableMap.html"><span class="name">cancelableMap</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+        <a title="" href="Timers$CancelableMap.html"><span class="name">CancelableMap</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
       
       
@@ -320,6 +324,22 @@
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="riff.raft.timer.Timers#clock" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="clock:riff.raft.timer.RaftClock"></a><a id="clock:RaftClock"></a>
+      <span class="permalink">
+      <a href="../../../riff/raft/timer/Timers.html#clock:riff.raft.timer.RaftClock" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">clock</span><span class="result">: <a href="RaftClock.html" class="extype" name="riff.raft.timer.RaftClock">RaftClock</a></span>
+      </span>
+      
+      
     </li><li name="scala.AnyRef#clone" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="clone():Object"></a><a id="clone():AnyRef"></a>
       <span class="permalink">
@@ -522,22 +542,6 @@
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="riff.raft.timer.Timers#timer" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="timer:riff.raft.timer.RaftTimer[NodeKey]"></a><a id="timer:RaftTimer[NodeKey]"></a>
-      <span class="permalink">
-      <a href="../../../riff/raft/timer/Timers.html#timer:riff.raft.timer.RaftTimer[NodeKey]" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier">implicit </span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">timer</span><span class="result">: <a href="RaftTimer.html" class="extype" name="riff.raft.timer.RaftTimer">RaftTimer</a>[<span class="extype" name="riff.raft.timer.Timers.NodeKey">NodeKey</span>]</span>
-      </span>
-      
-      
     </li><li name="scala.AnyRef#toString" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="toString():String"></a>
       <span class="permalink">
@@ -634,7 +638,7 @@
         <span class="kind">object</span>
       </span>
       <span class="symbol">
-        <a title="" href="Timers$receiveHeartbeat$.html"><span class="name">receiveHeartbeat</span></a><span class="result"> extends <a href="Timers$cancelableMap.html" class="extype" name="riff.raft.timer.Timers.cancelableMap">cancelableMap</a></span>
+        <a title="" href="Timers$receiveHeartbeat$.html"><span class="name">receiveHeartbeat</span></a><span class="result"> extends <a href="Timers$CancelableMap.html" class="extype" name="riff.raft.timer.Timers.CancelableMap">CancelableMap</a></span>
       </span>
       
       
@@ -650,7 +654,7 @@
         <span class="kind">object</span>
       </span>
       <span class="symbol">
-        <a title="" href="Timers$sendHeartbeat$.html"><span class="name">sendHeartbeat</span></a><span class="result"> extends <a href="Timers$cancelableMap.html" class="extype" name="riff.raft.timer.Timers.cancelableMap">cancelableMap</a></span>
+        <a title="" href="Timers$sendHeartbeat$.html"><span class="name">sendHeartbeat</span></a><span class="result"> extends <a href="Timers$CancelableMap.html" class="extype" name="riff.raft.timer.Timers.CancelableMap">CancelableMap</a></span>
       </span>
       
       

@@ -222,7 +222,7 @@
         <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <span class="name">RaftNode</span><span class="tparams">[<span name="NodeKey">NodeKey</span>, <span name="A">A</span>]</span><span class="result"> extends <a href="RaftMessageHandler.html" class="extype" name="riff.raft.node.RaftMessageHandler">RaftMessageHandler</a>[<span class="extype" name="riff.raft.node.RaftNode.NodeKey">NodeKey</span>, <span class="extype" name="riff.raft.node.RaftNode.A">A</span>]</span>
+        <span class="name">RaftNode</span><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends <a href="RaftMessageHandler.html" class="extype" name="riff.raft.node.RaftMessageHandler">RaftMessageHandler</a>[<span class="extype" name="riff.raft.node.RaftNode.A">A</span>] with <a href="../timer/TimerCallback.html" class="extype" name="riff.raft.timer.TimerCallback">TimerCallback</a>[<a href="RaftNodeResult.html" class="extype" name="riff.raft.node.RaftNodeResult">RaftNodeResult</a>[<span class="extype" name="riff.raft.node.RaftNode.A">A</span>]]</span>
       </span>
       </h4>
 
@@ -230,12 +230,11 @@
           <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>The place where the different pieces which represent a Raft Node come together -- the glue code.</p><p>I've looked at this a few different ways, but ultimately found this abstraction here to be the most readable,
 and follows most closely what's laid out in the raft spec.</p><p>It's not too generic/abstracted, but quite openly just orchestrates the pieces/interactions of the inputs
 into a raft node.
-</p></div><dl class="paramcmts block"><dt class="tparam">NodeKey</dt><dd class="cmt"><p>the underlying node peer type, which may just be a String identifier, or a websocket, actor, etc.
-                so long as it has a meaningful hashCode/equals</p></dd><dt class="tparam">A</dt><dd class="cmt"><p>the log entry type</p></dd></dl><div class="toggleContainer block">
+</p></div><dl class="paramcmts block"><dt class="tparam">A</dt><dd class="cmt"><p>the log entry type</p></dd></dl><dl class="attributes block"> <dt>Self Type</dt><dd><a href="" class="extype" name="riff.raft.node.RaftNode">RaftNode</a>[<span class="extype" name="riff.raft.node.RaftNode.A">A</span>]</dd></dl><div class="toggleContainer block">
           <span class="toggle">
             Linear Supertypes
           </span>
-          <div class="superTypes hiddenContent"><a href="RaftMessageHandler.html" class="extype" name="riff.raft.node.RaftMessageHandler">RaftMessageHandler</a>[<span class="extype" name="riff.raft.node.RaftNode.NodeKey">NodeKey</span>, <span class="extype" name="riff.raft.node.RaftNode.A">A</span>], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><a href="../timer/TimerCallback.html" class="extype" name="riff.raft.timer.TimerCallback">TimerCallback</a>[<a href="RaftNodeResult.html" class="extype" name="riff.raft.node.RaftNodeResult">RaftNodeResult</a>[<span class="extype" name="riff.raft.node.RaftNode.A">A</span>]], <a href="RaftMessageHandler.html" class="extype" name="riff.raft.node.RaftMessageHandler">RaftMessageHandler</a>[<span class="extype" name="riff.raft.node.RaftNode.A">A</span>], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
         
 
@@ -261,7 +260,7 @@ into a raft node.
                   <span class="filtertype">Inherited<br />
                   </span>
                   <ol id="linearization">
-                    <li class="in" name="riff.raft.node.RaftNode"><span>RaftNode</span></li><li class="in" name="riff.raft.node.RaftMessageHandler"><span>RaftMessageHandler</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                    <li class="in" name="riff.raft.node.RaftNode"><span>RaftNode</span></li><li class="in" name="riff.raft.timer.TimerCallback"><span>TimerCallback</span></li><li class="in" name="riff.raft.node.RaftMessageHandler"><span>RaftMessageHandler</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                   </ol>
                 </div><div class="ancestors">
               <span class="filtertype"></span>
@@ -282,9 +281,9 @@ into a raft node.
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
               <ol><li name="riff.raft.node.RaftNode#&lt;init&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="&lt;init&gt;(persistentState:riff.raft.node.PersistentState[NodeKey],log:riff.raft.log.RaftLog[A],timers:riff.raft.timer.Timers[NodeKey],cluster:riff.raft.node.RaftCluster[NodeKey],initialState:riff.raft.node.NodeState[NodeKey],maxAppendSize:Int):riff.raft.node.RaftNode[NodeKey,A]"></a><a id="&lt;init&gt;:RaftNode[NodeKey,A]"></a>
+      <a id="&lt;init&gt;(persistentState:riff.raft.node.PersistentState,log:riff.raft.log.RaftLog[A],timers:riff.raft.timer.Timers,cluster:riff.raft.node.RaftCluster,initialState:riff.raft.node.NodeState,maxAppendSize:Int,initialTimerCallback:riff.raft.timer.TimerCallback[_],roleCallback:riff.raft.RoleCallback):riff.raft.node.RaftNode[A]"></a><a id="&lt;init&gt;:RaftNode[A]"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/node/RaftNode.html#&lt;init&gt;(persistentState:riff.raft.node.PersistentState[NodeKey],log:riff.raft.log.RaftLog[A],timers:riff.raft.timer.Timers[NodeKey],cluster:riff.raft.node.RaftCluster[NodeKey],initialState:riff.raft.node.NodeState[NodeKey],maxAppendSize:Int):riff.raft.node.RaftNode[NodeKey,A]" title="Permalink">
+      <a href="../../../riff/raft/node/RaftNode.html#&lt;init&gt;(persistentState:riff.raft.node.PersistentState,log:riff.raft.log.RaftLog[A],timers:riff.raft.timer.Timers,cluster:riff.raft.node.RaftCluster,initialState:riff.raft.node.NodeState,maxAppendSize:Int,initialTimerCallback:riff.raft.timer.TimerCallback[_],roleCallback:riff.raft.RoleCallback):riff.raft.node.RaftNode[A]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -293,19 +292,21 @@ into a raft node.
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">RaftNode</span><span class="params">(<span name="persistentState">persistentState: <a href="PersistentState.html" class="extype" name="riff.raft.node.PersistentState">PersistentState</a>[<span class="extype" name="riff.raft.node.RaftNode.NodeKey">NodeKey</span>]</span>, <span name="log">log: <a href="../log/RaftLog.html" class="extype" name="riff.raft.log.RaftLog">RaftLog</a>[<span class="extype" name="riff.raft.node.RaftNode.A">A</span>]</span>, <span name="timers">timers: <a href="../timer/Timers.html" class="extype" name="riff.raft.timer.Timers">Timers</a>[<span class="extype" name="riff.raft.node.RaftNode.NodeKey">NodeKey</span>]</span>, <span name="cluster">cluster: <a href="RaftCluster.html" class="extype" name="riff.raft.node.RaftCluster">RaftCluster</a>[<span class="extype" name="riff.raft.node.RaftNode.NodeKey">NodeKey</span>]</span>, <span name="initialState">initialState: <a href="NodeState.html" class="extype" name="riff.raft.node.NodeState">NodeState</a>[<span class="extype" name="riff.raft.node.RaftNode.NodeKey">NodeKey</span>]</span>, <span name="maxAppendSize">maxAppendSize: <span class="extype" name="scala.Int">Int</span></span>)</span>
+        <span class="name">RaftNode</span><span class="params">(<span name="persistentState">persistentState: <a href="PersistentState.html" class="extype" name="riff.raft.node.PersistentState">PersistentState</a></span>, <span name="log">log: <a href="../log/RaftLog.html" class="extype" name="riff.raft.log.RaftLog">RaftLog</a>[<span class="extype" name="riff.raft.node.RaftNode.A">A</span>]</span>, <span name="timers">timers: <a href="../timer/Timers.html" class="extype" name="riff.raft.timer.Timers">Timers</a></span>, <span name="cluster">cluster: <a href="RaftCluster.html" class="extype" name="riff.raft.node.RaftCluster">RaftCluster</a></span>, <span name="initialState">initialState: <a href="NodeState.html" class="extype" name="riff.raft.node.NodeState">NodeState</a></span>, <span name="maxAppendSize">maxAppendSize: <span class="extype" name="scala.Int">Int</span></span>, <span name="initialTimerCallback">initialTimerCallback: <a href="../timer/TimerCallback.html" class="extype" name="riff.raft.timer.TimerCallback">TimerCallback</a>[_] = <span class="symbol">null</span></span>, <span name="roleCallback">roleCallback: <a href="../RoleCallback.html" class="extype" name="riff.raft.RoleCallback">RoleCallback</a> = <span class="symbol"><span class="name"><a href="../../index.html">RoleCallback.NoOp</a></span></span></span>)</span>
       </span>
       
-      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">persistentState</dt><dd class="cmt"><p>the state used to track the currentTerm and vote state</p></dd><dt class="param">log</dt><dd class="cmt"><p>the RaftLog which stores the log entries</p></dd><dt class="param">timers</dt><dd class="cmt"><p>the timing apparatus for controlling timeouts</p></dd><dt class="param">cluster</dt><dd class="cmt"><p>this node's view of the cluster</p></dd><dt class="param">initialState</dt><dd class="cmt"><p>the initial role</p></dd><dt class="param">maxAppendSize</dt><dd class="cmt"><p>the maximum number of entries to send to a follower at a time when catching up the log</p></dd></dl></div>
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">persistentState</dt><dd class="cmt"><p>the state used to track the currentTerm and vote state</p></dd><dt class="param">log</dt><dd class="cmt"><p>the RaftLog which stores the log entries</p></dd><dt class="param">cluster</dt><dd class="cmt"><p>this node's view of the cluster</p></dd><dt class="param">initialState</dt><dd class="cmt"><p>the initial role</p></dd><dt class="param">maxAppendSize</dt><dd class="cmt"><p>the maximum number of entries to send to a follower at a time when catching up the log</p></dd><dt class="param">initialTimerCallback</dt><dd class="cmt"><p>the callback which gets passed to the raft timer. If unspecified (e.g., left null), then 'this' RaftNode
+                            will be used. In most usages, this **should** be set to an exterior callback which invokes this RaftNode
+                            and does something with the result, since the result of a timeout is meaningful, as it will be a set of <span class="extype" name="RequestVote">RequestVote</span> messages, etc</p></dd></dl></div>
     </li></ol>
             </div>
 
         <div id="types" class="types members">
               <h3>Type Members</h3>
-              <ol><li name="riff.raft.node.RaftMessageHandler.Msg" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="Msg=riff.raft.messages.RaftMessage[NodeKey,A]"></a><a id="Msg:Msg"></a>
+              <ol><li name="riff.raft.node.RaftMessageHandler.Result" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="Result=riff.raft.node.RaftNodeResult[A]"></a><a id="Result:Result"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/node/RaftNode.html#Msg=riff.raft.messages.RaftMessage[NodeKey,A]" title="Permalink">
+      <a href="../../../riff/raft/node/RaftNode.html#Result=riff.raft.node.RaftNodeResult[A]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -314,23 +315,7 @@ into a raft node.
         <span class="kind">type</span>
       </span>
       <span class="symbol">
-        <span class="name">Msg</span><span class="result alias"> = <a href="../messages/RaftMessage.html" class="extype" name="riff.raft.messages.RaftMessage">RaftMessage</a>[<span class="extype" name="riff.raft.node.RaftNode.NodeKey">NodeKey</span>, <span class="extype" name="riff.raft.node.RaftNode.A">A</span>]</span>
-      </span>
-      
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="RaftMessageHandler.html" class="extype" name="riff.raft.node.RaftMessageHandler">RaftMessageHandler</a></dd></dl></div>
-    </li><li name="riff.raft.node.RaftMessageHandler.Result" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="Result=riff.raft.node.RaftNodeResult[NodeKey,A]"></a><a id="Result:Result"></a>
-      <span class="permalink">
-      <a href="../../../riff/raft/node/RaftNode.html#Result=riff.raft.node.RaftNodeResult[NodeKey,A]" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">type</span>
-      </span>
-      <span class="symbol">
-        <span class="name">Result</span><span class="result alias"> = <a href="RaftNodeResult.html" class="extype" name="riff.raft.node.RaftNodeResult">RaftNodeResult</a>[<span class="extype" name="riff.raft.node.RaftNode.NodeKey">NodeKey</span>, <span class="extype" name="riff.raft.node.RaftNode.A">A</span>]</span>
+        <span class="name">Result</span><span class="result alias"> = <a href="RaftNodeResult.html" class="extype" name="riff.raft.node.RaftNodeResult">RaftNodeResult</a>[<span class="extype" name="riff.raft.node.RaftNode.A">A</span>]</span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="RaftMessageHandler.html" class="extype" name="riff.raft.node.RaftMessageHandler">RaftMessageHandler</a></dd></dl></div>
@@ -391,9 +376,9 @@ into a raft node.
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="riff.raft.node.RaftNode#appendIfLeader" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="appendIfLeader(data:Array[A]):Option[(riff.raft.log.LogAppendResult,riff.raft.node.AddressedRequest[NodeKey,A])]"></a><a id="appendIfLeader(Array[A]):Option[(LogAppendResult,AddressedRequest[NodeKey,A])]"></a>
+      <a id="appendIfLeader(data:Array[A]):Option[(riff.raft.log.LogAppendResult,riff.raft.node.AddressedRequest[A])]"></a><a id="appendIfLeader(Array[A]):Option[(LogAppendResult,AddressedRequest[A])]"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/node/RaftNode.html#appendIfLeader(data:Array[A]):Option[(riff.raft.log.LogAppendResult,riff.raft.node.AddressedRequest[NodeKey,A])]" title="Permalink">
+      <a href="../../../riff/raft/node/RaftNode.html#appendIfLeader(data:Array[A]):Option[(riff.raft.log.LogAppendResult,riff.raft.node.AddressedRequest[A])]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -402,7 +387,7 @@ into a raft node.
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">appendIfLeader</span><span class="params">(<span name="data">data: <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="riff.raft.node.RaftNode.A">A</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[(<a href="../log/LogAppendResult.html" class="extype" name="riff.raft.log.LogAppendResult">LogAppendResult</a>, <a href="AddressedRequest.html" class="extype" name="riff.raft.node.AddressedRequest">AddressedRequest</a>[<span class="extype" name="riff.raft.node.RaftNode.NodeKey">NodeKey</span>, <span class="extype" name="riff.raft.node.RaftNode.A">A</span>])]</span>
+        <span class="name">appendIfLeader</span><span class="params">(<span name="data">data: <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="riff.raft.node.RaftNode.A">A</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[(<a href="../log/LogAppendResult.html" class="extype" name="riff.raft.log.LogAppendResult">LogAppendResult</a>, <a href="AddressedRequest.html" class="extype" name="riff.raft.node.AddressedRequest">AddressedRequest</a>[<span class="extype" name="riff.raft.node.RaftNode.A">A</span>])]</span>
       </span>
       
       <p class="shortcomment cmt">Exposes this as a means for generating an AddressedRequest of messages together with the append result
@@ -426,6 +411,38 @@ from the leader's log
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="riff.raft.node.RaftNode#cancelReceiveHeartbeat" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="cancelReceiveHeartbeat():Unit"></a>
+      <span class="permalink">
+      <a href="../../../riff/raft/node/RaftNode.html#cancelReceiveHeartbeat():Unit" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">cancelReceiveHeartbeat</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      
+      
+    </li><li name="riff.raft.node.RaftNode#cancelSendHeartbeat" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="cancelSendHeartbeat():Unit"></a>
+      <span class="permalink">
+      <a href="../../../riff/raft/node/RaftNode.html#cancelSendHeartbeat():Unit" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">cancelSendHeartbeat</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      
+      
     </li><li name="scala.AnyRef#clone" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="clone():Object"></a><a id="clone():AnyRef"></a>
       <span class="permalink">
@@ -451,9 +468,9 @@ from the leader's log
               
         </dd></dl></div>
     </li><li name="riff.raft.node.RaftNode#cluster" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="cluster:riff.raft.node.RaftCluster[NodeKey]"></a><a id="cluster:RaftCluster[NodeKey]"></a>
+      <a id="cluster:riff.raft.node.RaftCluster"></a><a id="cluster:RaftCluster"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/node/RaftNode.html#cluster:riff.raft.node.RaftCluster[NodeKey]" title="Permalink">
+      <a href="../../../riff/raft/node/RaftNode.html#cluster:riff.raft.node.RaftCluster" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -462,14 +479,14 @@ from the leader's log
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">cluster</span><span class="result">: <a href="RaftCluster.html" class="extype" name="riff.raft.node.RaftCluster">RaftCluster</a>[<span class="extype" name="riff.raft.node.RaftNode.NodeKey">NodeKey</span>]</span>
+        <span class="name">cluster</span><span class="result">: <a href="RaftCluster.html" class="extype" name="riff.raft.node.RaftCluster">RaftCluster</a></span>
       </span>
       
       
     </li><li name="riff.raft.node.RaftNode#createAppend" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="createAppend(data:Array[A]):riff.raft.node.RaftNodeResult[NodeKey,A]"></a><a id="createAppend(Array[A]):RaftNodeResult[NodeKey,A]"></a>
+      <a id="createAppend(data:Array[A]):riff.raft.node.RaftNodeResult[A]"></a><a id="createAppend(Array[A]):RaftNodeResult[A]"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/node/RaftNode.html#createAppend(data:Array[A]):riff.raft.node.RaftNodeResult[NodeKey,A]" title="Permalink">
+      <a href="../../../riff/raft/node/RaftNode.html#createAppend(data:Array[A]):riff.raft.node.RaftNodeResult[A]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -478,7 +495,7 @@ from the leader's log
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">createAppend</span><span class="params">(<span name="data">data: <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="riff.raft.node.RaftNode.A">A</span>]</span>)</span><span class="result">: <a href="RaftNodeResult.html" class="extype" name="riff.raft.node.RaftNodeResult">RaftNodeResult</a>[<span class="extype" name="riff.raft.node.RaftNode.NodeKey">NodeKey</span>, <span class="extype" name="riff.raft.node.RaftNode.A">A</span>]</span>
+        <span class="name">createAppend</span><span class="params">(<span name="data">data: <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="riff.raft.node.RaftNode.A">A</span>]</span>)</span><span class="result">: <a href="RaftNodeResult.html" class="extype" name="riff.raft.node.RaftNodeResult">RaftNodeResult</a>[<span class="extype" name="riff.raft.node.RaftNode.A">A</span>]</span>
       </span>
       
       <p class="shortcomment cmt">This function may be used as a convenience to generate append requests for a
@@ -492,14 +509,30 @@ from the leader's log
       </a>
     </span>
       <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">createAppend</span><span class="params">(<span name="data">data: <span class="extype" name="riff.raft.node.RaftNode.A">A</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="tag">tag: <span class="extype" name="scala.reflect.ClassTag">ClassTag</span>[<span class="extype" name="riff.raft.node.RaftNode.A">A</span>]</span>)</span><span class="result">: <a href="#Result=riff.raft.node.RaftNodeResult[A]" class="extmbr" name="riff.raft.node.RaftNode.Result">Result</a></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="RaftMessageHandler.html" class="extype" name="riff.raft.node.RaftMessageHandler">RaftMessageHandler</a></dd></dl></div>
+    </li><li name="riff.raft.node.RaftNode#currentTerm" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="currentTerm():riff.raft.Term"></a><a id="currentTerm():Term"></a>
+      <span class="permalink">
+      <a href="../../../riff/raft/node/RaftNode.html#currentTerm():riff.raft.Term" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
         <span class="modifier"></span>
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">createAppend</span><span class="params">(<span name="data">data: <span class="extype" name="riff.raft.node.RaftNode.A">A</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="tag">tag: <span class="extype" name="scala.reflect.ClassTag">ClassTag</span>[<span class="extype" name="riff.raft.node.RaftNode.A">A</span>]</span>)</span><span class="result">: <a href="#Result=riff.raft.node.RaftNodeResult[NodeKey,A]" class="extmbr" name="riff.raft.node.RaftNode.Result">Result</a></span>
+        <span class="name">currentTerm</span><span class="params">()</span><span class="result">: <a href="../index.html#Term=Int" class="extmbr" name="riff.raft.Term">Term</a></span>
       </span>
       
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="RaftMessageHandler.html" class="extype" name="riff.raft.node.RaftMessageHandler">RaftMessageHandler</a></dd></dl></div>
+      
     </li><li name="scala.AnyRef#eq" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a><a id="eq(AnyRef):Boolean"></a>
       <span class="permalink">
@@ -573,6 +606,24 @@ from the leader's log
                 <span class="name">@native</span><span class="args">()</span>
               
         </dd></dl></div>
+    </li><li name="riff.raft.node.RaftNode#handleMessage" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="handleMessage(from:riff.raft.NodeId,msg:riff.raft.messages.RequestOrResponse[A]):RaftNode.this.Result"></a><a id="handleMessage(NodeId,RequestOrResponse[A]):Result"></a>
+      <span class="permalink">
+      <a href="../../../riff/raft/node/RaftNode.html#handleMessage(from:riff.raft.NodeId,msg:riff.raft.messages.RequestOrResponse[A]):RaftNode.this.Result" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">handleMessage</span><span class="params">(<span name="from">from: <a href="../index.html#NodeId=String" class="extmbr" name="riff.raft.NodeId">NodeId</a></span>, <span name="msg">msg: <a href="../messages/RequestOrResponse.html" class="extype" name="riff.raft.messages.RequestOrResponse">RequestOrResponse</a>[<span class="extype" name="riff.raft.node.RaftNode.A">A</span>]</span>)</span><span class="result">: <a href="#Result=riff.raft.node.RaftNodeResult[A]" class="extmbr" name="riff.raft.node.RaftNode.Result">Result</a></span>
+      </span>
+      
+      <p class="shortcomment cmt">Applies requests and responses coming to the node state and replies w/ any resulting messages
+</p><div class="fullcomment"><div class="comment cmt"><p>Applies requests and responses coming to the node state and replies w/ any resulting messages
+</p></div><dl class="paramcmts block"><dt class="param">from</dt><dd class="cmt"><p>the node from which this message is received</p></dd><dt class="param">msg</dt><dd class="cmt"><p>the Raft message</p></dd><dt>returns</dt><dd class="cmt"><p>and resulting messages (requests or responses)</p></dd></dl></div>
     </li><li name="scala.AnyRef#hashCode" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="hashCode():Int"></a>
       <span class="permalink">
@@ -656,10 +707,10 @@ from the leader's log
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="riff.raft.node.RaftNode#nodeKey" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="nodeKey:NodeKey"></a>
+    </li><li name="riff.raft.node.RaftNode#nodeId" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="nodeId:riff.raft.NodeId"></a><a id="nodeId:NodeId"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/node/RaftNode.html#nodeKey:NodeKey" title="Permalink">
+      <a href="../../../riff/raft/node/RaftNode.html#nodeId:riff.raft.NodeId" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -668,7 +719,7 @@ from the leader's log
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">nodeKey</span><span class="result">: <span class="extype" name="riff.raft.node.RaftNode.NodeKey">NodeKey</span></span>
+        <span class="name">nodeId</span><span class="result">: <a href="../index.html#NodeId=String" class="extmbr" name="riff.raft.NodeId">NodeId</a></span>
       </span>
       
       
@@ -711,9 +762,9 @@ from the leader's log
               
         </dd></dl></div>
     </li><li name="riff.raft.node.RaftNode#onAppendEntries" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="onAppendEntries(from:NodeKey,append:riff.raft.messages.AppendEntries[A]):riff.raft.messages.AppendEntriesResponse"></a><a id="onAppendEntries(NodeKey,AppendEntries[A]):AppendEntriesResponse"></a>
+      <a id="onAppendEntries(from:riff.raft.NodeId,append:riff.raft.messages.AppendEntries[A]):riff.raft.messages.AppendEntriesResponse"></a><a id="onAppendEntries(NodeId,AppendEntries[A]):AppendEntriesResponse"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/node/RaftNode.html#onAppendEntries(from:NodeKey,append:riff.raft.messages.AppendEntries[A]):riff.raft.messages.AppendEntriesResponse" title="Permalink">
+      <a href="../../../riff/raft/node/RaftNode.html#onAppendEntries(from:riff.raft.NodeId,append:riff.raft.messages.AppendEntries[A]):riff.raft.messages.AppendEntriesResponse" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -722,14 +773,14 @@ from the leader's log
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">onAppendEntries</span><span class="params">(<span name="from">from: <span class="extype" name="riff.raft.node.RaftNode.NodeKey">NodeKey</span></span>, <span name="append">append: <a href="../messages/AppendEntries.html" class="extype" name="riff.raft.messages.AppendEntries">AppendEntries</a>[<span class="extype" name="riff.raft.node.RaftNode.A">A</span>]</span>)</span><span class="result">: <a href="../messages/AppendEntriesResponse.html" class="extype" name="riff.raft.messages.AppendEntriesResponse">AppendEntriesResponse</a></span>
+        <span class="name">onAppendEntries</span><span class="params">(<span name="from">from: <a href="../index.html#NodeId=String" class="extmbr" name="riff.raft.NodeId">NodeId</a></span>, <span name="append">append: <a href="../messages/AppendEntries.html" class="extype" name="riff.raft.messages.AppendEntries">AppendEntries</a>[<span class="extype" name="riff.raft.node.RaftNode.A">A</span>]</span>)</span><span class="result">: <a href="../messages/AppendEntriesResponse.html" class="extype" name="riff.raft.messages.AppendEntriesResponse">AppendEntriesResponse</a></span>
       </span>
       
       
     </li><li name="riff.raft.node.RaftNode#onAppendEntriesResponse" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="onAppendEntriesResponse(from:NodeKey,appendResponse:riff.raft.messages.AppendEntriesResponse):(Seq[riff.raft.log.LogCoords],RaftNode.this.Result)"></a><a id="onAppendEntriesResponse(NodeKey,AppendEntriesResponse):(Seq[LogCoords],Result)"></a>
+      <a id="onAppendEntriesResponse(from:riff.raft.NodeId,appendResponse:riff.raft.messages.AppendEntriesResponse):(Seq[riff.raft.log.LogCoords],RaftNode.this.Result)"></a><a id="onAppendEntriesResponse(NodeId,AppendEntriesResponse):(Seq[LogCoords],Result)"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/node/RaftNode.html#onAppendEntriesResponse(from:NodeKey,appendResponse:riff.raft.messages.AppendEntriesResponse):(Seq[riff.raft.log.LogCoords],RaftNode.this.Result)" title="Permalink">
+      <a href="../../../riff/raft/node/RaftNode.html#onAppendEntriesResponse(from:riff.raft.NodeId,appendResponse:riff.raft.messages.AppendEntriesResponse):(Seq[riff.raft.log.LogCoords],RaftNode.this.Result)" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -738,16 +789,16 @@ from the leader's log
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">onAppendEntriesResponse</span><span class="params">(<span name="from">from: <span class="extype" name="riff.raft.node.RaftNode.NodeKey">NodeKey</span></span>, <span name="appendResponse">appendResponse: <a href="../messages/AppendEntriesResponse.html" class="extype" name="riff.raft.messages.AppendEntriesResponse">AppendEntriesResponse</a></span>)</span><span class="result">: (<span class="extype" name="scala.Seq">Seq</span>[<a href="../log/LogCoords.html" class="extype" name="riff.raft.log.LogCoords">LogCoords</a>], <a href="#Result=riff.raft.node.RaftNodeResult[NodeKey,A]" class="extmbr" name="riff.raft.node.RaftNode.Result">Result</a>)</span>
+        <span class="name">onAppendEntriesResponse</span><span class="params">(<span name="from">from: <a href="../index.html#NodeId=String" class="extmbr" name="riff.raft.NodeId">NodeId</a></span>, <span name="appendResponse">appendResponse: <a href="../messages/AppendEntriesResponse.html" class="extype" name="riff.raft.messages.AppendEntriesResponse">AppendEntriesResponse</a></span>)</span><span class="result">: (<span class="extype" name="scala.Seq">Seq</span>[<a href="../log/LogCoords.html" class="extype" name="riff.raft.log.LogCoords">LogCoords</a>], <a href="#Result=riff.raft.node.RaftNodeResult[A]" class="extmbr" name="riff.raft.node.RaftNode.Result">Result</a>)</span>
       </span>
       
       <p class="shortcomment cmt">We're either the leader and should update our peer view/commit log, or aren't and should ignore it
 </p><div class="fullcomment"><div class="comment cmt"><p>We're either the leader and should update our peer view/commit log, or aren't and should ignore it
 </p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>the result</p></dd></dl></div>
     </li><li name="riff.raft.node.RaftNode#onBecomeCandidateOrLeader" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="onBecomeCandidateOrLeader():riff.raft.node.AddressedRequest[NodeKey,A]"></a><a id="onBecomeCandidateOrLeader():AddressedRequest[NodeKey,A]"></a>
+      <a id="onBecomeCandidateOrLeader():riff.raft.node.AddressedRequest[A]"></a><a id="onBecomeCandidateOrLeader():AddressedRequest[A]"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/node/RaftNode.html#onBecomeCandidateOrLeader():riff.raft.node.AddressedRequest[NodeKey,A]" title="Permalink">
+      <a href="../../../riff/raft/node/RaftNode.html#onBecomeCandidateOrLeader():riff.raft.node.AddressedRequest[A]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -756,14 +807,14 @@ from the leader's log
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">onBecomeCandidateOrLeader</span><span class="params">()</span><span class="result">: <a href="AddressedRequest.html" class="extype" name="riff.raft.node.AddressedRequest">AddressedRequest</a>[<span class="extype" name="riff.raft.node.RaftNode.NodeKey">NodeKey</span>, <span class="extype" name="riff.raft.node.RaftNode.A">A</span>]</span>
+        <span class="name">onBecomeCandidateOrLeader</span><span class="params">()</span><span class="result">: <a href="AddressedRequest.html" class="extype" name="riff.raft.node.AddressedRequest">AddressedRequest</a>[<span class="extype" name="riff.raft.node.RaftNode.A">A</span>]</span>
       </span>
       
       
     </li><li name="riff.raft.node.RaftNode#onBecomeFollower" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="onBecomeFollower(newLeader:Option[NodeKey],newTerm:riff.raft.Term):Unit"></a><a id="onBecomeFollower(Option[NodeKey],Term):Unit"></a>
+      <a id="onBecomeFollower(newLeader:Option[riff.raft.NodeId],newTerm:riff.raft.Term):Unit"></a><a id="onBecomeFollower(Option[NodeId],Term):Unit"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/node/RaftNode.html#onBecomeFollower(newLeader:Option[NodeKey],newTerm:riff.raft.Term):Unit" title="Permalink">
+      <a href="../../../riff/raft/node/RaftNode.html#onBecomeFollower(newLeader:Option[riff.raft.NodeId],newTerm:riff.raft.Term):Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -772,14 +823,14 @@ from the leader's log
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">onBecomeFollower</span><span class="params">(<span name="newLeader">newLeader: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="riff.raft.node.RaftNode.NodeKey">NodeKey</span>]</span>, <span name="newTerm">newTerm: <a href="../index.html#Term=Int" class="extmbr" name="riff.raft.Term">Term</a></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+        <span class="name">onBecomeFollower</span><span class="params">(<span name="newLeader">newLeader: <span class="extype" name="scala.Option">Option</span>[<a href="../index.html#NodeId=String" class="extmbr" name="riff.raft.NodeId">NodeId</a>]</span>, <span name="newTerm">newTerm: <a href="../index.html#Term=Int" class="extmbr" name="riff.raft.Term">Term</a></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       
       
     </li><li name="riff.raft.node.RaftNode#onBecomeLeader" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="onBecomeLeader(state:riff.raft.node.NodeState[NodeKey]):riff.raft.node.AddressedRequest[NodeKey,A]"></a><a id="onBecomeLeader(NodeState[NodeKey]):AddressedRequest[NodeKey,A]"></a>
+      <a id="onBecomeLeader():riff.raft.node.AddressedRequest[A]"></a><a id="onBecomeLeader():AddressedRequest[A]"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/node/RaftNode.html#onBecomeLeader(state:riff.raft.node.NodeState[NodeKey]):riff.raft.node.AddressedRequest[NodeKey,A]" title="Permalink">
+      <a href="../../../riff/raft/node/RaftNode.html#onBecomeLeader():riff.raft.node.AddressedRequest[A]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -788,14 +839,14 @@ from the leader's log
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">onBecomeLeader</span><span class="params">(<span name="state">state: <a href="NodeState.html" class="extype" name="riff.raft.node.NodeState">NodeState</a>[<span class="extype" name="riff.raft.node.RaftNode.NodeKey">NodeKey</span>]</span>)</span><span class="result">: <a href="AddressedRequest.html" class="extype" name="riff.raft.node.AddressedRequest">AddressedRequest</a>[<span class="extype" name="riff.raft.node.RaftNode.NodeKey">NodeKey</span>, <span class="extype" name="riff.raft.node.RaftNode.A">A</span>]</span>
+        <span class="name">onBecomeLeader</span><span class="params">()</span><span class="result">: <a href="AddressedRequest.html" class="extype" name="riff.raft.node.AddressedRequest">AddressedRequest</a>[<span class="extype" name="riff.raft.node.RaftNode.A">A</span>]</span>
       </span>
       
       
     </li><li name="riff.raft.node.RaftNode#onMessage" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="onMessage(from:NodeKey,msg:riff.raft.messages.RequestOrResponse[NodeKey,A]):RaftNode.this.Result"></a><a id="onMessage(NodeKey,RequestOrResponse[NodeKey,A]):Result"></a>
+      <a id="onMessage(input:riff.raft.messages.RaftMessage[A]):RaftNode.this.Result"></a><a id="onMessage(RaftMessage[A]):Result"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/node/RaftNode.html#onMessage(from:NodeKey,msg:riff.raft.messages.RequestOrResponse[NodeKey,A]):RaftNode.this.Result" title="Permalink">
+      <a href="../../../riff/raft/node/RaftNode.html#onMessage(input:riff.raft.messages.RaftMessage[A]):RaftNode.this.Result" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -804,13 +855,11 @@ from the leader's log
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">onMessage</span><span class="params">(<span name="from">from: <span class="extype" name="riff.raft.node.RaftNode.NodeKey">NodeKey</span></span>, <span name="msg">msg: <a href="../messages/RequestOrResponse.html" class="extype" name="riff.raft.messages.RequestOrResponse">RequestOrResponse</a>[<span class="extype" name="riff.raft.node.RaftNode.NodeKey">NodeKey</span>, <span class="extype" name="riff.raft.node.RaftNode.A">A</span>]</span>)</span><span class="result">: <a href="#Result=riff.raft.node.RaftNodeResult[NodeKey,A]" class="extmbr" name="riff.raft.node.RaftNode.Result">Result</a></span>
+        <span class="name">onMessage</span><span class="params">(<span name="input">input: <a href="../messages/RaftMessage.html" class="extype" name="riff.raft.messages.RaftMessage">RaftMessage</a>[<span class="extype" name="riff.raft.node.RaftNode.A">A</span>]</span>)</span><span class="result">: <a href="#Result=riff.raft.node.RaftNodeResult[A]" class="extmbr" name="riff.raft.node.RaftNode.Result">Result</a></span>
       </span>
       
-      <p class="shortcomment cmt">Applies requests and responses coming to the node state and replies w/ any resulting messages
-</p><div class="fullcomment"><div class="comment cmt"><p>Applies requests and responses coming to the node state and replies w/ any resulting messages
-</p></div><dl class="paramcmts block"><dt class="param">from</dt><dd class="cmt"><p>the node from which this message is received</p></dd><dt class="param">msg</dt><dd class="cmt"><p>the Raft message</p></dd><dt>returns</dt><dd class="cmt"><p>and resulting messages (requests or responses)</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="riff.raft.node.RaftNode">RaftNode</a> → <a href="RaftMessageHandler.html" class="extype" name="riff.raft.node.RaftMessageHandler">RaftMessageHandler</a></dd></dl></div>
-    </li><li name="riff.raft.node.RaftNode#onReceiveHeartbeatTimeout" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>the response</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="riff.raft.node.RaftNode">RaftNode</a> → <a href="RaftMessageHandler.html" class="extype" name="riff.raft.node.RaftMessageHandler">RaftMessageHandler</a></dd></dl></div>
+    </li><li name="riff.raft.node.RaftNode#onReceiveHeartbeatTimeout" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="onReceiveHeartbeatTimeout():RaftNode.this.Result"></a><a id="onReceiveHeartbeatTimeout():Result"></a>
       <span class="permalink">
       <a href="../../../riff/raft/node/RaftNode.html#onReceiveHeartbeatTimeout():RaftNode.this.Result" title="Permalink">
@@ -822,14 +871,14 @@ from the leader's log
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">onReceiveHeartbeatTimeout</span><span class="params">()</span><span class="result">: <a href="#Result=riff.raft.node.RaftNodeResult[NodeKey,A]" class="extmbr" name="riff.raft.node.RaftNode.Result">Result</a></span>
+        <span class="name">onReceiveHeartbeatTimeout</span><span class="params">()</span><span class="result">: <a href="#Result=riff.raft.node.RaftNodeResult[A]" class="extmbr" name="riff.raft.node.RaftNode.Result">Result</a></span>
       </span>
       
-      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="riff.raft.node.RaftNode">RaftNode</a> → <a href="../timer/TimerCallback.html" class="extype" name="riff.raft.timer.TimerCallback">TimerCallback</a></dd></dl></div>
     </li><li name="riff.raft.node.RaftNode#onRequest" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="onRequest(from:NodeKey,request:riff.raft.messages.RaftRequest[A]):riff.raft.messages.RaftResponse"></a><a id="onRequest(NodeKey,RaftRequest[A]):RaftResponse"></a>
+      <a id="onRequest(from:riff.raft.NodeId,request:riff.raft.messages.RaftRequest[A]):riff.raft.messages.RaftResponse"></a><a id="onRequest(NodeId,RaftRequest[A]):RaftResponse"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/node/RaftNode.html#onRequest(from:NodeKey,request:riff.raft.messages.RaftRequest[A]):riff.raft.messages.RaftResponse" title="Permalink">
+      <a href="../../../riff/raft/node/RaftNode.html#onRequest(from:riff.raft.NodeId,request:riff.raft.messages.RaftRequest[A]):riff.raft.messages.RaftResponse" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -838,14 +887,14 @@ from the leader's log
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">onRequest</span><span class="params">(<span name="from">from: <span class="extype" name="riff.raft.node.RaftNode.NodeKey">NodeKey</span></span>, <span name="request">request: <a href="../messages/RaftRequest.html" class="extype" name="riff.raft.messages.RaftRequest">RaftRequest</a>[<span class="extype" name="riff.raft.node.RaftNode.A">A</span>]</span>)</span><span class="result">: <a href="../messages/RaftResponse.html" class="extype" name="riff.raft.messages.RaftResponse">RaftResponse</a></span>
+        <span class="name">onRequest</span><span class="params">(<span name="from">from: <a href="../index.html#NodeId=String" class="extmbr" name="riff.raft.NodeId">NodeId</a></span>, <span name="request">request: <a href="../messages/RaftRequest.html" class="extype" name="riff.raft.messages.RaftRequest">RaftRequest</a>[<span class="extype" name="riff.raft.node.RaftNode.A">A</span>]</span>)</span><span class="result">: <a href="../messages/RaftResponse.html" class="extype" name="riff.raft.messages.RaftResponse">RaftResponse</a></span>
       </span>
       
       
     </li><li name="riff.raft.node.RaftNode#onRequestVote" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="onRequestVote(from:NodeKey,forRequest:riff.raft.messages.RequestVote):riff.raft.messages.RequestVoteResponse"></a><a id="onRequestVote(NodeKey,RequestVote):RequestVoteResponse"></a>
+      <a id="onRequestVote(from:riff.raft.NodeId,forRequest:riff.raft.messages.RequestVote):riff.raft.messages.RequestVoteResponse"></a><a id="onRequestVote(NodeId,RequestVote):RequestVoteResponse"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/node/RaftNode.html#onRequestVote(from:NodeKey,forRequest:riff.raft.messages.RequestVote):riff.raft.messages.RequestVoteResponse" title="Permalink">
+      <a href="../../../riff/raft/node/RaftNode.html#onRequestVote(from:riff.raft.NodeId,forRequest:riff.raft.messages.RequestVote):riff.raft.messages.RequestVoteResponse" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -854,7 +903,7 @@ from the leader's log
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">onRequestVote</span><span class="params">(<span name="from">from: <span class="extype" name="riff.raft.node.RaftNode.NodeKey">NodeKey</span></span>, <span name="forRequest">forRequest: <a href="../messages/RequestVote.html" class="extype" name="riff.raft.messages.RequestVote">RequestVote</a></span>)</span><span class="result">: <a href="../messages/RequestVoteResponse.html" class="extype" name="riff.raft.messages.RequestVoteResponse">RequestVoteResponse</a></span>
+        <span class="name">onRequestVote</span><span class="params">(<span name="from">from: <a href="../index.html#NodeId=String" class="extmbr" name="riff.raft.NodeId">NodeId</a></span>, <span name="forRequest">forRequest: <a href="../messages/RequestVote.html" class="extype" name="riff.raft.messages.RequestVote">RequestVote</a></span>)</span><span class="result">: <a href="../messages/RequestVoteResponse.html" class="extype" name="riff.raft.messages.RequestVoteResponse">RequestVoteResponse</a></span>
       </span>
       
       <p class="shortcomment cmt">Create a reply to the given vote request.</p><div class="fullcomment"><div class="comment cmt"><p>Create a reply to the given vote request.</p><p>NOTE: Whatever the actual node 'A' is, it is expected that, upon a successful reply,
@@ -862,9 +911,9 @@ it updates it's own term and writes down (remembers) that it voted in this term 
 as not to double-vote should this node crash.
 </p></div><dl class="paramcmts block"><dt class="param">forRequest</dt><dd class="cmt"><p>the data from the vote request</p></dd><dt>returns</dt><dd class="cmt"><p>the RequestVoteResponse</p></dd></dl></div>
     </li><li name="riff.raft.node.RaftNode#onRequestVoteResponse" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="onRequestVoteResponse(from:NodeKey,voteResponse:riff.raft.messages.RequestVoteResponse):RaftNode.this.Result"></a><a id="onRequestVoteResponse(NodeKey,RequestVoteResponse):Result"></a>
+      <a id="onRequestVoteResponse(from:riff.raft.NodeId,voteResponse:riff.raft.messages.RequestVoteResponse):RaftNode.this.Result"></a><a id="onRequestVoteResponse(NodeId,RequestVoteResponse):Result"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/node/RaftNode.html#onRequestVoteResponse(from:NodeKey,voteResponse:riff.raft.messages.RequestVoteResponse):RaftNode.this.Result" title="Permalink">
+      <a href="../../../riff/raft/node/RaftNode.html#onRequestVoteResponse(from:riff.raft.NodeId,voteResponse:riff.raft.messages.RequestVoteResponse):RaftNode.this.Result" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -873,14 +922,14 @@ as not to double-vote should this node crash.
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">onRequestVoteResponse</span><span class="params">(<span name="from">from: <span class="extype" name="riff.raft.node.RaftNode.NodeKey">NodeKey</span></span>, <span name="voteResponse">voteResponse: <a href="../messages/RequestVoteResponse.html" class="extype" name="riff.raft.messages.RequestVoteResponse">RequestVoteResponse</a></span>)</span><span class="result">: <a href="#Result=riff.raft.node.RaftNodeResult[NodeKey,A]" class="extmbr" name="riff.raft.node.RaftNode.Result">Result</a></span>
+        <span class="name">onRequestVoteResponse</span><span class="params">(<span name="from">from: <a href="../index.html#NodeId=String" class="extmbr" name="riff.raft.NodeId">NodeId</a></span>, <span name="voteResponse">voteResponse: <a href="../messages/RequestVoteResponse.html" class="extype" name="riff.raft.messages.RequestVoteResponse">RequestVoteResponse</a></span>)</span><span class="result">: <a href="#Result=riff.raft.node.RaftNodeResult[A]" class="extmbr" name="riff.raft.node.RaftNode.Result">Result</a></span>
       </span>
       
       
     </li><li name="riff.raft.node.RaftNode#onResponse" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="onResponse(from:NodeKey,reply:riff.raft.messages.RaftResponse):RaftNode.this.Result"></a><a id="onResponse(NodeKey,RaftResponse):Result"></a>
+      <a id="onResponse(from:riff.raft.NodeId,reply:riff.raft.messages.RaftResponse):RaftNode.this.Result"></a><a id="onResponse(NodeId,RaftResponse):Result"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/node/RaftNode.html#onResponse(from:NodeKey,reply:riff.raft.messages.RaftResponse):RaftNode.this.Result" title="Permalink">
+      <a href="../../../riff/raft/node/RaftNode.html#onResponse(from:riff.raft.NodeId,reply:riff.raft.messages.RaftResponse):RaftNode.this.Result" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -889,13 +938,13 @@ as not to double-vote should this node crash.
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">onResponse</span><span class="params">(<span name="from">from: <span class="extype" name="riff.raft.node.RaftNode.NodeKey">NodeKey</span></span>, <span name="reply">reply: <a href="../messages/RaftResponse.html" class="extype" name="riff.raft.messages.RaftResponse">RaftResponse</a></span>)</span><span class="result">: <a href="#Result=riff.raft.node.RaftNodeResult[NodeKey,A]" class="extmbr" name="riff.raft.node.RaftNode.Result">Result</a></span>
+        <span class="name">onResponse</span><span class="params">(<span name="from">from: <a href="../index.html#NodeId=String" class="extmbr" name="riff.raft.NodeId">NodeId</a></span>, <span name="reply">reply: <a href="../messages/RaftResponse.html" class="extype" name="riff.raft.messages.RaftResponse">RaftResponse</a></span>)</span><span class="result">: <a href="#Result=riff.raft.node.RaftNodeResult[A]" class="extmbr" name="riff.raft.node.RaftNode.Result">Result</a></span>
       </span>
       
       <p class="shortcomment cmt">Handle a response coming from 'from'
 </p><div class="fullcomment"><div class="comment cmt"><p>Handle a response coming from 'from'
 </p></div><dl class="paramcmts block"><dt class="param">from</dt><dd class="cmt"><p>the originating node</p></dd><dt class="param">reply</dt><dd class="cmt"><p>the response</p></dd><dt>returns</dt><dd class="cmt"><p>any messages resulting from having processed this response</p></dd></dl></div>
-    </li><li name="riff.raft.node.RaftNode#onSendHeartbeatTimeout" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+    </li><li name="riff.raft.node.RaftNode#onSendHeartbeatTimeout" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="onSendHeartbeatTimeout():RaftNode.this.Result"></a><a id="onSendHeartbeatTimeout():Result"></a>
       <span class="permalink">
       <a href="../../../riff/raft/node/RaftNode.html#onSendHeartbeatTimeout():RaftNode.this.Result" title="Permalink">
@@ -907,11 +956,11 @@ as not to double-vote should this node crash.
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">onSendHeartbeatTimeout</span><span class="params">()</span><span class="result">: <a href="#Result=riff.raft.node.RaftNodeResult[NodeKey,A]" class="extmbr" name="riff.raft.node.RaftNode.Result">Result</a></span>
+        <span class="name">onSendHeartbeatTimeout</span><span class="params">()</span><span class="result">: <a href="#Result=riff.raft.node.RaftNodeResult[A]" class="extmbr" name="riff.raft.node.RaftNode.Result">Result</a></span>
       </span>
       
-      
-    </li><li name="riff.raft.node.RaftNode#onTimerMessage" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="riff.raft.node.RaftNode">RaftNode</a> → <a href="../timer/TimerCallback.html" class="extype" name="riff.raft.timer.TimerCallback">TimerCallback</a></dd></dl></div>
+    </li><li name="riff.raft.node.RaftNode#onTimerMessage" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="onTimerMessage(timeout:riff.raft.messages.TimerMessage):RaftNode.this.Result"></a><a id="onTimerMessage(TimerMessage):Result"></a>
       <span class="permalink">
       <a href="../../../riff/raft/node/RaftNode.html#onTimerMessage(timeout:riff.raft.messages.TimerMessage):RaftNode.this.Result" title="Permalink">
@@ -923,14 +972,14 @@ as not to double-vote should this node crash.
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">onTimerMessage</span><span class="params">(<span name="timeout">timeout: <a href="../messages/TimerMessage.html" class="extype" name="riff.raft.messages.TimerMessage">TimerMessage</a></span>)</span><span class="result">: <a href="#Result=riff.raft.node.RaftNodeResult[NodeKey,A]" class="extmbr" name="riff.raft.node.RaftNode.Result">Result</a></span>
+        <span class="name">onTimerMessage</span><span class="params">(<span name="timeout">timeout: <a href="../messages/TimerMessage.html" class="extype" name="riff.raft.messages.TimerMessage">TimerMessage</a></span>)</span><span class="result">: <a href="#Result=riff.raft.node.RaftNodeResult[A]" class="extmbr" name="riff.raft.node.RaftNode.Result">Result</a></span>
       </span>
       
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="riff.raft.node.RaftNode">RaftNode</a> → <a href="RaftMessageHandler.html" class="extype" name="riff.raft.node.RaftMessageHandler">RaftMessageHandler</a></dd></dl></div>
+      
     </li><li name="riff.raft.node.RaftNode#persistentState" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="persistentState:riff.raft.node.PersistentState[NodeKey]"></a><a id="persistentState:PersistentState[NodeKey]"></a>
+      <a id="persistentState:riff.raft.node.PersistentState"></a><a id="persistentState:PersistentState"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/node/RaftNode.html#persistentState:riff.raft.node.PersistentState[NodeKey]" title="Permalink">
+      <a href="../../../riff/raft/node/RaftNode.html#persistentState:riff.raft.node.PersistentState" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -939,14 +988,14 @@ as not to double-vote should this node crash.
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">persistentState</span><span class="result">: <a href="PersistentState.html" class="extype" name="riff.raft.node.PersistentState">PersistentState</a>[<span class="extype" name="riff.raft.node.RaftNode.NodeKey">NodeKey</span>]</span>
+        <span class="name">persistentState</span><span class="result">: <a href="PersistentState.html" class="extype" name="riff.raft.node.PersistentState">PersistentState</a></span>
       </span>
       
       
-    </li><li name="riff.raft.node.RaftNode#state" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="state():riff.raft.node.NodeState[NodeKey]"></a><a id="state():NodeState[NodeKey]"></a>
+    </li><li name="riff.raft.node.RaftNode#resetReceiveHeartbeat" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="resetReceiveHeartbeat():RaftNode.this.timers.clock.CancelT"></a><a id="resetReceiveHeartbeat():CancelT"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/node/RaftNode.html#state():riff.raft.node.NodeState[NodeKey]" title="Permalink">
+      <a href="../../../riff/raft/node/RaftNode.html#resetReceiveHeartbeat():RaftNode.this.timers.clock.CancelT" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -955,7 +1004,39 @@ as not to double-vote should this node crash.
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">state</span><span class="params">()</span><span class="result">: <a href="NodeState.html" class="extype" name="riff.raft.node.NodeState">NodeState</a>[<span class="extype" name="riff.raft.node.RaftNode.NodeKey">NodeKey</span>]</span>
+        <span class="name">resetReceiveHeartbeat</span><span class="params">()</span><span class="result">: <a href="../timer/RaftClock.html#CancelT" class="extmbr" name="riff.raft.timer.RaftClock.CancelT">CancelT</a></span>
+      </span>
+      
+      
+    </li><li name="riff.raft.node.RaftNode#resetSendHeartbeat" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="resetSendHeartbeat():RaftNode.this.timers.clock.CancelT"></a><a id="resetSendHeartbeat():CancelT"></a>
+      <span class="permalink">
+      <a href="../../../riff/raft/node/RaftNode.html#resetSendHeartbeat():RaftNode.this.timers.clock.CancelT" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">resetSendHeartbeat</span><span class="params">()</span><span class="result">: <a href="../timer/RaftClock.html#CancelT" class="extmbr" name="riff.raft.timer.RaftClock.CancelT">CancelT</a></span>
+      </span>
+      
+      
+    </li><li name="riff.raft.node.RaftNode#state" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="state():riff.raft.node.NodeState"></a><a id="state():NodeState"></a>
+      <span class="permalink">
+      <a href="../../../riff/raft/node/RaftNode.html#state():riff.raft.node.NodeState" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">state</span><span class="params">()</span><span class="result">: <a href="NodeState.html" class="extype" name="riff.raft.node.NodeState">NodeState</a></span>
       </span>
       
       
@@ -975,26 +1056,10 @@ as not to double-vote should this node crash.
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="riff.raft.node.RaftNode#thisTerm" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="thisTerm():riff.raft.Term"></a><a id="thisTerm():Term"></a>
-      <span class="permalink">
-      <a href="../../../riff/raft/node/RaftNode.html#thisTerm():riff.raft.Term" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">thisTerm</span><span class="params">()</span><span class="result">: <a href="../index.html#Term=Int" class="extmbr" name="riff.raft.Term">Term</a></span>
-      </span>
-      
-      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd></dl></div>
     </li><li name="riff.raft.node.RaftNode#timers" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="timers:riff.raft.timer.Timers[NodeKey]"></a><a id="timers:Timers[NodeKey]"></a>
+      <a id="timers:riff.raft.timer.Timers"></a><a id="timers:Timers"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/node/RaftNode.html#timers:riff.raft.timer.Timers[NodeKey]" title="Permalink">
+      <a href="../../../riff/raft/node/RaftNode.html#timers:riff.raft.timer.Timers" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -1003,7 +1068,7 @@ as not to double-vote should this node crash.
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">timers</span><span class="result">: <a href="../timer/Timers.html" class="extype" name="riff.raft.timer.Timers">Timers</a>[<span class="extype" name="riff.raft.node.RaftNode.NodeKey">NodeKey</span>]</span>
+        <span class="name">timers</span><span class="result">: <a href="../timer/Timers.html" class="extype" name="riff.raft.timer.Timers">Timers</a></span>
       </span>
       
       
@@ -1092,9 +1157,9 @@ as not to double-vote should this node crash.
               
         </dd></dl></div>
     </li><li name="riff.raft.node.RaftNode#withCluster" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="withCluster(newCluster:riff.raft.node.RaftCluster[NodeKey]):riff.raft.node.RaftNode[NodeKey,A]"></a><a id="withCluster(RaftCluster[NodeKey]):RaftNode[NodeKey,A]"></a>
+      <a id="withCluster(newCluster:riff.raft.node.RaftCluster):riff.raft.node.RaftNode[A]"></a><a id="withCluster(RaftCluster):RaftNode[A]"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/node/RaftNode.html#withCluster(newCluster:riff.raft.node.RaftCluster[NodeKey]):riff.raft.node.RaftNode[NodeKey,A]" title="Permalink">
+      <a href="../../../riff/raft/node/RaftNode.html#withCluster(newCluster:riff.raft.node.RaftCluster):riff.raft.node.RaftNode[A]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -1103,16 +1168,16 @@ as not to double-vote should this node crash.
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">withCluster</span><span class="params">(<span name="newCluster">newCluster: <a href="RaftCluster.html" class="extype" name="riff.raft.node.RaftCluster">RaftCluster</a>[<span class="extype" name="riff.raft.node.RaftNode.NodeKey">NodeKey</span>]</span>)</span><span class="result">: <a href="" class="extype" name="riff.raft.node.RaftNode">RaftNode</a>[<span class="extype" name="riff.raft.node.RaftNode.NodeKey">NodeKey</span>, <span class="extype" name="riff.raft.node.RaftNode.A">A</span>]</span>
+        <span class="name">withCluster</span><span class="params">(<span name="newCluster">newCluster: <a href="RaftCluster.html" class="extype" name="riff.raft.node.RaftCluster">RaftCluster</a></span>)</span><span class="result">: <a href="" class="extype" name="riff.raft.node.RaftNode">RaftNode</a>[<span class="extype" name="riff.raft.node.RaftNode.A">A</span>]</span>
       </span>
       
       <p class="shortcomment cmt">a convenience builder method to create a new raft node w/ the given cluster
 </p><div class="fullcomment"><div class="comment cmt"><p>a convenience builder method to create a new raft node w/ the given cluster
 </p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>a new node state</p></dd></dl></div>
     </li><li name="riff.raft.node.RaftNode#withLog" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="withLog(newLog:riff.raft.log.RaftLog[A]):riff.raft.node.RaftNode[NodeKey,A]"></a><a id="withLog(RaftLog[A]):RaftNode[NodeKey,A]"></a>
+      <a id="withLog(newLog:riff.raft.log.RaftLog[A]):riff.raft.node.RaftNode[A]"></a><a id="withLog(RaftLog[A]):RaftNode[A]"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/node/RaftNode.html#withLog(newLog:riff.raft.log.RaftLog[A]):riff.raft.node.RaftNode[NodeKey,A]" title="Permalink">
+      <a href="../../../riff/raft/node/RaftNode.html#withLog(newLog:riff.raft.log.RaftLog[A]):riff.raft.node.RaftNode[A]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -1121,12 +1186,60 @@ as not to double-vote should this node crash.
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">withLog</span><span class="params">(<span name="newLog">newLog: <a href="../log/RaftLog.html" class="extype" name="riff.raft.log.RaftLog">RaftLog</a>[<span class="extype" name="riff.raft.node.RaftNode.A">A</span>]</span>)</span><span class="result">: <a href="" class="extype" name="riff.raft.node.RaftNode">RaftNode</a>[<span class="extype" name="riff.raft.node.RaftNode.NodeKey">NodeKey</span>, <span class="extype" name="riff.raft.node.RaftNode.A">A</span>]</span>
+        <span class="name">withLog</span><span class="params">(<span name="newLog">newLog: <a href="../log/RaftLog.html" class="extype" name="riff.raft.log.RaftLog">RaftLog</a>[<span class="extype" name="riff.raft.node.RaftNode.A">A</span>]</span>)</span><span class="result">: <a href="" class="extype" name="riff.raft.node.RaftNode">RaftNode</a>[<span class="extype" name="riff.raft.node.RaftNode.A">A</span>]</span>
       </span>
       
       <p class="shortcomment cmt">a convenience builder method to create a new raft node w/ the given raft log
 </p><div class="fullcomment"><div class="comment cmt"><p>a convenience builder method to create a new raft node w/ the given raft log
 </p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>a new node state</p></dd></dl></div>
+    </li><li name="riff.raft.node.RaftNode#withRoleCallback" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="withRoleCallback(newRoleCallback:riff.raft.RoleCallback):riff.raft.node.RaftNode[A]"></a><a id="withRoleCallback(RoleCallback):RaftNode[A]"></a>
+      <span class="permalink">
+      <a href="../../../riff/raft/node/RaftNode.html#withRoleCallback(newRoleCallback:riff.raft.RoleCallback):riff.raft.node.RaftNode[A]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">withRoleCallback</span><span class="params">(<span name="newRoleCallback">newRoleCallback: <a href="../RoleCallback.html" class="extype" name="riff.raft.RoleCallback">RoleCallback</a></span>)</span><span class="result">: <a href="" class="extype" name="riff.raft.node.RaftNode">RaftNode</a>[<span class="extype" name="riff.raft.node.RaftNode.A">A</span>]</span>
+      </span>
+      
+      
+    </li><li name="riff.raft.node.RaftNode#withRoleCallback" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="withRoleCallback(f:riff.raft.RoleCallback.RoleEvent=&gt;Unit):riff.raft.node.RaftNode[A]"></a><a id="withRoleCallback((RoleEvent)⇒Unit):RaftNode[A]"></a>
+      <span class="permalink">
+      <a href="../../../riff/raft/node/RaftNode.html#withRoleCallback(f:riff.raft.RoleCallback.RoleEvent=&gt;Unit):riff.raft.node.RaftNode[A]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">withRoleCallback</span><span class="params">(<span name="f">f: (<a href="../RoleCallback$$RoleEvent.html" class="extype" name="riff.raft.RoleCallback.RoleEvent">RoleEvent</a>) ⇒ <span class="extype" name="scala.Unit">Unit</span></span>)</span><span class="result">: <a href="" class="extype" name="riff.raft.node.RaftNode">RaftNode</a>[<span class="extype" name="riff.raft.node.RaftNode.A">A</span>]</span>
+      </span>
+      
+      
+    </li><li name="riff.raft.node.RaftNode#withTimerCallback" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="withTimerCallback(newTimerCallback:riff.raft.timer.TimerCallback[_]):riff.raft.node.RaftNode[A]"></a><a id="withTimerCallback(TimerCallback[_]):RaftNode[A]"></a>
+      <span class="permalink">
+      <a href="../../../riff/raft/node/RaftNode.html#withTimerCallback(newTimerCallback:riff.raft.timer.TimerCallback[_]):riff.raft.node.RaftNode[A]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">withTimerCallback</span><span class="params">(<span name="newTimerCallback">newTimerCallback: <a href="../timer/TimerCallback.html" class="extype" name="riff.raft.timer.TimerCallback">TimerCallback</a>[_]</span>)</span><span class="result">: <a href="" class="extype" name="riff.raft.node.RaftNode">RaftNode</a>[<span class="extype" name="riff.raft.node.RaftNode.A">A</span>]</span>
+      </span>
+      
+      
     </li>
               </ol>
             </div>
@@ -1137,8 +1250,10 @@ as not to double-vote should this node crash.
         </div>
 
         <div id="inheritedMembers">
-        <div class="parent" name="riff.raft.node.RaftMessageHandler">
-              <h3>Inherited from <a href="RaftMessageHandler.html" class="extype" name="riff.raft.node.RaftMessageHandler">RaftMessageHandler</a>[<span class="extype" name="riff.raft.node.RaftNode.NodeKey">NodeKey</span>, <span class="extype" name="riff.raft.node.RaftNode.A">A</span>]</h3>
+        <div class="parent" name="riff.raft.timer.TimerCallback">
+              <h3>Inherited from <a href="../timer/TimerCallback.html" class="extype" name="riff.raft.timer.TimerCallback">TimerCallback</a>[<a href="RaftNodeResult.html" class="extype" name="riff.raft.node.RaftNodeResult">RaftNodeResult</a>[<span class="extype" name="riff.raft.node.RaftNode.A">A</span>]]</h3>
+            </div><div class="parent" name="riff.raft.node.RaftMessageHandler">
+              <h3>Inherited from <a href="RaftMessageHandler.html" class="extype" name="riff.raft.node.RaftMessageHandler">RaftMessageHandler</a>[<span class="extype" name="riff.raft.node.RaftNode.A">A</span>]</h3>
             </div><div class="parent" name="scala.AnyRef">
               <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
             </div><div class="parent" name="scala.Any">

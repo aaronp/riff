@@ -40,10 +40,13 @@
   <ul>
     <li><a href="../about/gettingStarted.html" class="active page">Getting Started</a></li>
     <li><a href="../about/api.html" class="page">API docs</a></li>
+    <li><a href="../about/usingIntelliJ.html" class="page">A note on IntelliJ</a></li>
   </ul></li>
   <li><a href="../blog/index.html" class="page">Project Blog</a>
   <ul>
-    <li><a href="../blog/raftSimulatorForTheWin.html" class="page">Meaningful Integration Testing</a></li>
+    <li><a href="../blog/01_raftSimulatorForTheWin.html" class="page">Meaningful Integration Testing</a></li>
+    <li><a href="../blog/02_eventSourceAGoGo.html" class="page">Event Sourcing !</a></li>
+    <li><a href="../blog/03_NodeKeyIsDead.html" class="page">NodeKey is dead!</a></li>
   </ul></li>
 </ul>
 </div>
@@ -85,10 +88,13 @@ C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.
   <ul>
     <li><a href="../about/gettingStarted.html" class="active page">Getting Started</a></li>
     <li><a href="../about/api.html" class="page">API docs</a></li>
+    <li><a href="../about/usingIntelliJ.html" class="page">A note on IntelliJ</a></li>
   </ul></li>
   <li><a href="../blog/index.html" class="page">Project Blog</a>
   <ul>
-    <li><a href="../blog/raftSimulatorForTheWin.html" class="page">Meaningful Integration Testing</a></li>
+    <li><a href="../blog/01_raftSimulatorForTheWin.html" class="page">Meaningful Integration Testing</a></li>
+    <li><a href="../blog/02_eventSourceAGoGo.html" class="page">Event Sourcing !</a></li>
+    <li><a href="../blog/03_NodeKeyIsDead.html" class="page">NodeKey is dead!</a></li>
   </ul></li>
 </ul>
 </div>
@@ -115,16 +121,22 @@ C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.
 
 <div class="page-content row">
 <div class="small-12 large-9 column" id="docs">
-<h2><a href="#getting-started" name="getting-started" class="anchor"><span class="anchor-link"></span></a>Getting Started</h2>
+<h1><a href="#getting-started" name="getting-started" class="anchor"><span class="anchor-link"></span></a>Getting Started</h1>
 <p>This uses sbt (w/ trial support for mill, perhaps fury at some point) to build.</p>
 <p>The core component contains all the APIs and business logic for a raft cluster in a framework-free way.</p>
 <p>That core can then be put behind a stream (monix, fs2, akka-streams, RxScala, etc), akka actor, REST service, whatever.</p>
 <p>It also provides scalajs support, should you fancy running your server code in a browser, which can be a nifty way to more easily test multiple components in a cluster. Imagine starting/stopping a component in your micro-service suite by just opening a new browser tab!</p>
-<h3><a href="#building" name="building" class="anchor"><span class="anchor-link"></span></a>Building</h3>
-<p>To build:</p>
+<h2><a href="#usage" name="usage" class="anchor"><span class="anchor-link"></span></a>Usage</h2>
+<p>I&rsquo;ve not officially released any version of this yet. The indent is to end up with a riff-monix, riff-akka, riff-http4s, riff-vertx, etc, and so you&rsquo;d bring in whichever is relevant to you &hellip; or just riff-core and add it to your own transport, etc.</p>
+<p>The above could just be considered examples of how to factor software w/o a dependency on any particular &lsquo;framework&rsquo;.</p>
+<p>I think in general projects should focus more on representing their business logic accurately and modeling it in a way that makes sense, and then just putting that code behind a service, queue, socket, etc.</p>
+<h2><a href="#building" name="building" class="anchor"><span class="anchor-link"></span></a>Building</h2>
+<p>The main build still uses sbt, and so you could just:</p>
 <pre><code>sbt package
 </code></pre>
+<p>I&rsquo;ve made a start moving to <a href="https://github.com/lihaoyi/mill">mill</a>, but it&rsquo;s not there yet.</p>
 <h3><a href="#documentation" name="documentation" class="anchor"><span class="anchor-link"></span></a>Documentation</h3>
+<p>To generate this documentation, run</p>
 <pre class="prettyprint"><code class="language-bash">./makeSite.sh
 </code></pre>
 <div class="source-github">
@@ -143,8 +155,8 @@ The source code for this page can be found <a href="https://github.com/aaronp/ri
 <ul>
   <li><a href="../about/gettingStarted.html#getting-started" class="header">Getting Started</a>
   <ul>
+    <li><a href="../about/gettingStarted.html#usage" class="header">Usage</a></li>
     <li><a href="../about/gettingStarted.html#building" class="header">Building</a></li>
-    <li><a href="../about/gettingStarted.html#documentation" class="header">Documentation</a></li>
   </ul></li>
 </ul>
 </div>

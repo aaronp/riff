@@ -163,12 +163,12 @@
                         <a href="LogState.html" title="">LogState</a>
                       </li><li class="current-entities indented3">
                         <a class="object" href="RaftLog$.html" title=""></a>
-                        <a class="trait" href="RaftLog.html" title="Represents a persistent log"></a>
-                        <a href="RaftLog.html" title="Represents a persistent log">RaftLog</a>
+                        <a class="trait" href="RaftLog.html" title="The persistent log"></a>
+                        <a href="RaftLog.html" title="The persistent log">RaftLog</a>
                       </li><li class="current-entities indented3">
                         <span class="separator"></span>
-                        <a class="trait" href="RaftLogOps.html" title="Additional convenience operations which can be performed on a RaftLog"></a>
-                        <a href="RaftLogOps.html" title="Additional convenience operations which can be performed on a RaftLog">RaftLogOps</a>
+                        <a class="trait" href="RaftLogOps.html" title="A base type for the raft log."></a>
+                        <a href="RaftLogOps.html" title="A base type for the raft log.">RaftLogOps</a>
                       </li><li class="current-entities indented3">
                         <a class="object" href="StateMachineLog$.html" title=""></a>
                         <a class="class" href="StateMachineLog.html" title="Invokes a function when log entries are committed"></a>
@@ -196,13 +196,13 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">LogAppendSuccess</span><span class="params">(<span name="firstIndex">firstIndex: <a href="../index.html#LogIndex=Int" class="extmbr" name="riff.raft.LogIndex">LogIndex</a></span>, <span name="lastIndex">lastIndex: <a href="../index.html#LogIndex=Int" class="extmbr" name="riff.raft.LogIndex">LogIndex</a></span>, <span name="replacedIndices">replacedIndices: <span class="extype" name="scala.Seq">Seq</span>[<a href="../index.html#LogIndex=Int" class="extmbr" name="riff.raft.LogIndex">LogIndex</a>] = <span class="symbol">Nil</span></span>)</span><span class="result"> extends <a href="LogAppendResult.html" class="extype" name="riff.raft.log.LogAppendResult">LogAppendResult</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <span class="name">LogAppendSuccess</span><span class="params">(<span name="firstIndex">firstIndex: <a href="LogCoords.html" class="extype" name="riff.raft.log.LogCoords">LogCoords</a></span>, <span name="lastIndex">lastIndex: <a href="LogCoords.html" class="extype" name="riff.raft.log.LogCoords">LogCoords</a></span>, <span name="replacedIndices">replacedIndices: <span class="extype" name="scala.Seq">Seq</span>[<a href="../index.html#LogIndex=Int" class="extmbr" name="riff.raft.LogIndex">LogIndex</a>] = <span class="symbol">Nil</span></span>)</span><span class="result"> extends <a href="LogAppendResult.html" class="extype" name="riff.raft.log.LogAppendResult">LogAppendResult</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
 
       
           <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Represents the return type of a file-based raft log
-</p></div><div class="toggleContainer block">
+</p></div><dl class="paramcmts block"><dt class="param">firstIndex</dt><dd class="cmt"><p>the first index written</p></dd><dt class="param">lastIndex</dt><dd class="cmt"><p>the last index written</p></dd><dt class="param">replacedIndices</dt><dd class="cmt"><p>in the case where a disconnected leader had accepted commits, these are the indices of replaced entries from a new leader</p></dd></dl><div class="toggleContainer block">
           <span class="toggle">
             Linear Supertypes
           </span>
@@ -252,10 +252,10 @@
         <div id="allMembers">
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
-              <ol><li name="riff.raft.log.LogAppendSuccess#&lt;init&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="&lt;init&gt;(firstIndex:riff.raft.LogIndex,lastIndex:riff.raft.LogIndex,replacedIndices:Seq[riff.raft.LogIndex]):riff.raft.log.LogAppendSuccess"></a><a id="&lt;init&gt;:LogAppendSuccess"></a>
+              <ol><li name="riff.raft.log.LogAppendSuccess#&lt;init&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="&lt;init&gt;(firstIndex:riff.raft.log.LogCoords,lastIndex:riff.raft.log.LogCoords,replacedIndices:Seq[riff.raft.LogIndex]):riff.raft.log.LogAppendSuccess"></a><a id="&lt;init&gt;:LogAppendSuccess"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/log/LogAppendSuccess.html#&lt;init&gt;(firstIndex:riff.raft.LogIndex,lastIndex:riff.raft.LogIndex,replacedIndices:Seq[riff.raft.LogIndex]):riff.raft.log.LogAppendSuccess" title="Permalink">
+      <a href="../../../riff/raft/log/LogAppendSuccess.html#&lt;init&gt;(firstIndex:riff.raft.log.LogCoords,lastIndex:riff.raft.log.LogCoords,replacedIndices:Seq[riff.raft.LogIndex]):riff.raft.log.LogAppendSuccess" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -264,10 +264,10 @@
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">LogAppendSuccess</span><span class="params">(<span name="firstIndex">firstIndex: <a href="../index.html#LogIndex=Int" class="extmbr" name="riff.raft.LogIndex">LogIndex</a></span>, <span name="lastIndex">lastIndex: <a href="../index.html#LogIndex=Int" class="extmbr" name="riff.raft.LogIndex">LogIndex</a></span>, <span name="replacedIndices">replacedIndices: <span class="extype" name="scala.Seq">Seq</span>[<a href="../index.html#LogIndex=Int" class="extmbr" name="riff.raft.LogIndex">LogIndex</a>] = <span class="symbol">Nil</span></span>)</span>
+        <span class="name">LogAppendSuccess</span><span class="params">(<span name="firstIndex">firstIndex: <a href="LogCoords.html" class="extype" name="riff.raft.log.LogCoords">LogCoords</a></span>, <span name="lastIndex">lastIndex: <a href="LogCoords.html" class="extype" name="riff.raft.log.LogCoords">LogCoords</a></span>, <span name="replacedIndices">replacedIndices: <span class="extype" name="scala.Seq">Seq</span>[<a href="../index.html#LogIndex=Int" class="extmbr" name="riff.raft.LogIndex">LogIndex</a>] = <span class="symbol">Nil</span></span>)</span>
       </span>
       
-      
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">firstIndex</dt><dd class="cmt"><p>the first index written</p></dd><dt class="param">lastIndex</dt><dd class="cmt"><p>the last index written</p></dd><dt class="param">replacedIndices</dt><dd class="cmt"><p>in the case where a disconnected leader had accepted commits, these are the indices of replaced entries from a new leader</p></dd></dl></div>
     </li></ol>
             </div>
 
@@ -366,6 +366,22 @@
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="riff.raft.log.LogAppendSuccess#contains" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="contains(response:riff.raft.messages.AppendEntriesResponse):Boolean"></a><a id="contains(AppendEntriesResponse):Boolean"></a>
+      <span class="permalink">
+      <a href="../../../riff/raft/log/LogAppendSuccess.html#contains(response:riff.raft.messages.AppendEntriesResponse):Boolean" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">contains</span><span class="params">(<span name="response">response: <a href="../messages/AppendEntriesResponse.html" class="extype" name="riff.raft.messages.AppendEntriesResponse">AppendEntriesResponse</a></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      
+      
     </li><li name="scala.AnyRef#eq" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a><a id="eq(AnyRef):Boolean"></a>
       <span class="permalink">
@@ -405,9 +421,9 @@
               
         </dd></dl></div>
     </li><li name="riff.raft.log.LogAppendSuccess#firstIndex" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="firstIndex:riff.raft.LogIndex"></a><a id="firstIndex:LogIndex"></a>
+      <a id="firstIndex:riff.raft.log.LogCoords"></a><a id="firstIndex:LogCoords"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/log/LogAppendSuccess.html#firstIndex:riff.raft.LogIndex" title="Permalink">
+      <a href="../../../riff/raft/log/LogAppendSuccess.html#firstIndex:riff.raft.log.LogCoords" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -416,7 +432,7 @@
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">firstIndex</span><span class="result">: <a href="../index.html#LogIndex=Int" class="extmbr" name="riff.raft.LogIndex">LogIndex</a></span>
+        <span class="name">firstIndex</span><span class="result">: <a href="LogCoords.html" class="extype" name="riff.raft.log.LogCoords">LogCoords</a></span>
       </span>
       
       
@@ -456,9 +472,9 @@
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
     </li><li name="riff.raft.log.LogAppendSuccess#lastIndex" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="lastIndex:riff.raft.LogIndex"></a><a id="lastIndex:LogIndex"></a>
+      <a id="lastIndex:riff.raft.log.LogCoords"></a><a id="lastIndex:LogCoords"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/log/LogAppendSuccess.html#lastIndex:riff.raft.LogIndex" title="Permalink">
+      <a href="../../../riff/raft/log/LogAppendSuccess.html#lastIndex:riff.raft.log.LogCoords" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -467,7 +483,7 @@
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">lastIndex</span><span class="result">: <a href="../index.html#LogIndex=Int" class="extmbr" name="riff.raft.LogIndex">LogIndex</a></span>
+        <span class="name">lastIndex</span><span class="result">: <a href="LogCoords.html" class="extype" name="riff.raft.log.LogCoords">LogCoords</a></span>
       </span>
       
       

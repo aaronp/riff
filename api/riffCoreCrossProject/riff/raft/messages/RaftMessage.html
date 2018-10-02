@@ -119,6 +119,14 @@
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../index.html" class="extype" name="riff.raft">raft</a></dd></dl></div>
     </li><li class="current-entities indented3">
                         <span class="separator"></span>
+                        <a class="class" href="AddressedMessage.html" title=""></a>
+                        <a href="AddressedMessage.html" title="">AddressedMessage</a>
+                      </li><li class="current-entities indented3">
+                        <a class="object" href="AppendData$.html" title=""></a>
+                        <a class="class" href="AppendData.html" title="Represents input from a client of the cluster"></a>
+                        <a href="AppendData.html" title="Represents input from a client of the cluster">AppendData</a>
+                      </li><li class="current-entities indented3">
+                        <span class="separator"></span>
                         <a class="class" href="AppendEntries.html" title=""></a>
                         <a href="AppendEntries.html" title="">AppendEntries</a>
                       </li><li class="current-entities indented3">
@@ -127,8 +135,8 @@
                         <a href="AppendEntriesResponse.html" title="">AppendEntriesResponse</a>
                       </li><li class="current-entities indented3">
                         <span class="separator"></span>
-                        <a class="trait" href="" title="Represents all the inputs into a raft node"></a>
-                        <a href="" title="Represents all the inputs into a raft node">RaftMessage</a>
+                        <a class="trait" href="" title="Represents the possible input types into a riff.raft.node.RaftNode"></a>
+                        <a href="" title="Represents the possible input types into a riff.raft.node.RaftNode">RaftMessage</a>
                       </li><li class="current-entities indented3">
                         <span class="separator"></span>
                         <a class="trait" href="RaftRequest.html" title="RaftRequest"></a>
@@ -184,13 +192,14 @@
         <span class="kind">trait</span>
       </span>
       <span class="symbol">
-        <span class="name">RaftMessage</span><span class="tparams">[<span name="NodeKey">+NodeKey</span>, <span name="A">+A</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+        <span class="name">RaftMessage</span><span class="tparams">[<span name="A">+A</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
       </h4>
 
       
-          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Represents all the inputs into a raft node
-</p></div><div class="toggleContainer block">
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Represents the possible input types into a <a href="../node/RaftNode.html" class="extype" name="riff.raft.node.RaftNode">riff.raft.node.RaftNode</a></p><p>Encapsulating all inputs w/ a single type makes the <a href="../node/RaftNode.html" class="extype" name="riff.raft.node.RaftNode">riff.raft.node.RaftNode</a> easy to drive via a data stream,
+put behind an actor, invoke from an unmarshalled POST request, etc.
+</p></div><dl class="paramcmts block"><dt class="tparam">A</dt><dd class="cmt"><p>the log entry type. This type is added here (as opposed to just on the <a href="AddressedMessage.html" class="extype" name="riff.raft.messages.AddressedMessage">AddressedMessage</a> as an aid for circe to be able to provide generic encoder/decoders</p></dd></dl><div class="toggleContainer block">
           <span class="toggle">
             Linear Supertypes
           </span>
@@ -199,7 +208,7 @@
             <span class="toggle">
               Known Subclasses
             </span>
-            <div class="subClasses hiddenContent"><a href="AppendEntries.html" class="extype" name="riff.raft.messages.AppendEntries">AppendEntries</a>, <a href="AppendEntriesResponse.html" class="extype" name="riff.raft.messages.AppendEntriesResponse">AppendEntriesResponse</a>, <a href="RaftRequest.html" class="extype" name="riff.raft.messages.RaftRequest">RaftRequest</a>, <a href="RaftResponse.html" class="extype" name="riff.raft.messages.RaftResponse">RaftResponse</a>, <a href="ReceiveHeartbeatTimeout$.html" class="extype" name="riff.raft.messages.ReceiveHeartbeatTimeout">ReceiveHeartbeatTimeout</a>, <a href="RequestOrResponse.html" class="extype" name="riff.raft.messages.RequestOrResponse">RequestOrResponse</a>, <a href="RequestVote.html" class="extype" name="riff.raft.messages.RequestVote">RequestVote</a>, <a href="RequestVoteResponse.html" class="extype" name="riff.raft.messages.RequestVoteResponse">RequestVoteResponse</a>, <a href="SendHeartbeatTimeout$.html" class="extype" name="riff.raft.messages.SendHeartbeatTimeout">SendHeartbeatTimeout</a>, <a href="TimerMessage.html" class="extype" name="riff.raft.messages.TimerMessage">TimerMessage</a></div>
+            <div class="subClasses hiddenContent"><a href="AddressedMessage.html" class="extype" name="riff.raft.messages.AddressedMessage">AddressedMessage</a>, <a href="AppendData.html" class="extype" name="riff.raft.messages.AppendData">AppendData</a>, <a href="ReceiveHeartbeatTimeout$.html" class="extype" name="riff.raft.messages.ReceiveHeartbeatTimeout">ReceiveHeartbeatTimeout</a>, <a href="SendHeartbeatTimeout$.html" class="extype" name="riff.raft.messages.SendHeartbeatTimeout">SendHeartbeatTimeout</a>, <a href="TimerMessage.html" class="extype" name="riff.raft.messages.TimerMessage">TimerMessage</a></div>
           </div></div>
         
 

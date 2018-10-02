@@ -220,17 +220,17 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">AddressedResponse</span><span class="tparams">[<span name="NodeKey">NodeKey</span>]</span><span class="params">(<span name="replyTo">replyTo: <span class="extype" name="riff.raft.node.AddressedResponse.NodeKey">NodeKey</span></span>, <span name="msg">msg: <a href="../messages/RaftResponse.html" class="extype" name="riff.raft.messages.RaftResponse">RaftResponse</a></span>)</span><span class="result"> extends <a href="RaftNodeResult.html" class="extype" name="riff.raft.node.RaftNodeResult">RaftNodeResult</a>[<span class="extype" name="riff.raft.node.AddressedResponse.NodeKey">NodeKey</span>, <span class="extype" name="scala.Nothing">Nothing</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <span class="name">AddressedResponse</span><span class="params">(<span name="replyTo">replyTo: <a href="../index.html#NodeId=String" class="extmbr" name="riff.raft.NodeId">NodeId</a></span>, <span name="msg">msg: <a href="../messages/RaftResponse.html" class="extype" name="riff.raft.messages.RaftResponse">RaftResponse</a></span>)</span><span class="result"> extends <a href="RaftNodeResult.html" class="extype" name="riff.raft.node.RaftNodeResult">RaftNodeResult</a>[<span class="extype" name="scala.Nothing">Nothing</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
 
       
           <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Combines a 'replyTo' node with a response
-</p></div><dl class="paramcmts block"><dt class="tparam">NodeKey</dt><dd class="cmt"><p>the raft node</p></dd><dt class="param">replyTo</dt><dd class="cmt"><p>the node to which this response should be targeted</p></dd><dt class="param">msg</dt><dd class="cmt"><p>the response, presumably to a request sent from the 'replyTo' node</p></dd></dl><div class="toggleContainer block">
+</p></div><dl class="paramcmts block"><dt class="param">replyTo</dt><dd class="cmt"><p>the node to which this response should be targeted</p></dd><dt class="param">msg</dt><dd class="cmt"><p>the response, presumably to a request sent from the 'replyTo' node</p></dd></dl><div class="toggleContainer block">
           <span class="toggle">
             Linear Supertypes
           </span>
-          <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <a href="RaftNodeResult.html" class="extype" name="riff.raft.node.RaftNodeResult">RaftNodeResult</a>[<span class="extype" name="riff.raft.node.AddressedResponse.NodeKey">NodeKey</span>, <span class="extype" name="scala.Nothing">Nothing</span>], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <a href="RaftNodeResult.html" class="extype" name="riff.raft.node.RaftNodeResult">RaftNodeResult</a>[<span class="extype" name="scala.Nothing">Nothing</span>], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
         
 
@@ -277,9 +277,9 @@
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
               <ol><li name="riff.raft.node.AddressedResponse#&lt;init&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="&lt;init&gt;(replyTo:NodeKey,msg:riff.raft.messages.RaftResponse):riff.raft.node.AddressedResponse[NodeKey]"></a><a id="&lt;init&gt;:AddressedResponse[NodeKey]"></a>
+      <a id="&lt;init&gt;(replyTo:riff.raft.NodeId,msg:riff.raft.messages.RaftResponse):riff.raft.node.AddressedResponse"></a><a id="&lt;init&gt;:AddressedResponse"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/node/AddressedResponse.html#&lt;init&gt;(replyTo:NodeKey,msg:riff.raft.messages.RaftResponse):riff.raft.node.AddressedResponse[NodeKey]" title="Permalink">
+      <a href="../../../riff/raft/node/AddressedResponse.html#&lt;init&gt;(replyTo:riff.raft.NodeId,msg:riff.raft.messages.RaftResponse):riff.raft.node.AddressedResponse" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -288,7 +288,7 @@
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">AddressedResponse</span><span class="params">(<span name="replyTo">replyTo: <span class="extype" name="riff.raft.node.AddressedResponse.NodeKey">NodeKey</span></span>, <span name="msg">msg: <a href="../messages/RaftResponse.html" class="extype" name="riff.raft.messages.RaftResponse">RaftResponse</a></span>)</span>
+        <span class="name">AddressedResponse</span><span class="params">(<span name="replyTo">replyTo: <a href="../index.html#NodeId=String" class="extmbr" name="riff.raft.NodeId">NodeId</a></span>, <span name="msg">msg: <a href="../messages/RaftResponse.html" class="extype" name="riff.raft.messages.RaftResponse">RaftResponse</a></span>)</span>
       </span>
       
       <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">replyTo</dt><dd class="cmt"><p>the node to which this response should be targeted</p></dd><dt class="param">msg</dt><dd class="cmt"><p>the response, presumably to a request sent from the 'replyTo' node</p></dd></dl></div>
@@ -534,9 +534,9 @@
               
         </dd></dl></div>
     </li><li name="riff.raft.node.AddressedResponse#replyTo" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="replyTo:NodeKey"></a>
+      <a id="replyTo:riff.raft.NodeId"></a><a id="replyTo:NodeId"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/node/AddressedResponse.html#replyTo:NodeKey" title="Permalink">
+      <a href="../../../riff/raft/node/AddressedResponse.html#replyTo:riff.raft.NodeId" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -545,7 +545,7 @@
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">replyTo</span><span class="result">: <span class="extype" name="riff.raft.node.AddressedResponse.NodeKey">NodeKey</span></span>
+        <span class="name">replyTo</span><span class="result">: <a href="../index.html#NodeId=String" class="extmbr" name="riff.raft.NodeId">NodeId</a></span>
       </span>
       
       
@@ -652,7 +652,7 @@
             </div><div class="parent" name="scala.Equals">
               <h3>Inherited from <span class="extype" name="scala.Equals">Equals</span></h3>
             </div><div class="parent" name="riff.raft.node.RaftNodeResult">
-              <h3>Inherited from <a href="RaftNodeResult.html" class="extype" name="riff.raft.node.RaftNodeResult">RaftNodeResult</a>[<span class="extype" name="riff.raft.node.AddressedResponse.NodeKey">NodeKey</span>, <span class="extype" name="scala.Nothing">Nothing</span>]</h3>
+              <h3>Inherited from <a href="RaftNodeResult.html" class="extype" name="riff.raft.node.RaftNodeResult">RaftNodeResult</a>[<span class="extype" name="scala.Nothing">Nothing</span>]</h3>
             </div><div class="parent" name="scala.AnyRef">
               <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
             </div><div class="parent" name="scala.Any">

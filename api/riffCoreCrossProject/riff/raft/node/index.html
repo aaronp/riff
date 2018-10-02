@@ -309,9 +309,9 @@
         <div id="types" class="types members">
               <h3>Type Members</h3>
               <ol><li name="riff.raft.node.AddressedRequest" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="AddressedRequest[NodeKey,A]extendsRaftNodeResult[NodeKey,A]withProductwithSerializable"></a><a id="AddressedRequest[NodeKey,A]:AddressedRequest[NodeKey,A]"></a>
+      <a id="AddressedRequest[A]extendsRaftNodeResult[A]withProductwithSerializable"></a><a id="AddressedRequest[A]:AddressedRequest[A]"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/node/index.html#AddressedRequest[NodeKey,A]extendsRaftNodeResult[NodeKey,A]withProductwithSerializable" title="Permalink">
+      <a href="../../../riff/raft/node/index.html#AddressedRequest[A]extendsRaftNodeResult[A]withProductwithSerializable" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -320,16 +320,16 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a title="A sequence of requests to send out as a result of a RaftNode having processed an event or message" href="AddressedRequest.html"><span class="name">AddressedRequest</span></a><span class="tparams">[<span name="NodeKey">NodeKey</span>, <span name="A">A</span>]</span><span class="params">(<span name="requests">requests: <span class="extype" name="scala.Iterable">Iterable</span>[(<span class="extype" name="riff.raft.node.AddressedRequest.NodeKey">NodeKey</span>, <a href="../messages/RaftRequest.html" class="extype" name="riff.raft.messages.RaftRequest">RaftRequest</a>[<span class="extype" name="riff.raft.node.AddressedRequest.A">A</span>])]</span>)</span><span class="result"> extends <a href="RaftNodeResult.html" class="extype" name="riff.raft.node.RaftNodeResult">RaftNodeResult</a>[<span class="extype" name="riff.raft.node.AddressedRequest.NodeKey">NodeKey</span>, <span class="extype" name="riff.raft.node.AddressedRequest.A">A</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a title="A sequence of requests to send out as a result of a RaftNode having processed an event or message" href="AddressedRequest.html"><span class="name">AddressedRequest</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="requests">requests: <span class="extype" name="scala.Iterable">Iterable</span>[(<a href="../index.html#NodeId=String" class="extmbr" name="riff.raft.NodeId">NodeId</a>, <a href="../messages/RaftRequest.html" class="extype" name="riff.raft.messages.RaftRequest">RaftRequest</a>[<span class="extype" name="riff.raft.node.AddressedRequest.A">A</span>])]</span>)</span><span class="result"> extends <a href="RaftNodeResult.html" class="extype" name="riff.raft.node.RaftNodeResult">RaftNodeResult</a>[<span class="extype" name="riff.raft.node.AddressedRequest.A">A</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       
       <p class="shortcomment cmt">A sequence of requests to send out as a result of a <a href="RaftNode.html" class="extype" name="riff.raft.node.RaftNode">RaftNode</a> having processed an event or message
 </p><div class="fullcomment"><div class="comment cmt"><p>A sequence of requests to send out as a result of a <a href="RaftNode.html" class="extype" name="riff.raft.node.RaftNode">RaftNode</a> having processed an event or message
-</p></div><dl class="paramcmts block"><dt class="tparam">NodeKey</dt><dd class="cmt"><p>the node type</p></dd><dt class="tparam">A</dt><dd class="cmt"><p>the log type</p></dd><dt class="param">requests</dt><dd class="cmt"><p>the requests to send, coupled w/ the intended recipient</p></dd></dl></div>
+</p></div><dl class="paramcmts block"><dt class="tparam">A</dt><dd class="cmt"><p>the log type</p></dd><dt class="param">requests</dt><dd class="cmt"><p>the requests to send, coupled w/ the intended recipient</p></dd></dl></div>
     </li><li name="riff.raft.node.AddressedResponse" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="AddressedResponse[NodeKey]extendsRaftNodeResult[NodeKey,Nothing]withProductwithSerializable"></a><a id="AddressedResponse[NodeKey]:AddressedResponse[NodeKey]"></a>
+      <a id="AddressedResponseextendsRaftNodeResult[Nothing]withProductwithSerializable"></a><a id="AddressedResponse:AddressedResponse"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/node/index.html#AddressedResponse[NodeKey]extendsRaftNodeResult[NodeKey,Nothing]withProductwithSerializable" title="Permalink">
+      <a href="../../../riff/raft/node/index.html#AddressedResponseextendsRaftNodeResult[Nothing]withProductwithSerializable" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -338,16 +338,16 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a title="Combines a 'replyTo' node with a response" href="AddressedResponse.html"><span class="name">AddressedResponse</span></a><span class="tparams">[<span name="NodeKey">NodeKey</span>]</span><span class="params">(<span name="replyTo">replyTo: <span class="extype" name="riff.raft.node.AddressedResponse.NodeKey">NodeKey</span></span>, <span name="msg">msg: <a href="../messages/RaftResponse.html" class="extype" name="riff.raft.messages.RaftResponse">RaftResponse</a></span>)</span><span class="result"> extends <a href="RaftNodeResult.html" class="extype" name="riff.raft.node.RaftNodeResult">RaftNodeResult</a>[<span class="extype" name="riff.raft.node.AddressedResponse.NodeKey">NodeKey</span>, <span class="extype" name="scala.Nothing">Nothing</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a title="Combines a 'replyTo' node with a response" href="AddressedResponse.html"><span class="name">AddressedResponse</span></a><span class="params">(<span name="replyTo">replyTo: <a href="../index.html#NodeId=String" class="extmbr" name="riff.raft.NodeId">NodeId</a></span>, <span name="msg">msg: <a href="../messages/RaftResponse.html" class="extype" name="riff.raft.messages.RaftResponse">RaftResponse</a></span>)</span><span class="result"> extends <a href="RaftNodeResult.html" class="extype" name="riff.raft.node.RaftNodeResult">RaftNodeResult</a>[<span class="extype" name="scala.Nothing">Nothing</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       
       <p class="shortcomment cmt">Combines a 'replyTo' node with a response
 </p><div class="fullcomment"><div class="comment cmt"><p>Combines a 'replyTo' node with a response
-</p></div><dl class="paramcmts block"><dt class="tparam">NodeKey</dt><dd class="cmt"><p>the raft node</p></dd><dt class="param">replyTo</dt><dd class="cmt"><p>the node to which this response should be targeted</p></dd><dt class="param">msg</dt><dd class="cmt"><p>the response, presumably to a request sent from the 'replyTo' node</p></dd></dl></div>
+</p></div><dl class="paramcmts block"><dt class="param">replyTo</dt><dd class="cmt"><p>the node to which this response should be targeted</p></dd><dt class="param">msg</dt><dd class="cmt"><p>the response, presumably to a request sent from the 'replyTo' node</p></dd></dl></div>
     </li><li name="riff.raft.node.CandidateNodeState" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="CandidateNodeState[NodeKey]extendsNodeState[NodeKey]withProductwithSerializable"></a><a id="CandidateNodeState[NodeKey]:CandidateNodeState[NodeKey]"></a>
+      <a id="CandidateNodeStateextendsNodeStatewithProductwithSerializable"></a><a id="CandidateNodeState:CandidateNodeState"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/node/index.html#CandidateNodeState[NodeKey]extendsNodeState[NodeKey]withProductwithSerializable" title="Permalink">
+      <a href="../../../riff/raft/node/index.html#CandidateNodeStateextendsNodeStatewithProductwithSerializable" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -356,14 +356,14 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a title="" href="CandidateNodeState.html"><span class="name">CandidateNodeState</span></a><span class="tparams">[<span name="NodeKey">NodeKey</span>]</span><span class="params">(<span name="id">id: <span class="extype" name="riff.raft.node.CandidateNodeState.NodeKey">NodeKey</span></span>, <span name="initialState">initialState: <a href="CandidateState.html" class="extype" name="riff.raft.node.CandidateState">CandidateState</a>[<span class="extype" name="riff.raft.node.CandidateNodeState.NodeKey">NodeKey</span>]</span>)</span><span class="result"> extends <a href="NodeState.html" class="extype" name="riff.raft.node.NodeState">NodeState</a>[<span class="extype" name="riff.raft.node.CandidateNodeState.NodeKey">NodeKey</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a title="" href="CandidateNodeState.html"><span class="name">CandidateNodeState</span></a><span class="params">(<span name="id">id: <a href="../index.html#NodeId=String" class="extmbr" name="riff.raft.NodeId">NodeId</a></span>, <span name="initialState">initialState: <a href="CandidateState.html" class="extype" name="riff.raft.node.CandidateState">CandidateState</a></span>)</span><span class="result"> extends <a href="NodeState.html" class="extype" name="riff.raft.node.NodeState">NodeState</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       
       
     </li><li name="riff.raft.node.CandidateState" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="CandidateState[A]extendsProductwithSerializable"></a><a id="CandidateState[A]:CandidateState[A]"></a>
+      <a id="CandidateStateextendsProductwithSerializable"></a><a id="CandidateState:CandidateState"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/node/index.html#CandidateState[A]extendsProductwithSerializable" title="Permalink">
+      <a href="../../../riff/raft/node/index.html#CandidateStateextendsProductwithSerializable" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -372,15 +372,15 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a title="Contains the functions for when a node becomes a candidate due to a heartbeat timeout" href="CandidateState.html"><span class="name">CandidateState</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="term">term: <a href="../index.html#Term=Int" class="extmbr" name="riff.raft.Term">Term</a></span>, <span name="votesFor">votesFor: <span class="extype" name="scala.Predef.Set">Set</span>[<span class="extype" name="riff.raft.node.CandidateState.A">A</span>]</span>, <span name="votesAgainst">votesAgainst: <span class="extype" name="scala.Predef.Set">Set</span>[<span class="extype" name="riff.raft.node.CandidateState.A">A</span>]</span>, <span name="clusterSize">clusterSize: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a title="Contains the functions for when a node becomes a candidate due to a heartbeat timeout" href="CandidateState.html"><span class="name">CandidateState</span></a><span class="params">(<span name="term">term: <a href="../index.html#Term=Int" class="extmbr" name="riff.raft.Term">Term</a></span>, <span name="votesFor">votesFor: <span class="extype" name="scala.Predef.Set">Set</span>[<a href="../index.html#NodeId=String" class="extmbr" name="riff.raft.NodeId">NodeId</a>]</span>, <span name="votesAgainst">votesAgainst: <span class="extype" name="scala.Predef.Set">Set</span>[<a href="../index.html#NodeId=String" class="extmbr" name="riff.raft.NodeId">NodeId</a>]</span>, <span name="clusterSize">clusterSize: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       
       <p class="shortcomment cmt">Contains the functions for when a node becomes a candidate due to a heartbeat timeout
 </p>
     </li><li name="riff.raft.node.FollowerNodeState" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="FollowerNodeState[NodeKey]extendsNodeState[NodeKey]withProductwithSerializable"></a><a id="FollowerNodeState[NodeKey]:FollowerNodeState[NodeKey]"></a>
+      <a id="FollowerNodeStateextendsNodeStatewithProductwithSerializable"></a><a id="FollowerNodeState:FollowerNodeState"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/node/index.html#FollowerNodeState[NodeKey]extendsNodeState[NodeKey]withProductwithSerializable" title="Permalink">
+      <a href="../../../riff/raft/node/index.html#FollowerNodeStateextendsNodeStatewithProductwithSerializable" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -389,14 +389,14 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a title="" href="FollowerNodeState.html"><span class="name">FollowerNodeState</span></a><span class="tparams">[<span name="NodeKey">NodeKey</span>]</span><span class="params">(<span name="id">id: <span class="extype" name="riff.raft.node.FollowerNodeState.NodeKey">NodeKey</span></span>, <span name="leader">leader: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="riff.raft.node.FollowerNodeState.NodeKey">NodeKey</span>]</span>)</span><span class="result"> extends <a href="NodeState.html" class="extype" name="riff.raft.node.NodeState">NodeState</a>[<span class="extype" name="riff.raft.node.FollowerNodeState.NodeKey">NodeKey</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a title="" href="FollowerNodeState.html"><span class="name">FollowerNodeState</span></a><span class="params">(<span name="id">id: <a href="../index.html#NodeId=String" class="extmbr" name="riff.raft.NodeId">NodeId</a></span>, <span name="leader">leader: <span class="extype" name="scala.Option">Option</span>[<a href="../index.html#NodeId=String" class="extmbr" name="riff.raft.NodeId">NodeId</a>]</span>)</span><span class="result"> extends <a href="NodeState.html" class="extype" name="riff.raft.node.NodeState">NodeState</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       
       
     </li><li name="riff.raft.node.LeaderNodeState" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="LeaderNodeState[NodeKey]extendsNodeState[NodeKey]withProductwithSerializable"></a><a id="LeaderNodeState[NodeKey]:LeaderNodeState[NodeKey]"></a>
+      <a id="LeaderNodeStateextendsNodeStatewithProductwithSerializable"></a><a id="LeaderNodeState:LeaderNodeState"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/node/index.html#LeaderNodeState[NodeKey]extendsNodeState[NodeKey]withProductwithSerializable" title="Permalink">
+      <a href="../../../riff/raft/node/index.html#LeaderNodeStateextendsNodeStatewithProductwithSerializable" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -405,14 +405,14 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a title="" href="LeaderNodeState.html"><span class="name">LeaderNodeState</span></a><span class="tparams">[<span name="NodeKey">NodeKey</span>]</span><span class="params">(<span name="id">id: <span class="extype" name="riff.raft.node.LeaderNodeState.NodeKey">NodeKey</span></span>, <span name="clusterView">clusterView: <span class="extype" name="riff.raft.node.LeadersClusterView">LeadersClusterView</span>[<span class="extype" name="riff.raft.node.LeaderNodeState.NodeKey">NodeKey</span>]</span>)</span><span class="result"> extends <a href="NodeState.html" class="extype" name="riff.raft.node.NodeState">NodeState</a>[<span class="extype" name="riff.raft.node.LeaderNodeState.NodeKey">NodeKey</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a title="" href="LeaderNodeState.html"><span class="name">LeaderNodeState</span></a><span class="params">(<span name="id">id: <a href="../index.html#NodeId=String" class="extmbr" name="riff.raft.NodeId">NodeId</a></span>, <span name="clusterView">clusterView: <span class="extype" name="riff.raft.node.LeadersClusterView">LeadersClusterView</span></span>)</span><span class="result"> extends <a href="NodeState.html" class="extype" name="riff.raft.node.NodeState">NodeState</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       
       
     </li><li name="riff.raft.node.NIOPersistentState" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="NIOPersistentState[NodeKey]extendsPersistentState[NodeKey]"></a><a id="NIOPersistentState[NodeKey]:NIOPersistentState[NodeKey]"></a>
+      <a id="NIOPersistentStateextendsPersistentState"></a><a id="NIOPersistentState:NIOPersistentState"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/node/index.html#NIOPersistentState[NodeKey]extendsPersistentState[NodeKey]" title="Permalink">
+      <a href="../../../riff/raft/node/index.html#NIOPersistentStateextendsPersistentState" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -421,15 +421,15 @@
         <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <a title="Some PersistentState written to the file system using java.nio" href="NIOPersistentState.html"><span class="name">NIOPersistentState</span></a><span class="tparams">[<span name="NodeKey">NodeKey</span>]</span><span class="result"> extends <a href="PersistentState.html" class="extype" name="riff.raft.node.PersistentState">PersistentState</a>[<span class="extype" name="riff.raft.node.NIOPersistentState.NodeKey">NodeKey</span>]</span>
+        <a title="Some PersistentState written to the file system using java.nio" href="NIOPersistentState.html"><span class="name">NIOPersistentState</span></a><span class="result"> extends <a href="PersistentState.html" class="extype" name="riff.raft.node.PersistentState">PersistentState</a></span>
       </span>
       
       <p class="shortcomment cmt">Some <a href="PersistentState.html" class="extype" name="riff.raft.node.PersistentState">PersistentState</a> written to the file system using java.nio
 </p>
     </li><li name="riff.raft.node.NoOpResult" visbl="pub" class="indented0 " data-isabs="true" fullComment="yes" group="Ungrouped">
-      <a id="NoOpResultextendsRaftNodeResult[Nothing,Nothing]"></a><a id="NoOpResult:NoOpResult"></a>
+      <a id="NoOpResultextendsRaftNodeResult[Nothing]"></a><a id="NoOpResult:NoOpResult"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/node/index.html#NoOpResultextendsRaftNodeResult[Nothing,Nothing]" title="Permalink">
+      <a href="../../../riff/raft/node/index.html#NoOpResultextendsRaftNodeResult[Nothing]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -438,7 +438,7 @@
         <span class="kind">trait</span>
       </span>
       <span class="symbol">
-        <a title="Marker interface for a no-op result of a node having processed an event or message." href="NoOpResult.html"><span class="name">NoOpResult</span></a><span class="result"> extends <a href="RaftNodeResult.html" class="extype" name="riff.raft.node.RaftNodeResult">RaftNodeResult</a>[<span class="extype" name="scala.Nothing">Nothing</span>, <span class="extype" name="scala.Nothing">Nothing</span>]</span>
+        <a title="Marker interface for a no-op result of a node having processed an event or message." href="NoOpResult.html"><span class="name">NoOpResult</span></a><span class="result"> extends <a href="RaftNodeResult.html" class="extype" name="riff.raft.node.RaftNodeResult">RaftNodeResult</a>[<span class="extype" name="scala.Nothing">Nothing</span>]</span>
       </span>
       
       <p class="shortcomment cmt">Marker interface for a no-op result of a node having processed an event or message.</p><div class="fullcomment"><div class="comment cmt"><p>Marker interface for a no-op result of a node having processed an event or message.</p><p>At the moment there is just a 'log message' implementation, but we could make the results more strongly-typed
@@ -461,9 +461,9 @@ if needed (e.g. as a candidate advances through its votes, or the detail from so
       
       
     </li><li name="riff.raft.node.NodeState" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="NodeState[NodeKey]extendsAnyRef"></a><a id="NodeState[NodeKey]:NodeState[NodeKey]"></a>
+      <a id="NodeStateextendsAnyRef"></a><a id="NodeState:NodeState"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/node/index.html#NodeState[NodeKey]extendsAnyRef" title="Permalink">
+      <a href="../../../riff/raft/node/index.html#NodeStateextendsAnyRef" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -472,7 +472,7 @@ if needed (e.g. as a candidate advances through its votes, or the detail from so
         <span class="kind">trait</span>
       </span>
       <span class="symbol">
-        <a title="Represents an in-memory state matching a node's role" href="NodeState.html"><span class="name">NodeState</span></a><span class="tparams">[<span name="NodeKey">NodeKey</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+        <a title="Represents an in-memory state matching a node's role" href="NodeState.html"><span class="name">NodeState</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
       
       <p class="shortcomment cmt">Represents an in-memory state matching a node's role
@@ -495,9 +495,9 @@ if needed (e.g. as a candidate advances through its votes, or the detail from so
       <p class="shortcomment cmt">The view of a peer in the cluster
 </p>
     </li><li name="riff.raft.node.PersistentState" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="PersistentState[NodeKey]extendsAnyRef"></a><a id="PersistentState[NodeKey]:PersistentState[NodeKey]"></a>
+      <a id="PersistentStateextendsAnyRef"></a><a id="PersistentState:PersistentState"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/node/index.html#PersistentState[NodeKey]extendsAnyRef" title="Permalink">
+      <a href="../../../riff/raft/node/index.html#PersistentStateextendsAnyRef" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -506,7 +506,7 @@ if needed (e.g. as a candidate advances through its votes, or the detail from so
         <span class="kind">trait</span>
       </span>
       <span class="symbol">
-        <a title="Keeps track of a node's internal state: 1) what term it is 2) who the chuff it voted for" href="PersistentState.html"><span class="name">PersistentState</span></a><span class="tparams">[<span name="NodeKey">NodeKey</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+        <a title="Keeps track of a node's internal state: 1) what term it is 2) who the chuff it voted for" href="PersistentState.html"><span class="name">PersistentState</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
       
       <p class="shortcomment cmt">Keeps track of a node's internal state:
@@ -514,9 +514,9 @@ if needed (e.g. as a candidate advances through its votes, or the detail from so
 2) who the chuff it voted for
 </p>
     </li><li name="riff.raft.node.RaftCluster" visbl="pub" class="indented0 " data-isabs="true" fullComment="yes" group="Ungrouped">
-      <a id="RaftCluster[NodeKey]extendsAnyRef"></a><a id="RaftCluster[NodeKey]:RaftCluster[NodeKey]"></a>
+      <a id="RaftClusterextendsAnyRef"></a><a id="RaftCluster:RaftCluster"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/node/index.html#RaftCluster[NodeKey]extendsAnyRef" title="Permalink">
+      <a href="../../../riff/raft/node/index.html#RaftClusterextendsAnyRef" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -525,17 +525,17 @@ if needed (e.g. as a candidate advances through its votes, or the detail from so
         <span class="kind">trait</span>
       </span>
       <span class="symbol">
-        <a title="Represents something which knows about the peers in the cluster." href="RaftCluster.html"><span class="name">RaftCluster</span></a><span class="tparams">[<span name="NodeKey">NodeKey</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+        <a title="Represents something which knows about the peers in the cluster." href="RaftCluster.html"><span class="name">RaftCluster</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
       
       <p class="shortcomment cmt"> Represents something which knows about the peers in the cluster.</p><div class="fullcomment"><div class="comment cmt"><p> Represents something which knows about the peers in the cluster.
  This is typically (and recommended to be) a fixed size cluster.</p><p> The NodeKey themselves are often just String identifiers used as a look-up for a means of communicating
  with that peer, but could be the peer transport itself, provided it has a good hashCode/equals
-</p></div><dl class="paramcmts block"><dt class="tparam">NodeKey</dt><dd class="cmt"><p>the type of peer node</p></dd></dl></div>
+</p></div></div>
     </li><li name="riff.raft.node.RaftMessageHandler" visbl="pub" class="indented0 " data-isabs="true" fullComment="yes" group="Ungrouped">
-      <a id="RaftMessageHandler[NodeKey,A]extendsAnyRef"></a><a id="RaftMessageHandler[NodeKey,A]:RaftMessageHandler[NodeKey,A]"></a>
+      <a id="RaftMessageHandler[A]extendsAnyRef"></a><a id="RaftMessageHandler[A]:RaftMessageHandler[A]"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/node/index.html#RaftMessageHandler[NodeKey,A]extendsAnyRef" title="Permalink">
+      <a href="../../../riff/raft/node/index.html#RaftMessageHandler[A]extendsAnyRef" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -544,15 +544,15 @@ if needed (e.g. as a candidate advances through its votes, or the detail from so
         <span class="kind">trait</span>
       </span>
       <span class="symbol">
-        <a title="This interface represents a stateful black-box of a raft node." href="RaftMessageHandler.html"><span class="name">RaftMessageHandler</span></a><span class="tparams">[<span name="NodeKey">NodeKey</span>, <span name="A">A</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+        <a title="This interface represents a stateful black-box of a raft node." href="RaftMessageHandler.html"><span class="name">RaftMessageHandler</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
       
       <p class="shortcomment cmt">This interface represents a stateful black-box of a raft node.</p><div class="fullcomment"><div class="comment cmt"><p>This interface represents a stateful black-box of a raft node.</p><p>It is typically NOT THREAD SAFE, but rather something which simply something which can take inputs and produce outputs
-</p></div><dl class="paramcmts block"><dt class="tparam">NodeKey</dt><dd class="cmt"><p>the type of the nodes in the raft cluster as viewed from a single node. This may be simple string keys, or full RESTful clients, etc.</p></dd><dt class="tparam">A</dt><dd class="cmt"><p>the type of data which is appended to the log (could just be a byte array, some union type, etc)</p></dd></dl></div>
+</p></div><dl class="paramcmts block"><dt class="tparam">A</dt><dd class="cmt"><p>the type of data which is appended to the log (could just be a byte array, some union type, etc)</p></dd></dl></div>
     </li><li name="riff.raft.node.RaftNode" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="RaftNode[NodeKey,A]extendsRaftMessageHandler[NodeKey,A]"></a><a id="RaftNode[NodeKey,A]:RaftNode[NodeKey,A]"></a>
+      <a id="RaftNode[A]extendsRaftMessageHandler[A]withTimerCallback[riff.raft.node.RaftNodeResult[A]]"></a><a id="RaftNode[A]:RaftNode[A]"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/node/index.html#RaftNode[NodeKey,A]extendsRaftMessageHandler[NodeKey,A]" title="Permalink">
+      <a href="../../../riff/raft/node/index.html#RaftNode[A]extendsRaftMessageHandler[A]withTimerCallback[riff.raft.node.RaftNodeResult[A]]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -561,18 +561,17 @@ if needed (e.g. as a candidate advances through its votes, or the detail from so
         <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <a title="The place where the different pieces which represent a Raft Node come together -- the glue code." href="RaftNode.html"><span class="name">RaftNode</span></a><span class="tparams">[<span name="NodeKey">NodeKey</span>, <span name="A">A</span>]</span><span class="result"> extends <a href="RaftMessageHandler.html" class="extype" name="riff.raft.node.RaftMessageHandler">RaftMessageHandler</a>[<span class="extype" name="riff.raft.node.RaftNode.NodeKey">NodeKey</span>, <span class="extype" name="riff.raft.node.RaftNode.A">A</span>]</span>
+        <a title="The place where the different pieces which represent a Raft Node come together -- the glue code." href="RaftNode.html"><span class="name">RaftNode</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends <a href="RaftMessageHandler.html" class="extype" name="riff.raft.node.RaftMessageHandler">RaftMessageHandler</a>[<span class="extype" name="riff.raft.node.RaftNode.A">A</span>] with <a href="../timer/TimerCallback.html" class="extype" name="riff.raft.timer.TimerCallback">TimerCallback</a>[<a href="RaftNodeResult.html" class="extype" name="riff.raft.node.RaftNodeResult">RaftNodeResult</a>[<span class="extype" name="riff.raft.node.RaftNode.A">A</span>]]</span>
       </span>
       
       <p class="shortcomment cmt">The place where the different pieces which represent a Raft Node come together -- the glue code.</p><div class="fullcomment"><div class="comment cmt"><p>The place where the different pieces which represent a Raft Node come together -- the glue code.</p><p>I've looked at this a few different ways, but ultimately found this abstraction here to be the most readable,
 and follows most closely what's laid out in the raft spec.</p><p>It's not too generic/abstracted, but quite openly just orchestrates the pieces/interactions of the inputs
 into a raft node.
-</p></div><dl class="paramcmts block"><dt class="tparam">NodeKey</dt><dd class="cmt"><p>the underlying node peer type, which may just be a String identifier, or a websocket, actor, etc.
-                so long as it has a meaningful hashCode/equals</p></dd><dt class="tparam">A</dt><dd class="cmt"><p>the log entry type</p></dd></dl></div>
+</p></div><dl class="paramcmts block"><dt class="tparam">A</dt><dd class="cmt"><p>the log entry type</p></dd></dl></div>
     </li><li name="riff.raft.node.RaftNodeResult" visbl="pub" class="indented0 " data-isabs="true" fullComment="yes" group="Ungrouped">
-      <a id="RaftNodeResult[+NodeKey,+A]extendsAnyRef"></a><a id="RaftNodeResult[+NodeKey,+A]:RaftNodeResult[NodeKey,A]"></a>
+      <a id="RaftNodeResult[+A]extendsAnyRef"></a><a id="RaftNodeResult[+A]:RaftNodeResult[A]"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/node/index.html#RaftNodeResult[+NodeKey,+A]extendsAnyRef" title="Permalink">
+      <a href="../../../riff/raft/node/index.html#RaftNodeResult[+A]extendsAnyRef" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -581,12 +580,12 @@ into a raft node.
         <span class="kind">trait</span>
       </span>
       <span class="symbol">
-        <a title="Represents all possible results of a RaftNode having processed an event or message" href="RaftNodeResult.html"><span class="name">RaftNodeResult</span></a><span class="tparams">[<span name="NodeKey">+NodeKey</span>, <span name="A">+A</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+        <a title="Represents all possible results of a RaftNode having processed an event or message" href="RaftNodeResult.html"><span class="name">RaftNodeResult</span></a><span class="tparams">[<span name="A">+A</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
       
       <p class="shortcomment cmt">Represents all possible results of a <a href="RaftNode.html" class="extype" name="riff.raft.node.RaftNode">RaftNode</a> having processed an event or message
 </p><div class="fullcomment"><div class="comment cmt"><p>Represents all possible results of a <a href="RaftNode.html" class="extype" name="riff.raft.node.RaftNode">RaftNode</a> having processed an event or message
-</p></div><dl class="paramcmts block"><dt class="tparam">NodeKey</dt><dd class="cmt"><p>the node type</p></dd><dt class="tparam">A</dt><dd class="cmt"><p>the log type</p></dd></dl></div>
+</p></div><dl class="paramcmts block"><dt class="tparam">A</dt><dd class="cmt"><p>the log type</p></dd></dl></div>
     </li></ol>
             </div>
 

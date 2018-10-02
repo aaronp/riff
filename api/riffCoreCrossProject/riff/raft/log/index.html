@@ -163,12 +163,12 @@
                         <a href="LogState.html" title="">LogState</a>
                       </li><li class="current-entities indented3">
                         <a class="object" href="RaftLog$.html" title=""></a>
-                        <a class="trait" href="RaftLog.html" title="Represents a persistent log"></a>
-                        <a href="RaftLog.html" title="Represents a persistent log">RaftLog</a>
+                        <a class="trait" href="RaftLog.html" title="The persistent log"></a>
+                        <a href="RaftLog.html" title="The persistent log">RaftLog</a>
                       </li><li class="current-entities indented3">
                         <span class="separator"></span>
-                        <a class="trait" href="RaftLogOps.html" title="Additional convenience operations which can be performed on a RaftLog"></a>
-                        <a href="RaftLogOps.html" title="Additional convenience operations which can be performed on a RaftLog">RaftLogOps</a>
+                        <a class="trait" href="RaftLogOps.html" title="A base type for the raft log."></a>
+                        <a href="RaftLogOps.html" title="A base type for the raft log.">RaftLogOps</a>
                       </li><li class="current-entities indented3">
                         <a class="object" href="StateMachineLog$.html" title=""></a>
                         <a class="class" href="StateMachineLog.html" title="Invokes a function when log entries are committed"></a>
@@ -316,23 +316,24 @@
       </span>
       
       
-    </li><li name="riff.raft.log.CachingLog" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="CachingLog[A]extendsDelegateLog[A]"></a><a id="CachingLog[A]:CachingLog[A]"></a>
+    </li><li name="riff.raft.log.CachingLog" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="CachingLog[A]extendsDelegateLog[A]withProductwithSerializable"></a><a id="CachingLog[A]:CachingLog[A]"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/log/index.html#CachingLog[A]extendsDelegateLog[A]" title="Permalink">
+      <a href="../../../riff/raft/log/index.html#CachingLog[A]extendsDelegateLog[A]withProductwithSerializable" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
       <span class="modifier_kind">
         <span class="modifier"></span>
-        <span class="kind">class</span>
+        <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a title="Wraps a log by keeping in memory the latest commit/append index" href="CachingLog.html"><span class="name">CachingLog</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends <a href="DelegateLog.html" class="extype" name="riff.raft.log.DelegateLog">DelegateLog</a>[<span class="extype" name="riff.raft.log.CachingLog.A">A</span>]</span>
+        <a title="Wraps a log by keeping in memory the latest commit/append index" href="CachingLog.html"><span class="name">CachingLog</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="underlying">underlying: <a href="RaftLog.html" class="extype" name="riff.raft.log.RaftLog">RaftLog</a>[<span class="extype" name="riff.raft.log.CachingLog.A">A</span>]</span>)</span><span class="result"> extends <a href="DelegateLog.html" class="extype" name="riff.raft.log.DelegateLog">DelegateLog</a>[<span class="extype" name="riff.raft.log.CachingLog.A">A</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       
       <p class="shortcomment cmt">Wraps a log by keeping in memory the latest commit/append index
-</p>
+</p><div class="fullcomment"><div class="comment cmt"><p>Wraps a log by keeping in memory the latest commit/append index
+</p></div><dl class="paramcmts block"><dt class="param">underlying</dt><dd class="cmt"><p>the underlying log</p></dd></dl></div>
     </li><li name="riff.raft.log.DelegateLog" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
       <a id="DelegateLog[A]extendsRaftLog[A]"></a><a id="DelegateLog[A]:DelegateLog[A]"></a>
       <span class="permalink">
@@ -398,7 +399,7 @@
       </span>
       
       
-    </li><li name="riff.raft.log.LogAppendSuccess" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+    </li><li name="riff.raft.log.LogAppendSuccess" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="LogAppendSuccessextendsLogAppendResultwithProductwithSerializable"></a><a id="LogAppendSuccess:LogAppendSuccess"></a>
       <span class="permalink">
       <a href="../../../riff/raft/log/index.html#LogAppendSuccessextendsLogAppendResultwithProductwithSerializable" title="Permalink">
@@ -410,11 +411,12 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a title="Represents the return type of a file-based raft log" href="LogAppendSuccess.html"><span class="name">LogAppendSuccess</span></a><span class="params">(<span name="firstIndex">firstIndex: <a href="../index.html#LogIndex=Int" class="extmbr" name="riff.raft.LogIndex">LogIndex</a></span>, <span name="lastIndex">lastIndex: <a href="../index.html#LogIndex=Int" class="extmbr" name="riff.raft.LogIndex">LogIndex</a></span>, <span name="replacedIndices">replacedIndices: <span class="extype" name="scala.Seq">Seq</span>[<a href="../index.html#LogIndex=Int" class="extmbr" name="riff.raft.LogIndex">LogIndex</a>] = <span class="symbol">Nil</span></span>)</span><span class="result"> extends <a href="LogAppendResult.html" class="extype" name="riff.raft.log.LogAppendResult">LogAppendResult</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a title="Represents the return type of a file-based raft log" href="LogAppendSuccess.html"><span class="name">LogAppendSuccess</span></a><span class="params">(<span name="firstIndex">firstIndex: <a href="LogCoords.html" class="extype" name="riff.raft.log.LogCoords">LogCoords</a></span>, <span name="lastIndex">lastIndex: <a href="LogCoords.html" class="extype" name="riff.raft.log.LogCoords">LogCoords</a></span>, <span name="replacedIndices">replacedIndices: <span class="extype" name="scala.Seq">Seq</span>[<a href="../index.html#LogIndex=Int" class="extmbr" name="riff.raft.LogIndex">LogIndex</a>] = <span class="symbol">Nil</span></span>)</span><span class="result"> extends <a href="LogAppendResult.html" class="extype" name="riff.raft.log.LogAppendResult">LogAppendResult</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       
       <p class="shortcomment cmt">Represents the return type of a file-based raft log
-</p>
+</p><div class="fullcomment"><div class="comment cmt"><p>Represents the return type of a file-based raft log
+</p></div><dl class="paramcmts block"><dt class="param">firstIndex</dt><dd class="cmt"><p>the first index written</p></dd><dt class="param">lastIndex</dt><dd class="cmt"><p>the last index written</p></dd><dt class="param">replacedIndices</dt><dd class="cmt"><p>in the case where a disconnected leader had accepted commits, these are the indices of replaced entries from a new leader</p></dd></dl></div>
     </li><li name="riff.raft.log.LogCoords" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="LogCoordsextendsProductwithSerializable"></a><a id="LogCoords:LogCoords"></a>
       <span class="permalink">
@@ -476,12 +478,12 @@
         <span class="kind">trait</span>
       </span>
       <span class="symbol">
-        <a title="Represents a persistent log" href="RaftLog.html"><span class="name">RaftLog</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends <a href="RaftLogOps.html" class="extype" name="riff.raft.log.RaftLogOps">RaftLogOps</a>[<span class="extype" name="riff.raft.log.RaftLog.A">A</span>]</span>
+        <a title="The persistent log" href="RaftLog.html"><span class="name">RaftLog</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends <a href="RaftLogOps.html" class="extype" name="riff.raft.log.RaftLogOps">RaftLogOps</a>[<span class="extype" name="riff.raft.log.RaftLog.A">A</span>]</span>
       </span>
       
-      <p class="shortcomment cmt">Represents a persistent log
+      <p class="shortcomment cmt">The persistent log
 </p>
-    </li><li name="riff.raft.log.RaftLogOps" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
+    </li><li name="riff.raft.log.RaftLogOps" visbl="pub" class="indented0 " data-isabs="true" fullComment="yes" group="Ungrouped">
       <a id="RaftLogOps[A]extendsAnyRef"></a><a id="RaftLogOps[A]:RaftLogOps[A]"></a>
       <span class="permalink">
       <a href="../../../riff/raft/log/index.html#RaftLogOps[A]extendsAnyRef" title="Permalink">
@@ -493,11 +495,15 @@
         <span class="kind">trait</span>
       </span>
       <span class="symbol">
-        <a title="Additional convenience operations which can be performed on a RaftLog" href="RaftLogOps.html"><span class="name">RaftLogOps</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+        <a title="A base type for the raft log." href="RaftLogOps.html"><span class="name">RaftLogOps</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
       
-      <p class="shortcomment cmt">Additional convenience operations which can be performed on a RaftLog
-</p>
+      <p class="shortcomment cmt">A base type for the raft log.</p><div class="fullcomment"><div class="comment cmt"><p>A base type for the raft log.</p><p>the <a href="RaftLogOps.html#onCommit(applyToStateMachine:riff.raft.log.LogEntry[A]=&gt;Unit):riff.raft.log.StateMachineLog[A]" class="extmbr" name="riff.raft.log.RaftLogOps#onCommit">RaftLogOps#onCommit</a> is the primary, important bit which binds the commit of the log entry to your application.
+That is the point where the entry is applied to your state-machine.</p><p>The 'RaftLogOps' is declared from which RaftLog extends, as the JVM-specific implemenation uses the 'RaftLog' companion
+object with its dependency on the 'ToBytes'/'FromBytes' typeclasses, which as I write this, I
+realize how silly a reason that perhaps is to split it up.</p><p>At any rate, the end-client consumers of this trait won't know, as both the JVM and Javascript variants expose a RaftLog, so it shouldn't really
+impact anybody, other than to give 'em pause as they think &quot;why this extra step in the class hierarchy?&quot;
+</p></div><dl class="paramcmts block"><dt class="tparam">A</dt><dd class="cmt"><p>the type stored in the log</p></dd></dl></div>
     </li><li name="riff.raft.log.StateMachineLog" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="StateMachineLog[A]extendsDelegateLog[A]"></a><a id="StateMachineLog[A]:StateMachineLog[A]"></a>
       <span class="permalink">

@@ -164,7 +164,7 @@
         <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <span class="name">Fixed</span><span class="tparams">[<span name="NodeKey">NodeKey</span>]</span><span class="result"> extends <a href="RaftCluster.html" class="extype" name="riff.raft.node.RaftCluster">RaftCluster</a>[<span class="extype" name="riff.raft.node.RaftCluster.Fixed.NodeKey">NodeKey</span>]</span>
+        <span class="name">Fixed</span><span class="result"> extends <a href="RaftCluster.html" class="extype" name="riff.raft.node.RaftCluster">RaftCluster</a></span>
       </span>
       </h4>
 
@@ -173,7 +173,7 @@
           <span class="toggle">
             Linear Supertypes
           </span>
-          <div class="superTypes hiddenContent"><a href="RaftCluster.html" class="extype" name="riff.raft.node.RaftCluster">RaftCluster</a>[<span class="extype" name="riff.raft.node.RaftCluster.Fixed.NodeKey">NodeKey</span>], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><a href="RaftCluster.html" class="extype" name="riff.raft.node.RaftCluster">RaftCluster</a>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
         
 
@@ -220,9 +220,9 @@
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
               <ol><li name="riff.raft.node.RaftCluster.Fixed#&lt;init&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="&lt;init&gt;(peers:Set[NodeKey]):riff.raft.node.RaftCluster.Fixed[NodeKey]"></a><a id="&lt;init&gt;:Fixed[NodeKey]"></a>
+      <a id="&lt;init&gt;(peers:Set[riff.raft.NodeId]):riff.raft.node.RaftCluster.Fixed"></a><a id="&lt;init&gt;:Fixed"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/node/RaftCluster$$Fixed.html#&lt;init&gt;(peers:Set[NodeKey]):riff.raft.node.RaftCluster.Fixed[NodeKey]" title="Permalink">
+      <a href="../../../riff/raft/node/RaftCluster$$Fixed.html#&lt;init&gt;(peers:Set[riff.raft.NodeId]):riff.raft.node.RaftCluster.Fixed" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -231,7 +231,7 @@
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">Fixed</span><span class="params">(<span name="peers">peers: <span class="extype" name="scala.Predef.Set">Set</span>[<span class="extype" name="riff.raft.node.RaftCluster.Fixed.NodeKey">NodeKey</span>]</span>)</span>
+        <span class="name">Fixed</span><span class="params">(<span name="peers">peers: <span class="extype" name="scala.Predef.Set">Set</span>[<a href="../index.html#NodeId=String" class="extmbr" name="riff.raft.NodeId">NodeId</a>]</span>)</span>
       </span>
       
       
@@ -294,9 +294,9 @@
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="riff.raft.node.RaftCluster#asDynamicCluster" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="asDynamicCluster():riff.raft.node.RaftCluster.Dynamic[NodeKey]"></a><a id="asDynamicCluster():Dynamic[NodeKey]"></a>
+      <a id="asDynamicCluster():riff.raft.node.RaftCluster.Dynamic"></a><a id="asDynamicCluster():Dynamic"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/node/RaftCluster$$Fixed.html#asDynamicCluster():riff.raft.node.RaftCluster.Dynamic[NodeKey]" title="Permalink">
+      <a href="../../../riff/raft/node/RaftCluster$$Fixed.html#asDynamicCluster():riff.raft.node.RaftCluster.Dynamic" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -305,7 +305,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">asDynamicCluster</span><span class="params">()</span><span class="result">: <a href="RaftCluster$$Dynamic.html" class="extype" name="riff.raft.node.RaftCluster.Dynamic">Dynamic</a>[<span class="extype" name="riff.raft.node.RaftCluster.Fixed.NodeKey">NodeKey</span>]</span>
+        <span class="name">asDynamicCluster</span><span class="params">()</span><span class="result">: <a href="RaftCluster$$Dynamic.html" class="extype" name="riff.raft.node.RaftCluster.Dynamic">Dynamic</a></span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="RaftCluster.html" class="extype" name="riff.raft.node.RaftCluster">RaftCluster</a></dd></dl></div>
@@ -350,9 +350,9 @@
               
         </dd></dl></div>
     </li><li name="riff.raft.node.RaftCluster.Fixed#contains" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="contains(key:NodeKey):Boolean"></a><a id="contains(NodeKey):Boolean"></a>
+      <a id="contains(key:riff.raft.NodeId):Boolean"></a><a id="contains(NodeId):Boolean"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/node/RaftCluster$$Fixed.html#contains(key:NodeKey):Boolean" title="Permalink">
+      <a href="../../../riff/raft/node/RaftCluster$$Fixed.html#contains(key:riff.raft.NodeId):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -361,7 +361,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">contains</span><span class="params">(<span name="key">key: <span class="extype" name="riff.raft.node.RaftCluster.Fixed.NodeKey">NodeKey</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+        <span class="name">contains</span><span class="params">(<span name="key">key: <a href="../index.html#NodeId=String" class="extmbr" name="riff.raft.NodeId">NodeId</a></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="riff.raft.node.RaftCluster.Fixed">Fixed</a> → <a href="RaftCluster.html" class="extype" name="riff.raft.node.RaftCluster">RaftCluster</a></dd></dl></div>
@@ -544,9 +544,9 @@
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="riff.raft.node.RaftCluster.Fixed">Fixed</a> → <a href="RaftCluster.html" class="extype" name="riff.raft.node.RaftCluster">RaftCluster</a></dd></dl></div>
     </li><li name="riff.raft.node.RaftCluster.Fixed#peers" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="peers:Set[NodeKey]"></a>
+      <a id="peers:Set[riff.raft.NodeId]"></a><a id="peers:Set[NodeId]"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/node/RaftCluster$$Fixed.html#peers:Set[NodeKey]" title="Permalink">
+      <a href="../../../riff/raft/node/RaftCluster$$Fixed.html#peers:Set[riff.raft.NodeId]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -555,7 +555,7 @@
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">peers</span><span class="result">: <span class="extype" name="scala.Predef.Set">Set</span>[<span class="extype" name="riff.raft.node.RaftCluster.Fixed.NodeKey">NodeKey</span>]</span>
+        <span class="name">peers</span><span class="result">: <span class="extype" name="scala.Predef.Set">Set</span>[<a href="../index.html#NodeId=String" class="extmbr" name="riff.raft.NodeId">NodeId</a>]</span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="riff.raft.node.RaftCluster.Fixed">Fixed</a> → <a href="RaftCluster.html" class="extype" name="riff.raft.node.RaftCluster">RaftCluster</a></dd></dl></div>
@@ -670,7 +670,7 @@
 
         <div id="inheritedMembers">
         <div class="parent" name="riff.raft.node.RaftCluster">
-              <h3>Inherited from <a href="RaftCluster.html" class="extype" name="riff.raft.node.RaftCluster">RaftCluster</a>[<span class="extype" name="riff.raft.node.RaftCluster.Fixed.NodeKey">NodeKey</span>]</h3>
+              <h3>Inherited from <a href="RaftCluster.html" class="extype" name="riff.raft.node.RaftCluster">RaftCluster</a></h3>
             </div><div class="parent" name="scala.AnyRef">
               <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
             </div><div class="parent" name="scala.Any">

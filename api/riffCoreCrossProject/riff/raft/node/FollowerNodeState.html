@@ -220,7 +220,7 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">FollowerNodeState</span><span class="tparams">[<span name="NodeKey">NodeKey</span>]</span><span class="params">(<span name="id">id: <span class="extype" name="riff.raft.node.FollowerNodeState.NodeKey">NodeKey</span></span>, <span name="leader">leader: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="riff.raft.node.FollowerNodeState.NodeKey">NodeKey</span>]</span>)</span><span class="result"> extends <a href="NodeState.html" class="extype" name="riff.raft.node.NodeState">NodeState</a>[<span class="extype" name="riff.raft.node.FollowerNodeState.NodeKey">NodeKey</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <span class="name">FollowerNodeState</span><span class="params">(<span name="id">id: <a href="../index.html#NodeId=String" class="extmbr" name="riff.raft.NodeId">NodeId</a></span>, <span name="leader">leader: <span class="extype" name="scala.Option">Option</span>[<a href="../index.html#NodeId=String" class="extmbr" name="riff.raft.NodeId">NodeId</a>]</span>)</span><span class="result"> extends <a href="NodeState.html" class="extype" name="riff.raft.node.NodeState">NodeState</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
 
@@ -229,7 +229,7 @@
           <span class="toggle">
             Linear Supertypes
           </span>
-          <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <a href="NodeState.html" class="extype" name="riff.raft.node.NodeState">NodeState</a>[<span class="extype" name="riff.raft.node.FollowerNodeState.NodeKey">NodeKey</span>], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <a href="NodeState.html" class="extype" name="riff.raft.node.NodeState">NodeState</a>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
         
 
@@ -276,9 +276,9 @@
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
               <ol><li name="riff.raft.node.FollowerNodeState#&lt;init&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="&lt;init&gt;(id:NodeKey,leader:Option[NodeKey]):riff.raft.node.FollowerNodeState[NodeKey]"></a><a id="&lt;init&gt;:FollowerNodeState[NodeKey]"></a>
+      <a id="&lt;init&gt;(id:riff.raft.NodeId,leader:Option[riff.raft.NodeId]):riff.raft.node.FollowerNodeState"></a><a id="&lt;init&gt;:FollowerNodeState"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/node/FollowerNodeState.html#&lt;init&gt;(id:NodeKey,leader:Option[NodeKey]):riff.raft.node.FollowerNodeState[NodeKey]" title="Permalink">
+      <a href="../../../riff/raft/node/FollowerNodeState.html#&lt;init&gt;(id:riff.raft.NodeId,leader:Option[riff.raft.NodeId]):riff.raft.node.FollowerNodeState" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -287,7 +287,7 @@
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">FollowerNodeState</span><span class="params">(<span name="id">id: <span class="extype" name="riff.raft.node.FollowerNodeState.NodeKey">NodeKey</span></span>, <span name="leader">leader: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="riff.raft.node.FollowerNodeState.NodeKey">NodeKey</span>]</span>)</span>
+        <span class="name">FollowerNodeState</span><span class="params">(<span name="id">id: <a href="../index.html#NodeId=String" class="extmbr" name="riff.raft.NodeId">NodeId</a></span>, <span name="leader">leader: <span class="extype" name="scala.Option">Option</span>[<a href="../index.html#NodeId=String" class="extmbr" name="riff.raft.NodeId">NodeId</a>]</span>)</span>
       </span>
       
       
@@ -366,9 +366,9 @@
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
     </li><li name="riff.raft.node.NodeState#asLeader" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="asLeader:Option[riff.raft.node.LeaderNodeState[NodeKey]]"></a><a id="asLeader:Option[LeaderNodeState[NodeKey]]"></a>
+      <a id="asLeader:Option[riff.raft.node.LeaderNodeState]"></a><a id="asLeader:Option[LeaderNodeState]"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/node/FollowerNodeState.html#asLeader:Option[riff.raft.node.LeaderNodeState[NodeKey]]" title="Permalink">
+      <a href="../../../riff/raft/node/FollowerNodeState.html#asLeader:Option[riff.raft.node.LeaderNodeState]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -377,14 +377,14 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">asLeader</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<a href="LeaderNodeState.html" class="extype" name="riff.raft.node.LeaderNodeState">LeaderNodeState</a>[<span class="extype" name="riff.raft.node.FollowerNodeState.NodeKey">NodeKey</span>]]</span>
+        <span class="name">asLeader</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<a href="LeaderNodeState.html" class="extype" name="riff.raft.node.LeaderNodeState">LeaderNodeState</a>]</span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="NodeState.html" class="extype" name="riff.raft.node.NodeState">NodeState</a></dd></dl></div>
     </li><li name="riff.raft.node.NodeState#becomeCandidate" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="becomeCandidate(term:riff.raft.Term,clusterSize:Int):riff.raft.node.CandidateNodeState[NodeKey]"></a><a id="becomeCandidate(Term,Int):CandidateNodeState[NodeKey]"></a>
+      <a id="becomeCandidate(term:riff.raft.Term,clusterSize:Int):riff.raft.node.CandidateNodeState"></a><a id="becomeCandidate(Term,Int):CandidateNodeState"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/node/FollowerNodeState.html#becomeCandidate(term:riff.raft.Term,clusterSize:Int):riff.raft.node.CandidateNodeState[NodeKey]" title="Permalink">
+      <a href="../../../riff/raft/node/FollowerNodeState.html#becomeCandidate(term:riff.raft.Term,clusterSize:Int):riff.raft.node.CandidateNodeState" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -393,14 +393,14 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">becomeCandidate</span><span class="params">(<span name="term">term: <a href="../index.html#Term=Int" class="extmbr" name="riff.raft.Term">Term</a></span>, <span name="clusterSize">clusterSize: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <a href="CandidateNodeState.html" class="extype" name="riff.raft.node.CandidateNodeState">CandidateNodeState</a>[<span class="extype" name="riff.raft.node.FollowerNodeState.NodeKey">NodeKey</span>]</span>
+        <span class="name">becomeCandidate</span><span class="params">(<span name="term">term: <a href="../index.html#Term=Int" class="extmbr" name="riff.raft.Term">Term</a></span>, <span name="clusterSize">clusterSize: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <a href="CandidateNodeState.html" class="extype" name="riff.raft.node.CandidateNodeState">CandidateNodeState</a></span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="NodeState.html" class="extype" name="riff.raft.node.NodeState">NodeState</a></dd></dl></div>
     </li><li name="riff.raft.node.NodeState#becomeFollower" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="becomeFollower(leader:Option[NodeKey]):riff.raft.node.FollowerNodeState[NodeKey]"></a><a id="becomeFollower(Option[NodeKey]):FollowerNodeState[NodeKey]"></a>
+      <a id="becomeFollower(leader:Option[riff.raft.NodeId]):riff.raft.node.FollowerNodeState"></a><a id="becomeFollower(Option[NodeId]):FollowerNodeState"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/node/FollowerNodeState.html#becomeFollower(leader:Option[NodeKey]):riff.raft.node.FollowerNodeState[NodeKey]" title="Permalink">
+      <a href="../../../riff/raft/node/FollowerNodeState.html#becomeFollower(leader:Option[riff.raft.NodeId]):riff.raft.node.FollowerNodeState" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -409,14 +409,14 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">becomeFollower</span><span class="params">(<span name="leader">leader: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="riff.raft.node.FollowerNodeState.NodeKey">NodeKey</span>]</span>)</span><span class="result">: <a href="" class="extype" name="riff.raft.node.FollowerNodeState">FollowerNodeState</a>[<span class="extype" name="riff.raft.node.FollowerNodeState.NodeKey">NodeKey</span>]</span>
+        <span class="name">becomeFollower</span><span class="params">(<span name="leader">leader: <span class="extype" name="scala.Option">Option</span>[<a href="../index.html#NodeId=String" class="extmbr" name="riff.raft.NodeId">NodeId</a>]</span>)</span><span class="result">: <a href="" class="extype" name="riff.raft.node.FollowerNodeState">FollowerNodeState</a></span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="NodeState.html" class="extype" name="riff.raft.node.NodeState">NodeState</a></dd></dl></div>
     </li><li name="riff.raft.node.NodeState#becomeLeader" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="becomeLeader(cluster:riff.raft.node.RaftCluster[NodeKey]):riff.raft.node.LeaderNodeState[NodeKey]"></a><a id="becomeLeader(RaftCluster[NodeKey]):LeaderNodeState[NodeKey]"></a>
+      <a id="becomeLeader(cluster:riff.raft.node.RaftCluster):riff.raft.node.LeaderNodeState"></a><a id="becomeLeader(RaftCluster):LeaderNodeState"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/node/FollowerNodeState.html#becomeLeader(cluster:riff.raft.node.RaftCluster[NodeKey]):riff.raft.node.LeaderNodeState[NodeKey]" title="Permalink">
+      <a href="../../../riff/raft/node/FollowerNodeState.html#becomeLeader(cluster:riff.raft.node.RaftCluster):riff.raft.node.LeaderNodeState" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -425,7 +425,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">becomeLeader</span><span class="params">(<span name="cluster">cluster: <a href="RaftCluster.html" class="extype" name="riff.raft.node.RaftCluster">RaftCluster</a>[<span class="extype" name="riff.raft.node.FollowerNodeState.NodeKey">NodeKey</span>]</span>)</span><span class="result">: <a href="LeaderNodeState.html" class="extype" name="riff.raft.node.LeaderNodeState">LeaderNodeState</a>[<span class="extype" name="riff.raft.node.FollowerNodeState.NodeKey">NodeKey</span>]</span>
+        <span class="name">becomeLeader</span><span class="params">(<span name="cluster">cluster: <a href="RaftCluster.html" class="extype" name="riff.raft.node.RaftCluster">RaftCluster</a></span>)</span><span class="result">: <a href="LeaderNodeState.html" class="extype" name="riff.raft.node.LeaderNodeState">LeaderNodeState</a></span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="NodeState.html" class="extype" name="riff.raft.node.NodeState">NodeState</a></dd></dl></div>
@@ -511,9 +511,9 @@
               
         </dd></dl></div>
     </li><li name="riff.raft.node.FollowerNodeState#id" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="id:NodeKey"></a>
+      <a id="id:riff.raft.NodeId"></a><a id="id:NodeId"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/node/FollowerNodeState.html#id:NodeKey" title="Permalink">
+      <a href="../../../riff/raft/node/FollowerNodeState.html#id:riff.raft.NodeId" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -522,7 +522,7 @@
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">id</span><span class="result">: <span class="extype" name="riff.raft.node.FollowerNodeState.NodeKey">NodeKey</span></span>
+        <span class="name">id</span><span class="result">: <a href="../index.html#NodeId=String" class="extmbr" name="riff.raft.NodeId">NodeId</a></span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="riff.raft.node.FollowerNodeState">FollowerNodeState</a> → <a href="NodeState.html" class="extype" name="riff.raft.node.NodeState">NodeState</a></dd></dl></div>
@@ -591,9 +591,9 @@
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="NodeState.html" class="extype" name="riff.raft.node.NodeState">NodeState</a></dd></dl></div>
     </li><li name="riff.raft.node.FollowerNodeState#leader" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="leader:Option[NodeKey]"></a>
+      <a id="leader:Option[riff.raft.NodeId]"></a><a id="leader:Option[NodeId]"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/node/FollowerNodeState.html#leader:Option[NodeKey]" title="Permalink">
+      <a href="../../../riff/raft/node/FollowerNodeState.html#leader:Option[riff.raft.NodeId]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -602,7 +602,7 @@
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">leader</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="riff.raft.node.FollowerNodeState.NodeKey">NodeKey</span>]</span>
+        <span class="name">leader</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<a href="../index.html#NodeId=String" class="extmbr" name="riff.raft.NodeId">NodeId</a>]</span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="riff.raft.node.FollowerNodeState">FollowerNodeState</a> → <a href="NodeState.html" class="extype" name="riff.raft.node.NodeState">NodeState</a></dd></dl></div>
@@ -779,7 +779,7 @@
             </div><div class="parent" name="scala.Equals">
               <h3>Inherited from <span class="extype" name="scala.Equals">Equals</span></h3>
             </div><div class="parent" name="riff.raft.node.NodeState">
-              <h3>Inherited from <a href="NodeState.html" class="extype" name="riff.raft.node.NodeState">NodeState</a>[<span class="extype" name="riff.raft.node.FollowerNodeState.NodeKey">NodeKey</span>]</h3>
+              <h3>Inherited from <a href="NodeState.html" class="extype" name="riff.raft.node.NodeState">NodeState</a></h3>
             </div><div class="parent" name="scala.AnyRef">
               <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
             </div><div class="parent" name="scala.Any">

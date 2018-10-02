@@ -191,8 +191,20 @@
                         <a href="LogCommitException.html" title="">LogCommitException</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
+                        <a class="class" href="NotTheLeaderException.html" title=""></a>
+                        <a href="NotTheLeaderException.html" title="">NotTheLeaderException</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="Raft$.html" title=""></a>
+                        <a href="Raft$.html" title="">Raft</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
                         <a class="trait" href="RaftClient.html" title="The external use-cases for a node in the Raft protocol are:"></a>
                         <a href="RaftClient.html" title="The external use-cases for a node in the Raft protocol are:">RaftClient</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="RoleCallback$.html" title=""></a>
+                        <a class="trait" href="RoleCallback.html" title="This is provided as a convenience to be added to a riff.raft.node.RaftNode for anything which cares about role transitions for a particular node."></a>
+                        <a href="RoleCallback.html" title="This is provided as a convenience to be added to a riff.raft.node.RaftNode for anything which cares about role transitions for a particular node.">RoleCallback</a>
                       </li>
               </ul>
             </div>
@@ -216,13 +228,13 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">AppendStatus</span><span class="params">(<span name="logCoods">logCoods: <a href="log/LogCoords.html" class="extype" name="riff.raft.log.LogCoords">LogCoords</a></span>, <span name="appended">appended: <span class="extype" name="scala.Predef.Map">Map</span>[<span class="extype" name="scala.Predef.String">String</span>, <span class="extype" name="scala.Boolean">Boolean</span>]</span>, <span name="committed">committed: <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="clusterSize">clusterSize: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <span class="name">AppendStatus</span><span class="params">(<span name="leaderAppendResult">leaderAppendResult: <a href="log/LogAppendSuccess.html" class="extype" name="riff.raft.log.LogAppendSuccess">LogAppendSuccess</a></span>, <span name="appended">appended: <span class="extype" name="scala.Predef.Map">Map</span>[<span class="extype" name="scala.Predef.String">String</span>, <span class="extype" name="scala.Boolean">Boolean</span>]</span>, <span name="committed">committed: <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="clusterSize">clusterSize: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
 
       
           <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Represents the current state of the cluster following an append
-</p></div><dl class="paramcmts block"><dt class="param">logCoods</dt><dd class="cmt"><p>the coords of the entry appended</p></dd><dt class="param">appended</dt><dd class="cmt"><p>a map of the cluster ids to a flag indicating whether or not the node has appended the entry</p></dd><dt class="param">committed</dt><dd class="cmt"><p>a flag to indicate whether the entry has been committed on the leader</p></dd><dt class="param">clusterSize</dt><dd class="cmt"><p>the size of the cluster</p></dd></dl><div class="toggleContainer block">
+</p></div><dl class="paramcmts block"><dt class="param">appended</dt><dd class="cmt"><p>a map of the cluster ids to a flag indicating whether or not the node has appended the entry</p></dd><dt class="param">committed</dt><dd class="cmt"><p>a flag to indicate whether the entry has been committed on the leader</p></dd><dt class="param">clusterSize</dt><dd class="cmt"><p>the size of the cluster</p></dd></dl><div class="toggleContainer block">
           <span class="toggle">
             Linear Supertypes
           </span>
@@ -273,9 +285,9 @@
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
               <ol><li name="riff.raft.AppendStatus#&lt;init&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="&lt;init&gt;(logCoods:riff.raft.log.LogCoords,appended:Map[String,Boolean],committed:Boolean,clusterSize:Int):riff.raft.AppendStatus"></a><a id="&lt;init&gt;:AppendStatus"></a>
+      <a id="&lt;init&gt;(leaderAppendResult:riff.raft.log.LogAppendSuccess,appended:Map[String,Boolean],committed:Boolean,clusterSize:Int):riff.raft.AppendStatus"></a><a id="&lt;init&gt;:AppendStatus"></a>
       <span class="permalink">
-      <a href="../../riff/raft/AppendStatus.html#&lt;init&gt;(logCoods:riff.raft.log.LogCoords,appended:Map[String,Boolean],committed:Boolean,clusterSize:Int):riff.raft.AppendStatus" title="Permalink">
+      <a href="../../riff/raft/AppendStatus.html#&lt;init&gt;(leaderAppendResult:riff.raft.log.LogAppendSuccess,appended:Map[String,Boolean],committed:Boolean,clusterSize:Int):riff.raft.AppendStatus" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -284,10 +296,10 @@
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">AppendStatus</span><span class="params">(<span name="logCoods">logCoods: <a href="log/LogCoords.html" class="extype" name="riff.raft.log.LogCoords">LogCoords</a></span>, <span name="appended">appended: <span class="extype" name="scala.Predef.Map">Map</span>[<span class="extype" name="scala.Predef.String">String</span>, <span class="extype" name="scala.Boolean">Boolean</span>]</span>, <span name="committed">committed: <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="clusterSize">clusterSize: <span class="extype" name="scala.Int">Int</span></span>)</span>
+        <span class="name">AppendStatus</span><span class="params">(<span name="leaderAppendResult">leaderAppendResult: <a href="log/LogAppendSuccess.html" class="extype" name="riff.raft.log.LogAppendSuccess">LogAppendSuccess</a></span>, <span name="appended">appended: <span class="extype" name="scala.Predef.Map">Map</span>[<span class="extype" name="scala.Predef.String">String</span>, <span class="extype" name="scala.Boolean">Boolean</span>]</span>, <span name="committed">committed: <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="clusterSize">clusterSize: <span class="extype" name="scala.Int">Int</span></span>)</span>
       </span>
       
-      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">logCoods</dt><dd class="cmt"><p>the coords of the entry appended</p></dd><dt class="param">appended</dt><dd class="cmt"><p>a map of the cluster ids to a flag indicating whether or not the node has appended the entry</p></dd><dt class="param">committed</dt><dd class="cmt"><p>a flag to indicate whether the entry has been committed on the leader</p></dd><dt class="param">clusterSize</dt><dd class="cmt"><p>the size of the cluster</p></dd></dl></div>
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">appended</dt><dd class="cmt"><p>a map of the cluster ids to a flag indicating whether or not the node has appended the entry</p></dd><dt class="param">committed</dt><dd class="cmt"><p>a flag to indicate whether the entry has been committed on the leader</p></dd><dt class="param">clusterSize</dt><dd class="cmt"><p>the size of the cluster</p></dd></dl></div>
     </li></ol>
             </div>
 
@@ -507,10 +519,10 @@
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
-    </li><li name="riff.raft.AppendStatus#logCoods" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="logCoods:riff.raft.log.LogCoords"></a><a id="logCoods:LogCoords"></a>
+    </li><li name="riff.raft.AppendStatus#leaderAppendResult" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="leaderAppendResult:riff.raft.log.LogAppendSuccess"></a><a id="leaderAppendResult:LogAppendSuccess"></a>
       <span class="permalink">
-      <a href="../../riff/raft/AppendStatus.html#logCoods:riff.raft.log.LogCoords" title="Permalink">
+      <a href="../../riff/raft/AppendStatus.html#leaderAppendResult:riff.raft.log.LogAppendSuccess" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -519,7 +531,7 @@
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">logCoods</span><span class="result">: <a href="log/LogCoords.html" class="extype" name="riff.raft.log.LogCoords">LogCoords</a></span>
+        <span class="name">leaderAppendResult</span><span class="result">: <a href="log/LogAppendSuccess.html" class="extype" name="riff.raft.log.LogAppendSuccess">LogAppendSuccess</a></span>
       </span>
       
       
@@ -661,6 +673,22 @@
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="riff.raft.AppendStatus#withResult" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="withResult(from:riff.raft.NodeId,ok:Boolean):riff.raft.AppendStatus"></a><a id="withResult(NodeId,Boolean):AppendStatus"></a>
+      <span class="permalink">
+      <a href="../../riff/raft/AppendStatus.html#withResult(from:riff.raft.NodeId,ok:Boolean):riff.raft.AppendStatus" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">withResult</span><span class="params">(<span name="from">from: <a href="index.html#NodeId=String" class="extmbr" name="riff.raft.NodeId">NodeId</a></span>, <span name="ok">ok: <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <a href="" class="extype" name="riff.raft.AppendStatus">AppendStatus</a></span>
+      </span>
+      
+      
     </li>
               </ol>
             </div>

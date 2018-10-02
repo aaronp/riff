@@ -135,6 +135,14 @@
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../index.html" class="extype" name="riff.raft">raft</a></dd></dl></div>
     </li><li class="current-entities indented3">
                         <span class="separator"></span>
+                        <a class="class" href="AddressedMessage.html" title=""></a>
+                        <a href="AddressedMessage.html" title="">AddressedMessage</a>
+                      </li><li class="current-entities indented3">
+                        <a class="object" href="AppendData$.html" title=""></a>
+                        <a class="class" href="AppendData.html" title="Represents input from a client of the cluster"></a>
+                        <a href="AppendData.html" title="Represents input from a client of the cluster">AppendData</a>
+                      </li><li class="current-entities indented3">
+                        <span class="separator"></span>
                         <a class="class" href="AppendEntries.html" title=""></a>
                         <a href="AppendEntries.html" title="">AppendEntries</a>
                       </li><li class="current-entities indented3">
@@ -143,8 +151,8 @@
                         <a href="AppendEntriesResponse.html" title="">AppendEntriesResponse</a>
                       </li><li class="current-entities indented3">
                         <span class="separator"></span>
-                        <a class="trait" href="RaftMessage.html" title="Represents all the inputs into a raft node"></a>
-                        <a href="RaftMessage.html" title="Represents all the inputs into a raft node">RaftMessage</a>
+                        <a class="trait" href="RaftMessage.html" title="Represents the possible input types into a riff.raft.node.RaftNode"></a>
+                        <a href="RaftMessage.html" title="Represents the possible input types into a riff.raft.node.RaftNode">RaftMessage</a>
                       </li><li class="current-entities indented3">
                         <span class="separator"></span>
                         <a class="trait" href="RaftRequest.html" title="RaftRequest"></a>
@@ -272,7 +280,39 @@
 
         <div id="types" class="types members">
               <h3>Type Members</h3>
-              <ol><li name="riff.raft.messages.AppendEntries" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+              <ol><li name="riff.raft.messages.AddressedMessage" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="AddressedMessage[+A]extendsRaftMessage[A]withProductwithSerializable"></a><a id="AddressedMessage[+A]:AddressedMessage[A]"></a>
+      <span class="permalink">
+      <a href="../../../riff/raft/messages/index.html#AddressedMessage[+A]extendsRaftMessage[A]withProductwithSerializable" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="AddressedMessage.html"><span class="name">AddressedMessage</span></a><span class="tparams">[<span name="A">+A</span>]</span><span class="params">(<span name="from">from: <a href="../index.html#NodeId=String" class="extmbr" name="riff.raft.NodeId">NodeId</a></span>, <span name="message">message: <a href="RequestOrResponse.html" class="extype" name="riff.raft.messages.RequestOrResponse">RequestOrResponse</a>[<span class="extype" name="riff.raft.messages.AddressedMessage.A">A</span>]</span>)</span><span class="result"> extends <a href="RaftMessage.html" class="extype" name="riff.raft.messages.RaftMessage">RaftMessage</a>[<span class="extype" name="riff.raft.messages.AddressedMessage.A">A</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">from</dt><dd class="cmt"><p>represents the source of the message</p></dd><dt class="param">message</dt><dd class="cmt"><p>the message</p></dd></dl></div>
+    </li><li name="riff.raft.messages.AppendData" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="AppendData[A]extendsRaftMessage[A]withProductwithSerializable"></a><a id="AppendData[A]:AppendData[A]"></a>
+      <span class="permalink">
+      <a href="../../../riff/raft/messages/index.html#AppendData[A]extendsRaftMessage[A]withProductwithSerializable" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a title="Represents input from a client of the cluster" href="AppendData.html"><span class="name">AppendData</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="values">values: <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="riff.raft.messages.AppendData.A">A</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="evidence$1">evidence$1: <span class="extype" name="scala.reflect.ClassTag">ClassTag</span>[<span class="extype" name="riff.raft.messages.AppendData.A">A</span>]</span>)</span><span class="result"> extends <a href="RaftMessage.html" class="extype" name="riff.raft.messages.RaftMessage">RaftMessage</a>[<span class="extype" name="riff.raft.messages.AppendData.A">A</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      <p class="shortcomment cmt">Represents input from a client of the cluster</p><div class="fullcomment"><div class="comment cmt"><p>Represents input from a client of the cluster</p></div><dl class="paramcmts block"><dt class="tparam">A</dt><dd class="cmt"><p>the log entry type.</p></dd><dt class="param">values</dt><dd class="cmt"><p>the values to append</p></dd></dl></div>
+    </li><li name="riff.raft.messages.AppendEntries" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="AppendEntries[A]extendsRaftRequest[A]withProductwithSerializable"></a><a id="AppendEntries[A]:AppendEntries[A]"></a>
       <span class="permalink">
       <a href="../../../riff/raft/messages/index.html#AppendEntries[A]extendsRaftRequest[A]withProductwithSerializable" title="Permalink">
@@ -304,10 +344,10 @@
       </span>
       
       
-    </li><li name="riff.raft.messages.RaftMessage" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="RaftMessage[+NodeKey,+A]extendsAnyRef"></a><a id="RaftMessage[+NodeKey,+A]:RaftMessage[NodeKey,A]"></a>
+    </li><li name="riff.raft.messages.RaftMessage" visbl="pub" class="indented0 " data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="RaftMessage[+A]extendsAnyRef"></a><a id="RaftMessage[+A]:RaftMessage[A]"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/messages/index.html#RaftMessage[+NodeKey,+A]extendsAnyRef" title="Permalink">
+      <a href="../../../riff/raft/messages/index.html#RaftMessage[+A]extendsAnyRef" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -316,15 +356,16 @@
         <span class="kind">trait</span>
       </span>
       <span class="symbol">
-        <a title="Represents all the inputs into a raft node" href="RaftMessage.html"><span class="name">RaftMessage</span></a><span class="tparams">[<span name="NodeKey">+NodeKey</span>, <span name="A">+A</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+        <a title="Represents the possible input types into a riff.raft.node.RaftNode" href="RaftMessage.html"><span class="name">RaftMessage</span></a><span class="tparams">[<span name="A">+A</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
       
-      <p class="shortcomment cmt">Represents all the inputs into a raft node
-</p>
+      <p class="shortcomment cmt">Represents the possible input types into a <a href="../node/RaftNode.html" class="extype" name="riff.raft.node.RaftNode">riff.raft.node.RaftNode</a></p><div class="fullcomment"><div class="comment cmt"><p>Represents the possible input types into a <a href="../node/RaftNode.html" class="extype" name="riff.raft.node.RaftNode">riff.raft.node.RaftNode</a></p><p>Encapsulating all inputs w/ a single type makes the <a href="../node/RaftNode.html" class="extype" name="riff.raft.node.RaftNode">riff.raft.node.RaftNode</a> easy to drive via a data stream,
+put behind an actor, invoke from an unmarshalled POST request, etc.
+</p></div><dl class="paramcmts block"><dt class="tparam">A</dt><dd class="cmt"><p>the log entry type. This type is added here (as opposed to just on the <a href="AddressedMessage.html" class="extype" name="riff.raft.messages.AddressedMessage">AddressedMessage</a> as an aid for circe to be able to provide generic encoder/decoders</p></dd></dl></div>
     </li><li name="riff.raft.messages.RaftRequest" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="RaftRequest[+A]extendsRequestOrResponse[Nothing,A]"></a><a id="RaftRequest[+A]:RaftRequest[A]"></a>
+      <a id="RaftRequest[+A]extendsRequestOrResponse[A]"></a><a id="RaftRequest[+A]:RaftRequest[A]"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/messages/index.html#RaftRequest[+A]extendsRequestOrResponse[Nothing,A]" title="Permalink">
+      <a href="../../../riff/raft/messages/index.html#RaftRequest[+A]extendsRequestOrResponse[A]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -333,15 +374,15 @@
         <span class="kind">trait</span>
       </span>
       <span class="symbol">
-        <a title="RaftRequest" href="RaftRequest.html"><span class="name">RaftRequest</span></a><span class="tparams">[<span name="A">+A</span>]</span><span class="result"> extends <a href="RequestOrResponse.html" class="extype" name="riff.raft.messages.RequestOrResponse">RequestOrResponse</a>[<span class="extype" name="scala.Nothing">Nothing</span>, <span class="extype" name="riff.raft.messages.RaftRequest.A">A</span>]</span>
+        <a title="RaftRequest" href="RaftRequest.html"><span class="name">RaftRequest</span></a><span class="tparams">[<span name="A">+A</span>]</span><span class="result"> extends <a href="RequestOrResponse.html" class="extype" name="riff.raft.messages.RequestOrResponse">RequestOrResponse</a>[<span class="extype" name="riff.raft.messages.RaftRequest.A">A</span>]</span>
       </span>
       
       <p class="shortcomment cmt">RaftRequest
 </p>
     </li><li name="riff.raft.messages.RaftResponse" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="RaftResponseextendsRequestOrResponse[Nothing,Nothing]"></a><a id="RaftResponse:RaftResponse"></a>
+      <a id="RaftResponseextendsRequestOrResponse[Nothing]"></a><a id="RaftResponse:RaftResponse"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/messages/index.html#RaftResponseextendsRequestOrResponse[Nothing,Nothing]" title="Permalink">
+      <a href="../../../riff/raft/messages/index.html#RaftResponseextendsRequestOrResponse[Nothing]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -350,15 +391,15 @@
         <span class="kind">trait</span>
       </span>
       <span class="symbol">
-        <a title="Raft Response" href="RaftResponse.html"><span class="name">RaftResponse</span></a><span class="result"> extends <a href="RequestOrResponse.html" class="extype" name="riff.raft.messages.RequestOrResponse">RequestOrResponse</a>[<span class="extype" name="scala.Nothing">Nothing</span>, <span class="extype" name="scala.Nothing">Nothing</span>]</span>
+        <a title="Raft Response" href="RaftResponse.html"><span class="name">RaftResponse</span></a><span class="result"> extends <a href="RequestOrResponse.html" class="extype" name="riff.raft.messages.RequestOrResponse">RequestOrResponse</a>[<span class="extype" name="scala.Nothing">Nothing</span>]</span>
       </span>
       
       <p class="shortcomment cmt">Raft Response
 </p>
     </li><li name="riff.raft.messages.RequestOrResponse" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="RequestOrResponse[+NodeKey,+A]extendsRaftMessage[NodeKey,A]"></a><a id="RequestOrResponse[+NodeKey,+A]:RequestOrResponse[NodeKey,A]"></a>
+      <a id="RequestOrResponse[+A]extendsAnyRef"></a><a id="RequestOrResponse[+A]:RequestOrResponse[A]"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/messages/index.html#RequestOrResponse[+NodeKey,+A]extendsRaftMessage[NodeKey,A]" title="Permalink">
+      <a href="../../../riff/raft/messages/index.html#RequestOrResponse[+A]extendsAnyRef" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -367,7 +408,7 @@
         <span class="kind">trait</span>
       </span>
       <span class="symbol">
-        <a title="" href="RequestOrResponse.html"><span class="name">RequestOrResponse</span></a><span class="tparams">[<span name="NodeKey">+NodeKey</span>, <span name="A">+A</span>]</span><span class="result"> extends <a href="RaftMessage.html" class="extype" name="riff.raft.messages.RaftMessage">RaftMessage</a>[<span class="extype" name="riff.raft.messages.RequestOrResponse.NodeKey">NodeKey</span>, <span class="extype" name="riff.raft.messages.RequestOrResponse.A">A</span>]</span>
+        <a title="" href="RequestOrResponse.html"><span class="name">RequestOrResponse</span></a><span class="tparams">[<span name="A">+A</span>]</span><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
       
       
@@ -404,9 +445,9 @@
       
       
     </li><li name="riff.raft.messages.TimerMessage" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="TimerMessageextendsRaftMessage[Nothing,Nothing]"></a><a id="TimerMessage:TimerMessage"></a>
+      <a id="TimerMessageextendsRaftMessage[Nothing]"></a><a id="TimerMessage:TimerMessage"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/messages/index.html#TimerMessageextendsRaftMessage[Nothing,Nothing]" title="Permalink">
+      <a href="../../../riff/raft/messages/index.html#TimerMessageextendsRaftMessage[Nothing]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -415,7 +456,7 @@
         <span class="kind">trait</span>
       </span>
       <span class="symbol">
-        <a title="" href="TimerMessage.html"><span class="name">TimerMessage</span></a><span class="result"> extends <a href="RaftMessage.html" class="extype" name="riff.raft.messages.RaftMessage">RaftMessage</a>[<span class="extype" name="scala.Nothing">Nothing</span>, <span class="extype" name="scala.Nothing">Nothing</span>]</span>
+        <a title="" href="TimerMessage.html"><span class="name">TimerMessage</span></a><span class="result"> extends <a href="RaftMessage.html" class="extype" name="riff.raft.messages.RaftMessage">RaftMessage</a>[<span class="extype" name="scala.Nothing">Nothing</span>]</span>
       </span>
       
       
@@ -427,7 +468,23 @@
         <div class="values members">
               <h3>Value Members</h3>
               <ol>
-                <li name="riff.raft.messages.AppendEntriesResponse" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+                <li name="riff.raft.messages.AppendData" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="AppendData"></a><a id="AppendData:AppendData"></a>
+      <span class="permalink">
+      <a href="../../../riff/raft/messages/index.html#AppendData" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="AppendData$.html"><span class="name">AppendData</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      
+    </li><li name="riff.raft.messages.AppendEntriesResponse" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="AppendEntriesResponse"></a><a id="AppendEntriesResponse:AppendEntriesResponse"></a>
       <span class="permalink">
       <a href="../../../riff/raft/messages/index.html#AppendEntriesResponse" title="Permalink">

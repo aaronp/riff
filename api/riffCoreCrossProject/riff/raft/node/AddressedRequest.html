@@ -222,17 +222,17 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">AddressedRequest</span><span class="tparams">[<span name="NodeKey">NodeKey</span>, <span name="A">A</span>]</span><span class="params">(<span name="requests">requests: <span class="extype" name="scala.Iterable">Iterable</span>[(<span class="extype" name="riff.raft.node.AddressedRequest.NodeKey">NodeKey</span>, <a href="../messages/RaftRequest.html" class="extype" name="riff.raft.messages.RaftRequest">RaftRequest</a>[<span class="extype" name="riff.raft.node.AddressedRequest.A">A</span>])]</span>)</span><span class="result"> extends <a href="RaftNodeResult.html" class="extype" name="riff.raft.node.RaftNodeResult">RaftNodeResult</a>[<span class="extype" name="riff.raft.node.AddressedRequest.NodeKey">NodeKey</span>, <span class="extype" name="riff.raft.node.AddressedRequest.A">A</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <span class="name">AddressedRequest</span><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="requests">requests: <span class="extype" name="scala.Iterable">Iterable</span>[(<a href="../index.html#NodeId=String" class="extmbr" name="riff.raft.NodeId">NodeId</a>, <a href="../messages/RaftRequest.html" class="extype" name="riff.raft.messages.RaftRequest">RaftRequest</a>[<span class="extype" name="riff.raft.node.AddressedRequest.A">A</span>])]</span>)</span><span class="result"> extends <a href="RaftNodeResult.html" class="extype" name="riff.raft.node.RaftNodeResult">RaftNodeResult</a>[<span class="extype" name="riff.raft.node.AddressedRequest.A">A</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
 
       
           <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>A sequence of requests to send out as a result of a <a href="RaftNode.html" class="extype" name="riff.raft.node.RaftNode">RaftNode</a> having processed an event or message
-</p></div><dl class="paramcmts block"><dt class="tparam">NodeKey</dt><dd class="cmt"><p>the node type</p></dd><dt class="tparam">A</dt><dd class="cmt"><p>the log type</p></dd><dt class="param">requests</dt><dd class="cmt"><p>the requests to send, coupled w/ the intended recipient</p></dd></dl><div class="toggleContainer block">
+</p></div><dl class="paramcmts block"><dt class="tparam">A</dt><dd class="cmt"><p>the log type</p></dd><dt class="param">requests</dt><dd class="cmt"><p>the requests to send, coupled w/ the intended recipient</p></dd></dl><div class="toggleContainer block">
           <span class="toggle">
             Linear Supertypes
           </span>
-          <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <a href="RaftNodeResult.html" class="extype" name="riff.raft.node.RaftNodeResult">RaftNodeResult</a>[<span class="extype" name="riff.raft.node.AddressedRequest.NodeKey">NodeKey</span>, <span class="extype" name="riff.raft.node.AddressedRequest.A">A</span>], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <a href="RaftNodeResult.html" class="extype" name="riff.raft.node.RaftNodeResult">RaftNodeResult</a>[<span class="extype" name="riff.raft.node.AddressedRequest.A">A</span>], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
         
 
@@ -279,9 +279,9 @@
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
               <ol><li name="riff.raft.node.AddressedRequest#&lt;init&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="&lt;init&gt;(requests:Iterable[(NodeKey,riff.raft.messages.RaftRequest[A])]):riff.raft.node.AddressedRequest[NodeKey,A]"></a><a id="&lt;init&gt;:AddressedRequest[NodeKey,A]"></a>
+      <a id="&lt;init&gt;(requests:Iterable[(riff.raft.NodeId,riff.raft.messages.RaftRequest[A])]):riff.raft.node.AddressedRequest[A]"></a><a id="&lt;init&gt;:AddressedRequest[A]"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/node/AddressedRequest.html#&lt;init&gt;(requests:Iterable[(NodeKey,riff.raft.messages.RaftRequest[A])]):riff.raft.node.AddressedRequest[NodeKey,A]" title="Permalink">
+      <a href="../../../riff/raft/node/AddressedRequest.html#&lt;init&gt;(requests:Iterable[(riff.raft.NodeId,riff.raft.messages.RaftRequest[A])]):riff.raft.node.AddressedRequest[A]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -290,7 +290,7 @@
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">AddressedRequest</span><span class="params">(<span name="requests">requests: <span class="extype" name="scala.Iterable">Iterable</span>[(<span class="extype" name="riff.raft.node.AddressedRequest.NodeKey">NodeKey</span>, <a href="../messages/RaftRequest.html" class="extype" name="riff.raft.messages.RaftRequest">RaftRequest</a>[<span class="extype" name="riff.raft.node.AddressedRequest.A">A</span>])]</span>)</span>
+        <span class="name">AddressedRequest</span><span class="params">(<span name="requests">requests: <span class="extype" name="scala.Iterable">Iterable</span>[(<a href="../index.html#NodeId=String" class="extmbr" name="riff.raft.NodeId">NodeId</a>, <a href="../messages/RaftRequest.html" class="extype" name="riff.raft.messages.RaftRequest">RaftRequest</a>[<span class="extype" name="riff.raft.node.AddressedRequest.A">A</span>])]</span>)</span>
       </span>
       
       <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">requests</dt><dd class="cmt"><p>the requests to send, coupled w/ the intended recipient</p></dd></dl></div>
@@ -520,9 +520,9 @@
               
         </dd></dl></div>
     </li><li name="riff.raft.node.AddressedRequest#requests" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="requests:Iterable[(NodeKey,riff.raft.messages.RaftRequest[A])]"></a><a id="requests:Iterable[(NodeKey,RaftRequest[A])]"></a>
+      <a id="requests:Iterable[(riff.raft.NodeId,riff.raft.messages.RaftRequest[A])]"></a><a id="requests:Iterable[(NodeId,RaftRequest[A])]"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/node/AddressedRequest.html#requests:Iterable[(NodeKey,riff.raft.messages.RaftRequest[A])]" title="Permalink">
+      <a href="../../../riff/raft/node/AddressedRequest.html#requests:Iterable[(riff.raft.NodeId,riff.raft.messages.RaftRequest[A])]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -531,7 +531,7 @@
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">requests</span><span class="result">: <span class="extype" name="scala.Iterable">Iterable</span>[(<span class="extype" name="riff.raft.node.AddressedRequest.NodeKey">NodeKey</span>, <a href="../messages/RaftRequest.html" class="extype" name="riff.raft.messages.RaftRequest">RaftRequest</a>[<span class="extype" name="riff.raft.node.AddressedRequest.A">A</span>])]</span>
+        <span class="name">requests</span><span class="result">: <span class="extype" name="scala.Iterable">Iterable</span>[(<a href="../index.html#NodeId=String" class="extmbr" name="riff.raft.NodeId">NodeId</a>, <a href="../messages/RaftRequest.html" class="extype" name="riff.raft.messages.RaftRequest">RaftRequest</a>[<span class="extype" name="riff.raft.node.AddressedRequest.A">A</span>])]</span>
       </span>
       
       
@@ -638,7 +638,7 @@
             </div><div class="parent" name="scala.Equals">
               <h3>Inherited from <span class="extype" name="scala.Equals">Equals</span></h3>
             </div><div class="parent" name="riff.raft.node.RaftNodeResult">
-              <h3>Inherited from <a href="RaftNodeResult.html" class="extype" name="riff.raft.node.RaftNodeResult">RaftNodeResult</a>[<span class="extype" name="riff.raft.node.AddressedRequest.NodeKey">NodeKey</span>, <span class="extype" name="riff.raft.node.AddressedRequest.A">A</span>]</h3>
+              <h3>Inherited from <a href="RaftNodeResult.html" class="extype" name="riff.raft.node.RaftNodeResult">RaftNodeResult</a>[<span class="extype" name="riff.raft.node.AddressedRequest.A">A</span>]</h3>
             </div><div class="parent" name="scala.AnyRef">
               <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
             </div><div class="parent" name="scala.Any">

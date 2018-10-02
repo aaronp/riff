@@ -220,7 +220,7 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">CandidateState</span><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="term">term: <a href="../index.html#Term=Int" class="extmbr" name="riff.raft.Term">Term</a></span>, <span name="votesFor">votesFor: <span class="extype" name="scala.Predef.Set">Set</span>[<span class="extype" name="riff.raft.node.CandidateState.A">A</span>]</span>, <span name="votesAgainst">votesAgainst: <span class="extype" name="scala.Predef.Set">Set</span>[<span class="extype" name="riff.raft.node.CandidateState.A">A</span>]</span>, <span name="clusterSize">clusterSize: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <span class="name">CandidateState</span><span class="params">(<span name="term">term: <a href="../index.html#Term=Int" class="extmbr" name="riff.raft.Term">Term</a></span>, <span name="votesFor">votesFor: <span class="extype" name="scala.Predef.Set">Set</span>[<a href="../index.html#NodeId=String" class="extmbr" name="riff.raft.NodeId">NodeId</a>]</span>, <span name="votesAgainst">votesAgainst: <span class="extype" name="scala.Predef.Set">Set</span>[<a href="../index.html#NodeId=String" class="extmbr" name="riff.raft.NodeId">NodeId</a>]</span>, <span name="clusterSize">clusterSize: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
 
@@ -277,9 +277,9 @@
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
               <ol><li name="riff.raft.node.CandidateState#&lt;init&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="&lt;init&gt;(term:riff.raft.Term,votesFor:Set[A],votesAgainst:Set[A],clusterSize:Int):riff.raft.node.CandidateState[A]"></a><a id="&lt;init&gt;:CandidateState[A]"></a>
+      <a id="&lt;init&gt;(term:riff.raft.Term,votesFor:Set[riff.raft.NodeId],votesAgainst:Set[riff.raft.NodeId],clusterSize:Int):riff.raft.node.CandidateState"></a><a id="&lt;init&gt;:CandidateState"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/node/CandidateState.html#&lt;init&gt;(term:riff.raft.Term,votesFor:Set[A],votesAgainst:Set[A],clusterSize:Int):riff.raft.node.CandidateState[A]" title="Permalink">
+      <a href="../../../riff/raft/node/CandidateState.html#&lt;init&gt;(term:riff.raft.Term,votesFor:Set[riff.raft.NodeId],votesAgainst:Set[riff.raft.NodeId],clusterSize:Int):riff.raft.node.CandidateState" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -288,7 +288,7 @@
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">CandidateState</span><span class="params">(<span name="term">term: <a href="../index.html#Term=Int" class="extmbr" name="riff.raft.Term">Term</a></span>, <span name="votesFor">votesFor: <span class="extype" name="scala.Predef.Set">Set</span>[<span class="extype" name="riff.raft.node.CandidateState.A">A</span>]</span>, <span name="votesAgainst">votesAgainst: <span class="extype" name="scala.Predef.Set">Set</span>[<span class="extype" name="riff.raft.node.CandidateState.A">A</span>]</span>, <span name="clusterSize">clusterSize: <span class="extype" name="scala.Int">Int</span></span>)</span>
+        <span class="name">CandidateState</span><span class="params">(<span name="term">term: <a href="../index.html#Term=Int" class="extmbr" name="riff.raft.Term">Term</a></span>, <span name="votesFor">votesFor: <span class="extype" name="scala.Predef.Set">Set</span>[<a href="../index.html#NodeId=String" class="extmbr" name="riff.raft.NodeId">NodeId</a>]</span>, <span name="votesAgainst">votesAgainst: <span class="extype" name="scala.Predef.Set">Set</span>[<a href="../index.html#NodeId=String" class="extmbr" name="riff.raft.NodeId">NodeId</a>]</span>, <span name="clusterSize">clusterSize: <span class="extype" name="scala.Int">Int</span></span>)</span>
       </span>
       
       
@@ -598,9 +598,9 @@
       
       
     </li><li name="riff.raft.node.CandidateState#update" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="update(from:A,reply:riff.raft.messages.RequestVoteResponse):riff.raft.node.CandidateState[A]"></a><a id="update(A,RequestVoteResponse):CandidateState[A]"></a>
+      <a id="update(from:riff.raft.NodeId,reply:riff.raft.messages.RequestVoteResponse):riff.raft.node.CandidateState"></a><a id="update(NodeId,RequestVoteResponse):CandidateState"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/node/CandidateState.html#update(from:A,reply:riff.raft.messages.RequestVoteResponse):riff.raft.node.CandidateState[A]" title="Permalink">
+      <a href="../../../riff/raft/node/CandidateState.html#update(from:riff.raft.NodeId,reply:riff.raft.messages.RequestVoteResponse):riff.raft.node.CandidateState" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -609,14 +609,14 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">update</span><span class="params">(<span name="from">from: <span class="extype" name="riff.raft.node.CandidateState.A">A</span></span>, <span name="reply">reply: <a href="../messages/RequestVoteResponse.html" class="extype" name="riff.raft.messages.RequestVoteResponse">RequestVoteResponse</a></span>)</span><span class="result">: <a href="" class="extype" name="riff.raft.node.CandidateState">CandidateState</a>[<span class="extype" name="riff.raft.node.CandidateState.A">A</span>]</span>
+        <span class="name">update</span><span class="params">(<span name="from">from: <a href="../index.html#NodeId=String" class="extmbr" name="riff.raft.NodeId">NodeId</a></span>, <span name="reply">reply: <a href="../messages/RequestVoteResponse.html" class="extype" name="riff.raft.messages.RequestVoteResponse">RequestVoteResponse</a></span>)</span><span class="result">: <a href="" class="extype" name="riff.raft.node.CandidateState">CandidateState</a></span>
       </span>
       
       
     </li><li name="riff.raft.node.CandidateState#votesAgainst" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="votesAgainst:Set[A]"></a>
+      <a id="votesAgainst:Set[riff.raft.NodeId]"></a><a id="votesAgainst:Set[NodeId]"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/node/CandidateState.html#votesAgainst:Set[A]" title="Permalink">
+      <a href="../../../riff/raft/node/CandidateState.html#votesAgainst:Set[riff.raft.NodeId]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -625,14 +625,14 @@
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">votesAgainst</span><span class="result">: <span class="extype" name="scala.Predef.Set">Set</span>[<span class="extype" name="riff.raft.node.CandidateState.A">A</span>]</span>
+        <span class="name">votesAgainst</span><span class="result">: <span class="extype" name="scala.Predef.Set">Set</span>[<a href="../index.html#NodeId=String" class="extmbr" name="riff.raft.NodeId">NodeId</a>]</span>
       </span>
       
       
     </li><li name="riff.raft.node.CandidateState#votesFor" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="votesFor:Set[A]"></a>
+      <a id="votesFor:Set[riff.raft.NodeId]"></a><a id="votesFor:Set[NodeId]"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/node/CandidateState.html#votesFor:Set[A]" title="Permalink">
+      <a href="../../../riff/raft/node/CandidateState.html#votesFor:Set[riff.raft.NodeId]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -641,7 +641,7 @@
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">votesFor</span><span class="result">: <span class="extype" name="scala.Predef.Set">Set</span>[<span class="extype" name="riff.raft.node.CandidateState.A">A</span>]</span>
+        <span class="name">votesFor</span><span class="result">: <span class="extype" name="scala.Predef.Set">Set</span>[<a href="../index.html#NodeId=String" class="extmbr" name="riff.raft.NodeId">NodeId</a>]</span>
       </span>
       
       

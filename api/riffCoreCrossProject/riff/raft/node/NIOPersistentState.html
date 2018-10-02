@@ -222,7 +222,7 @@
         <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <span class="name">NIOPersistentState</span><span class="tparams">[<span name="NodeKey">NodeKey</span>]</span><span class="result"> extends <a href="PersistentState.html" class="extype" name="riff.raft.node.PersistentState">PersistentState</a>[<span class="extype" name="riff.raft.node.NIOPersistentState.NodeKey">NodeKey</span>]</span>
+        <span class="name">NIOPersistentState</span><span class="result"> extends <a href="PersistentState.html" class="extype" name="riff.raft.node.PersistentState">PersistentState</a></span>
       </span>
       </h4>
 
@@ -232,7 +232,7 @@
           <span class="toggle">
             Linear Supertypes
           </span>
-          <div class="superTypes hiddenContent"><a href="PersistentState.html" class="extype" name="riff.raft.node.PersistentState">PersistentState</a>[<span class="extype" name="riff.raft.node.NIOPersistentState.NodeKey">NodeKey</span>], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><a href="PersistentState.html" class="extype" name="riff.raft.node.PersistentState">PersistentState</a>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
         
 
@@ -279,9 +279,9 @@
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
               <ol><li name="riff.raft.node.NIOPersistentState#&lt;init&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="&lt;init&gt;(dir:java.nio.file.Path)(implicitevidence$3:eie.io.ToBytes[NodeKey],implicitevidence$4:eie.io.FromBytes[NodeKey]):riff.raft.node.NIOPersistentState[NodeKey]"></a><a id="&lt;init&gt;:NIOPersistentState[NodeKey]"></a>
+      <a id="&lt;init&gt;(dir:java.nio.file.Path):riff.raft.node.NIOPersistentState"></a><a id="&lt;init&gt;:NIOPersistentState"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/node/NIOPersistentState.html#&lt;init&gt;(dir:java.nio.file.Path)(implicitevidence$3:eie.io.ToBytes[NodeKey],implicitevidence$4:eie.io.FromBytes[NodeKey]):riff.raft.node.NIOPersistentState[NodeKey]" title="Permalink">
+      <a href="../../../riff/raft/node/NIOPersistentState.html#&lt;init&gt;(dir:java.nio.file.Path):riff.raft.node.NIOPersistentState" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -290,7 +290,7 @@
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">NIOPersistentState</span><span class="params">(<span name="dir">dir: <span class="extype" name="java.nio.file.Path">Path</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: <span class="extype" name="eie.io.ToBytes">ToBytes</span>[<span class="extype" name="riff.raft.node.NIOPersistentState.NodeKey">NodeKey</span>]</span>, <span name="arg1">arg1: <span class="extype" name="eie.io.FromBytes">FromBytes</span>[<span class="extype" name="riff.raft.node.NIOPersistentState.NodeKey">NodeKey</span>]</span>)</span>
+        <span class="name">NIOPersistentState</span><span class="params">(<span name="dir">dir: <span class="extype" name="java.nio.file.Path">Path</span></span>)</span>
       </span>
       
       
@@ -369,9 +369,9 @@
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
     </li><li name="riff.raft.node.PersistentState#cached" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="cached():riff.raft.node.PersistentState[NodeKey]"></a><a id="cached():PersistentState[NodeKey]"></a>
+      <a id="cached():riff.raft.node.PersistentState"></a><a id="cached():PersistentState"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/node/NIOPersistentState.html#cached():riff.raft.node.PersistentState[NodeKey]" title="Permalink">
+      <a href="../../../riff/raft/node/NIOPersistentState.html#cached():riff.raft.node.PersistentState" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -380,16 +380,16 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">cached</span><span class="params">()</span><span class="result">: <a href="PersistentState.html" class="extype" name="riff.raft.node.PersistentState">PersistentState</a>[<span class="extype" name="riff.raft.node.NIOPersistentState.NodeKey">NodeKey</span>]</span>
+        <span class="name">cached</span><span class="params">()</span><span class="result">: <a href="PersistentState.html" class="extype" name="riff.raft.node.PersistentState">PersistentState</a></span>
       </span>
       
       <p class="shortcomment cmt">convenience call to ensure the currentTerm calls are cached
 </p><div class="fullcomment"><div class="comment cmt"><p>convenience call to ensure the currentTerm calls are cached
 </p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>a caching persistent state</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="PersistentState.html" class="extype" name="riff.raft.node.PersistentState">PersistentState</a></dd></dl></div>
     </li><li name="riff.raft.node.NIOPersistentState#castVote" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="castVote(term:riff.raft.Term,node:NodeKey):Unit"></a><a id="castVote(Term,NodeKey):Unit"></a>
+      <a id="castVote(term:riff.raft.Term,node:String):Unit"></a><a id="castVote(Term,String):Unit"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/node/NIOPersistentState.html#castVote(term:riff.raft.Term,node:NodeKey):Unit" title="Permalink">
+      <a href="../../../riff/raft/node/NIOPersistentState.html#castVote(term:riff.raft.Term,node:String):Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -398,14 +398,14 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">castVote</span><span class="params">(<span name="term">term: <a href="../index.html#Term=Int" class="extmbr" name="riff.raft.Term">Term</a></span>, <span name="node">node: <span class="extype" name="riff.raft.node.NIOPersistentState.NodeKey">NodeKey</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+        <span class="name">castVote</span><span class="params">(<span name="term">term: <a href="../index.html#Term=Int" class="extmbr" name="riff.raft.Term">Term</a></span>, <span name="node">node: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       
       <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">term</dt><dd class="cmt"><p>the term for which we're casting our vote</p></dd><dt class="param">node</dt><dd class="cmt"><p>the key of the cluster node for which we're voting</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="riff.raft.node.NIOPersistentState">NIOPersistentState</a> → <a href="PersistentState.html" class="extype" name="riff.raft.node.PersistentState">PersistentState</a></dd></dl></div>
     </li><li name="riff.raft.node.PersistentState#castVote" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="castVote(latestAppendedLogEntry:=&gt;riff.raft.log.LogCoords,requestingNodeId:NodeKey,forRequest:riff.raft.messages.RequestVote):riff.raft.messages.RequestVoteResponse"></a><a id="castVote(⇒LogCoords,NodeKey,RequestVote):RequestVoteResponse"></a>
+      <a id="castVote(latestAppendedLogEntry:=&gt;riff.raft.log.LogCoords,requestingNodeId:riff.raft.NodeId,forRequest:riff.raft.messages.RequestVote):riff.raft.messages.RequestVoteResponse"></a><a id="castVote(⇒LogCoords,NodeId,RequestVote):RequestVoteResponse"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/node/NIOPersistentState.html#castVote(latestAppendedLogEntry:=&gt;riff.raft.log.LogCoords,requestingNodeId:NodeKey,forRequest:riff.raft.messages.RequestVote):riff.raft.messages.RequestVoteResponse" title="Permalink">
+      <a href="../../../riff/raft/node/NIOPersistentState.html#castVote(latestAppendedLogEntry:=&gt;riff.raft.log.LogCoords,requestingNodeId:riff.raft.NodeId,forRequest:riff.raft.messages.RequestVote):riff.raft.messages.RequestVoteResponse" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -414,7 +414,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">castVote</span><span class="params">(<span name="latestAppendedLogEntry">latestAppendedLogEntry: ⇒ <a href="../log/LogCoords.html" class="extype" name="riff.raft.log.LogCoords">LogCoords</a></span>, <span name="requestingNodeId">requestingNodeId: <span class="extype" name="riff.raft.node.NIOPersistentState.NodeKey">NodeKey</span></span>, <span name="forRequest">forRequest: <a href="../messages/RequestVote.html" class="extype" name="riff.raft.messages.RequestVote">RequestVote</a></span>)</span><span class="result">: <a href="../messages/RequestVoteResponse.html" class="extype" name="riff.raft.messages.RequestVoteResponse">RequestVoteResponse</a></span>
+        <span class="name">castVote</span><span class="params">(<span name="latestAppendedLogEntry">latestAppendedLogEntry: ⇒ <a href="../log/LogCoords.html" class="extype" name="riff.raft.log.LogCoords">LogCoords</a></span>, <span name="requestingNodeId">requestingNodeId: <a href="../index.html#NodeId=String" class="extmbr" name="riff.raft.NodeId">NodeId</a></span>, <span name="forRequest">forRequest: <a href="../messages/RequestVote.html" class="extype" name="riff.raft.messages.RequestVote">RequestVote</a></span>)</span><span class="result">: <a href="../messages/RequestVoteResponse.html" class="extype" name="riff.raft.messages.RequestVoteResponse">RequestVoteResponse</a></span>
       </span>
       
       <p class="shortcomment cmt">cast a vote given the request and optionally update our 'votedFor' state if it's the first time we've voted
@@ -463,9 +463,9 @@ for the term
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="riff.raft.node.NIOPersistentState">NIOPersistentState</a> → <a href="PersistentState.html" class="extype" name="riff.raft.node.PersistentState">PersistentState</a></dd></dl></div>
     </li><li name="riff.raft.node.NIOPersistentState#currentTerm_=" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="currentTerm_=(term:riff.raft.Term):riff.raft.node.NIOPersistentState[NodeKey]"></a><a id="currentTerm_=(Term):NIOPersistentState[NodeKey]"></a>
+      <a id="currentTerm_=(term:riff.raft.Term):riff.raft.node.NIOPersistentState"></a><a id="currentTerm_=(Term):NIOPersistentState"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/node/NIOPersistentState.html#currentTerm_=(term:riff.raft.Term):riff.raft.node.NIOPersistentState[NodeKey]" title="Permalink">
+      <a href="../../../riff/raft/node/NIOPersistentState.html#currentTerm_=(term:riff.raft.Term):riff.raft.node.NIOPersistentState" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -474,7 +474,7 @@ for the term
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span title="gt4s: currentTerm_$eq" class="name">currentTerm_=</span><span class="params">(<span name="term">term: <a href="../index.html#Term=Int" class="extmbr" name="riff.raft.Term">Term</a></span>)</span><span class="result">: <a href="" class="extype" name="riff.raft.node.NIOPersistentState">NIOPersistentState</a>[<span class="extype" name="riff.raft.node.NIOPersistentState.NodeKey">NodeKey</span>]</span>
+        <span title="gt4s: currentTerm_$eq" class="name">currentTerm_=</span><span class="params">(<span name="term">term: <a href="../index.html#Term=Int" class="extmbr" name="riff.raft.Term">Term</a></span>)</span><span class="result">: <a href="" class="extype" name="riff.raft.node.NIOPersistentState">NIOPersistentState</a></span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="riff.raft.node.NIOPersistentState">NIOPersistentState</a> → <a href="PersistentState.html" class="extype" name="riff.raft.node.PersistentState">PersistentState</a></dd></dl></div>
@@ -689,9 +689,9 @@ for the term
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="riff.raft.node.NIOPersistentState#votedFor" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="votedFor(term:riff.raft.Term):Option[NodeKey]"></a><a id="votedFor(Term):Option[NodeKey]"></a>
+      <a id="votedFor(term:riff.raft.Term):Option[String]"></a><a id="votedFor(Term):Option[String]"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/node/NIOPersistentState.html#votedFor(term:riff.raft.Term):Option[NodeKey]" title="Permalink">
+      <a href="../../../riff/raft/node/NIOPersistentState.html#votedFor(term:riff.raft.Term):Option[String]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -700,7 +700,7 @@ for the term
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">votedFor</span><span class="params">(<span name="term">term: <a href="../index.html#Term=Int" class="extmbr" name="riff.raft.Term">Term</a></span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="riff.raft.node.NIOPersistentState.NodeKey">NodeKey</span>]</span>
+        <span class="name">votedFor</span><span class="params">(<span name="term">term: <a href="../index.html#Term=Int" class="extmbr" name="riff.raft.Term">Term</a></span>)</span><span class="result">: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Predef.String">String</span>]</span>
       </span>
       
       <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>the recipient of the vote for the given term</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="riff.raft.node.NIOPersistentState">NIOPersistentState</a> → <a href="PersistentState.html" class="extype" name="riff.raft.node.PersistentState">PersistentState</a></dd></dl></div>
@@ -783,7 +783,7 @@ for the term
 
         <div id="inheritedMembers">
         <div class="parent" name="riff.raft.node.PersistentState">
-              <h3>Inherited from <a href="PersistentState.html" class="extype" name="riff.raft.node.PersistentState">PersistentState</a>[<span class="extype" name="riff.raft.node.NIOPersistentState.NodeKey">NodeKey</span>]</h3>
+              <h3>Inherited from <a href="PersistentState.html" class="extype" name="riff.raft.node.PersistentState">PersistentState</a></h3>
             </div><div class="parent" name="scala.AnyRef">
               <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
             </div><div class="parent" name="scala.Any">
