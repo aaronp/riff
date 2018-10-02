@@ -1,4 +1,4 @@
-# NodeKey is dead!
+# Over-Parameterization: ~~NodeKey~~ is Dead
 
 This project blog is becoming an omage to my favourite playlist of scala heros and tech talks, and so
 I guess at this point I should give [Rob Norris's Fixpoint Talk](https://www.youtube.com/watch?v=7xSfLPD6tiQ) a shout-out.

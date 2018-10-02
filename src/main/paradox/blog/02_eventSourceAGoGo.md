@@ -1,4 +1,4 @@
-# Event Sourcing !
+# Event Sourcing
 
 I'm probably not as big a fan as Dan North as this blog might lead you to believe, but this next iteration once again
 reminded me of his [Software Faster](https://www.youtube.com/watch?v=USc-yLHXNUg) talk.
