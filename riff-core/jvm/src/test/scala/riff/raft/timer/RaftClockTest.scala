@@ -6,8 +6,8 @@ import scala.concurrent.duration._
   * and plug in your implementation like here
   */
 class RaftClockTest extends RaftClockTCK {
-  override def newTimer(sendHeartbeatTimeout: FiniteDuration, receiveHeartbeatTimeout: FiniteDuration): RaftClock = {
-    RaftClock(sendHeartbeatTimeout, receiveHeartbeatTimeout)
+  override def newTimer(sendHeartbeatTimeout: FiniteDuration, receiveHeartbeat: RandomTimer): RaftClock = {
+    RaftClock(sendHeartbeatTimeout, receiveHeartbeat)
   }
 
   override def assertAfter[T](time: FiniteDuration)(f: => T) = {

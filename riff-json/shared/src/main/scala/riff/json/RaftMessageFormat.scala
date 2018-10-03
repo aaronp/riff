@@ -2,7 +2,10 @@ package riff.json
 import io.circe.Decoder.Result
 import io.circe._
 import io.circe.syntax._
+import org.reactivestreams.Subscriber
+import riff.raft.AppendStatus
 import riff.raft.messages._
+import riff.reactive.Subscribers
 
 import scala.reflect.ClassTag
 
@@ -15,7 +18,7 @@ class RaftMessageFormat[A: ClassTag](implicit logEnc: Encoder[A], logDec: Decode
   private val SendHBJson = Json.fromString(SendHeartbeatTimeoutName)
   override def apply(input: RaftMessage[A]): Json = {
     input match {
-      case AppendData(values) =>
+      case AppendData(_, values : Array[A]) =>
         val array = Json.arr(values.map(_.asJson): _*)
         Json.obj("AppendData" -> array)
       case ReceiveHeartbeatTimeout => ReceiveHBJson
@@ -79,7 +82,9 @@ class RaftMessageFormat[A: ClassTag](implicit logEnc: Encoder[A], logDec: Decode
         }
 
         addressed match {
-          case Left(_) => c.downField("AppendData").as[Array[A]].map(AppendData.apply)
+          case Left(_) => c.downField("AppendData").as[Array[A]].map { array: Array[A] =>
+            new AppendData[A, Subscriber](Subscribers.NoOp[AppendStatus](), array)
+          }
           case right => right
         }
     }

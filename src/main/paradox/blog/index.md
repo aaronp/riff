@@ -3,8 +3,10 @@
 @@@ index
 
 * [Fast, Meaningful Tests](01_raftSimulatorForTheWin.md)
-* [Fast, Meaningful Tests](02_eventSourceAGoGo.md)
-* [NodeKey is Dead](03_NodeKeyIsDead.md)
+* [Event Sourcing in ~100 lines of code](02_eventSourceAGoGo.md)
+* [One parameterized type too far](03_overParameterization.md)
+* [Going Reactive](04_goingReactive.md)
+* [More (non) Concurrent Testing - Simple made Easy?](05_moreNonConcurrentTesting.md)
 
 @@@
 

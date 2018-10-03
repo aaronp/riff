@@ -1,6 +1,5 @@
 package riff.raft.timer
-
-import scala.concurrent.duration.FiniteDuration
+import java.util.concurrent.ScheduledExecutorService
 
 /**
   * Represents the functions required to control a member node's election and heartbeat timeouts.
@@ -49,7 +48,11 @@ trait RaftClock {
 
 object RaftClock {
 
-  def apply(sendHeartbeatTimeout: FiniteDuration, receiveHeartbeatTimeout: FiniteDuration): RaftClock = {
-    new DefaultClock(sendHeartbeatTimeout, receiveHeartbeatTimeout)
+  import concurrent.duration._
+  lazy val Default = apply(250.millis, RandomTimer(1.second, 2.seconds))
+
+  def apply(sendHeartbeatTimeout: FiniteDuration,
+            receiveHeartbeat: RandomTimer): DefaultClock = {
+    new DefaultClock(sendHeartbeatTimeout, receiveHeartbeat)
   }
 }

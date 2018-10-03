@@ -2,6 +2,7 @@ package riff.raft.integration
 
 package simulator
 
+import riff.raft.NotTheLeaderException
 import riff.raft.log.LogAppendResult
 import riff.raft.messages.{ReceiveHeartbeatTimeout, RequestOrResponse, SendHeartbeatTimeout, TimerMessage}
 import riff.raft.node.{RaftCluster, RaftNode, _}
@@ -113,7 +114,7 @@ class RaftSimulator private (
     * convenience method to append to whatever the leader node is -- will error if there is no leader
     *
     */
-  def appendToLeader(data: Array[String], latency: FiniteDuration = defaultLatency): Option[LogAppendResult] = {
+  def appendToLeader(data: Array[String], latency: FiniteDuration = defaultLatency): Either[NotTheLeaderException, LogAppendResult] = {
     val ldr = currentLeader()
     val ldrId = ldr.state().id
     ldr.appendIfLeader(data).map {
@@ -139,9 +140,15 @@ class RaftSimulator private (
   /** @param name the node whose RaftCluster this is
     * @return an implementation of RaftCluster for each node as a view onto the simulator
     */
-  private def clusterForNode(name: String) = new RaftCluster {
-    override def peers: Iterable[String] = clusterByName.keySet - name
-    override def contains(key: String): Boolean = clusterByName.contains(key)
+  private def clusterForNode(name: String): RaftCluster ={
+    new RaftCluster {
+      override def peers: Iterable[String] ={
+        clusterByName.keySet - name
+      }
+      override def contains(key: String): Boolean = {
+        clusterByName.contains(key)
+      }
+    }
   }
 
   private def makeNode(name: String): RaftNode[String] = {
@@ -230,24 +237,28 @@ class RaftSimulator private (
     latency: FiniteDuration,
     predicate: AdvanceResult => Boolean,
     debug: Boolean = false): AdvanceResult = {
-    var next: AdvanceResult = advance(latency)
 
-    def logDebug(result: AdvanceResult) = {
+    def logDebug(newTimeline: Timeline[TimelineType]) = {
       if (debug) {
         println("- " * 50)
-        println(debugString(Option(result.beforeTimeline)))
+        println(debugString(Option(newTimeline)))
       }
     }
 
-    logDebug(next)
+    logDebug(currentTimeline())
+
+    var next: AdvanceResult = advance(latency)
 
     val list = ListBuffer[AdvanceResult](next)
     while (!predicate(next) && list.size < max) {
-      next = advance(latency)
+      logDebug(next.beforeTimeline)
 
-      logDebug(next)
+      next = advance(latency)
       list += next
     }
+
+    logDebug(next.beforeTimeline)
+
     require(list.size < max, s"The condition was never met after $max iterations")
     concatResults(list.toList)
   }
@@ -411,11 +422,13 @@ object RaftSimulator {
   private val RemoveCommand = "REMOVE:(.+)".r
   def removeNode(name: String) = s"REMOVE:${name}"
 
+  // the send heartbeat timeouts should be regular, so our fixed set of 'random' values shouldn't
+  // have much variance
   def sendHeartbeatTimeouts: Iterator[FiniteDuration] =
-    Iterator(100.millis, 150.millis, 125.millis, 225.millis) ++ sendHeartbeatTimeouts
+    Iterator(100.millis, 105.millis, 95.millis, 101.millis) ++ sendHeartbeatTimeouts
 
   def receiveHeartbeatTimeouts: Iterator[FiniteDuration] = {
-    sendHeartbeatTimeouts.map(_ * 3)
+    Iterator(350.millis, 280.millis, 400.millis, 370.millis) ++ receiveHeartbeatTimeouts
   }
 
   def newNode(name: String, cluster: RaftCluster, timer: RaftClock): RaftNode[String] = {

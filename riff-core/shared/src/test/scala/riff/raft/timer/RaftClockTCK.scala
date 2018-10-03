@@ -8,7 +8,7 @@ import scala.concurrent.duration._
 
 trait RaftClockTCK extends RiffSpec {
 
-  def newTimer(sendHeartbeatTimeout: FiniteDuration, receiveHeartbeatTimeout: FiniteDuration): RaftClock
+  def newTimer(sendHeartbeatTimeout: FiniteDuration, receiveHeartbeat: RandomTimer): RaftClock
 
   def falseHeartbeatTimeout = 10.millis
   def slowHeartbeatTimeout  = 100.millis
@@ -23,7 +23,7 @@ trait RaftClockTCK extends RiffSpec {
       // create a timer which we don't reset
       newTimer(
         sendHeartbeatTimeout = heartbeatTimeout,
-        receiveHeartbeatTimeout = heartbeatTimeout
+        receiveHeartbeat = new RandomTimer(heartbeatTimeout, heartbeatTimeout)
       )
 
       // give it adequate time to invoke our timeout
@@ -38,7 +38,7 @@ trait RaftClockTCK extends RiffSpec {
       val heartbeatTimeout = slowHeartbeatTimeout
       val timer: RaftClock = newTimer(
         sendHeartbeatTimeout = heartbeatTimeout,
-        receiveHeartbeatTimeout = 1.minute
+        receiveHeartbeat = new RandomTimer(testTimeout, testTimeout)
       )
 
       When("The send heartbeat is reset")
@@ -63,7 +63,7 @@ trait RaftClockTCK extends RiffSpec {
       val heartbeatTimeout = slowHeartbeatTimeout
       val timer: RaftClock = newTimer(
         sendHeartbeatTimeout = heartbeatTimeout,
-        receiveHeartbeatTimeout = heartbeatTimeout
+        receiveHeartbeat = new RandomTimer(heartbeatTimeout, heartbeatTimeout)
       )
 
       val lastResetTime = System.currentTimeMillis()

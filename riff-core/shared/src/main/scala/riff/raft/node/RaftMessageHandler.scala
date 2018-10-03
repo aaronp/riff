@@ -1,7 +1,7 @@
 package riff.raft.node
+import riff.raft.log.LogAppendResult
 import riff.raft.messages.RaftMessage
-
-import scala.reflect.ClassTag
+import riff.raft.{NodeId, NotTheLeaderException}
 
 /**
   * This interface represents a stateful black-box of a raft node.
@@ -15,15 +15,11 @@ trait RaftMessageHandler[A] {
 
   type Result = RaftNodeResult[A]
 
-  /**
-    * Used to append to this node's log and create append requests if we are the leader
-    *
-    * @param data the data to append
-    * @return the requests or an error result
-    */
-  def createAppend(data: Array[A]): Result
+  type AppendResult = Either[ NotTheLeaderException, (LogAppendResult, AddressedRequest[A])]
 
-  final def createAppend(data: A)(implicit tag: ClassTag[A]): Result = createAppend(Array[A](data))
+  /** @return the ID of this node in the cluster
+    */
+  def nodeId: NodeId
 
   /**
     *
@@ -31,5 +27,5 @@ trait RaftMessageHandler[A] {
     * @param msg the Raft message
     * @return the response
     */
-  def onMessage(input : RaftMessage[A]): Result
+  def onMessage(input: RaftMessage[A]): Result
 }

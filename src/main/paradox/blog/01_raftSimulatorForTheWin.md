@@ -243,7 +243,7 @@ Of course you still need those - but only to prove the integration, and not for 
 Put another way, the responsibility of what we're require from the integration/system tests is significantly reduced.
 
 Also, if/when our full integration tests __do__ find errors, we should be able to write a test for it using our single-threaded,
-RaftSimulator approach, unless the bug truely is related specifically to threading, queues, sockets, etc.
+RaftSimulator approach, unless the bug truly is related specifically to threading, queues, sockets, etc.
 
 And it's worth noting that the code we're testing is, by design, not thread-safe anyway. It's intended
 to be put being something which can guarantee thread safety (e.g. lifted into a reactive stream, actor, into a service, etc).

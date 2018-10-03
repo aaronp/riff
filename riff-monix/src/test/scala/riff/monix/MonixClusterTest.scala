@@ -1,40 +1,51 @@
 package riff.monix
+import monix.reactive.Observable
+import riff.raft.NodeId
+import riff.raft.node.RoleCallback.NewLeaderEvent
 
 class MonixClusterTest extends RiffMonixSpec {
 
-  "MonixCluster" should {
-    "elect a leader" in {
-      val cluster = MonixCluster.forNames[String]("a", "b", "c").start()
-
-//      cluster.nodes.foreach { n =>
-//        n.observableLog.get.committedEntries.dump(s"${n.nodeId} committed").foreach(_ => ())
-//        n.observableLog.get.appendedEntries().dump(s"${n.nodeId} appended").foreach(_ => ())
+//  "MonixCluster" should {
+//    "elect a leader" in {
+//      val cluster = MonixCluster.forNames[String]("a", "b", "c").start()
+//
+////      cluster.nodes.foreach { n =>
+////        n.observableLog.get.committedEntries.dump(s"\t${n.nodeId} committed").foreach(_ => ())
+////        n.observableLog.get.appendedEntries().dump(s"\t${n.nodeId} appended").foreach(_ => ())
+////        n.observableState.dump(s"---------> ${n.nodeId} st8").foreach(_ => ())
+////      }
+//
+//      // observe each of the nodes' observableState and quit as soon as we see the first NewLeaderEvent
+//      //
+//      val leader: MonixNode[String] = {
+//        val leaderAlerts: Set[Observable[NodeId]] = cluster.nodes.map { n =>
+//          n.observableState.collect {
+//            case NewLeaderEvent(_, name) => name
+//          } //.dump(s"${n.nodeId} notices leader")
+//        }
+//        val firstToSeeLeader: Observable[NodeId] = leaderAlerts.reduce(_ ambWith _)
+//
+//        val leaderId = firstToSeeLeader.take(1).headL.runSyncUnsafe(testTimeout * 10)
+//        cluster.nodeFor(leaderId).get
+//
 //      }
-
-      val deadline = (testTimeout * 4).fromNow
-      var leader: MonixNode[String] = null
-      while (!deadline.isOverdue() && leader == null) {
-        cluster.leader() match {
-          case Some(value) => leader = value
-          case None => Thread.`yield`()
-        }
-      }
-
-      leader should not be (null)
-      val res = leader.client.append("hello", "world!").dump("append Result")
-
-      // TODO = assert the append status
-      res.dump("!!!!").foreach { status =>
-        println(status)
-      }
-
-      eventually {
-        cluster.nodes.foreach { node =>
-          node.log().latestCommit() shouldBe 2
-          node.log().entriesFrom(1, 2).map(_.data) should contain inOrderOnly ("hello", "world!")
-        }
-      }
-    }
-  }
+//      cluster.leader().map(_.nodeId) shouldBe Some(leader.nodeId)
+//
+//      val res = leader.client.append("hello", "world!") //.dump("append Result")
+//
+//      // TODO = assert the append status
+////      res.dump("!!!!").foreach { status =>
+////        //
+////        println(status)
+////      }
+//
+//      eventually {
+//        cluster.nodes.foreach { node =>
+//          node.log().latestCommit() shouldBe 2
+//          node.log().entriesFrom(1, 2).map(_.data) should contain inOrderOnly ("hello", "world!")
+//        }
+//      }
+//    }
+//  }
 
 }

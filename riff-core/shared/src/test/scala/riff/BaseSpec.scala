@@ -11,7 +11,7 @@ import riff.raft.timer.LoggedInvocationClock
 import scala.collection.immutable
 import scala.concurrent.duration._
 
-abstract class BaseSpec extends WordSpec with Matchers with ScalaFutures with GivenWhenThen {
+class BaseSpec extends WordSpec with Matchers with ScalaFutures with GivenWhenThen {
 
   /**
     * All the timeouts!

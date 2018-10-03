@@ -1,9 +1,12 @@
 package riff.raft.node
-import riff.raft.RoleCallback.{RoleChangeEvent, RoleEvent}
+import riff.raft._
 import riff.raft.log.{LogAppendResult, LogCoords, LogEntry, RaftLog}
 import riff.raft.messages.{RaftResponse, _}
+import riff.raft.node.RoleCallback.{RoleChangeEvent, RoleEvent}
 import riff.raft.timer.{RaftClock, TimerCallback, Timers}
-import riff.raft.{NodeId, RoleCallback, Term, node}
+import riff.reactive.Publishers
+
+import scala.reflect.ClassTag
 
 object RaftNode {
 
@@ -17,6 +20,14 @@ object RaftNode {
       maxAppendSize
     )
   }
+
+  def appendResponseAsRaftNodeResult[A](
+    response: Either[NotTheLeaderException, (LogAppendResult, AddressedRequest[A])]) = {
+    response match {
+      case Left(exp) => NoOpResult(exp.getMessage)
+      case Right((_, requests)) => requests
+    }
+  }
 }
 
 /**
@@ -28,6 +39,9 @@ object RaftNode {
   * It's not too generic/abstracted, but quite openly just orchestrates the pieces/interactions of the inputs
   * into a raft node.
   *
+  * @define WithSetup As this function returns a new node, care should be taken that it is used correctly in setting up the raft cluster;
+  *                   'correctly' meaning that the returned instance is the one used to to communicate w/ the other nodes, as opposed
+  *                   to an old reference.
   * @param persistentState the state used to track the currentTerm and vote state
   * @param log the RaftLog which stores the log entries
   * @param clock the timing apparatus for controlling timeouts
@@ -62,23 +76,9 @@ class RaftNode[A](
     }
   }
 
-  def nodeId: NodeId = currentState.id
+  override def nodeId: NodeId = currentState.id
 
   def state(): NodeState = currentState
-
-  /** This function may be used as a convenience to generate append requests for a
-    *
-    * @param data the data to append
-    * @return either some append requests or an error output if we are not the leader
-    */
-  def createAppend(data: Array[A]): RaftNodeResult[A] = {
-    appendIfLeader(data) match {
-      case None =>
-        val leaderMsg = currentState.leader.fold("")(name => s". The leader is ${name}")
-        NoOpResult(s"Can't create an append request as we are ${currentState.role} in term ${currentTerm}$leaderMsg")
-      case Some((_, requests)) => requests
-    }
-  }
 
   /**
     * Exposes this as a means for generating an AddressedRequest of messages together with the append result
@@ -87,22 +87,38 @@ class RaftNode[A](
     * @param data the data to append
     * @return the append result coupled w/ the append request to send if this node is the leader
     */
-  def appendIfLeader(data: Array[A]): Option[(LogAppendResult, AddressedRequest[A])] = {
+  def appendIfLeader(data: Array[A]): Either[NotTheLeaderException, (LogAppendResult, AddressedRequest[A])] = {
     currentState match {
       case leader: LeaderNodeState =>
         val res = leader.makeAppendEntries[A](log, currentTerm(), data)
-        Option(res)
-      case _ => None
+        Right(res)
+      case _ => Left(new NotTheLeaderException(nodeId, currentTerm, currentState.leader))
     }
   }
 
+  private lazy val notImplementedStatusPublisher: Publishers.InError[AppendStatus] = Publishers.InError[AppendStatus](new NotImplementedError())
   override def onMessage(input: RaftMessage[A]): Result = {
     input match {
       case AddressedMessage(from, msg: RequestOrResponse[A]) => handleMessage(from, msg)
       case timer: TimerMessage => onTimerMessage(timer)
-      case AppendData(data) => createAppend(data)
+      case ad @ AppendData(_, data : Array[A]) =>
+        notImplementedStatusPublisher.subscribe(ad.statusSubscriber)
+        createAppend(data)
     }
   }
+
+  /**
+    * Used to append to this node's log and create append requests if we are the leader
+    *
+    * @param data the data to append
+    * @return either some append requests or an error output if we are not the leader
+    */
+  def createAppend(data: Array[A]): RaftNodeResult[A] = {
+    val response = appendIfLeader(data)
+    RaftNode.appendResponseAsRaftNodeResult(response)
+  }
+
+  final def createAppendFor(data: A, theRest : A*)(implicit tag: ClassTag[A]): Result = createAppend(data +: theRest.toArray)
 
   /**
     * Applies requests and responses coming to the node state and replies w/ any resulting messages
@@ -242,6 +258,7 @@ class RaftNode[A](
     val beforeTerm = currentTerm
     val doAppend = if (beforeTerm < append.term) {
       onBecomeFollower(Option(from), append.term)
+      resetReceiveHeartbeat()
       false
     } else if (beforeTerm > append.term) {
       // ignore/fail if we get an append for an earlier term
@@ -321,10 +338,8 @@ class RaftNode[A](
       // cancel HB for all nodes
       cancelSendHeartbeat()
     }
-    resetReceiveHeartbeat()
     persistentState.currentTerm = newTerm
-    newLeader.foreach { leaderId => roleCallback.onNewLeader(currentTerm(), leaderId)
-    }
+    newLeader.foreach(roleCallback.onNewLeader(currentTerm(), _))
     updateState(currentState.becomeFollower(newLeader))
   }
 
@@ -344,17 +359,23 @@ class RaftNode[A](
     timers.sendHeartbeat.cancel()
   }
 
-  def resetSendHeartbeat(): timers.clock.CancelT = {
+  private[this] def resetSendHeartbeat(): timers.clock.CancelT = {
     timers.sendHeartbeat.reset(timerCallback)
   }
 
+  /** This is NOT intended to be called directly, but is managed internally
+    *
+    * @return the cancellable timer result.
+    */
   def resetReceiveHeartbeat(): timers.clock.CancelT = {
     timers.receiveHeartbeat.reset(timerCallback)
   }
 
   def currentTerm(): Term = persistentState.currentTerm
 
-  /** a convenience builder method to create a new raft node w/ the given raft log
+  /** $WithSetup
+    *
+    * a convenience builder method to create a new raft node w/ the given raft log
     *
     * @return a new node state
     */
@@ -362,7 +383,9 @@ class RaftNode[A](
     new RaftNode(persistentState, newLog, timers, cluster, state, maxAppendSize, timerCallback, roleCallback)
   }
 
-  /** a convenience builder method to create a new raft node w/ the given cluster
+  /** $WithSetup
+    *
+    * a convenience builder method to create a new raft node w/ the given cluster
     *
     * @return a new node state
     */
@@ -370,12 +393,39 @@ class RaftNode[A](
     new RaftNode(persistentState, log, timers, newCluster, state, maxAppendSize, timerCallback, roleCallback)
   }
 
+  /** $WithSetup
+    *
+    * @param newTimerCallback the timer callback
+    * @return a copy of thew RaftNode which uses the given timer callback
+    */
   def withTimerCallback(newTimerCallback: TimerCallback[_]): RaftNode[A] = {
     new RaftNode(persistentState, log, timers, cluster, state, maxAppendSize, newTimerCallback, roleCallback)
   }
 
+  /** $WithSetup
+    *
+    * A convenience method for exposing 'withRoleCallback' with a function instead of a [[RoleCallback]], so users
+    * can invoke via:
+    * {{{
+    *   val initial : RaftNode[T] = ...
+    *   initial.withRoleCallback { event =>
+    *     // do something w/ the event here
+    *     println(event)
+    *   }
+    * }}}
+    *
+    * @param f the callback function
+    * @return a new RaftNode w/ the given callback added
+    */
   def withRoleCallback(f: RoleEvent => Unit): RaftNode[A] = withRoleCallback(RoleCallback(f))
 
+  /** $WithSetup
+    *
+    * Adds the given callback to this node to be invoked whenever a [[RoleEvent]] takes place
+    *
+    * @param f the callback function
+    * @return a new RaftNode w/ the given callback added
+    */
   def withRoleCallback(newRoleCallback: RoleCallback): RaftNode[A] = {
     new RaftNode(persistentState, log, timers, cluster, state, maxAppendSize, timerCallback, newRoleCallback)
   }
