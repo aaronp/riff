@@ -3,6 +3,7 @@ import java.nio.file.Path
 
 import eie.io.{FromBytes, ToBytes, _}
 import monix.reactive.Observable
+import monix.reactive.OverflowStrategy.BackPressure
 import riff.monix.log.CommittedOps
 import riff.raft.LogIndex
 import riff.raft.log.LogCoords
@@ -65,20 +66,29 @@ object EventSource {
     * @tparam A the log entry type
     * @return an observable of the updated state
     */
-  def apply[S, A](dao: StateDao[S], log: CommittedOps[A], snapEvery: Int)(combine: (S, A) => S): Try[Observable[S]] = {
+  def apply[S, A](dao: StateDao[S], log: CommittedOps[A], snapEvery: Int, bufferSize: Int = 1000)(
+    combine: (S, A) => S): Try[Observable[S]] = {
     dao.latestSnapshot().map {
       case (latestIndex, latestSnapshot) =>
-        val entries: Observable[(LogCoords, A)] =
-          log.committedEntriesFrom(latestIndex)
-        entries.zipWithIndex
-          .scan(latestSnapshot) {
-            case (state, ((coords, next), i)) =>
-              val newState = combine(state, next)
+        val entries: Observable[(LogCoords, A)] = log.committedEntriesFrom(latestIndex)
+
+        val combined: Observable[(S, LogCoords)] = entries.scan(latestSnapshot -> LogCoords.Empty) {
+          case ((state, _), (coords, next)) => (combine(state, next), coords)
+        }
+
+        // continue to combine in the log's committed entries' scheduler,
+        // but write down on the IO scheduler
+        combined
+          .observeOn(RiffSchedulers.computation.scheduler, BackPressure(bufferSize))
+          .zipWithIndex
+          .map {
+            case ((state, coords), i) =>
               if (i != 0 && i % snapEvery == 0) {
-                dao.writeDown(coords, newState)
+                dao.writeDown(coords, state)
               }
-              newState
+              state
           }
+          .executeAsync
     }
   }
 

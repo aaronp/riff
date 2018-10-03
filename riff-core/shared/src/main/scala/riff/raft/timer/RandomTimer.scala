@@ -11,10 +11,21 @@ import scala.util.Random
   * @param timeout the base timeout value
   * @param percentageOfTimeout the "plus or minus" percentage expressed as a decimal (e.g. 20% would be 0.2, which is the default)
   */
-class RandomTimer(timeout: FiniteDuration, percentageOfTimeout: Double = 0.2) {
-  private def range = timeout.toMillis * percentageOfTimeout
-  private val minTimeout = timeout.toMillis - range
-  private val factor = (range * 2).toInt
+class RandomTimer(minTimeout: FiniteDuration, maxTimeout: FiniteDuration) {
+  require(maxTimeout >= minTimeout)
+  private def range: Long = (maxTimeout - minTimeout).toMillis
 
-  def next(): FiniteDuration = (minTimeout + Random.nextInt(factor)).millis
+  /**  @return the next random value in the range
+    */
+  def next(): FiniteDuration = {
+    if (range == 0) {
+      minTimeout
+    } else {
+      val randDuration: FiniteDuration = (Random.nextLong() % range).abs.millis
+      minTimeout + randDuration
+    }
+  }
+}
+object RandomTimer {
+  def apply(minTimeout: FiniteDuration, maxTimeout: FiniteDuration): RandomTimer = new RandomTimer(minTimeout, maxTimeout)
 }

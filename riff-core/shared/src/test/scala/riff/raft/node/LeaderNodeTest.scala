@@ -193,7 +193,7 @@ class LeaderNodeTest extends RiffSpec {
       When("An entry is appended to the leader node, but not yet replicated")
       // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
       val firstLeaderLogEntryData                    = 123456
-      val AddressedRequest(appendRequestsFromLeader) = a.createAppend(firstLeaderLogEntryData)
+      val AddressedRequest(appendRequestsFromLeader) = a.createAppendFor(firstLeaderLogEntryData)
 
       withClue("the leader should try and send append requests to B and C (which we won't do in this test)") {
         appendRequestsFromLeader.map(_._1).toSet shouldBe Set("node 2", "node 3")
@@ -236,7 +236,7 @@ class LeaderNodeTest extends RiffSpec {
       And("subsequently appends a new entry")
       // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
       val newLeaderFirstAppendData                  = 8888
-      val AddressedRequest(newLeaderAppendRequests) = b.createAppend(newLeaderFirstAppendData)
+      val AddressedRequest(newLeaderAppendRequests) = b.createAppendFor(newLeaderFirstAppendData)
       newLeaderAppendRequests.foreach {
         case (_, AppendEntries(LogCoords.Empty, 2, 0, data)) => data.toList shouldBe List(LogEntry(2, newLeaderFirstAppendData))
         case other                                           => fail(s"got $other")

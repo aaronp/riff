@@ -1,7 +1,9 @@
 package riff.raft.messages
 
+import org.reactivestreams.Subscriber
 import riff.raft.log.{LogCoords, LogEntry}
-import riff.raft.{LogIndex, NodeId, Term}
+import riff.raft.{AppendStatus, LogIndex, NodeId, Term}
+import riff.reactive.{AsSubscriber, Subscribers}
 
 import scala.reflect.ClassTag
 
@@ -22,10 +24,13 @@ final case class AddressedMessage[+A](from: NodeId, message: RequestOrResponse[A
 
 /** Represents input from a client of the cluster
   * @param values the values to append
+  * @param responseSubscriber something which can listen to status messages
   * @tparam A the log entry type.
   */
-final case class AppendData[A:ClassTag](values : Array[A]) extends RaftMessage[A] {
-  override def toString() = {
+final class AppendData[A:ClassTag, F[_] : AsSubscriber](val responseSubscriber : F[AppendStatus], val values : Array[A]) extends RaftMessage[A] {
+  def asSubscriberEvidence: AsSubscriber[F] = AsSubscriber[F]
+  def statusSubscriber: Subscriber[AppendStatus] = asSubscriberEvidence.asSubscriber(responseSubscriber)
+  override def toString(): String = {
     if (values.size > 5) {
       s"AppendData(${values.take(5).mkString(s"${values.size} : [",",","...]")})"
     } else {
@@ -40,7 +45,7 @@ final case class AppendData[A:ClassTag](values : Array[A]) extends RaftMessage[A
 
   override def equals(other : Any) = {
     other match {
-      case AppendData(otherValues) if values.length == otherValues.length =>
+      case AppendData(_, otherValues) if values.length == otherValues.length =>
         values.zip(otherValues).forall {
           case (a,b) => a == b
         }
@@ -49,7 +54,20 @@ final case class AppendData[A:ClassTag](values : Array[A]) extends RaftMessage[A
   }
 }
 object AppendData {
-  def apply[A: ClassTag](first : A, theRest : A*) = new AppendData(first +: theRest.toArray)
+  def apply[A: ClassTag](first : A, theRest : A*): AppendData[A, Subscriber] = {
+    apply[A, Subscriber](Subscribers.NoOp[AppendStatus], first +: theRest.toArray)
+  }
+
+  def apply[A: ClassTag, F[_] : AsSubscriber](responseSubscriber : F[AppendStatus], first : A, theRest : A*): AppendData[A, F] = {
+    apply(responseSubscriber, first +: theRest.toArray)
+  }
+
+  def apply[A: ClassTag, F[_] : AsSubscriber](responseSubscriber : F[AppendStatus], data : Array[A]): AppendData[A, F] = {
+    new AppendData(responseSubscriber, data)
+  }
+  def unapply[A: ClassTag, F[_]](appendData : AppendData[A, F]): Option[(F[AppendStatus], Array[A])] = {
+    Option(appendData.responseSubscriber -> appendData.values)
+  }
 }
 
 sealed trait TimerMessage extends RaftMessage[Nothing]

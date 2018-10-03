@@ -1,9 +1,6 @@
 package riff.monix
 import eie.io._
-import org.scalatest.concurrent.Eventually
-import riff.RiffSpec
 import riff.monix.EventSource.StateDao
-
 import riff.raft.LogIndex
 import riff.raft.log.{LogCoords, RaftLog}
 

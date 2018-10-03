@@ -1,6 +1,7 @@
-package riff.raft
-import riff.raft.RoleCallback.{NewLeaderEvent, RoleChangeEvent, RoleEvent}
-import riff.raft.node.NodeRole
+package riff.raft.node
+
+import riff.raft.node.RoleCallback.{NewLeaderEvent, RoleChangeEvent, RoleEvent}
+import riff.raft.{NodeId, Term}
 
 /**
   * This is provided as a convenience to be added to a [[riff.raft.node.RaftNode]] for anything which cares about

@@ -20,7 +20,8 @@ trait RaftClient[F[_], A] {
     * @param data the data to write
     * @return an observable of the append results as they are appended/co
     */
-  final def append(data: A, theRest : A*)(implicit classTag : ClassTag[A]): F[AppendStatus] = append(data +: theRest.toArray)
+  final def append(data: A, theRest: A*)(implicit classTag: ClassTag[A]): F[AppendStatus] =
+    append(data +: theRest.toArray)
 
   def append(data: Array[A]): F[AppendStatus]
 }

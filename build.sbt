@@ -135,7 +135,6 @@ publishMavenStyle := true
 lazy val root = (project in file("."))
   .enablePlugins(BuildInfoPlugin)
   .enablePlugins(SiteScaladocPlugin)
-  //.enablePlugins(PamfletPlugin)
   .enablePlugins(ParadoxPlugin)
   .enablePlugins(ScalaUnidocPlugin)
   .aggregate(
@@ -152,24 +151,23 @@ lazy val root = (project in file("."))
   .settings(
     // TODO - check
     paradoxProperties += ("project.url" -> "https://aaronp.github.io/riff/docs/current/"),
-    //sourceDirectory in Pamflet := sourceDirectory.value / "site",
     paradoxTheme                  := Some(builtinParadoxTheme("generic")),
     siteSourceDirectory           := target.value / "paradox" / "site" / "main",
     siteSubdirName in ScalaUnidoc := "api/latest",
-//    addMappingsToSiteDir(mappings in (ScalaUnidoc, packageDoc), siteSubdirName in ScalaUnidoc),
-    publish      := {},
-    publishLocal := {}
+    publish                       := {},
+    publishLocal                  := {}
   )
 
 lazy val riffCoreCrossProject = crossProject(JSPlatform, JVMPlatform)
   .crossType(CrossType.Full)
   .withoutSuffixFor(JVMPlatform)
+  .enablePlugins(TestNGPlugin)
   .settings(
     name := "riff-core",
     libraryDependencies ++= List(
+//      "org.reactivestreams" %%% "reactive-streams-scalajs" % "1.0.0",
       "com.lihaoyi" %%% "scalatags"   % "0.6.7",
-      "org.scalatest" %%% "scalatest" % "3.0.0" % "test",
-      "org.reactivestreams"           % "reactive-streams" % "1.0.2"
+      "org.scalatest" %%% "scalatest" % "3.0.0" % "test"
     )
   )
   .in(file("riff-core"))
@@ -178,14 +176,19 @@ lazy val riffCoreCrossProject = crossProject(JSPlatform, JVMPlatform)
     coverageMinimum       := 85,
     coverageFailOnMinimum := true,
     libraryDependencies ++= List(
-      "org.scala-js" %% "scalajs-stubs" % scalaJSVersion % "provided",
-      "com.github.aaronp" %% "eie"      % "0.0.3"
+      "org.scala-js" %% "scalajs-stubs"               % scalaJSVersion % "provided",
+      "com.github.aaronp" %% "eie"                    % "0.0.3",
+      "org.reactivestreams"                           % "reactive-streams" % "1.0.2",
+      "org.reactivestreams"                           % "reactive-streams-tck" % "1.0.2" % "test",
+      "com.typesafe.scala-logging" %% "scala-logging" % "3.7.2" % "test",
+      "ch.qos.logback"                                % "logback-classic" % "1.1.11" % "test"
     ),
     // put scaladocs under 'api/latest'
     siteSubdirName in SiteScaladoc := "api/latest"
   )
   .jsSettings(
     name := "riff-core-js"
+    //libraryDependencies += "org.reactivestreams" %%% "reactive-streams-scalajs" % "1.0.0"
   )
 
 lazy val riffCoreJVM = riffCoreCrossProject.jvm

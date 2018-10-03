@@ -1,6 +1,8 @@
-# Over-Parameterization: ~~NodeKey~~ is Dead
+# Over-Parameterization
 
-This project blog is becoming an omage to my favourite playlist of scala heros and tech talks, and so
+## Going from RaftNode\[NodeKey, A\] to RaftNode\[A\]
+
+This project blog is becoming an omage to my favourite playlist of scala heroes and tech talks, and so
 I guess at this point I should give [Rob Norris's Fixpoint Talk](https://www.youtube.com/watch?v=7xSfLPD6tiQ) a shout-out.
 
 Rob makes the point that, when in doubt, parameterize the property types. I've found that to be generally a good rule as well,
@@ -21,7 +23,7 @@ to write down who it voted for in order to avoid potentially double-voting after
 The problem was, the node was represented as a generic 'NodeKey' type.
 
 If we kept the parameterized NodeKey, that means we have to be able either serialize/deserialize the key itself, or provide some
-momento for that NodeKey. So the idea of making the RaftNode hold a reference to a generic NodeKey started to lose its appeal when
+memento for that NodeKey. (Memento ... is that an actual pattern? I think I recall it from my Eclipse platform days) So the idea of making the RaftNode hold a reference to a generic NodeKey started to lose its appeal when
 having to provide additional support for serialisation.
 
 And so, upon reevaluation, just making it become a string identifier in 'NodeId' was a lot more appealing. We could drop the extra

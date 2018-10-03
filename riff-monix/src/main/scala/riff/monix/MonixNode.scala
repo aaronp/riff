@@ -1,13 +1,43 @@
 package riff.monix
 
+import monix.execution.Scheduler
 import monix.reactive.Observable
-import monix.reactive.observers.Subscriber
 import riff.monix.log.ObservableLog
 import riff.monix.log.ObservableLog._
 import riff.raft.RaftClient
 import riff.raft.log.RaftLog
-import riff.raft.messages.{AddressedMessage, RaftMessage}
+import riff.raft.messages.{AddressedMessage, RaftMessage, ReceiveHeartbeatTimeout}
 import riff.raft.node._
+
+object MonixNode {
+
+  def apply[A](wrappedNode: RaftNode[A], pipe: NamedPipe[RaftMessage[A], RaftMessage[A]])(
+    implicit sched: Scheduler): MonixNode[A] = {
+
+    // use a different callback other than the node itself
+    val callback = new ObservableCallback
+    callback.sendTimeout.subscribe(pipe.bufferedSubscriber)
+    callback.receiveTimeouts.subscribe(pipe.bufferedSubscriber)
+
+    // also attach an 'appendIfLeader' input
+
+    val roleObs = ObservableState()
+    val raftNode: ObservableRaftNode[A] = {
+      val node = wrappedNode //
+        .withTimerCallback(callback) //
+        .withRoleCallback(roleObs)
+
+      new ObservableRaftNode[A](node, pipe.bufferedSubscriber)
+    }
+
+    val out = pipe.output
+    //.dump(s"${raftNode.nodeId} receiving")
+      .map(raftNode.onMessage)
+      //.dump(s"${raftNode.nodeId} sending")
+      .flatMap(resultAsObservable)
+    new MonixNode[A](raftNode, out, callback, roleObs)
+  }
+}
 
 /** Contains all the constituent parts use to construct a [[RaftNode]].
   *
@@ -22,10 +52,11 @@ import riff.raft.node._
   */
 class MonixNode[A] private[monix] (
   val raftNode: ObservableRaftNode[A],
-  val pipe: NamedPipe[RaftMessage[A], RaftMessage[A]],
   val out: Observable[AddressedMessage[A]],
   val timeouts: ObservableCallback,
-  val roleObservable: NodeRoleObservable) {
+  stateCallback: ObservableState) {
+
+  def observableState: Observable[RoleCallback.RoleEvent] = stateCallback.asObservable
 
   override def toString = {
     s"MonixNode $nodeId: $raftNode"
@@ -47,12 +78,9 @@ class MonixNode[A] private[monix] (
   def nodeId = raftNode.nodeId
 
   def resetReceiveHeartbeat(): Unit = {
-    raftNode.resetReceiveHeartbeat()
+    raftNode.onMessage(ReceiveHeartbeatTimeout)
   }
 
-  def client: RaftClient[Observable, A] = raftNode
+  def client: RaftClient[Observable, A] = ??? //raftNode
 
-  /** @return a thread-safe concurrent subscription which can be used to accept inputs
-    */
-  def bufferedSubscriber: Subscriber[RaftMessage[A]] = pipe.bufferedSubscriber
 }

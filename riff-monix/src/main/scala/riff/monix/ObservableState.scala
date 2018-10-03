@@ -2,8 +2,8 @@ package riff.monix
 import monix.execution.Scheduler
 import monix.reactive.Observable
 import monix.reactive.subjects.Var
-import riff.raft.RoleCallback
-import riff.raft.RoleCallback.RoleEvent
+import riff.raft.node.RoleCallback.RoleEvent
+import riff.raft.node.RoleCallback
 
 /**
   * Provides a means to represent a [[riff.raft.node.RaftNode]]'s role as an Observable:
@@ -11,14 +11,14 @@ import riff.raft.RoleCallback.RoleEvent
   * {{{
   *
   *   val node : RaftNode[A] = ...
-  *   val obs = NodeRoleObservable()
+  *   val obs = ObservableState()
   *   node.withRoleCallback(obs)
   *
   *   // get events of this node's idea of who the leader is and its role
   *   obs.subscribe(...)
   * }}}
   */
-class NodeRoleObservable(implicit sched: Scheduler) extends RoleCallback {
+class ObservableState(implicit sched: Scheduler) extends RoleCallback {
   private val events: Var[RoleEvent] = Var[RoleEvent](null)
   override def onEvent(event: RoleEvent): Unit = {
     events := event
@@ -26,9 +26,9 @@ class NodeRoleObservable(implicit sched: Scheduler) extends RoleCallback {
   def asObservable: Observable[RoleEvent] = events.filter(_ != null)
 }
 
-object NodeRoleObservable {
+object ObservableState {
 
-  def apply()(implicit sched: Scheduler): NodeRoleObservable = {
-    new NodeRoleObservable()
+  def apply()(implicit sched: Scheduler): ObservableState = {
+    new ObservableState()
   }
 }
