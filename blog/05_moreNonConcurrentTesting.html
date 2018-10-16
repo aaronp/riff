@@ -2,7 +2,7 @@
 <html class="no-js" lang="en">
 
 <head>
-<title>Another faux concurrent test case · Riff</title>
+<title>Another (non) concurrent test case · Riff</title>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <meta name="description" content='riff'/>
@@ -46,9 +46,9 @@
   <ul>
     <li><a href="../blog/01_raftSimulatorForTheWin.html" class="page">Meaningful Integration Testing</a></li>
     <li><a href="../blog/02_eventSourceAGoGo.html" class="page">Event Sourcing</a></li>
-    <li><a href="../blog/03_overParameterization.html" class="page">Over-Parameterization: Going from RaftNode[NodeKey, A] to RaftNode[A]</a></li>
+    <li><a href="../blog/03_overParameterization.html" class="page">Over-Parameterization</a></li>
     <li><a href="../blog/04_goingReactive.html" class="page">Going Reactive</a></li>
-    <li><a href="../blog/05_moreNonConcurrentTesting.html" class="active page">Another faux concurrent test case</a></li>
+    <li><a href="../blog/05_moreNonConcurrentTesting.html" class="active page">Another (non) concurrent test case</a></li>
   </ul></li>
 </ul>
 </div>
@@ -96,9 +96,9 @@ C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.
   <ul>
     <li><a href="../blog/01_raftSimulatorForTheWin.html" class="page">Meaningful Integration Testing</a></li>
     <li><a href="../blog/02_eventSourceAGoGo.html" class="page">Event Sourcing</a></li>
-    <li><a href="../blog/03_overParameterization.html" class="page">Over-Parameterization: Going from RaftNode[NodeKey, A] to RaftNode[A]</a></li>
+    <li><a href="../blog/03_overParameterization.html" class="page">Over-Parameterization</a></li>
     <li><a href="../blog/04_goingReactive.html" class="page">Going Reactive</a></li>
-    <li><a href="../blog/05_moreNonConcurrentTesting.html" class="active page">Another faux concurrent test case</a></li>
+    <li><a href="../blog/05_moreNonConcurrentTesting.html" class="active page">Another (non) concurrent test case</a></li>
   </ul></li>
 </ul>
 </div>
@@ -117,7 +117,7 @@ C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.
 <ul>
   <li><a href="../index.html">Riff</a></li>
   <li><a href="../blog/index.html">Project Blog</a></li>
-  <li>Another faux concurrent test case</li>
+  <li>Another (non) concurrent test case</li>
 </ul>
 </div>
 </div>
@@ -125,8 +125,8 @@ C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.
 
 <div class="page-content row">
 <div class="small-12 large-9 column" id="docs">
-<h1><a href="#another-faux-concurrent-test-case" name="another-faux-concurrent-test-case" class="anchor"><span class="anchor-link"></span></a>Another faux concurrent test case</h1>
-<p>I&rsquo;d wrote <a href="01_raftSimulatorForTheWin.md">earlier</a> about the benefits of writing what would otherwise be a concurrent test in a single-threaded way using a timeline utility.</p>
+<h1><a href="#another-non-concurrent-test-case" name="another-non-concurrent-test-case" class="anchor"><span class="anchor-link"></span></a>Another (non) concurrent test case</h1>
+<p>I&rsquo;d wrote <a href="01_raftSimulatorForTheWin.html">earlier</a> about the benefits of writing what would otherwise be a concurrent test in a single-threaded way using a timeline utility.</p>
 <p>I&rsquo;ve recently had another, perhaps more straight-forward example I wanted to mention.</p>
 <p>Again, I should first say there&rsquo;s nothing necessarily wrong with testing multi-threaded code. I&rsquo;m just trying to provide an argument for taking some pause before just throwing in an &ldquo;eventually this should happen&rdquo; style of test.</p>
 <p>And to recap, some of the benefits of testing in a single thread are:  - no need to wait an arbitrary amount of time to gain some certainty an unexpected event will happen  - the test itself may be faster as it doesn&rsquo;t have to spin up/destroy threads or thread pools  - the test may be simpler - no additional latches, semaphores, exchangers, whatever to coordinate conditions  - added determinism&hellip; not having tests which fail on slow build agents, etc  - more easily debugged/stepped through</p>
@@ -166,7 +166,7 @@ The source code for this page can be found <a href="https://github.com/aaronp/ri
 <div class="nav-title">On this page:</div>
 <div class="nav-toc">
 <ul>
-  <li><a href="../blog/05_moreNonConcurrentTesting.html#another-faux-concurrent-test-case" class="header">Another faux concurrent test case</a>
+  <li><a href="../blog/05_moreNonConcurrentTesting.html#another-non-concurrent-test-case" class="header">Another (non) concurrent test case</a>
   <ul>
     <li><a href="../blog/05_moreNonConcurrentTesting.html#obviously-no-bugs-or-no-obvious-bugs-" class="header">Obviously no bugs or no obvious bugs?</a></li>
   </ul></li>
