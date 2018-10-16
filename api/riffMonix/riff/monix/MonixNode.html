@@ -127,20 +127,16 @@
                         <a href="MonixClock.html" title="">MonixClock</a>
                       </li><li class="current-entities indented2">
                         <a class="object" href="MonixCluster$.html" title=""></a>
-                        <a class="class" href="MonixCluster.html" title=""></a>
-                        <a href="MonixCluster.html" title="">MonixCluster</a>
+                        <a class="class" href="MonixCluster.html" title="This is more of a toy/test, as it sets up all the cluster members in the same JVM."></a>
+                        <a href="MonixCluster.html" title="This is more of a toy/test, as it sets up all the cluster members in the same JVM.">MonixCluster</a>
                       </li><li class="current-entities indented2">
-                        <span class="separator"></span>
+                        <a class="object" href="MonixNode$.html" title=""></a>
                         <a class="class" href="" title="Contains all the constituent parts use to construct a RaftNode."></a>
                         <a href="" title="Contains all the constituent parts use to construct a RaftNode.">MonixNode</a>
                       </li><li class="current-entities indented2">
                         <a class="object" href="NamedPipe$.html" title=""></a>
                         <a class="class" href="NamedPipe.html" title=""></a>
                         <a href="NamedPipe.html" title="">NamedPipe</a>
-                      </li><li class="current-entities indented2">
-                        <a class="object" href="NodeRoleObservable$.html" title=""></a>
-                        <a class="class" href="NodeRoleObservable.html" title="Provides a means to represent a riff.raft.node.RaftNode's role as an Observable:"></a>
-                        <a href="NodeRoleObservable.html" title="Provides a means to represent a riff.raft.node.RaftNode's role as an Observable:">NodeRoleObservable</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="class" href="ObservableCallback.html" title="Provides a means to observe the nodes timeouts"></a>
@@ -149,6 +145,10 @@
                         <span class="separator"></span>
                         <a class="class" href="ObservableRaftNode.html" title="Wraps a RaftNode's onMessage so as to exposes observable requests and responses"></a>
                         <a href="ObservableRaftNode.html" title="Wraps a RaftNode's onMessage so as to exposes observable requests and responses">ObservableRaftNode</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="ObservableState$.html" title=""></a>
+                        <a class="class" href="ObservableState.html" title="Provides a means to represent a riff.raft.node.RaftNode's role as an Observable:"></a>
+                        <a href="ObservableState.html" title="Provides a means to represent a riff.raft.node.RaftNode's role as an Observable:">ObservableState</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="object" href="RiffSchedulers$.html" title=""></a>
@@ -164,14 +164,16 @@
           <div id="content">
             <body class="class type">
       <div id="definition">
-        <div class="big-circle class">c</div>
+        <a href="MonixNode$.html" title="See companion object"><div class="big-circle class-companion-object">c</div></a>
         <p id="owner"><a href="../index.html" class="extype" name="riff">riff</a>.<a href="index.html" class="extype" name="riff.monix">monix</a></p>
-        <h1>MonixNode<span class="permalink">
+        <h1><a href="MonixNode$.html" title="See companion object">MonixNode</a><span class="permalink">
       <a href="../../riff/monix/MonixNode.html" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span></h1>
-        <h3><span class="morelinks"></span></h3>
+        <h3><span class="morelinks"><div>
+            Companion <a href="MonixNode$.html" title="See companion object">object MonixNode</a>
+          </div></span></h3>
       </div>
 
       <h4 id="signature" class="signature">
@@ -307,22 +309,6 @@
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
-    </li><li name="riff.monix.MonixNode#bufferedSubscriber" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="bufferedSubscriber:monix.reactive.observers.Subscriber[riff.raft.messages.RaftMessage[A]]"></a><a id="bufferedSubscriber:Subscriber[RaftMessage[A]]"></a>
-      <span class="permalink">
-      <a href="../../riff/monix/MonixNode.html#bufferedSubscriber:monix.reactive.observers.Subscriber[riff.raft.messages.RaftMessage[A]]" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">bufferedSubscriber</span><span class="result">: <span class="extype" name="monix.reactive.observers.Subscriber">Subscriber</span>[<span class="extype" name="riff.raft.messages.RaftMessage">RaftMessage</span>[<span class="extype" name="riff.monix.MonixNode.A">A</span>]]</span>
-      </span>
-      
-      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>a thread-safe concurrent subscription which can be used to accept inputs</p></dd></dl></div>
     </li><li name="riff.monix.MonixNode#client" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="client:riff.raft.RaftClient[monix.reactive.Observable,A]"></a><a id="client:RaftClient[Observable,A]"></a>
       <span class="permalink">
@@ -586,6 +572,22 @@
       </span>
       
       
+    </li><li name="riff.monix.MonixNode#observableState" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="observableState:monix.reactive.Observable[riff.raft.node.RoleCallback.RoleEvent]"></a><a id="observableState:Observable[RoleEvent]"></a>
+      <span class="permalink">
+      <a href="../../riff/monix/MonixNode.html#observableState:monix.reactive.Observable[riff.raft.node.RoleCallback.RoleEvent]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">observableState</span><span class="result">: <span class="extype" name="monix.reactive.Observable">Observable</span>[<span class="extype" name="riff.raft.node.RoleCallback.RoleEvent">RoleEvent</span>]</span>
+      </span>
+      
+      
     </li><li name="riff.monix.MonixNode#out" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="out:monix.reactive.Observable[riff.raft.messages.AddressedMessage[A]]"></a><a id="out:Observable[AddressedMessage[A]]"></a>
       <span class="permalink">
@@ -599,22 +601,6 @@
       </span>
       <span class="symbol">
         <span class="name">out</span><span class="result">: <span class="extype" name="monix.reactive.Observable">Observable</span>[<span class="extype" name="riff.raft.messages.AddressedMessage">AddressedMessage</span>[<span class="extype" name="riff.monix.MonixNode.A">A</span>]]</span>
-      </span>
-      
-      
-    </li><li name="riff.monix.MonixNode#pipe" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="pipe:riff.monix.NamedPipe[riff.raft.messages.RaftMessage[A],riff.raft.messages.RaftMessage[A]]"></a><a id="pipe:NamedPipe[RaftMessage[A],RaftMessage[A]]"></a>
-      <span class="permalink">
-      <a href="../../riff/monix/MonixNode.html#pipe:riff.monix.NamedPipe[riff.raft.messages.RaftMessage[A],riff.raft.messages.RaftMessage[A]]" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">pipe</span><span class="result">: <a href="NamedPipe.html" class="extype" name="riff.monix.NamedPipe">NamedPipe</a>[<span class="extype" name="riff.raft.messages.RaftMessage">RaftMessage</span>[<span class="extype" name="riff.monix.MonixNode.A">A</span>], <span class="extype" name="riff.raft.messages.RaftMessage">RaftMessage</span>[<span class="extype" name="riff.monix.MonixNode.A">A</span>]]</span>
       </span>
       
       
@@ -647,22 +633,6 @@
       </span>
       <span class="symbol">
         <span class="name">resetReceiveHeartbeat</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.12.7/scala/Unit.html#scala.Unit" class="extype" name="scala.Unit">Unit</a></span>
-      </span>
-      
-      
-    </li><li name="riff.monix.MonixNode#roleObservable" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="roleObservable:riff.monix.NodeRoleObservable"></a><a id="roleObservable:NodeRoleObservable"></a>
-      <span class="permalink">
-      <a href="../../riff/monix/MonixNode.html#roleObservable:riff.monix.NodeRoleObservable" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">roleObservable</span><span class="result">: <a href="NodeRoleObservable.html" class="extype" name="riff.monix.NodeRoleObservable">NodeRoleObservable</a></span>
       </span>
       
       

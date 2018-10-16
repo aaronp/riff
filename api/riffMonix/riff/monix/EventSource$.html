@@ -127,20 +127,16 @@
                         <a href="MonixClock.html" title="">MonixClock</a>
                       </li><li class="current-entities indented2">
                         <a class="object" href="MonixCluster$.html" title=""></a>
-                        <a class="class" href="MonixCluster.html" title=""></a>
-                        <a href="MonixCluster.html" title="">MonixCluster</a>
+                        <a class="class" href="MonixCluster.html" title="This is more of a toy/test, as it sets up all the cluster members in the same JVM."></a>
+                        <a href="MonixCluster.html" title="This is more of a toy/test, as it sets up all the cluster members in the same JVM.">MonixCluster</a>
                       </li><li class="current-entities indented2">
-                        <span class="separator"></span>
+                        <a class="object" href="MonixNode$.html" title=""></a>
                         <a class="class" href="MonixNode.html" title="Contains all the constituent parts use to construct a RaftNode."></a>
                         <a href="MonixNode.html" title="Contains all the constituent parts use to construct a RaftNode.">MonixNode</a>
                       </li><li class="current-entities indented2">
                         <a class="object" href="NamedPipe$.html" title=""></a>
                         <a class="class" href="NamedPipe.html" title=""></a>
                         <a href="NamedPipe.html" title="">NamedPipe</a>
-                      </li><li class="current-entities indented2">
-                        <a class="object" href="NodeRoleObservable$.html" title=""></a>
-                        <a class="class" href="NodeRoleObservable.html" title="Provides a means to represent a riff.raft.node.RaftNode's role as an Observable:"></a>
-                        <a href="NodeRoleObservable.html" title="Provides a means to represent a riff.raft.node.RaftNode's role as an Observable:">NodeRoleObservable</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="class" href="ObservableCallback.html" title="Provides a means to observe the nodes timeouts"></a>
@@ -149,6 +145,10 @@
                         <span class="separator"></span>
                         <a class="class" href="ObservableRaftNode.html" title="Wraps a RaftNode's onMessage so as to exposes observable requests and responses"></a>
                         <a href="ObservableRaftNode.html" title="Wraps a RaftNode's onMessage so as to exposes observable requests and responses">ObservableRaftNode</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="ObservableState$.html" title=""></a>
+                        <a class="class" href="ObservableState.html" title="Provides a means to represent a riff.raft.node.RaftNode's role as an Observable:"></a>
+                        <a href="ObservableState.html" title="Provides a means to represent a riff.raft.node.RaftNode's role as an Observable:">ObservableState</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="object" href="RiffSchedulers$.html" title=""></a>
@@ -334,9 +334,9 @@ to track what the last snapshot taken was</p><p>It then writes down snapshot-X f
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="riff.monix.EventSource#apply" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="apply[S,A](dao:riff.monix.EventSource.StateDao[S],log:riff.monix.log.CommittedOps[A],snapEvery:Int)(combine:(S,A)=&gt;S):scala.util.Try[monix.reactive.Observable[S]]"></a><a id="apply[S,A](StateDao[S],CommittedOps[A],Int)((S,A)⇒S):Try[Observable[S]]"></a>
+      <a id="apply[S,A](dao:riff.monix.EventSource.StateDao[S],log:riff.monix.log.CommittedOps[A],snapEvery:Int,bufferSize:Int)(combine:(S,A)=&gt;S):scala.util.Try[monix.reactive.Observable[S]]"></a><a id="apply[S,A](StateDao[S],CommittedOps[A],Int,Int)((S,A)⇒S):Try[Observable[S]]"></a>
       <span class="permalink">
-      <a href="../../riff/monix/EventSource$.html#apply[S,A](dao:riff.monix.EventSource.StateDao[S],log:riff.monix.log.CommittedOps[A],snapEvery:Int)(combine:(S,A)=&gt;S):scala.util.Try[monix.reactive.Observable[S]]" title="Permalink">
+      <a href="../../riff/monix/EventSource$.html#apply[S,A](dao:riff.monix.EventSource.StateDao[S],log:riff.monix.log.CommittedOps[A],snapEvery:Int,bufferSize:Int)(combine:(S,A)=&gt;S):scala.util.Try[monix.reactive.Observable[S]]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -345,7 +345,7 @@ to track what the last snapshot taken was</p><p>It then writes down snapshot-X f
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">apply</span><span class="tparams">[<span name="S">S</span>, <span name="A">A</span>]</span><span class="params">(<span name="dao">dao: <a href="EventSource$$StateDao.html" class="extype" name="riff.monix.EventSource.StateDao">StateDao</a>[<span class="extype" name="riff.monix.EventSource.apply.S">S</span>]</span>, <span name="log">log: <a href="log/CommittedOps.html" class="extype" name="riff.monix.log.CommittedOps">CommittedOps</a>[<span class="extype" name="riff.monix.EventSource.apply.A">A</span>]</span>, <span name="snapEvery">snapEvery: <a href="http://www.scala-lang.org/api/2.12.7/scala/Int.html#scala.Int" class="extype" name="scala.Int">Int</a></span>)</span><span class="params">(<span name="combine">combine: (<span class="extype" name="riff.monix.EventSource.apply.S">S</span>, <span class="extype" name="riff.monix.EventSource.apply.A">A</span>) ⇒ <span class="extype" name="riff.monix.EventSource.apply.S">S</span></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.12.7/scala/util/Try.html#scala.util.Try" class="extype" name="scala.util.Try">Try</a>[<span class="extype" name="monix.reactive.Observable">Observable</span>[<span class="extype" name="riff.monix.EventSource.apply.S">S</span>]]</span>
+        <span class="name">apply</span><span class="tparams">[<span name="S">S</span>, <span name="A">A</span>]</span><span class="params">(<span name="dao">dao: <a href="EventSource$$StateDao.html" class="extype" name="riff.monix.EventSource.StateDao">StateDao</a>[<span class="extype" name="riff.monix.EventSource.apply.S">S</span>]</span>, <span name="log">log: <a href="log/CommittedOps.html" class="extype" name="riff.monix.log.CommittedOps">CommittedOps</a>[<span class="extype" name="riff.monix.EventSource.apply.A">A</span>]</span>, <span name="snapEvery">snapEvery: <a href="http://www.scala-lang.org/api/2.12.7/scala/Int.html#scala.Int" class="extype" name="scala.Int">Int</a></span>, <span name="bufferSize">bufferSize: <a href="http://www.scala-lang.org/api/2.12.7/scala/Int.html#scala.Int" class="extype" name="scala.Int">Int</a> = <span class="symbol">1000</span></span>)</span><span class="params">(<span name="combine">combine: (<span class="extype" name="riff.monix.EventSource.apply.S">S</span>, <span class="extype" name="riff.monix.EventSource.apply.A">A</span>) ⇒ <span class="extype" name="riff.monix.EventSource.apply.S">S</span></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.12.7/scala/util/Try.html#scala.util.Try" class="extype" name="scala.util.Try">Try</a>[<span class="extype" name="monix.reactive.Observable">Observable</span>[<span class="extype" name="riff.monix.EventSource.apply.S">S</span>]]</span>
       </span>
       
       <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="tparam">S</dt><dd class="cmt"><p>the state type</p></dd><dt class="tparam">A</dt><dd class="cmt"><p>the log entry type</p></dd><dt class="param">dao</dt><dd class="cmt"><p>the access object for obtaining the snaphot</p></dd><dt class="param">log</dt><dd class="cmt"><p>a means of obtaining the 'committedEntriesFrom'</p></dd><dt class="param">snapEvery</dt><dd class="cmt"><p>the frequency of how often we should write down the snapshots</p></dd><dt class="param">combine</dt><dd class="cmt"><p>a function to combine the log entries of type 'A' w/ the state</p></dd><dt>returns</dt><dd class="cmt"><p>an observable of the updated state</p></dd></dl></div>

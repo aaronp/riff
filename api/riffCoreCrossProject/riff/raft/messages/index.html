@@ -201,6 +201,22 @@
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../index.html" class="extype" name="riff.raft">raft</a></dd></dl></div>
+    </li><li name="riff.raft.reactive" visbl="pub" class="indented3 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="reactive"></a><a id="reactive:reactive"></a>
+      <span class="permalink">
+      <a href="../../riff/raft/index.html#reactive" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="../reactive/index.html"><span class="name">reactive</span></a>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../index.html" class="extype" name="riff.raft">raft</a></dd></dl></div>
     </li><li name="riff.raft.timer" visbl="pub" class="indented3 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="timer"></a><a id="timer:timer"></a>
       <span class="permalink">
@@ -297,21 +313,21 @@
       
       <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">from</dt><dd class="cmt"><p>represents the source of the message</p></dd><dt class="param">message</dt><dd class="cmt"><p>the message</p></dd></dl></div>
     </li><li name="riff.raft.messages.AppendData" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="AppendData[A]extendsRaftMessage[A]withProductwithSerializable"></a><a id="AppendData[A]:AppendData[A]"></a>
+      <a id="AppendData[A,F[_]]extendsRaftMessage[A]"></a><a id="AppendData[A,F[_]]:AppendData[A,F]"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/messages/index.html#AppendData[A]extendsRaftMessage[A]withProductwithSerializable" title="Permalink">
+      <a href="../../../riff/raft/messages/index.html#AppendData[A,F[_]]extendsRaftMessage[A]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
       <span class="modifier_kind">
         <span class="modifier">final </span>
-        <span class="kind">case class</span>
+        <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <a title="Represents input from a client of the cluster" href="AppendData.html"><span class="name">AppendData</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="values">values: <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="riff.raft.messages.AppendData.A">A</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="evidence$1">evidence$1: <span class="extype" name="scala.reflect.ClassTag">ClassTag</span>[<span class="extype" name="riff.raft.messages.AppendData.A">A</span>]</span>)</span><span class="result"> extends <a href="RaftMessage.html" class="extype" name="riff.raft.messages.RaftMessage">RaftMessage</a>[<span class="extype" name="riff.raft.messages.AppendData.A">A</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a title="Represents input from a client of the cluster" href="AppendData.html"><span class="name">AppendData</span></a><span class="tparams">[<span name="A">A</span>, <span name="F">F<span class="tparams">[<span name="_">_</span>]</span></span>]</span><span class="result"> extends <a href="RaftMessage.html" class="extype" name="riff.raft.messages.RaftMessage">RaftMessage</a>[<span class="extype" name="riff.raft.messages.AppendData.A">A</span>]</span>
       </span>
       
-      <p class="shortcomment cmt">Represents input from a client of the cluster</p><div class="fullcomment"><div class="comment cmt"><p>Represents input from a client of the cluster</p></div><dl class="paramcmts block"><dt class="tparam">A</dt><dd class="cmt"><p>the log entry type.</p></dd><dt class="param">values</dt><dd class="cmt"><p>the values to append</p></dd></dl></div>
+      <p class="shortcomment cmt">Represents input from a client of the cluster</p><div class="fullcomment"><div class="comment cmt"><p>Represents input from a client of the cluster</p></div><dl class="paramcmts block"><dt class="tparam">A</dt><dd class="cmt"><p>the log entry type.</p></dd></dl></div>
     </li><li name="riff.raft.messages.AppendEntries" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="AppendEntries[A]extendsRaftRequest[A]withProductwithSerializable"></a><a id="AppendEntries[A]:AppendEntries[A]"></a>
       <span class="permalink">
@@ -480,7 +496,7 @@ put behind an actor, invoke from an unmarshalled POST request, etc.
         <span class="kind">object</span>
       </span>
       <span class="symbol">
-        <a title="" href="AppendData$.html"><span class="name">AppendData</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a title="" href="AppendData$.html"><span class="name">AppendData</span></a>
       </span>
       
       

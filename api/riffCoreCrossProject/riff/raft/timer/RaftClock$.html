@@ -126,11 +126,11 @@
                         <a class="trait" href="RaftClock.html" title="Represents the functions required to control a member node's election and heartbeat timeouts."></a>
                         <a href="RaftClock.html" title="Represents the functions required to control a member node's election and heartbeat timeouts.">RaftClock</a>
                       </li><li class="current-entities indented3">
-                        <span class="separator"></span>
+                        <a class="object" href="RandomTimer$.html" title=""></a>
                         <a class="class" href="RandomTimer.html" title="A utility class for use when implementing a RaftClock."></a>
                         <a href="RandomTimer.html" title="A utility class for use when implementing a RaftClock.">RandomTimer</a>
                       </li><li class="current-entities indented3">
-                        <span class="separator"></span>
+                        <a class="object" href="TimerCallback$.html" title=""></a>
                         <a class="trait" href="TimerCallback.html" title=""></a>
                         <a href="TimerCallback.html" title="">TimerCallback</a>
                       </li><li class="current-entities indented3">
@@ -272,10 +272,26 @@
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
-    </li><li name="riff.raft.timer.RaftClock#apply" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="apply(sendHeartbeatTimeout:scala.concurrent.duration.FiniteDuration,receiveHeartbeatTimeout:scala.concurrent.duration.FiniteDuration):riff.raft.timer.RaftClock"></a><a id="apply(FiniteDuration,FiniteDuration):RaftClock"></a>
+    </li><li name="riff.raft.timer.RaftClock#Default" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Default:riff.raft.timer.RaftClock"></a><a id="Default:RaftClock"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/timer/RaftClock$.html#apply(sendHeartbeatTimeout:scala.concurrent.duration.FiniteDuration,receiveHeartbeatTimeout:scala.concurrent.duration.FiniteDuration):riff.raft.timer.RaftClock" title="Permalink">
+      <a href="../../../riff/raft/timer/RaftClock$.html#Default:riff.raft.timer.RaftClock" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">lazy val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">Default</span><span class="result">: <a href="RaftClock.html" class="extype" name="riff.raft.timer.RaftClock">RaftClock</a></span>
+      </span>
+      
+      
+    </li><li name="riff.raft.timer.RaftClock#apply" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="apply(sendHeartbeatTimeout:scala.concurrent.duration.FiniteDuration,receiveHeartbeat:riff.raft.timer.RandomTimer):riff.raft.timer.RaftClock"></a><a id="apply(FiniteDuration,RandomTimer):RaftClock"></a>
+      <span class="permalink">
+      <a href="../../../riff/raft/timer/RaftClock$.html#apply(sendHeartbeatTimeout:scala.concurrent.duration.FiniteDuration,receiveHeartbeat:riff.raft.timer.RandomTimer):riff.raft.timer.RaftClock" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -284,7 +300,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">apply</span><span class="params">(<span name="sendHeartbeatTimeout">sendHeartbeatTimeout: <span class="extype" name="scala.concurrent.duration.FiniteDuration">FiniteDuration</span></span>, <span name="receiveHeartbeatTimeout">receiveHeartbeatTimeout: <span class="extype" name="scala.concurrent.duration.FiniteDuration">FiniteDuration</span></span>)</span><span class="result">: <a href="RaftClock.html" class="extype" name="riff.raft.timer.RaftClock">RaftClock</a></span>
+        <span class="name">apply</span><span class="params">(<span name="sendHeartbeatTimeout">sendHeartbeatTimeout: <span class="extype" name="scala.concurrent.duration.FiniteDuration">FiniteDuration</span></span>, <span name="receiveHeartbeat">receiveHeartbeat: <a href="RandomTimer.html" class="extype" name="riff.raft.timer.RandomTimer">RandomTimer</a></span>)</span><span class="result">: <a href="RaftClock.html" class="extype" name="riff.raft.timer.RaftClock">RaftClock</a></span>
       </span>
       
       

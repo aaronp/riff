@@ -85,10 +85,10 @@
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../../index.html" class="extype" name="_root_">root</a></dd></dl></div>
-    </li><li name="riff.monix" visbl="pub" class="indented2 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="monix"></a><a id="monix:monix"></a>
+    </li><li name="riff.reactive" visbl="pub" class="indented2 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="reactive"></a><a id="reactive:reactive"></a>
       <span class="permalink">
-      <a href="../riff/index.html#monix" title="Permalink">
+      <a href="../riff/index.html#reactive" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -97,106 +97,95 @@
         <span class="kind">package</span>
       </span>
       <span class="symbol">
-        <a title="" href="index.html"><span class="name">monix</span></a>
+        <a title="" href="index.html"><span class="name">reactive</span></a>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../index.html" class="extype" name="riff">riff</a></dd></dl></div>
-    </li><li name="riff.monix.log" visbl="pub" class="indented3 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="log"></a><a id="log:log"></a>
-      <span class="permalink">
-      <a href="../../riff/monix/index.html#log" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">package</span>
-      </span>
-      <span class="symbol">
-        <a title="" href="log/index.html"><span class="name">log</span></a>
-      </span>
-      
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="index.html" class="extype" name="riff.monix">monix</a></dd></dl></div>
     </li><li class="current-entities indented2">
-                        <span class="separator"></span>
-                        <a class="object" href="EventSource$.html" title="Contains a function for applying a log type A to a state S, and persisting that state."></a>
-                        <a href="EventSource$.html" title="Contains a function for applying a log type A to a state S, and persisting that state.">EventSource</a>
+                        <a class="object" href="AsPublisher$.html" title=""></a>
+                        <a class="trait" href="AsPublisher.html" title="Represents the ability for some type F[_] to be converted to a publisher, in addition to perform some basic algebra on the F[_] (such as collecting into another F[_])"></a>
+                        <a href="AsPublisher.html" title="Represents the ability for some type F[_] to be converted to a publisher, in addition to perform some basic algebra on the F[_] (such as collecting into another F[_])">AsPublisher</a>
                       </li><li class="current-entities indented2">
-                        <a class="object" href="MonixClock$.html" title=""></a>
-                        <a class="class" href="MonixClock.html" title=""></a>
-                        <a href="MonixClock.html" title="">MonixClock</a>
+                        <a class="object" href="AsSubscriber$.html" title=""></a>
+                        <a class="trait" href="AsSubscriber.html" title="Represents any F[_] which can be represented as a Subscriber"></a>
+                        <a href="AsSubscriber.html" title="Represents any F[_] which can be represented as a Subscriber">AsSubscriber</a>
                       </li><li class="current-entities indented2">
-                        <a class="object" href="MonixCluster$.html" title=""></a>
-                        <a class="class" href="MonixCluster.html" title=""></a>
-                        <a href="MonixCluster.html" title="">MonixCluster</a>
+                        <a class="object" href="AsyncSubscription$.html" title=""></a>
+                        <a class="class" href="AsyncSubscription.html" title="Represents a subscription whose actions are handled via a Runnable pulling values from a blocking internalStateInputQueue submitted on a provided execution context"></a>
+                        <a href="AsyncSubscription.html" title="Represents a subscription whose actions are handled via a Runnable pulling values from a blocking internalStateInputQueue submitted on a provided execution context">AsyncSubscription</a>
                       </li><li class="current-entities indented2">
-                        <span class="separator"></span>
-                        <a class="class" href="MonixNode.html" title="Contains all the constituent parts use to construct a RaftNode."></a>
-                        <a href="MonixNode.html" title="Contains all the constituent parts use to construct a RaftNode.">MonixNode</a>
+                        <a class="object" href="CollectPublisher$.html" title=""></a>
+                        <a class="class" href="CollectPublisher.html" title="Simple implementation of a publisher which can filter its published elements"></a>
+                        <a href="CollectPublisher.html" title="Simple implementation of a publisher which can filter its published elements">CollectPublisher</a>
                       </li><li class="current-entities indented2">
-                        <a class="object" href="NamedPipe$.html" title=""></a>
-                        <a class="class" href="NamedPipe.html" title=""></a>
-                        <a href="NamedPipe.html" title="">NamedPipe</a>
+                        <a class="object" href="MapPublisher$.html" title=""></a>
+                        <a class="class" href="MapPublisher.html" title=""></a>
+                        <a href="MapPublisher.html" title="">MapPublisher</a>
                       </li><li class="current-entities indented2">
-                        <a class="object" href="NodeRoleObservable$.html" title=""></a>
-                        <a class="class" href="" title="Provides a means to represent a riff.raft.node.RaftNode's role as an Observable:"></a>
-                        <a href="" title="Provides a means to represent a riff.raft.node.RaftNode's role as an Observable:">NodeRoleObservable</a>
-                      </li><li class="current-entities indented2">
-                        <span class="separator"></span>
-                        <a class="class" href="ObservableCallback.html" title="Provides a means to observe the nodes timeouts"></a>
-                        <a href="ObservableCallback.html" title="Provides a means to observe the nodes timeouts">ObservableCallback</a>
+                        <a class="object" href="MultiSubscriberProcessor$.html" title=""></a>
+                        <a class="trait" href="MultiSubscriberProcessor.html" title="A 'Processor' (both a subscriber and publisher) which can be subscribed to multiple publishers in order to collate and publish their values."></a>
+                        <a href="MultiSubscriberProcessor.html" title="A 'Processor' (both a subscriber and publisher) which can be subscribed to multiple publishers in order to collate and publish their values.">MultiSubscriberProcessor</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="class" href="ObservableRaftNode.html" title="Wraps a RaftNode's onMessage so as to exposes observable requests and responses"></a>
-                        <a href="ObservableRaftNode.html" title="Wraps a RaftNode's onMessage so as to exposes observable requests and responses">ObservableRaftNode</a>
+                        <a class="object" href="" title=""></a>
+                        <a href="" title="">Publishers</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="ReactivePipe$.html" title=""></a>
+                        <a class="class" href="ReactivePipe.html" title="Represents an input/output pipe"></a>
+                        <a href="ReactivePipe.html" title="Represents an input/output pipe">ReactivePipe</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="object" href="RiffSchedulers$.html" title=""></a>
-                        <a href="RiffSchedulers$.html" title="">RiffSchedulers</a>
+                        <a class="trait" href="ReactivePublisher.html" title="A hot publisher to multiple subscribers, where new subscriptions simply begin observing the messages as the point of subscription."></a>
+                        <a href="ReactivePublisher.html" title="A hot publisher to multiple subscribers, where new subscriptions simply begin observing the messages as the point of subscription.">ReactivePublisher</a>
                       </li><li class="current-entities indented2">
-                        <a class="object" href="Router$.html" title=""></a>
-                        <a class="class" href="Router.html" title=""></a>
-                        <a href="Router.html" title="">Router</a>
+                        <a class="object" href="ReactiveTimerCallback$.html" title=""></a>
+                        <a class="class" href="ReactiveTimerCallback.html" title="An implementation of a TimerCallback which publishes TimerMessages"></a>
+                        <a href="ReactiveTimerCallback.html" title="An implementation of a TimerCallback which publishes TimerMessages">ReactiveTimerCallback</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="trait" href="ReplayPublisher.html" title="A publisher which will replay all elements from before any subscription begins"></a>
+                        <a href="ReplayPublisher.html" title="A publisher which will replay all elements from before any subscription begins">ReplayPublisher</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="trait" href="SingleSubscriber.html" title="Adds a means to accessing the Subscription when subscribed."></a>
+                        <a href="SingleSubscriber.html" title="Adds a means to accessing the Subscription when subscribed.">SingleSubscriber</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="Subscribers$.html" title=""></a>
+                        <a href="Subscribers$.html" title="">Subscribers</a>
                       </li>
               </ul>
             </div>
           </div>
           <div id="content">
-            <body class="class type">
+            <body class="object value">
       <div id="definition">
-        <a href="NodeRoleObservable$.html" title="See companion object"><div class="big-circle class-companion-object">c</div></a>
-        <p id="owner"><a href="../index.html" class="extype" name="riff">riff</a>.<a href="index.html" class="extype" name="riff.monix">monix</a></p>
-        <h1><a href="NodeRoleObservable$.html" title="See companion object">NodeRoleObservable</a><span class="permalink">
-      <a href="../../riff/monix/NodeRoleObservable.html" title="Permalink">
+        <div class="big-circle object">o</div>
+        <p id="owner"><a href="../index.html" class="extype" name="riff">riff</a>.<a href="index.html" class="extype" name="riff.reactive">reactive</a></p>
+        <h1>Publishers<span class="permalink">
+      <a href="../../riff/reactive/Publishers$.html" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span></h1>
-        <h3><span class="morelinks"><div>
-            Companion <a href="NodeRoleObservable$.html" title="See companion object">object NodeRoleObservable</a>
-          </div></span></h3>
+        <h3><span class="morelinks"></span></h3>
       </div>
 
       <h4 id="signature" class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
-        <span class="kind">class</span>
+        <span class="kind">object</span>
       </span>
       <span class="symbol">
-        <span class="name">NodeRoleObservable</span><span class="result"> extends <span class="extype" name="riff.raft.RoleCallback">RoleCallback</span></span>
+        <span class="name">Publishers</span>
       </span>
       </h4>
 
       
-          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Provides a means to represent a <span class="extype" name="riff.raft.node.RaftNode">riff.raft.node.RaftNode</span>'s role as an Observable:</p><pre><span class="kw">val</span> node : RaftNode[A] = ...
-<span class="kw">val</span> obs = NodeRoleObservable()
-node.withRoleCallback(obs)
-
-<span class="cmt">// get events of this node's idea of who the leader is and its role</span>
-obs.subscribe(...)</pre></div><div class="toggleContainer block">
+          <div id="comment" class="fullcommenttop"><div class="toggleContainer block">
           <span class="toggle">
             Linear Supertypes
           </span>
-          <div class="superTypes hiddenContent"><span class="extype" name="riff.raft.RoleCallback">RoleCallback</span>, <a href="http://www.scala-lang.org/api/2.12.7/scala/AnyRef.html#scala.AnyRef" class="extype" name="scala.AnyRef">AnyRef</a>, <a href="http://www.scala-lang.org/api/2.12.7/scala/Any.html#scala.Any" class="extype" name="scala.Any">Any</a></div>
+          <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
         
 
@@ -222,7 +211,7 @@ obs.subscribe(...)</pre></div><div class="toggleContainer block">
                   <span class="filtertype">Inherited<br />
                   </span>
                   <ol id="linearization">
-                    <li class="in" name="riff.monix.NodeRoleObservable"><span>NodeRoleObservable</span></li><li class="in" name="riff.raft.RoleCallback"><span>RoleCallback</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                    <li class="in" name="riff.reactive.Publishers"><span>Publishers</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                   </ol>
                 </div><div class="ancestors">
               <span class="filtertype"></span>
@@ -240,28 +229,44 @@ obs.subscribe(...)</pre></div><div class="toggleContainer block">
 
       <div id="template">
         <div id="allMembers">
-        <div id="constructors" class="members">
-              <h3>Instance Constructors</h3>
-              <ol><li name="riff.monix.NodeRoleObservable#&lt;init&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="&lt;init&gt;()(implicitsched:monix.execution.Scheduler):riff.monix.NodeRoleObservable"></a><a id="&lt;init&gt;:NodeRoleObservable"></a>
+        
+
+        <div id="types" class="types members">
+              <h3>Type Members</h3>
+              <ol><li name="riff.reactive.Publishers.Fixed" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Fixed[A]extendsPublisher[A]withProductwithSerializable"></a><a id="Fixed[A]:Fixed[A]"></a>
       <span class="permalink">
-      <a href="../../riff/monix/NodeRoleObservable.html#&lt;init&gt;()(implicitsched:monix.execution.Scheduler):riff.monix.NodeRoleObservable" title="Permalink">
+      <a href="../../riff/reactive/Publishers$.html#Fixed[A]extendsPublisher[A]withProductwithSerializable" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
       <span class="modifier_kind">
         <span class="modifier"></span>
-        <span class="kind">new</span>
+        <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">NodeRoleObservable</span><span class="params">()</span><span class="params">(<span class="implicit">implicit </span><span name="sched">sched: <span class="extype" name="monix.execution.Scheduler">Scheduler</span></span>)</span>
+        <a title="" href="Publishers$$Fixed.html"><span class="name">Fixed</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="data">data: <span class="extype" name="scala.Iterable">Iterable</span>[<span class="extype" name="riff.reactive.Publishers.Fixed.A">A</span>]</span>)</span><span class="result"> extends <span class="extype" name="org.reactivestreams.Publisher">Publisher</span>[<span class="extype" name="riff.reactive.Publishers.Fixed.A">A</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      
+    </li><li name="riff.reactive.Publishers.InError" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="InError[T]extendsPublisher[T]withProductwithSerializable"></a><a id="InError[T]:InError[T]"></a>
+      <span class="permalink">
+      <a href="../../riff/reactive/Publishers$.html#InError[T]extendsPublisher[T]withProductwithSerializable" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="Publishers$$InError.html"><span class="name">InError</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="exp">exp: <span class="extype" name="scala.Throwable">Throwable</span></span>)</span><span class="result"> extends <span class="extype" name="org.reactivestreams.Publisher">Publisher</span>[<span class="extype" name="riff.reactive.Publishers.InError.T">T</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       
       
     </li></ol>
             </div>
-
-        
 
         
 
@@ -271,7 +276,7 @@ obs.subscribe(...)</pre></div><div class="toggleContainer block">
                 <li name="scala.AnyRef#!=" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="!=(x$1:Any):Boolean"></a><a id="!=(Any):Boolean"></a>
       <span class="permalink">
-      <a href="../../riff/monix/NodeRoleObservable.html#!=(x$1:Any):Boolean" title="Permalink">
+      <a href="../../riff/reactive/Publishers$.html#!=(x$1:Any):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -280,14 +285,14 @@ obs.subscribe(...)</pre></div><div class="toggleContainer block">
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <a href="http://www.scala-lang.org/api/2.12.7/scala/Any.html#scala.Any" class="extype" name="scala.Any">Any</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.12.7/scala/Boolean.html#scala.Boolean" class="extype" name="scala.Boolean">Boolean</a></span>
+        <span title="gt4s: $bang$eq" class="name">!=</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef###" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="##():Int"></a>
       <span class="permalink">
-      <a href="../../riff/monix/NodeRoleObservable.html###():Int" title="Permalink">
+      <a href="../../riff/reactive/Publishers$.html###():Int" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -296,14 +301,14 @@ obs.subscribe(...)</pre></div><div class="toggleContainer block">
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span title="gt4s: $hash$hash" class="name">##</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.12.7/scala/Int.html#scala.Int" class="extype" name="scala.Int">Int</a></span>
+        <span title="gt4s: $hash$hash" class="name">##</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#==" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="==(x$1:Any):Boolean"></a><a id="==(Any):Boolean"></a>
       <span class="permalink">
-      <a href="../../riff/monix/NodeRoleObservable.html#==(x$1:Any):Boolean" title="Permalink">
+      <a href="../../riff/reactive/Publishers$.html#==(x$1:Any):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -312,14 +317,14 @@ obs.subscribe(...)</pre></div><div class="toggleContainer block">
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <a href="http://www.scala-lang.org/api/2.12.7/scala/Any.html#scala.Any" class="extype" name="scala.Any">Any</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.12.7/scala/Boolean.html#scala.Boolean" class="extype" name="scala.Boolean">Boolean</a></span>
+        <span title="gt4s: $eq$eq" class="name">==</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.Any#asInstanceOf" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="asInstanceOf[T0]:T0"></a>
       <span class="permalink">
-      <a href="../../riff/monix/NodeRoleObservable.html#asInstanceOf[T0]:T0" title="Permalink">
+      <a href="../../riff/reactive/Publishers$.html#asInstanceOf[T0]:T0" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -332,26 +337,10 @@ obs.subscribe(...)</pre></div><div class="toggleContainer block">
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
-    </li><li name="riff.monix.NodeRoleObservable#asObservable" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="asObservable:monix.reactive.Observable[riff.raft.RoleCallback.RoleEvent]"></a><a id="asObservable:Observable[RoleEvent]"></a>
-      <span class="permalink">
-      <a href="../../riff/monix/NodeRoleObservable.html#asObservable:monix.reactive.Observable[riff.raft.RoleCallback.RoleEvent]" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">asObservable</span><span class="result">: <span class="extype" name="monix.reactive.Observable">Observable</span>[<span class="extype" name="riff.raft.RoleCallback.RoleEvent">RoleEvent</span>]</span>
-      </span>
-      
-      
     </li><li name="scala.AnyRef#clone" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="clone():Object"></a><a id="clone():AnyRef"></a>
       <span class="permalink">
-      <a href="../../riff/monix/NodeRoleObservable.html#clone():Object" title="Permalink">
+      <a href="../../riff/reactive/Publishers$.html#clone():Object" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -360,7 +349,7 @@ obs.subscribe(...)</pre></div><div class="toggleContainer block">
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">clone</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.12.7/scala/AnyRef.html#scala.AnyRef" class="extype" name="scala.AnyRef">AnyRef</a></span>
+        <span class="name">clone</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.AnyRef">AnyRef</span></span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../../java/lang/index.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
@@ -375,7 +364,7 @@ obs.subscribe(...)</pre></div><div class="toggleContainer block">
     </li><li name="scala.AnyRef#eq" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a><a id="eq(AnyRef):Boolean"></a>
       <span class="permalink">
-      <a href="../../riff/monix/NodeRoleObservable.html#eq(x$1:AnyRef):Boolean" title="Permalink">
+      <a href="../../riff/reactive/Publishers$.html#eq(x$1:AnyRef):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -384,14 +373,14 @@ obs.subscribe(...)</pre></div><div class="toggleContainer block">
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">eq</span><span class="params">(<span name="arg0">arg0: <a href="http://www.scala-lang.org/api/2.12.7/scala/AnyRef.html#scala.AnyRef" class="extype" name="scala.AnyRef">AnyRef</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.12.7/scala/Boolean.html#scala.Boolean" class="extype" name="scala.Boolean">Boolean</a></span>
+        <span class="name">eq</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.AnyRef#equals" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="equals(x$1:Any):Boolean"></a><a id="equals(Any):Boolean"></a>
       <span class="permalink">
-      <a href="../../riff/monix/NodeRoleObservable.html#equals(x$1:Any):Boolean" title="Permalink">
+      <a href="../../riff/reactive/Publishers$.html#equals(x$1:Any):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -400,14 +389,14 @@ obs.subscribe(...)</pre></div><div class="toggleContainer block">
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">equals</span><span class="params">(<span name="arg0">arg0: <a href="http://www.scala-lang.org/api/2.12.7/scala/Any.html#scala.Any" class="extype" name="scala.Any">Any</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.12.7/scala/Boolean.html#scala.Boolean" class="extype" name="scala.Boolean">Boolean</a></span>
+        <span class="name">equals</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#finalize" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="finalize():Unit"></a>
       <span class="permalink">
-      <a href="../../riff/monix/NodeRoleObservable.html#finalize():Unit" title="Permalink">
+      <a href="../../riff/reactive/Publishers$.html#finalize():Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -416,7 +405,7 @@ obs.subscribe(...)</pre></div><div class="toggleContainer block">
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">finalize</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.12.7/scala/Unit.html#scala.Unit" class="extype" name="scala.Unit">Unit</a></span>
+        <span class="name">finalize</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected[<a href="../../java/lang/index.html" class="extype" name="java.lang">java.lang</a>] </dd><dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
@@ -429,7 +418,7 @@ obs.subscribe(...)</pre></div><div class="toggleContainer block">
     </li><li name="scala.AnyRef#getClass" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="getClass():Class[_]"></a>
       <span class="permalink">
-      <a href="../../riff/monix/NodeRoleObservable.html#getClass():Class[_]" title="Permalink">
+      <a href="../../riff/reactive/Publishers$.html#getClass():Class[_]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -448,7 +437,7 @@ obs.subscribe(...)</pre></div><div class="toggleContainer block">
     </li><li name="scala.AnyRef#hashCode" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="hashCode():Int"></a>
       <span class="permalink">
-      <a href="../../riff/monix/NodeRoleObservable.html#hashCode():Int" title="Permalink">
+      <a href="../../riff/reactive/Publishers$.html#hashCode():Int" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -457,7 +446,7 @@ obs.subscribe(...)</pre></div><div class="toggleContainer block">
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">hashCode</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.12.7/scala/Int.html#scala.Int" class="extype" name="scala.Int">Int</a></span>
+        <span class="name">hashCode</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd><dt>Annotations</dt><dd>
@@ -467,7 +456,7 @@ obs.subscribe(...)</pre></div><div class="toggleContainer block">
     </li><li name="scala.Any#isInstanceOf" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="isInstanceOf[T0]:Boolean"></a>
       <span class="permalink">
-      <a href="../../riff/monix/NodeRoleObservable.html#isInstanceOf[T0]:Boolean" title="Permalink">
+      <a href="../../riff/reactive/Publishers$.html#isInstanceOf[T0]:Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -476,14 +465,14 @@ obs.subscribe(...)</pre></div><div class="toggleContainer block">
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <a href="http://www.scala-lang.org/api/2.12.7/scala/Boolean.html#scala.Boolean" class="extype" name="scala.Boolean">Boolean</a></span>
+        <span class="name">isInstanceOf</span><span class="tparams">[<span name="T0">T0</span>]</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
     </li><li name="scala.AnyRef#ne" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a><a id="ne(AnyRef):Boolean"></a>
       <span class="permalink">
-      <a href="../../riff/monix/NodeRoleObservable.html#ne(x$1:AnyRef):Boolean" title="Permalink">
+      <a href="../../riff/reactive/Publishers$.html#ne(x$1:AnyRef):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -492,14 +481,14 @@ obs.subscribe(...)</pre></div><div class="toggleContainer block">
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">ne</span><span class="params">(<span name="arg0">arg0: <a href="http://www.scala-lang.org/api/2.12.7/scala/AnyRef.html#scala.AnyRef" class="extype" name="scala.AnyRef">AnyRef</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.12.7/scala/Boolean.html#scala.Boolean" class="extype" name="scala.Boolean">Boolean</a></span>
+        <span class="name">ne</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.AnyRef">AnyRef</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
     </li><li name="scala.AnyRef#notify" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notify():Unit"></a>
       <span class="permalink">
-      <a href="../../riff/monix/NodeRoleObservable.html#notify():Unit" title="Permalink">
+      <a href="../../riff/reactive/Publishers$.html#notify():Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -508,7 +497,7 @@ obs.subscribe(...)</pre></div><div class="toggleContainer block">
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">notify</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.12.7/scala/Unit.html#scala.Unit" class="extype" name="scala.Unit">Unit</a></span>
+        <span class="name">notify</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
@@ -518,7 +507,7 @@ obs.subscribe(...)</pre></div><div class="toggleContainer block">
     </li><li name="scala.AnyRef#notifyAll" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notifyAll():Unit"></a>
       <span class="permalink">
-      <a href="../../riff/monix/NodeRoleObservable.html#notifyAll():Unit" title="Permalink">
+      <a href="../../riff/reactive/Publishers$.html#notifyAll():Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -527,65 +516,17 @@ obs.subscribe(...)</pre></div><div class="toggleContainer block">
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">notifyAll</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.12.7/scala/Unit.html#scala.Unit" class="extype" name="scala.Unit">Unit</a></span>
+        <span class="name">notifyAll</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
                 <span class="name">@native</span><span class="args">()</span>
               
         </dd></dl></div>
-    </li><li name="riff.monix.NodeRoleObservable#onEvent" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="onEvent(event:riff.raft.RoleCallback.RoleEvent):Unit"></a><a id="onEvent(RoleEvent):Unit"></a>
-      <span class="permalink">
-      <a href="../../riff/monix/NodeRoleObservable.html#onEvent(event:riff.raft.RoleCallback.RoleEvent):Unit" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">onEvent</span><span class="params">(<span name="event">event: <span class="extype" name="riff.raft.RoleCallback.RoleEvent">RoleEvent</span></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.12.7/scala/Unit.html#scala.Unit" class="extype" name="scala.Unit">Unit</a></span>
-      </span>
-      
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="riff.monix.NodeRoleObservable">NodeRoleObservable</a> → RoleCallback</dd></dl></div>
-    </li><li name="riff.raft.RoleCallback#onNewLeader" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="onNewLeader(term:riff.raft.Term,leaderId:riff.raft.NodeId):Unit"></a><a id="onNewLeader(Term,NodeId):Unit"></a>
-      <span class="permalink">
-      <a href="../../riff/monix/NodeRoleObservable.html#onNewLeader(term:riff.raft.Term,leaderId:riff.raft.NodeId):Unit" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">onNewLeader</span><span class="params">(<span name="term">term: <a href="../raft/index.html#Term=Int" class="extmbr" name="riff.raft.Term">Term</a></span>, <span name="leaderId">leaderId: <a href="../raft/index.html#NodeId=String" class="extmbr" name="riff.raft.NodeId">NodeId</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.12.7/scala/Unit.html#scala.Unit" class="extype" name="scala.Unit">Unit</a></span>
-      </span>
-      
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>RoleCallback</dd></dl></div>
-    </li><li name="riff.raft.RoleCallback#onRoleChange" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="onRoleChange(term:riff.raft.Term,oldRole:riff.raft.node.NodeRole,newRole:riff.raft.node.NodeRole):Unit"></a><a id="onRoleChange(Term,NodeRole,NodeRole):Unit"></a>
-      <span class="permalink">
-      <a href="../../riff/monix/NodeRoleObservable.html#onRoleChange(term:riff.raft.Term,oldRole:riff.raft.node.NodeRole,newRole:riff.raft.node.NodeRole):Unit" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">onRoleChange</span><span class="params">(<span name="term">term: <a href="../raft/index.html#Term=Int" class="extmbr" name="riff.raft.Term">Term</a></span>, <span name="oldRole">oldRole: <span class="extype" name="riff.raft.node.NodeRole">NodeRole</span></span>, <span name="newRole">newRole: <span class="extype" name="riff.raft.node.NodeRole">NodeRole</span></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.12.7/scala/Unit.html#scala.Unit" class="extype" name="scala.Unit">Unit</a></span>
-      </span>
-      
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>RoleCallback</dd></dl></div>
     </li><li name="scala.AnyRef#synchronized" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a><a id="synchronized[T0](⇒T0):T0"></a>
       <span class="permalink">
-      <a href="../../riff/monix/NodeRoleObservable.html#synchronized[T0](x$1:=&gt;T0):T0" title="Permalink">
+      <a href="../../riff/reactive/Publishers$.html#synchronized[T0](x$1:=&gt;T0):T0" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -601,7 +542,7 @@ obs.subscribe(...)</pre></div><div class="toggleContainer block">
     </li><li name="scala.AnyRef#toString" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="toString():String"></a>
       <span class="permalink">
-      <a href="../../riff/monix/NodeRoleObservable.html#toString():String" title="Permalink">
+      <a href="../../riff/reactive/Publishers$.html#toString():String" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -617,7 +558,7 @@ obs.subscribe(...)</pre></div><div class="toggleContainer block">
     </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait():Unit"></a>
       <span class="permalink">
-      <a href="../../riff/monix/NodeRoleObservable.html#wait():Unit" title="Permalink">
+      <a href="../../riff/reactive/Publishers$.html#wait():Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -626,7 +567,7 @@ obs.subscribe(...)</pre></div><div class="toggleContainer block">
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">wait</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.12.7/scala/Unit.html#scala.Unit" class="extype" name="scala.Unit">Unit</a></span>
+        <span class="name">wait</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
@@ -639,7 +580,7 @@ obs.subscribe(...)</pre></div><div class="toggleContainer block">
     </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait(x$1:Long,x$2:Int):Unit"></a><a id="wait(Long,Int):Unit"></a>
       <span class="permalink">
-      <a href="../../riff/monix/NodeRoleObservable.html#wait(x$1:Long,x$2:Int):Unit" title="Permalink">
+      <a href="../../riff/reactive/Publishers$.html#wait(x$1:Long,x$2:Int):Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -648,7 +589,7 @@ obs.subscribe(...)</pre></div><div class="toggleContainer block">
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <a href="http://www.scala-lang.org/api/2.12.7/scala/Long.html#scala.Long" class="extype" name="scala.Long">Long</a></span>, <span name="arg1">arg1: <a href="http://www.scala-lang.org/api/2.12.7/scala/Int.html#scala.Int" class="extype" name="scala.Int">Int</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.12.7/scala/Unit.html#scala.Unit" class="extype" name="scala.Unit">Unit</a></span>
+        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>, <span name="arg1">arg1: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
@@ -661,7 +602,7 @@ obs.subscribe(...)</pre></div><div class="toggleContainer block">
     </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait(x$1:Long):Unit"></a><a id="wait(Long):Unit"></a>
       <span class="permalink">
-      <a href="../../riff/monix/NodeRoleObservable.html#wait(x$1:Long):Unit" title="Permalink">
+      <a href="../../riff/reactive/Publishers$.html#wait(x$1:Long):Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -670,7 +611,7 @@ obs.subscribe(...)</pre></div><div class="toggleContainer block">
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <a href="http://www.scala-lang.org/api/2.12.7/scala/Long.html#scala.Long" class="extype" name="scala.Long">Long</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.12.7/scala/Unit.html#scala.Unit" class="extype" name="scala.Unit">Unit</a></span>
+        <span class="name">wait</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Long">Long</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd><dt>Annotations</dt><dd>
@@ -682,6 +623,38 @@ obs.subscribe(...)</pre></div><div class="toggleContainer block">
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="riff.reactive.Publishers.Completed" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="Completed"></a><a id="Completed:Completed"></a>
+      <span class="permalink">
+      <a href="../../riff/reactive/Publishers$.html#Completed" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="Publishers$$Completed$.html"><span class="name">Completed</span></a><span class="result"> extends <span class="extype" name="org.reactivestreams.Publisher">Publisher</span>[<span class="extype" name="scala.Nothing">Nothing</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      
+    </li><li name="riff.reactive.Publishers.NoOpSubscription" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="NoOpSubscription"></a><a id="NoOpSubscription:NoOpSubscription"></a>
+      <span class="permalink">
+      <a href="../../riff/reactive/Publishers$.html#NoOpSubscription" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="Publishers$$NoOpSubscription$.html"><span class="name">NoOpSubscription</span></a><span class="result"> extends <span class="extype" name="org.reactivestreams.Subscription">Subscription</span></span>
+      </span>
+      
+      
     </li>
               </ol>
             </div>
@@ -692,12 +665,10 @@ obs.subscribe(...)</pre></div><div class="toggleContainer block">
         </div>
 
         <div id="inheritedMembers">
-        <div class="parent" name="riff.raft.RoleCallback">
-              <h3>Inherited from <span class="extype" name="riff.raft.RoleCallback">RoleCallback</span></h3>
-            </div><div class="parent" name="scala.AnyRef">
-              <h3>Inherited from <a href="http://www.scala-lang.org/api/2.12.7/scala/AnyRef.html#scala.AnyRef" class="extype" name="scala.AnyRef">AnyRef</a></h3>
+        <div class="parent" name="scala.AnyRef">
+              <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
             </div><div class="parent" name="scala.Any">
-              <h3>Inherited from <a href="http://www.scala-lang.org/api/2.12.7/scala/Any.html#scala.Any" class="extype" name="scala.Any">Any</a></h3>
+              <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>
             </div>
         
         </div>

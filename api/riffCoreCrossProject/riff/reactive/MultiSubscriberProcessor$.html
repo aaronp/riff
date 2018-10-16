@@ -85,10 +85,10 @@
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../../index.html" class="extype" name="_root_">root</a></dd></dl></div>
-    </li><li name="riff.raft" visbl="pub" class="indented2 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="raft"></a><a id="raft:raft"></a>
+    </li><li name="riff.reactive" visbl="pub" class="indented2 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="reactive"></a><a id="reactive:reactive"></a>
       <span class="permalink">
-      <a href="../riff/index.html#raft" title="Permalink">
+      <a href="../riff/index.html#reactive" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -97,76 +97,97 @@
         <span class="kind">package</span>
       </span>
       <span class="symbol">
-        <a title="" href="index.html"><span class="name">raft</span></a>
+        <a title="" href="index.html"><span class="name">reactive</span></a>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../index.html" class="extype" name="riff">riff</a></dd></dl></div>
-    </li><li name="riff.raft.RoleCallback" visbl="pub" class="indented3 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="RoleCallback"></a><a id="RoleCallback:RoleCallback"></a>
-      <span class="permalink">
-      <a href="../../riff/raft/index.html#RoleCallback" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">object</span>
-      </span>
-      <span class="symbol">
-        <a title="" href="RoleCallback$.html"><span class="name">RoleCallback</span></a>
-      </span>
-      
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="index.html" class="extype" name="riff.raft">raft</a></dd></dl></div>
-    </li><li class="current-entities indented3">
+    </li><li class="current-entities indented2">
+                        <a class="object" href="AsPublisher$.html" title=""></a>
+                        <a class="trait" href="AsPublisher.html" title="Represents the ability for some type F[_] to be converted to a publisher, in addition to perform some basic algebra on the F[_] (such as collecting into another F[_])"></a>
+                        <a href="AsPublisher.html" title="Represents the ability for some type F[_] to be converted to a publisher, in addition to perform some basic algebra on the F[_] (such as collecting into another F[_])">AsPublisher</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="AsSubscriber$.html" title=""></a>
+                        <a class="trait" href="AsSubscriber.html" title="Represents any F[_] which can be represented as a Subscriber"></a>
+                        <a href="AsSubscriber.html" title="Represents any F[_] which can be represented as a Subscriber">AsSubscriber</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="AsyncSubscription$.html" title=""></a>
+                        <a class="class" href="AsyncSubscription.html" title="Represents a subscription whose actions are handled via a Runnable pulling values from a blocking internalStateInputQueue submitted on a provided execution context"></a>
+                        <a href="AsyncSubscription.html" title="Represents a subscription whose actions are handled via a Runnable pulling values from a blocking internalStateInputQueue submitted on a provided execution context">AsyncSubscription</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="CollectPublisher$.html" title=""></a>
+                        <a class="class" href="CollectPublisher.html" title="Simple implementation of a publisher which can filter its published elements"></a>
+                        <a href="CollectPublisher.html" title="Simple implementation of a publisher which can filter its published elements">CollectPublisher</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="MapPublisher$.html" title=""></a>
+                        <a class="class" href="MapPublisher.html" title=""></a>
+                        <a href="MapPublisher.html" title="">MapPublisher</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="" title=""></a>
+                        <a class="trait" href="MultiSubscriberProcessor.html" title="A 'Processor' (both a subscriber and publisher) which can be subscribed to multiple publishers in order to collate and publish their values."></a>
+                        <a href="MultiSubscriberProcessor.html" title="A 'Processor' (both a subscriber and publisher) which can be subscribed to multiple publishers in order to collate and publish their values.">MultiSubscriberProcessor</a>
+                      </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="class" href="RoleCallback$$NewLeaderEvent.html" title="Signalled when we get a heartbeat in a new term."></a>
-                        <a href="RoleCallback$$NewLeaderEvent.html" title="Signalled when we get a heartbeat in a new term.">NewLeaderEvent</a>
-                      </li><li class="current-entities indented3">
+                        <a class="object" href="Publishers$.html" title=""></a>
+                        <a href="Publishers$.html" title="">Publishers</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="ReactivePipe$.html" title=""></a>
+                        <a class="class" href="ReactivePipe.html" title="Represents an input/output pipe"></a>
+                        <a href="ReactivePipe.html" title="Represents an input/output pipe">ReactivePipe</a>
+                      </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="object" href="RoleCallback$$NoOp$.html" title=""></a>
-                        <a href="RoleCallback$$NoOp$.html" title="">NoOp</a>
-                      </li><li class="current-entities indented3">
+                        <a class="trait" href="ReactivePublisher.html" title="A hot publisher to multiple subscribers, where new subscriptions simply begin observing the messages as the point of subscription."></a>
+                        <a href="ReactivePublisher.html" title="A hot publisher to multiple subscribers, where new subscriptions simply begin observing the messages as the point of subscription.">ReactivePublisher</a>
+                      </li><li class="current-entities indented2">
+                        <a class="object" href="ReactiveTimerCallback$.html" title=""></a>
+                        <a class="class" href="ReactiveTimerCallback.html" title="An implementation of a TimerCallback which publishes TimerMessages"></a>
+                        <a href="ReactiveTimerCallback.html" title="An implementation of a TimerCallback which publishes TimerMessages">ReactiveTimerCallback</a>
+                      </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="class" href="" title="signalled whenever this node transitions to a new role"></a>
-                        <a href="" title="signalled whenever this node transitions to a new role">RoleChangeEvent</a>
-                      </li><li class="current-entities indented3">
+                        <a class="trait" href="ReplayPublisher.html" title="A publisher which will replay all elements from before any subscription begins"></a>
+                        <a href="ReplayPublisher.html" title="A publisher which will replay all elements from before any subscription begins">ReplayPublisher</a>
+                      </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="trait" href="RoleCallback$$RoleEvent.html" title="The types of role events for the cluster"></a>
-                        <a href="RoleCallback$$RoleEvent.html" title="The types of role events for the cluster">RoleEvent</a>
+                        <a class="trait" href="SingleSubscriber.html" title="Adds a means to accessing the Subscription when subscribed."></a>
+                        <a href="SingleSubscriber.html" title="Adds a means to accessing the Subscription when subscribed.">SingleSubscriber</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="Subscribers$.html" title=""></a>
+                        <a href="Subscribers$.html" title="">Subscribers</a>
                       </li>
               </ul>
             </div>
           </div>
           <div id="content">
-            <body class="class type">
+            <body class="object value">
       <div id="definition">
-        <div class="big-circle class">c</div>
-        <p id="owner"><a href="../index.html" class="extype" name="riff">riff</a>.<a href="index.html" class="extype" name="riff.raft">raft</a>.<a href="RoleCallback$.html" class="extype" name="riff.raft.RoleCallback">RoleCallback</a></p>
-        <h1>RoleChangeEvent<span class="permalink">
-      <a href="../../riff/raft/RoleCallback$$RoleChangeEvent.html" title="Permalink">
+        <a href="MultiSubscriberProcessor.html" title="See companion trait"><div class="big-circle object-companion-trait">o</div></a>
+        <p id="owner"><a href="../index.html" class="extype" name="riff">riff</a>.<a href="index.html" class="extype" name="riff.reactive">reactive</a></p>
+        <h1><a href="MultiSubscriberProcessor.html" title="See companion trait">MultiSubscriberProcessor</a><span class="permalink">
+      <a href="../../riff/reactive/MultiSubscriberProcessor$.html" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span></h1>
-        <h3><span class="morelinks"></span></h3>
+        <h3><span class="morelinks"><div>
+            Companion <a href="MultiSubscriberProcessor.html" title="See companion trait">trait MultiSubscriberProcessor</a>
+          </div></span></h3>
       </div>
 
       <h4 id="signature" class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
-        <span class="kind">case class</span>
+        <span class="kind">object</span>
       </span>
       <span class="symbol">
-        <span class="name">RoleChangeEvent</span><span class="params">(<span name="term">term: <a href="index.html#Term=Int" class="extmbr" name="riff.raft.Term">Term</a></span>, <span name="oldRole">oldRole: <a href="node/NodeRole.html" class="extype" name="riff.raft.node.NodeRole">NodeRole</a></span>, <span name="newRole">newRole: <a href="node/NodeRole.html" class="extype" name="riff.raft.node.NodeRole">NodeRole</a></span>)</span><span class="result"> extends <a href="RoleCallback$$RoleEvent.html" class="extype" name="riff.raft.RoleCallback.RoleEvent">RoleEvent</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <span class="name">MultiSubscriberProcessor</span>
       </span>
       </h4>
 
       
-          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>signalled whenever this node transitions to a new role
-</p></div><dl class="paramcmts block"><dt class="param">term</dt><dd class="cmt"><p>the new term</p></dd><dt class="param">oldRole</dt><dd class="cmt"><p>the previous role</p></dd><dt class="param">newRole</dt><dd class="cmt"><p>the new role</p></dd></dl><div class="toggleContainer block">
+          <div id="comment" class="fullcommenttop"><div class="toggleContainer block">
           <span class="toggle">
             Linear Supertypes
           </span>
-          <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <a href="RoleCallback$$RoleEvent.html" class="extype" name="riff.raft.RoleCallback.RoleEvent">RoleEvent</a>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
         
 
@@ -192,7 +213,7 @@
                   <span class="filtertype">Inherited<br />
                   </span>
                   <ol id="linearization">
-                    <li class="in" name="riff.raft.RoleCallback.RoleChangeEvent"><span>RoleChangeEvent</span></li><li class="in" name="scala.Serializable"><span>Serializable</span></li><li class="in" name="java.io.Serializable"><span>Serializable</span></li><li class="in" name="scala.Product"><span>Product</span></li><li class="in" name="scala.Equals"><span>Equals</span></li><li class="in" name="riff.raft.RoleCallback.RoleEvent"><span>RoleEvent</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                    <li class="in" name="riff.reactive.MultiSubscriberProcessor"><span>MultiSubscriberProcessor</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                   </ol>
                 </div><div class="ancestors">
               <span class="filtertype"></span>
@@ -210,26 +231,7 @@
 
       <div id="template">
         <div id="allMembers">
-        <div id="constructors" class="members">
-              <h3>Instance Constructors</h3>
-              <ol><li name="riff.raft.RoleCallback.RoleChangeEvent#&lt;init&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="&lt;init&gt;(term:riff.raft.Term,oldRole:riff.raft.node.NodeRole,newRole:riff.raft.node.NodeRole):riff.raft.RoleCallback.RoleChangeEvent"></a><a id="&lt;init&gt;:RoleChangeEvent"></a>
-      <span class="permalink">
-      <a href="../../riff/raft/RoleCallback$$RoleChangeEvent.html#&lt;init&gt;(term:riff.raft.Term,oldRole:riff.raft.node.NodeRole,newRole:riff.raft.node.NodeRole):riff.raft.RoleCallback.RoleChangeEvent" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">new</span>
-      </span>
-      <span class="symbol">
-        <span class="name">RoleChangeEvent</span><span class="params">(<span name="term">term: <a href="index.html#Term=Int" class="extmbr" name="riff.raft.Term">Term</a></span>, <span name="oldRole">oldRole: <a href="node/NodeRole.html" class="extype" name="riff.raft.node.NodeRole">NodeRole</a></span>, <span name="newRole">newRole: <a href="node/NodeRole.html" class="extype" name="riff.raft.node.NodeRole">NodeRole</a></span>)</span>
-      </span>
-      
-      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">term</dt><dd class="cmt"><p>the new term</p></dd><dt class="param">oldRole</dt><dd class="cmt"><p>the previous role</p></dd><dt class="param">newRole</dt><dd class="cmt"><p>the new role</p></dd></dl></div>
-    </li></ol>
-            </div>
+        
 
         
 
@@ -241,7 +243,7 @@
                 <li name="scala.AnyRef#!=" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="!=(x$1:Any):Boolean"></a><a id="!=(Any):Boolean"></a>
       <span class="permalink">
-      <a href="../../riff/raft/RoleCallback$$RoleChangeEvent.html#!=(x$1:Any):Boolean" title="Permalink">
+      <a href="../../riff/reactive/MultiSubscriberProcessor$.html#!=(x$1:Any):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -257,7 +259,7 @@
     </li><li name="scala.AnyRef###" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="##():Int"></a>
       <span class="permalink">
-      <a href="../../riff/raft/RoleCallback$$RoleChangeEvent.html###():Int" title="Permalink">
+      <a href="../../riff/reactive/MultiSubscriberProcessor$.html###():Int" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -273,7 +275,7 @@
     </li><li name="scala.AnyRef#==" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="==(x$1:Any):Boolean"></a><a id="==(Any):Boolean"></a>
       <span class="permalink">
-      <a href="../../riff/raft/RoleCallback$$RoleChangeEvent.html#==(x$1:Any):Boolean" title="Permalink">
+      <a href="../../riff/reactive/MultiSubscriberProcessor$.html#==(x$1:Any):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -286,10 +288,26 @@
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="riff.reactive.MultiSubscriberProcessor#apply" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="apply[A](delayErrorsFromSubscribers:Boolean)(implicitexecContext:scala.concurrent.ExecutionContext):riff.reactive.MultiSubscriberProcessor[A]"></a><a id="apply[A](Boolean)(ExecutionContext):MultiSubscriberProcessor[A]"></a>
+      <span class="permalink">
+      <a href="../../riff/reactive/MultiSubscriberProcessor$.html#apply[A](delayErrorsFromSubscribers:Boolean)(implicitexecContext:scala.concurrent.ExecutionContext):riff.reactive.MultiSubscriberProcessor[A]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">apply</span><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="delayErrorsFromSubscribers">delayErrorsFromSubscribers: <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="execContext">execContext: <span class="extype" name="scala.concurrent.ExecutionContext">ExecutionContext</span></span>)</span><span class="result">: <a href="MultiSubscriberProcessor.html" class="extype" name="riff.reactive.MultiSubscriberProcessor">MultiSubscriberProcessor</a>[<span class="extype" name="riff.reactive.MultiSubscriberProcessor.apply.A">A</span>]</span>
+      </span>
+      
+      
     </li><li name="scala.Any#asInstanceOf" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="asInstanceOf[T0]:T0"></a>
       <span class="permalink">
-      <a href="../../riff/raft/RoleCallback$$RoleChangeEvent.html#asInstanceOf[T0]:T0" title="Permalink">
+      <a href="../../riff/reactive/MultiSubscriberProcessor$.html#asInstanceOf[T0]:T0" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -305,7 +323,7 @@
     </li><li name="scala.AnyRef#clone" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="clone():Object"></a><a id="clone():AnyRef"></a>
       <span class="permalink">
-      <a href="../../riff/raft/RoleCallback$$RoleChangeEvent.html#clone():Object" title="Permalink">
+      <a href="../../riff/reactive/MultiSubscriberProcessor$.html#clone():Object" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -329,7 +347,7 @@
     </li><li name="scala.AnyRef#eq" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a><a id="eq(AnyRef):Boolean"></a>
       <span class="permalink">
-      <a href="../../riff/raft/RoleCallback$$RoleChangeEvent.html#eq(x$1:AnyRef):Boolean" title="Permalink">
+      <a href="../../riff/reactive/MultiSubscriberProcessor$.html#eq(x$1:AnyRef):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -342,10 +360,26 @@
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="scala.AnyRef#equals" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="equals(x$1:Any):Boolean"></a><a id="equals(Any):Boolean"></a>
+      <span class="permalink">
+      <a href="../../riff/reactive/MultiSubscriberProcessor$.html#equals(x$1:Any):Boolean" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">equals</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#finalize" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="finalize():Unit"></a>
       <span class="permalink">
-      <a href="../../riff/raft/RoleCallback$$RoleChangeEvent.html#finalize():Unit" title="Permalink">
+      <a href="../../riff/reactive/MultiSubscriberProcessor$.html#finalize():Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -367,7 +401,7 @@
     </li><li name="scala.AnyRef#getClass" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="getClass():Class[_]"></a>
       <span class="permalink">
-      <a href="../../riff/raft/RoleCallback$$RoleChangeEvent.html#getClass():Class[_]" title="Permalink">
+      <a href="../../riff/reactive/MultiSubscriberProcessor$.html#getClass():Class[_]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -383,10 +417,29 @@
                 <span class="name">@native</span><span class="args">()</span>
               
         </dd></dl></div>
+    </li><li name="scala.AnyRef#hashCode" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="hashCode():Int"></a>
+      <span class="permalink">
+      <a href="../../riff/reactive/MultiSubscriberProcessor$.html#hashCode():Int" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">hashCode</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd><dt>Annotations</dt><dd>
+                <span class="name">@native</span><span class="args">()</span>
+              
+        </dd></dl></div>
     </li><li name="scala.Any#isInstanceOf" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="isInstanceOf[T0]:Boolean"></a>
       <span class="permalink">
-      <a href="../../riff/raft/RoleCallback$$RoleChangeEvent.html#isInstanceOf[T0]:Boolean" title="Permalink">
+      <a href="../../riff/reactive/MultiSubscriberProcessor$.html#isInstanceOf[T0]:Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -402,7 +455,7 @@
     </li><li name="scala.AnyRef#ne" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a><a id="ne(AnyRef):Boolean"></a>
       <span class="permalink">
-      <a href="../../riff/raft/RoleCallback$$RoleChangeEvent.html#ne(x$1:AnyRef):Boolean" title="Permalink">
+      <a href="../../riff/reactive/MultiSubscriberProcessor$.html#ne(x$1:AnyRef):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -415,26 +468,10 @@
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="riff.raft.RoleCallback.RoleChangeEvent#newRole" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="newRole:riff.raft.node.NodeRole"></a><a id="newRole:NodeRole"></a>
-      <span class="permalink">
-      <a href="../../riff/raft/RoleCallback$$RoleChangeEvent.html#newRole:riff.raft.node.NodeRole" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">newRole</span><span class="result">: <a href="node/NodeRole.html" class="extype" name="riff.raft.node.NodeRole">NodeRole</a></span>
-      </span>
-      
-      
     </li><li name="scala.AnyRef#notify" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notify():Unit"></a>
       <span class="permalink">
-      <a href="../../riff/raft/RoleCallback$$RoleChangeEvent.html#notify():Unit" title="Permalink">
+      <a href="../../riff/reactive/MultiSubscriberProcessor$.html#notify():Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -453,7 +490,7 @@
     </li><li name="scala.AnyRef#notifyAll" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notifyAll():Unit"></a>
       <span class="permalink">
-      <a href="../../riff/raft/RoleCallback$$RoleChangeEvent.html#notifyAll():Unit" title="Permalink">
+      <a href="../../riff/reactive/MultiSubscriberProcessor$.html#notifyAll():Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -469,26 +506,10 @@
                 <span class="name">@native</span><span class="args">()</span>
               
         </dd></dl></div>
-    </li><li name="riff.raft.RoleCallback.RoleChangeEvent#oldRole" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="oldRole:riff.raft.node.NodeRole"></a><a id="oldRole:NodeRole"></a>
-      <span class="permalink">
-      <a href="../../riff/raft/RoleCallback$$RoleChangeEvent.html#oldRole:riff.raft.node.NodeRole" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">oldRole</span><span class="result">: <a href="node/NodeRole.html" class="extype" name="riff.raft.node.NodeRole">NodeRole</a></span>
-      </span>
-      
-      
     </li><li name="scala.AnyRef#synchronized" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a><a id="synchronized[T0](⇒T0):T0"></a>
       <span class="permalink">
-      <a href="../../riff/raft/RoleCallback$$RoleChangeEvent.html#synchronized[T0](x$1:=&gt;T0):T0" title="Permalink">
+      <a href="../../riff/reactive/MultiSubscriberProcessor$.html#synchronized[T0](x$1:=&gt;T0):T0" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -501,26 +522,26 @@
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="riff.raft.RoleCallback.RoleChangeEvent#term" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="term:riff.raft.Term"></a><a id="term:Term"></a>
+    </li><li name="scala.AnyRef#toString" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="toString():String"></a>
       <span class="permalink">
-      <a href="../../riff/raft/RoleCallback$$RoleChangeEvent.html#term:riff.raft.Term" title="Permalink">
+      <a href="../../riff/reactive/MultiSubscriberProcessor$.html#toString():String" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
       <span class="modifier_kind">
         <span class="modifier"></span>
-        <span class="kind">val</span>
+        <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">term</span><span class="result">: <a href="index.html#Term=Int" class="extmbr" name="riff.raft.Term">Term</a></span>
+        <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
       </span>
       
-      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait():Unit"></a>
       <span class="permalink">
-      <a href="../../riff/raft/RoleCallback$$RoleChangeEvent.html#wait():Unit" title="Permalink">
+      <a href="../../riff/reactive/MultiSubscriberProcessor$.html#wait():Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -542,7 +563,7 @@
     </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait(x$1:Long,x$2:Int):Unit"></a><a id="wait(Long,Int):Unit"></a>
       <span class="permalink">
-      <a href="../../riff/raft/RoleCallback$$RoleChangeEvent.html#wait(x$1:Long,x$2:Int):Unit" title="Permalink">
+      <a href="../../riff/reactive/MultiSubscriberProcessor$.html#wait(x$1:Long,x$2:Int):Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -564,7 +585,7 @@
     </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait(x$1:Long):Unit"></a><a id="wait(Long):Unit"></a>
       <span class="permalink">
-      <a href="../../riff/raft/RoleCallback$$RoleChangeEvent.html#wait(x$1:Long):Unit" title="Permalink">
+      <a href="../../riff/reactive/MultiSubscriberProcessor$.html#wait(x$1:Long):Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -595,17 +616,7 @@
         </div>
 
         <div id="inheritedMembers">
-        <div class="parent" name="scala.Serializable">
-              <h3>Inherited from <span class="extype" name="scala.Serializable">Serializable</span></h3>
-            </div><div class="parent" name="java.io.Serializable">
-              <h3>Inherited from <span class="extype" name="java.io.Serializable">Serializable</span></h3>
-            </div><div class="parent" name="scala.Product">
-              <h3>Inherited from <span class="extype" name="scala.Product">Product</span></h3>
-            </div><div class="parent" name="scala.Equals">
-              <h3>Inherited from <span class="extype" name="scala.Equals">Equals</span></h3>
-            </div><div class="parent" name="riff.raft.RoleCallback.RoleEvent">
-              <h3>Inherited from <a href="RoleCallback$$RoleEvent.html" class="extype" name="riff.raft.RoleCallback.RoleEvent">RoleEvent</a></h3>
-            </div><div class="parent" name="scala.AnyRef">
+        <div class="parent" name="scala.AnyRef">
               <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
             </div><div class="parent" name="scala.Any">
               <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>

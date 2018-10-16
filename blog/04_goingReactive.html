@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+<head>
+<title>Going Reactive · Riff</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="description" content='riff'/>
+<link href="https://fonts.googleapis.com/css?family=Roboto:100normal,100italic,300normal,300italic,400normal,400italic,500normal,500italic,700normal,700italic,900normal,900italicc" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="../js/page.js"></script>
+<script type="text/javascript" src="../js/warnOldVersion.js"></script>
+<script type="text/javascript" src="../js/groups.js"></script>
+<link rel="stylesheet" type="text/css" href="../lib/normalize.css/normalize.css"/>
+<link rel="stylesheet" type="text/css" href="../lib/foundation/dist/foundation.min.css"/>
+<link rel="stylesheet" type="text/css" href="../css/page.css"/>
+
+<!--
+<link rel="shortcut icon" href="../images/favicon.ico" />
+-->
+</head>
+
+<body>
+<div class="off-canvas-wrapper">
+<div class="off-canvas-wrapper-inner" data-off-canvas-wrapper>
+
+<div class="off-canvas position-left" id="off-canvas-menu" data-off-canvas>
+<nav class="off-canvas-nav">
+<div class="nav-home">
+<a href="../index.html" >
+<span class="home-icon">⌂</span>Riff
+</a>
+<div class="version-number">
+0.0.1*
+</div>
+</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="../about/index.html" class="page">About</a>
+  <ul>
+    <li><a href="../about/gettingStarted.html" class="page">Getting Started</a></li>
+    <li><a href="../about/api.html" class="page">API docs</a></li>
+    <li><a href="../about/usingIntelliJ.html" class="page">A note on IntelliJ</a></li>
+  </ul></li>
+  <li><a href="../blog/index.html" class="page">Project Blog</a>
+  <ul>
+    <li><a href="../blog/01_raftSimulatorForTheWin.html" class="page">Meaningful Integration Testing</a></li>
+    <li><a href="../blog/02_eventSourceAGoGo.html" class="page">Event Sourcing</a></li>
+    <li><a href="../blog/03_overParameterization.html" class="page">Over-Parameterization: Going from RaftNode[NodeKey, A] to RaftNode[A]</a></li>
+    <li><a href="../blog/04_goingReactive.html" class="active page">Going Reactive</a></li>
+    <li><a href="../blog/05_moreNonConcurrentTesting.html" class="page">Another faux concurrent test case</a></li>
+  </ul></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="off-canvas-content" data-off-canvas-content>
+
+<header class="site-header expanded row">
+<div class="small-12 column">
+<a href="#" class="off-canvas-toggle hide-for-medium" data-toggle="off-canvas-menu"><svg class="svg-icon svg-icon-menu" version="1.1" id="Menu" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 20 20" enable-background="new 0 0 20 20" xml:space="preserve"> <path class="svg-icon-menu-path" fill="#53CDEC" d="M16.4,9H3.6C3.048,9,3,9.447,3,10c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,9.447,16.952,9,16.4,9z M16.4,13
+H3.6C3.048,13,3,13.447,3,14c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,13.447,16.952,13,16.4,13z M3.6,7H16.4
+C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.048,7,3.6,7z"/></svg>
+</a>
+<div class="title"><a href="../index.html">Riff</a></div>
+
+<!--
+<a href="https://www.example.com" class="logo show-for-medium">logo</a>
+-->
+</div>
+</header>
+
+<div class="expanded row">
+
+<div class="medium-3 large-2 show-for-medium column">
+<nav class="site-nav">
+<div class="nav-home">
+<a href="../index.html" >
+<span class="home-icon">⌂</span>Riff
+</a>
+<div class="version-number">
+0.0.1*
+</div>
+</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="../about/index.html" class="page">About</a>
+  <ul>
+    <li><a href="../about/gettingStarted.html" class="page">Getting Started</a></li>
+    <li><a href="../about/api.html" class="page">API docs</a></li>
+    <li><a href="../about/usingIntelliJ.html" class="page">A note on IntelliJ</a></li>
+  </ul></li>
+  <li><a href="../blog/index.html" class="page">Project Blog</a>
+  <ul>
+    <li><a href="../blog/01_raftSimulatorForTheWin.html" class="page">Meaningful Integration Testing</a></li>
+    <li><a href="../blog/02_eventSourceAGoGo.html" class="page">Event Sourcing</a></li>
+    <li><a href="../blog/03_overParameterization.html" class="page">Over-Parameterization: Going from RaftNode[NodeKey, A] to RaftNode[A]</a></li>
+    <li><a href="../blog/04_goingReactive.html" class="active page">Going Reactive</a></li>
+    <li><a href="../blog/05_moreNonConcurrentTesting.html" class="page">Another faux concurrent test case</a></li>
+  </ul></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="small-12 medium-9 large-10 column">
+<section class="site-content">
+
+<span id="version-warning"></span>
+
+<div class="page-header row">
+<div class="medium-12 show-for-medium column">
+<div class="nav-breadcrumbs">
+<ul>
+  <li><a href="../index.html">Riff</a></li>
+  <li><a href="../blog/index.html">Project Blog</a></li>
+  <li>Going Reactive</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div class="page-content row">
+<div class="small-12 large-9 column" id="docs">
+<h1><a href="#going-reactive" name="going-reactive" class="anchor"><span class="anchor-link"></span></a>Going Reactive</h1>
+<h2><a href="#in-the-beginning" name="in-the-beginning" class="anchor"><span class="anchor-link"></span></a>In the beginning&hellip;</h2>
+<p>I&rsquo;m once again at that point where I&rsquo;m playing around with different compromises.</p>
+<p>It seems projects love to tout that they have zero dependencies &ndash; and it&rsquo;s understandable why. Everyone&rsquo;s had to work on that one project (at least) where they wasted hours if not days in dependency hell.</p>
+<p>And it&rsquo;s been a strong factor in the decisions I&rsquo;ve made on this project. This whole exercise has been exactly that - an exercise. Like most developers, I like to stay on top of new approaches, paradigms, technologies, etc. And implementing the Raft protocol here has been a fantastic pet project&hellip; it&rsquo;s very well spec&rsquo;d out, has to deal with communication/failure of disparate components, random timers, both disk and network IO, etc.</p>
+<p>And so it&rsquo;s proven a great place to try out a &ldquo;real&rdquo; application against some compelling ideas: implementations using Free monads/Free applicatives, Tagless Final (finally tagless), effects systems, just &ldquo;plain old scala&rdquo;, etc.</p>
+<p>Most of all, I wanted a core place to try and accurately implement the specification without explicitly tying it to a library. And to that end, that&rsquo;s what the <a href="https://aaronp.github.io/riff/api/riffCoreCrossProject/riff/raft/node/RaftMessageHandler.html">RaftMessageHandler</a> and <a href="https://aaronp.github.io/riff/api/riffCoreCrossProject/riff/raft/node/RaftNode.html">RaftNode</a> are. The RaftMessageHandler just takes an input (a <a href="https://aaronp.github.io/riff/api/riffCoreCrossProject/riff/raft/messages/RaftMessage.html">RaftMessage</a>) and produces an output (a <a href="https://aaronp.github.io/riff/api/riffCoreCrossProject/riff/raft/messages/RaftNodeResult.html">RaftNodeResult</a>).</p>
+<p>That, I think, is the general pattern I try to reach for &hellip; a simple complete function to represent some business logic. And in this case the input represents a union of an append request (from a client), a timer message, or a request or response from another node.</p>
+<h2><a href="#the-proof-of-the-pudding" name="the-proof-of-the-pudding" class="anchor"><span class="anchor-link"></span></a>The proof of the pudding</h2>
+<p>That&rsquo;s all well and good, but ultimately for this &lsquo;experiment&rsquo; of different approaches to be successful, I&rsquo;ll need to actually deliver a working solution.</p>
+<p>And it should be readable, performant, and easily maintainable/extendable. And by readable, that should apply both at the end-user level and the internals as well.</p>
+<p>For the end-user, I intend to just be able to have a stream of data via a raft cluster. Something aking to:</p>
+<pre class="prettyprint"><code class="language-scala">val localDataStream : SomeStreamType[Data] = ...
+
+// this is where the magic happens
+val distributedStream : SomeStreamType[Data] = localDataStream.via(raftCluster)
+
+</code></pre>
+<p>or put another way, something like</p>
+<pre class="prettyprint"><code class="language-scala">A =&gt; IO[A]
+</code></pre>
+<p>for some effectful IO type.</p>
+<p>In both cases they have a stream of data, but the semantics of the second is that consuming the stream of data ensures it is replicated across a Raft cluster. And the behaviour of that transformation can be explicitly configurable. By default it would produce the output types once quorum is reached across the cluster, but it could also be after an unacknowledged append, or on full commit, whatever.</p>
+<p>And to accomplish that, you end up with (I think) essentially a signature that takes some type &lsquo;A&rsquo; as input and produces a stream of <a href="https://aaronp.github.io/riff/api/riffCoreCrossProject/riff/raft/AppendStatus.html">AppendStatus</a>) as output, where each AppendStatus notification tells you the information you&rsquo;d need to know if you were to honor those semantics, or e.g. represent the append as a progress bar.</p>
+<h2><a href="#adding-a-reactive-streams-implementation" name="adding-a-reactive-streams-implementation" class="anchor"><span class="anchor-link"></span></a>Adding a reactive streams implementation</h2>
+<p>And it&rsquo;s at this point where it gets tricky. My goal has been to keep raft-core as pure as possible. It doesn&rsquo;t even rely on slf4j (though it does rely on <a href="http://www.reactive-streams.org">reactive-streams</a>, as that should be quite non-controversial, tiny, and solid as anything).</p>
+<p>My first &lsquo;real world&rsquo; implementation was going to be riff-monix, as monix provides a solid streaming library. But it wasn&rsquo;t quite as tiny/effortless as I had hoped. There was a bit of wiring in of the different node streams, and some logic around message handling into the nodes while still satisfying non-cluster client requests, such as returning a stream of status updates for only one of the RaftMessage input types (<a href="https://aaronp.github.io/riff/api/riffCoreCrossProject/riff/raft/messages/AppendData.html">AppendData</a>):</p>
+<p>And so, it seemed I had a choice of a simple, clean raft-core, but which left what might be repetitive and tedious wiring-in for downstream subprojects to implement (e.g. repeat similar code for monix, fs2, akka, http4s, etc).</p>
+<p>In the end I decided to go the way the mongo scala-driver has, and provided a basic implementation of the reactive-streams interfaces. I&rsquo;ve lately been quite critical with my current client how they&rsquo;ve built up a massive code-ball, and that they should really strive to decouple/split out their monolith, and now I feel I may have crossed a small line&hellip; but I think it&rsquo;s worth it.</p>
+<p>I&rsquo;ve provided &lsquo;AsPublisher&rsquo; and &lsquo;AsSubscriber&rsquo; type-classes which specialised subprojects can implement, as well as some identity instances. I feel that it was the right choice, as now the riff-core library is usable itself, even if the publishers/subscribers it offers aren&rsquo;t as tuned/performant as what monix or fs2 can offer. Luckily the reactive-stream project provides a TCK as well, so I can be confident my default reference implementation is correct.</p>
+<h2><a href="#conclusions" name="conclusions" class="anchor"><span class="anchor-link"></span></a>Conclusions</h2>
+<p>Ultimately what convinced me was that I could spin off a separate project just for my basic reactive-streams implementation, but for that to get me anywhere I&rsquo;d have to make it a dependency of riff-core&hellip; and if I were going to do that, I might as well grow a pair and depend on an existing, mature implementation directly like monix, fs2 or akka-streams.</p>
+<p>Alternatively I could just take all of reactive-streams out of riff-core and leave it pure &hellip; which is arguably a better way, but for the price of about a dozen simple extra classes, I think having a single, solid, working reference core implementation which only depends on an API library containing 3 interfaces is a price worth paying</p>
+<div class="source-github">
+The source code for this page can be found <a href="https://github.com/aaronp/riff/tree/master/src/main/paradox/blog/04_goingReactive.md">here</a>.
+</div>
+
+<div class="nav-next">
+<p><strong>Next:</strong> <a href="../blog/05_moreNonConcurrentTesting.html">Another faux concurrent test case</a></p>
+</div>
+</div>
+<div class="large-3 show-for-large column" data-sticky-container>
+<nav class="sidebar sticky" data-sticky data-anchor="docs" data-sticky-on="large">
+<div class="page-nav">
+<div class="nav-title">On this page:</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="../blog/04_goingReactive.html#going-reactive" class="header">Going Reactive</a>
+  <ul>
+    <li><a href="../blog/04_goingReactive.html#in-the-beginning" class="header">In the beginning&hellip;</a></li>
+    <li><a href="../blog/04_goingReactive.html#the-proof-of-the-pudding" class="header">The proof of the pudding</a></li>
+    <li><a href="../blog/04_goingReactive.html#adding-a-reactive-streams-implementation" class="header">Adding a reactive streams implementation</a></li>
+    <li><a href="../blog/04_goingReactive.html#conclusions" class="header">Conclusions</a></li>
+  </ul></li>
+</ul>
+</div>
+</div>
+</nav>
+</div>
+</div>
+
+</section>
+</div>
+
+</div>
+
+<footer class="site-footer">
+
+<section class="site-footer-nav">
+<div class="expanded row">
+<div class="small-12 large-offset-2 large-10 column">
+<div class="row site-footer-content">
+
+<div class="small-12 medium-4 large-3 text-center column">
+<div class="nav-links">
+<ul>
+<!-- <li><a href="https://www.example.com/products/">Products</a> -->
+</ul>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+</section>
+
+<section class="site-footer-base">
+<div class="expanded row">
+<div class="small-12 large-offset-2 large-10 column">
+<div class="row site-footer-content">
+
+<div class="small-12 text-center large-9 column">
+
+<!--
+<div class="copyright">
+<span class="text">&copy; 2018</span>
+<a href="https://www.example.com" class="logo">logo</a>
+</div>
+-->
+</div>
+
+</div>
+</div>
+</div>
+</section>
+</footer>
+
+</div>
+</div>
+</div>
+</body>
+
+<script type="text/javascript" src="../lib/foundation/dist/foundation.min.js"></script>
+<script type="text/javascript">jQuery(document).foundation();</script>
+<script type="text/javascript" src="../js/magellan.js"></script>
+
+<style type="text/css">@import "../lib/prettify/prettify.css";</style>
+<script type="text/javascript" src="../lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="../lib/prettify/lang-scala.js"></script>
+<script type="text/javascript">jQuery(function(){window.prettyPrint && prettyPrint()});</script>
+<script type="text/javascript">jQuery(function(jq){initOldVersionWarnings(jq, '0.0.1-SNAPSHOT', 'https://aaronp.github.io/riff/docs/current/')});</script>
+
+
+</html>

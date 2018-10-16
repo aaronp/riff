@@ -126,11 +126,11 @@
                         <a class="trait" href="RaftClock.html" title="Represents the functions required to control a member node's election and heartbeat timeouts."></a>
                         <a href="RaftClock.html" title="Represents the functions required to control a member node's election and heartbeat timeouts.">RaftClock</a>
                       </li><li class="current-entities indented3">
-                        <span class="separator"></span>
+                        <a class="object" href="RandomTimer$.html" title=""></a>
                         <a class="class" href="RandomTimer.html" title="A utility class for use when implementing a RaftClock."></a>
                         <a href="RandomTimer.html" title="A utility class for use when implementing a RaftClock.">RandomTimer</a>
                       </li><li class="current-entities indented3">
-                        <span class="separator"></span>
+                        <a class="object" href="TimerCallback$.html" title=""></a>
                         <a class="trait" href="TimerCallback.html" title=""></a>
                         <a href="TimerCallback.html" title="">TimerCallback</a>
                       </li><li class="current-entities indented3">
@@ -273,9 +273,9 @@
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="riff.raft.timer.DefaultClock#apply" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="apply(sendHeartbeatTimeout:scala.concurrent.duration.FiniteDuration,receiveHeartbeatTimeout:scala.concurrent.duration.FiniteDuration,schedulerService:java.util.concurrent.ScheduledExecutorService,cancelMayInterruptIfRunning:Boolean):riff.raft.timer.RaftClock"></a><a id="apply(FiniteDuration,FiniteDuration,ScheduledExecutorService,Boolean):RaftClock"></a>
+      <a id="apply(sendHeartbeatTimeout:scala.concurrent.duration.FiniteDuration,receiveHeartbeat:riff.raft.timer.RandomTimer,schedulerService:java.util.concurrent.ScheduledExecutorService,cancelMayInterruptIfRunning:Boolean):riff.raft.timer.RaftClock"></a><a id="apply(FiniteDuration,RandomTimer,ScheduledExecutorService,Boolean):RaftClock"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/timer/DefaultClock$.html#apply(sendHeartbeatTimeout:scala.concurrent.duration.FiniteDuration,receiveHeartbeatTimeout:scala.concurrent.duration.FiniteDuration,schedulerService:java.util.concurrent.ScheduledExecutorService,cancelMayInterruptIfRunning:Boolean):riff.raft.timer.RaftClock" title="Permalink">
+      <a href="../../../riff/raft/timer/DefaultClock$.html#apply(sendHeartbeatTimeout:scala.concurrent.duration.FiniteDuration,receiveHeartbeat:riff.raft.timer.RandomTimer,schedulerService:java.util.concurrent.ScheduledExecutorService,cancelMayInterruptIfRunning:Boolean):riff.raft.timer.RaftClock" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -284,7 +284,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">apply</span><span class="params">(<span name="sendHeartbeatTimeout">sendHeartbeatTimeout: <span class="extype" name="scala.concurrent.duration.FiniteDuration">FiniteDuration</span></span>, <span name="receiveHeartbeatTimeout">receiveHeartbeatTimeout: <span class="extype" name="scala.concurrent.duration.FiniteDuration">FiniteDuration</span></span>, <span name="schedulerService">schedulerService: <span class="extype" name="java.util.concurrent.ScheduledExecutorService">ScheduledExecutorService</span> = <span class="defval" name="java.util.concurrent.Executors.newScheduledThreadPool(1)">...</span></span>, <span name="cancelMayInterruptIfRunning">cancelMayInterruptIfRunning: <span class="extype" name="scala.Boolean">Boolean</span> = <span class="symbol">true</span></span>)</span><span class="result">: <a href="RaftClock.html" class="extype" name="riff.raft.timer.RaftClock">RaftClock</a></span>
+        <span class="name">apply</span><span class="params">(<span name="sendHeartbeatTimeout">sendHeartbeatTimeout: <span class="extype" name="scala.concurrent.duration.FiniteDuration">FiniteDuration</span></span>, <span name="receiveHeartbeat">receiveHeartbeat: <a href="RandomTimer.html" class="extype" name="riff.raft.timer.RandomTimer">RandomTimer</a></span>, <span name="schedulerService">schedulerService: <span class="extype" name="java.util.concurrent.ScheduledExecutorService">ScheduledExecutorService</span> = <span class="defval" name="java.util.concurrent.Executors.newScheduledThreadPool(1)">...</span></span>, <span name="cancelMayInterruptIfRunning">cancelMayInterruptIfRunning: <span class="extype" name="scala.Boolean">Boolean</span> = <span class="symbol">true</span></span>)</span><span class="result">: <a href="RaftClock.html" class="extype" name="riff.raft.timer.RaftClock">RaftClock</a></span>
       </span>
       
       

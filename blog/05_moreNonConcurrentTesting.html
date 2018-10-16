@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+<head>
+<title>Another faux concurrent test case · Riff</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="description" content='riff'/>
+<link href="https://fonts.googleapis.com/css?family=Roboto:100normal,100italic,300normal,300italic,400normal,400italic,500normal,500italic,700normal,700italic,900normal,900italicc" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="../lib/jquery/jquery.min.js"></script>
+<script type="text/javascript" src="../js/page.js"></script>
+<script type="text/javascript" src="../js/warnOldVersion.js"></script>
+<script type="text/javascript" src="../js/groups.js"></script>
+<link rel="stylesheet" type="text/css" href="../lib/normalize.css/normalize.css"/>
+<link rel="stylesheet" type="text/css" href="../lib/foundation/dist/foundation.min.css"/>
+<link rel="stylesheet" type="text/css" href="../css/page.css"/>
+
+<!--
+<link rel="shortcut icon" href="../images/favicon.ico" />
+-->
+</head>
+
+<body>
+<div class="off-canvas-wrapper">
+<div class="off-canvas-wrapper-inner" data-off-canvas-wrapper>
+
+<div class="off-canvas position-left" id="off-canvas-menu" data-off-canvas>
+<nav class="off-canvas-nav">
+<div class="nav-home">
+<a href="../index.html" >
+<span class="home-icon">⌂</span>Riff
+</a>
+<div class="version-number">
+0.0.1*
+</div>
+</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="../about/index.html" class="page">About</a>
+  <ul>
+    <li><a href="../about/gettingStarted.html" class="page">Getting Started</a></li>
+    <li><a href="../about/api.html" class="page">API docs</a></li>
+    <li><a href="../about/usingIntelliJ.html" class="page">A note on IntelliJ</a></li>
+  </ul></li>
+  <li><a href="../blog/index.html" class="page">Project Blog</a>
+  <ul>
+    <li><a href="../blog/01_raftSimulatorForTheWin.html" class="page">Meaningful Integration Testing</a></li>
+    <li><a href="../blog/02_eventSourceAGoGo.html" class="page">Event Sourcing</a></li>
+    <li><a href="../blog/03_overParameterization.html" class="page">Over-Parameterization: Going from RaftNode[NodeKey, A] to RaftNode[A]</a></li>
+    <li><a href="../blog/04_goingReactive.html" class="page">Going Reactive</a></li>
+    <li><a href="../blog/05_moreNonConcurrentTesting.html" class="active page">Another faux concurrent test case</a></li>
+  </ul></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="off-canvas-content" data-off-canvas-content>
+
+<header class="site-header expanded row">
+<div class="small-12 column">
+<a href="#" class="off-canvas-toggle hide-for-medium" data-toggle="off-canvas-menu"><svg class="svg-icon svg-icon-menu" version="1.1" id="Menu" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 20 20" enable-background="new 0 0 20 20" xml:space="preserve"> <path class="svg-icon-menu-path" fill="#53CDEC" d="M16.4,9H3.6C3.048,9,3,9.447,3,10c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,9.447,16.952,9,16.4,9z M16.4,13
+H3.6C3.048,13,3,13.447,3,14c0,0.553,0.048,1,0.6,1H16.4c0.552,0,0.6-0.447,0.6-1C17,13.447,16.952,13,16.4,13z M3.6,7H16.4
+C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.048,7,3.6,7z"/></svg>
+</a>
+<div class="title"><a href="../index.html">Riff</a></div>
+
+<!--
+<a href="https://www.example.com" class="logo show-for-medium">logo</a>
+-->
+</div>
+</header>
+
+<div class="expanded row">
+
+<div class="medium-3 large-2 show-for-medium column">
+<nav class="site-nav">
+<div class="nav-home">
+<a href="../index.html" >
+<span class="home-icon">⌂</span>Riff
+</a>
+<div class="version-number">
+0.0.1*
+</div>
+</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="../about/index.html" class="page">About</a>
+  <ul>
+    <li><a href="../about/gettingStarted.html" class="page">Getting Started</a></li>
+    <li><a href="../about/api.html" class="page">API docs</a></li>
+    <li><a href="../about/usingIntelliJ.html" class="page">A note on IntelliJ</a></li>
+  </ul></li>
+  <li><a href="../blog/index.html" class="page">Project Blog</a>
+  <ul>
+    <li><a href="../blog/01_raftSimulatorForTheWin.html" class="page">Meaningful Integration Testing</a></li>
+    <li><a href="../blog/02_eventSourceAGoGo.html" class="page">Event Sourcing</a></li>
+    <li><a href="../blog/03_overParameterization.html" class="page">Over-Parameterization: Going from RaftNode[NodeKey, A] to RaftNode[A]</a></li>
+    <li><a href="../blog/04_goingReactive.html" class="page">Going Reactive</a></li>
+    <li><a href="../blog/05_moreNonConcurrentTesting.html" class="active page">Another faux concurrent test case</a></li>
+  </ul></li>
+</ul>
+</div>
+
+</nav>
+</div>
+
+<div class="small-12 medium-9 large-10 column">
+<section class="site-content">
+
+<span id="version-warning"></span>
+
+<div class="page-header row">
+<div class="medium-12 show-for-medium column">
+<div class="nav-breadcrumbs">
+<ul>
+  <li><a href="../index.html">Riff</a></li>
+  <li><a href="../blog/index.html">Project Blog</a></li>
+  <li>Another faux concurrent test case</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div class="page-content row">
+<div class="small-12 large-9 column" id="docs">
+<h1><a href="#another-faux-concurrent-test-case" name="another-faux-concurrent-test-case" class="anchor"><span class="anchor-link"></span></a>Another faux concurrent test case</h1>
+<p>I&rsquo;d wrote <a href="01_raftSimulatorForTheWin.md">earlier</a> about the benefits of writing what would otherwise be a concurrent test in a single-threaded way using a timeline utility.</p>
+<p>I&rsquo;ve recently had another, perhaps more straight-forward example I wanted to mention.</p>
+<p>Again, I should first say there&rsquo;s nothing necessarily wrong with testing multi-threaded code. I&rsquo;m just trying to provide an argument for taking some pause before just throwing in an &ldquo;eventually this should happen&rdquo; style of test.</p>
+<p>And to recap, some of the benefits of testing in a single thread are:  - no need to wait an arbitrary amount of time to gain some certainty an unexpected event will happen  - the test itself may be faster as it doesn&rsquo;t have to spin up/destroy threads or thread pools  - the test may be simpler - no additional latches, semaphores, exchangers, whatever to coordinate conditions  - added determinism&hellip; not having tests which fail on slow build agents, etc  - more easily debugged/stepped through</p>
+<p>And that of course comes at a price, but that price may be small. The specific instance in this case was for a test case around decoupled producers/consumers.</p>
+<p>I&rsquo;d decided to include a basic reference implementation of reactive-streams with riff-core, and so needed to have some test for an async, decoupled producer and consumer of events.</p>
+<p>I went with a simple blocking queue which would be populated by events from either the producer or consumer. Essentially just folding the inputs over <a href="https://aaronp.github.io/riff/api/riffCoreCrossProject/riff/reactive/AsyncSubscriptionState.html">AsyncSubscriptionState</a></p>
+<p>The state itself is immutable, and an <a href="https://aaronp.github.io/riff/api/riffCoreCrossProject/riff/reactive/AsyncSubscription.html">AsyncSubscription</a> holds a reference to the current state. All that&rsquo;s left is for the producer and subscriber to each enqueue their commands to that subscription, and a Runnable is submitted to an ExecutionContext in the companion object which is effectively just runs:</p>
+<pre class="prettyprint"><code class="language-scala">      while (sub.processNext()) {
+        // processNext has already don the work, just loop and pull the next input
+      }
+</code></pre>
+<h2><a href="#obviously-no-bugs-or-no-obvious-bugs-" name="obviously-no-bugs-or-no-obvious-bugs-" class="anchor"><span class="anchor-link"></span></a>Obviously no bugs or no obvious bugs?</h2>
+<p>I can&rsquo;t really speak for the <a href="https://aaronp.github.io/riff/api/riffCoreCrossProject/riff/reactive/AsyncSubscription.html">AsyncSubscription</a> as a whole, but certainly the loop above fits the description of the former more than the latter.</p>
+<p>And so when it came time to run the test, I was pretty confident that that submitting that while loop to an ExecutionContext was going to work just fine, and so I decided that the test case could run the producer (publisher) and consumer in the same test thread, allowing me to reap some of the benefits I mentioned. I just wanted to make sure that I put a little safety net around the code which pulled from the queue.</p>
+<p>Given that it&rsquo;s a blocking queue, A future change/refactor could end up making that test block indefinitely if it tried to take from an empty queue, so I just put a &lsquo;safeNext&rsquo; utility function within my test case:</p>
+<pre class="prettyprint"><code class="language-scala">      val subUnderTest = new AsyncSubscription[Int](wrappedSubscriber, 10, cancelled)
+      subUnderTest.inputQueueSize() shouldBe 0
+
+      // this is &#39;safe&#39; because &#39;processNext&#39; is a blocking call on the next queue input
+      def safeNext(): Boolean = {
+        if (subUnderTest.inputQueueSize() &gt; 0) {
+          subUnderTest.processNext()
+        } else {
+          false
+        }
+      }
+</code></pre>
+<p>It&rsquo;s certainly not the most earth-shattering code (or test), but I am pleased to have another example of using an arguable simpler approach to what would otherwise be a more complicated test. And I could hear faint echos of Rich Hickey&rsquo;s <a href="https://www.infoq.com/presentations/Simple-Made-Easy">&ldquo;Simple Made Easy&rdquo;</a> talk in the back of my head when I wrote it (&ldquo;Just use a queue&rdquo;). I hope he wouldn&rsquo;t object to the reference.</p>
+<div class="source-github">
+The source code for this page can be found <a href="https://github.com/aaronp/riff/tree/master/src/main/paradox/blog/05_moreNonConcurrentTesting.md">here</a>.
+</div>
+
+</div>
+<div class="large-3 show-for-large column" data-sticky-container>
+<nav class="sidebar sticky" data-sticky data-anchor="docs" data-sticky-on="large">
+<div class="page-nav">
+<div class="nav-title">On this page:</div>
+<div class="nav-toc">
+<ul>
+  <li><a href="../blog/05_moreNonConcurrentTesting.html#another-faux-concurrent-test-case" class="header">Another faux concurrent test case</a>
+  <ul>
+    <li><a href="../blog/05_moreNonConcurrentTesting.html#obviously-no-bugs-or-no-obvious-bugs-" class="header">Obviously no bugs or no obvious bugs?</a></li>
+  </ul></li>
+</ul>
+</div>
+</div>
+</nav>
+</div>
+</div>
+
+</section>
+</div>
+
+</div>
+
+<footer class="site-footer">
+
+<section class="site-footer-nav">
+<div class="expanded row">
+<div class="small-12 large-offset-2 large-10 column">
+<div class="row site-footer-content">
+
+<div class="small-12 medium-4 large-3 text-center column">
+<div class="nav-links">
+<ul>
+<!-- <li><a href="https://www.example.com/products/">Products</a> -->
+</ul>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+</section>
+
+<section class="site-footer-base">
+<div class="expanded row">
+<div class="small-12 large-offset-2 large-10 column">
+<div class="row site-footer-content">
+
+<div class="small-12 text-center large-9 column">
+
+<!--
+<div class="copyright">
+<span class="text">&copy; 2018</span>
+<a href="https://www.example.com" class="logo">logo</a>
+</div>
+-->
+</div>
+
+</div>
+</div>
+</div>
+</section>
+</footer>
+
+</div>
+</div>
+</div>
+</body>
+
+<script type="text/javascript" src="../lib/foundation/dist/foundation.min.js"></script>
+<script type="text/javascript">jQuery(document).foundation();</script>
+<script type="text/javascript" src="../js/magellan.js"></script>
+
+<style type="text/css">@import "../lib/prettify/prettify.css";</style>
+<script type="text/javascript" src="../lib/prettify/prettify.js"></script>
+<script type="text/javascript" src="../lib/prettify/lang-scala.js"></script>
+<script type="text/javascript">jQuery(function(){window.prettyPrint && prettyPrint()});</script>
+<script type="text/javascript">jQuery(function(jq){initOldVersionWarnings(jq, '0.0.1-SNAPSHOT', 'https://aaronp.github.io/riff/docs/current/')});</script>
+
+
+</html>

@@ -46,7 +46,9 @@
   <ul>
     <li><a href="../blog/01_raftSimulatorForTheWin.html" class="active page">Meaningful Integration Testing</a></li>
     <li><a href="../blog/02_eventSourceAGoGo.html" class="page">Event Sourcing</a></li>
-    <li><a href="../blog/03_NodeKeyIsDead.html" class="page">Over-Parameterization: <del>NodeKey</del> is Dead</a></li>
+    <li><a href="../blog/03_overParameterization.html" class="page">Over-Parameterization: Going from RaftNode[NodeKey, A] to RaftNode[A]</a></li>
+    <li><a href="../blog/04_goingReactive.html" class="page">Going Reactive</a></li>
+    <li><a href="../blog/05_moreNonConcurrentTesting.html" class="page">Another faux concurrent test case</a></li>
   </ul></li>
 </ul>
 </div>
@@ -94,7 +96,9 @@ C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.
   <ul>
     <li><a href="../blog/01_raftSimulatorForTheWin.html" class="active page">Meaningful Integration Testing</a></li>
     <li><a href="../blog/02_eventSourceAGoGo.html" class="page">Event Sourcing</a></li>
-    <li><a href="../blog/03_NodeKeyIsDead.html" class="page">Over-Parameterization: <del>NodeKey</del> is Dead</a></li>
+    <li><a href="../blog/03_overParameterization.html" class="page">Over-Parameterization: Going from RaftNode[NodeKey, A] to RaftNode[A]</a></li>
+    <li><a href="../blog/04_goingReactive.html" class="page">Going Reactive</a></li>
+    <li><a href="../blog/05_moreNonConcurrentTesting.html" class="page">Another faux concurrent test case</a></li>
   </ul></li>
 </ul>
 </div>
@@ -290,7 +294,7 @@ Node 4 (Candidate) in cluster of 3 peers: [Node 1,Node 2,Node 3]
 <p>In general, I&rsquo;m very happy w/ this approach, but it isn&rsquo;t a complete replacement for real, full production integration tests. </p>
 <p>Of course you still need those - but only to prove the integration, and not for basic functionality/correctness.</p>
 <p>Put another way, the responsibility of what we&rsquo;re require from the integration/system tests is significantly reduced.</p>
-<p>Also, if/when our full integration tests <strong>do</strong> find errors, we should be able to write a test for it using our single-threaded, RaftSimulator approach, unless the bug truely is related specifically to threading, queues, sockets, etc.</p>
+<p>Also, if/when our full integration tests <strong>do</strong> find errors, we should be able to write a test for it using our single-threaded, RaftSimulator approach, unless the bug truly is related specifically to threading, queues, sockets, etc.</p>
 <p>And it&rsquo;s worth noting that the code we&rsquo;re testing is, by design, not thread-safe anyway. It&rsquo;s intended to be put being something which can guarantee thread safety (e.g. lifted into a reactive stream, actor, into a service, etc).</p>
 <h2><a href="#thats-it-" name="thats-it-" class="anchor"><span class="anchor-link"></span></a>That&rsquo;s it!</h2>
 <p>We&rsquo;re using the main, production code to generate messages, and then feed those messages to their recipients. </p>

@@ -126,11 +126,11 @@
                         <a class="trait" href="RaftClock.html" title="Represents the functions required to control a member node's election and heartbeat timeouts."></a>
                         <a href="RaftClock.html" title="Represents the functions required to control a member node's election and heartbeat timeouts.">RaftClock</a>
                       </li><li class="current-entities indented3">
-                        <span class="separator"></span>
+                        <a class="object" href="RandomTimer$.html" title=""></a>
                         <a class="class" href="" title="A utility class for use when implementing a RaftClock."></a>
                         <a href="" title="A utility class for use when implementing a RaftClock.">RandomTimer</a>
                       </li><li class="current-entities indented3">
-                        <span class="separator"></span>
+                        <a class="object" href="TimerCallback$.html" title=""></a>
                         <a class="trait" href="TimerCallback.html" title=""></a>
                         <a href="TimerCallback.html" title="">TimerCallback</a>
                       </li><li class="current-entities indented3">
@@ -144,14 +144,16 @@
           <div id="content">
             <body class="class type">
       <div id="definition">
-        <div class="big-circle class">c</div>
+        <a href="RandomTimer$.html" title="See companion object"><div class="big-circle class-companion-object">c</div></a>
         <p id="owner"><a href="../../index.html" class="extype" name="riff">riff</a>.<a href="../index.html" class="extype" name="riff.raft">raft</a>.<a href="index.html" class="extype" name="riff.raft.timer">timer</a></p>
-        <h1>RandomTimer<span class="permalink">
+        <h1><a href="RandomTimer$.html" title="See companion object">RandomTimer</a><span class="permalink">
       <a href="../../../riff/raft/timer/RandomTimer.html" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span></h1>
-        <h3><span class="morelinks"></span></h3>
+        <h3><span class="morelinks"><div>
+            Companion <a href="RandomTimer$.html" title="See companion object">object RandomTimer</a>
+          </div></span></h3>
       </div>
 
       <h4 id="signature" class="signature">
@@ -217,10 +219,10 @@ It simply contains a 'next' for producing random timeout durations based around 
         <div id="allMembers">
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
-              <ol><li name="riff.raft.timer.RandomTimer#&lt;init&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="&lt;init&gt;(timeout:scala.concurrent.duration.FiniteDuration,percentageOfTimeout:Double):riff.raft.timer.RandomTimer"></a><a id="&lt;init&gt;:RandomTimer"></a>
+              <ol><li name="riff.raft.timer.RandomTimer#&lt;init&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="&lt;init&gt;(minTimeout:scala.concurrent.duration.FiniteDuration,maxTimeout:scala.concurrent.duration.FiniteDuration):riff.raft.timer.RandomTimer"></a><a id="&lt;init&gt;:RandomTimer"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/timer/RandomTimer.html#&lt;init&gt;(timeout:scala.concurrent.duration.FiniteDuration,percentageOfTimeout:Double):riff.raft.timer.RandomTimer" title="Permalink">
+      <a href="../../../riff/raft/timer/RandomTimer.html#&lt;init&gt;(minTimeout:scala.concurrent.duration.FiniteDuration,maxTimeout:scala.concurrent.duration.FiniteDuration):riff.raft.timer.RandomTimer" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -229,10 +231,10 @@ It simply contains a 'next' for producing random timeout durations based around 
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">RandomTimer</span><span class="params">(<span name="timeout">timeout: <span class="extype" name="scala.concurrent.duration.FiniteDuration">FiniteDuration</span></span>, <span name="percentageOfTimeout">percentageOfTimeout: <span class="extype" name="scala.Double">Double</span> = <span class="symbol">0.2</span></span>)</span>
+        <span class="name">RandomTimer</span><span class="params">(<span name="minTimeout">minTimeout: <span class="extype" name="scala.concurrent.duration.FiniteDuration">FiniteDuration</span></span>, <span name="maxTimeout">maxTimeout: <span class="extype" name="scala.concurrent.duration.FiniteDuration">FiniteDuration</span></span>)</span>
       </span>
       
-      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">timeout</dt><dd class="cmt"><p>the base timeout value</p></dd><dt class="param">percentageOfTimeout</dt><dd class="cmt"><p>the &quot;plus or minus&quot; percentage expressed as a decimal (e.g. 20% would be 0.2, which is the default)</p></dd></dl></div>
+      <p class="shortcomment cmt"></p>
     </li></ol>
             </div>
 
@@ -455,7 +457,7 @@ It simply contains a 'next' for producing random timeout durations based around 
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="riff.raft.timer.RandomTimer#next" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+    </li><li name="riff.raft.timer.RandomTimer#next" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="next():scala.concurrent.duration.FiniteDuration"></a><a id="next():FiniteDuration"></a>
       <span class="permalink">
       <a href="../../../riff/raft/timer/RandomTimer.html#next():scala.concurrent.duration.FiniteDuration" title="Permalink">
@@ -470,7 +472,7 @@ It simply contains a 'next' for producing random timeout durations based around 
         <span class="name">next</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.concurrent.duration.FiniteDuration">FiniteDuration</span></span>
       </span>
       
-      
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>the next random value in the range</p></dd></dl></div>
     </li><li name="scala.AnyRef#notify" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notify():Unit"></a>
       <span class="permalink">

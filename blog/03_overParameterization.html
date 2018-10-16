@@ -2,7 +2,7 @@
 <html class="no-js" lang="en">
 
 <head>
-<title>Over-Parameterization: NodeKey is Dead · Riff</title>
+<title>Over-Parameterization: Going from RaftNode[NodeKey, A] to RaftNode[A] · Riff</title>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <meta name="description" content='riff'/>
@@ -46,7 +46,9 @@
   <ul>
     <li><a href="../blog/01_raftSimulatorForTheWin.html" class="page">Meaningful Integration Testing</a></li>
     <li><a href="../blog/02_eventSourceAGoGo.html" class="page">Event Sourcing</a></li>
-    <li><a href="../blog/03_NodeKeyIsDead.html" class="active page">Over-Parameterization: <del>NodeKey</del> is Dead</a></li>
+    <li><a href="../blog/03_overParameterization.html" class="active page">Over-Parameterization: Going from RaftNode[NodeKey, A] to RaftNode[A]</a></li>
+    <li><a href="../blog/04_goingReactive.html" class="page">Going Reactive</a></li>
+    <li><a href="../blog/05_moreNonConcurrentTesting.html" class="page">Another faux concurrent test case</a></li>
   </ul></li>
 </ul>
 </div>
@@ -94,7 +96,9 @@ C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.
   <ul>
     <li><a href="../blog/01_raftSimulatorForTheWin.html" class="page">Meaningful Integration Testing</a></li>
     <li><a href="../blog/02_eventSourceAGoGo.html" class="page">Event Sourcing</a></li>
-    <li><a href="../blog/03_NodeKeyIsDead.html" class="active page">Over-Parameterization: <del>NodeKey</del> is Dead</a></li>
+    <li><a href="../blog/03_overParameterization.html" class="active page">Over-Parameterization: Going from RaftNode[NodeKey, A] to RaftNode[A]</a></li>
+    <li><a href="../blog/04_goingReactive.html" class="page">Going Reactive</a></li>
+    <li><a href="../blog/05_moreNonConcurrentTesting.html" class="page">Another faux concurrent test case</a></li>
   </ul></li>
 </ul>
 </div>
@@ -113,7 +117,7 @@ C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.
 <ul>
   <li><a href="../index.html">Riff</a></li>
   <li><a href="../blog/index.html">Project Blog</a></li>
-  <li>Over-Parameterization: <del>NodeKey</del> is Dead</li>
+  <li>Over-Parameterization: Going from RaftNode[NodeKey, A] to RaftNode[A]</li>
 </ul>
 </div>
 </div>
@@ -121,21 +125,24 @@ C16.952,7,17,6.553,17,6c0-0.553-0.048-1-0.6-1H3.6C3.048,5,3,5.447,3,6C3,6.553,3.
 
 <div class="page-content row">
 <div class="small-12 large-9 column" id="docs">
-<h1><a href="#over-parameterization-is-dead" name="over-parameterization-is-dead" class="anchor"><span class="anchor-link"></span></a>Over-Parameterization: <del>NodeKey</del> is Dead</h1>
-<p>This project blog is becoming an omage to my favourite playlist of scala heros and tech talks, and so I guess at this point I should give <a href="https://www.youtube.com/watch?v=7xSfLPD6tiQ">Rob Norris&rsquo;s Fixpoint Talk</a> a shout-out.</p>
+<h1><a href="#over-parameterization-going-from-raftnode-nodekey-a-to-raftnode-a-" name="over-parameterization-going-from-raftnode-nodekey-a-to-raftnode-a-" class="anchor"><span class="anchor-link"></span></a>Over-Parameterization: Going from RaftNode[NodeKey, A] to RaftNode[A]</h1>
+<p>This project blog is becoming an omage to my favourite playlist of scala heroes and tech talks, and so I guess at this point I should give <a href="https://www.youtube.com/watch?v=7xSfLPD6tiQ">Rob Norris&rsquo;s Fixpoint Talk</a> a shout-out.</p>
 <p>Rob makes the point that, when in doubt, parameterize the property types. I&rsquo;ve found that to be generally a good rule as well, and so is what I did when representing the underlying nodes in the cluster.</p>
 <p>I already had one parameter type &lsquo;A&rsquo; to use as log type, which makes sense and will always be there. The second parameter type RaftNode had was &lsquo;NodeKey&rsquo;.</p>
 <p>Essentially I didn&rsquo;t care what the underlying nodes were in the cluster. They could&rsquo;ve been ActorRefs, Observables, WebSockets, Http clients, whatever. And so I just made them a parameterized NodeKey, thinking the extra cost of passing that type around (and exposing it in the interfaces) would be useful when it came time to interact w/ the types in riff-core.</p>
 <p>Well, I should&rsquo;ve gone full end-to-end sooner (see the previous post about tracer-bullets), because it turns out its not so useful.</p>
 <p>It was a minor change which prompted me to remove it. The <a href="https://aaronp.github.io/riff/api/riffCoreCrossProject/riff/raft/node/PersistentState.html">PersistentState</a> needed to write down who it voted for in order to avoid potentially double-voting after a crash/restart during an election.</p>
 <p>The problem was, the node was represented as a generic &lsquo;NodeKey&rsquo; type.</p>
-<p>If we kept the parameterized NodeKey, that means we have to be able either serialize/deserialize the key itself, or provide some momento for that NodeKey. So the idea of making the RaftNode hold a reference to a generic NodeKey started to lose its appeal when having to provide additional support for serialisation.</p>
+<p>If we kept the parameterized NodeKey, that means we have to be able either serialize/deserialize the key itself, or provide some memento for that NodeKey. (Memento &hellip; is that an actual pattern? I think I recall it from my Eclipse platform days) So the idea of making the RaftNode hold a reference to a generic NodeKey started to lose its appeal when having to provide additional support for serialisation.</p>
 <p>And so, upon reevaluation, just making it become a string identifier in &lsquo;NodeId&rsquo; was a lot more appealing. We could drop the extra param type tax and simplify things. It should be trivial for implementations to resolve a transport for a unique name.</p>
 <p>And, as for unique names, that should be a little more clear now that it&rsquo;s not a generic NodeKey but a specific NodeId (i.e. String).</p>
 <div class="source-github">
-The source code for this page can be found <a href="https://github.com/aaronp/riff/tree/master/src/main/paradox/blog/03_NodeKeyIsDead.md">here</a>.
+The source code for this page can be found <a href="https://github.com/aaronp/riff/tree/master/src/main/paradox/blog/03_overParameterization.md">here</a>.
 </div>
 
+<div class="nav-next">
+<p><strong>Next:</strong> <a href="../blog/04_goingReactive.html">Going Reactive</a></p>
+</div>
 </div>
 <div class="large-3 show-for-large column" data-sticky-container>
 </div>

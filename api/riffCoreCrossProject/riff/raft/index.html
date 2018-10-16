@@ -149,6 +149,22 @@
       </span>
       
       
+    </li><li name="riff.raft.reactive" visbl="pub" class="indented3 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="reactive"></a><a id="reactive:reactive"></a>
+      <span class="permalink">
+      <a href="../../riff/raft/index.html#reactive" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="reactive/index.html"><span class="name">reactive</span></a>
+      </span>
+      
+      
     </li><li name="riff.raft.timer" visbl="pub" class="indented3 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="timer"></a><a id="timer:timer"></a>
       <span class="permalink">
@@ -194,18 +210,26 @@
                         <a class="class" href="NotTheLeaderException.html" title=""></a>
                         <a href="NotTheLeaderException.html" title="">NotTheLeaderException</a>
                       </li><li class="current-entities indented2">
-                        <span class="separator"></span>
-                        <a class="object" href="Raft$.html" title=""></a>
-                        <a href="Raft$.html" title="">Raft</a>
-                      </li><li class="current-entities indented2">
-                        <span class="separator"></span>
+                        <a class="object" href="RaftClient$.html" title=""></a>
                         <a class="trait" href="RaftClient.html" title="The external use-cases for a node in the Raft protocol are:"></a>
                         <a href="RaftClient.html" title="The external use-cases for a node in the Raft protocol are:">RaftClient</a>
-                      </li><li class="current-entities indented2">
-                        <a class="object" href="RoleCallback$.html" title=""></a>
-                        <a class="trait" href="RoleCallback.html" title="This is provided as a convenience to be added to a riff.raft.node.RaftNode for anything which cares about role transitions for a particular node."></a>
-                        <a href="RoleCallback.html" title="This is provided as a convenience to be added to a riff.raft.node.RaftNode for anything which cares about role transitions for a particular node.">RoleCallback</a>
-                      </li>
+                      </li><li name="riff.reactive" visbl="pub" class="indented2 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="reactive"></a><a id="reactive:reactive"></a>
+      <span class="permalink">
+      <a href="../riff/index.html#reactive" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="../reactive/index.html"><span class="name">reactive</span></a>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../index.html" class="extype" name="riff">riff</a></dd></dl></div>
+    </li>
               </ul>
             </div>
           </div>
@@ -451,26 +475,6 @@
 3) subscribing to lifecycle events, which should return a Publisher which lets subscribers know about cluster and leadership changes
 4) subscribing to a commit log, which should return a Publisher which lets subscribers know when logs are appended or committed</p><p>All of these algebras don't necessarily have to be in the same trait
 </p></div></div>
-    </li><li name="riff.raft.RoleCallback" visbl="pub" class="indented0 " data-isabs="true" fullComment="yes" group="Ungrouped">
-      <a id="RoleCallbackextendsAnyRef"></a><a id="RoleCallback:RoleCallback"></a>
-      <span class="permalink">
-      <a href="../../riff/raft/index.html#RoleCallbackextendsAnyRef" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">trait</span>
-      </span>
-      <span class="symbol">
-        <a title="This is provided as a convenience to be added to a riff.raft.node.RaftNode for anything which cares about role transitions for a particular node." href="RoleCallback.html"><span class="name">RoleCallback</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
-      </span>
-      
-      <p class="shortcomment cmt">This is provided as a convenience to be added to a <a href="node/RaftNode.html" class="extype" name="riff.raft.node.RaftNode">riff.raft.node.RaftNode</a> for anything which cares about
-role transitions for a particular node.</p><div class="fullcomment"><div class="comment cmt"><p>This is provided as a convenience to be added to a <a href="node/RaftNode.html" class="extype" name="riff.raft.node.RaftNode">riff.raft.node.RaftNode</a> for anything which cares about
-role transitions for a particular node.</p><p>That behaviour could be done by subclassing the RaftNode, but subclassing brings in its own challenges/considerations.</p><p>By making this more explicit, in addition to obviating the need to to subclass <a href="node/RaftNode.html" class="extype" name="riff.raft.node.RaftNode">riff.raft.node.RaftNode</a>, it hopefully
-will make the code more navigable/readable
-</p></div></div>
     </li><li name="riff.raft.Term" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="Term=Int"></a><a id="Term:Term"></a>
       <span class="permalink">
@@ -511,10 +515,10 @@ will make the code more navigable/readable
       </span>
       
       
-    </li><li name="riff.raft.Raft" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="Raft"></a><a id="Raft:Raft"></a>
+    </li><li name="riff.raft.RaftClient" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="RaftClient"></a><a id="RaftClient:RaftClient"></a>
       <span class="permalink">
-      <a href="../../riff/raft/index.html#Raft" title="Permalink">
+      <a href="../../riff/raft/index.html#RaftClient" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -523,23 +527,7 @@ will make the code more navigable/readable
         <span class="kind">object</span>
       </span>
       <span class="symbol">
-        <a title="" href="Raft$.html"><span class="name">Raft</span></a>
-      </span>
-      
-      
-    </li><li name="riff.raft.RoleCallback" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="RoleCallback"></a><a id="RoleCallback:RoleCallback"></a>
-      <span class="permalink">
-      <a href="../../riff/raft/index.html#RoleCallback" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">object</span>
-      </span>
-      <span class="symbol">
-        <a title="" href="RoleCallback$.html"><span class="name">RoleCallback</span></a>
+        <a title="" href="RaftClient$.html"><span class="name">RaftClient</span></a>
       </span>
       
       

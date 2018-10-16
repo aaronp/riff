@@ -191,19 +191,19 @@
       <h4 id="signature" class="signature">
       <span class="modifier_kind">
         <span class="modifier">final </span>
-        <span class="kind">case class</span>
+        <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <span class="name">AppendData</span><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="values">values: <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="riff.raft.messages.AppendData.A">A</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="evidence$1">evidence$1: <span class="extype" name="scala.reflect.ClassTag">ClassTag</span>[<span class="extype" name="riff.raft.messages.AppendData.A">A</span>]</span>)</span><span class="result"> extends <a href="RaftMessage.html" class="extype" name="riff.raft.messages.RaftMessage">RaftMessage</a>[<span class="extype" name="riff.raft.messages.AppendData.A">A</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <span class="name">AppendData</span><span class="tparams">[<span name="A">A</span>, <span name="F">F<span class="tparams">[<span name="_">_</span>]</span></span>]</span><span class="result"> extends <a href="RaftMessage.html" class="extype" name="riff.raft.messages.RaftMessage">RaftMessage</a>[<span class="extype" name="riff.raft.messages.AppendData.A">A</span>]</span>
       </span>
       </h4>
 
       
-          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Represents input from a client of the cluster</p></div><dl class="paramcmts block"><dt class="tparam">A</dt><dd class="cmt"><p>the log entry type.</p></dd><dt class="param">values</dt><dd class="cmt"><p>the values to append</p></dd></dl><div class="toggleContainer block">
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Represents input from a client of the cluster</p></div><dl class="paramcmts block"><dt class="tparam">A</dt><dd class="cmt"><p>the log entry type.</p></dd></dl><div class="toggleContainer block">
           <span class="toggle">
             Linear Supertypes
           </span>
-          <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <a href="RaftMessage.html" class="extype" name="riff.raft.messages.RaftMessage">RaftMessage</a>[<span class="extype" name="riff.raft.messages.AppendData.A">A</span>], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><a href="RaftMessage.html" class="extype" name="riff.raft.messages.RaftMessage">RaftMessage</a>[<span class="extype" name="riff.raft.messages.AppendData.A">A</span>], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
         
 
@@ -229,7 +229,7 @@
                   <span class="filtertype">Inherited<br />
                   </span>
                   <ol id="linearization">
-                    <li class="in" name="riff.raft.messages.AppendData"><span>AppendData</span></li><li class="in" name="scala.Serializable"><span>Serializable</span></li><li class="in" name="java.io.Serializable"><span>Serializable</span></li><li class="in" name="scala.Product"><span>Product</span></li><li class="in" name="scala.Equals"><span>Equals</span></li><li class="in" name="riff.raft.messages.RaftMessage"><span>RaftMessage</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                    <li class="in" name="riff.raft.messages.AppendData"><span>AppendData</span></li><li class="in" name="riff.raft.messages.RaftMessage"><span>RaftMessage</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                   </ol>
                 </div><div class="ancestors">
               <span class="filtertype"></span>
@@ -250,9 +250,9 @@
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
               <ol><li name="riff.raft.messages.AppendData#&lt;init&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="&lt;init&gt;(values:Array[A])(implicitevidence$1:scala.reflect.ClassTag[A]):riff.raft.messages.AppendData[A]"></a><a id="&lt;init&gt;:AppendData[A]"></a>
+      <a id="&lt;init&gt;(responseSubscriber:F[riff.raft.AppendStatus],values:Array[A])(implicitevidence$1:scala.reflect.ClassTag[A],implicitevidence$2:riff.reactive.AsSubscriber[F]):riff.raft.messages.AppendData[A,F]"></a><a id="&lt;init&gt;:AppendData[A,F]"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/messages/AppendData.html#&lt;init&gt;(values:Array[A])(implicitevidence$1:scala.reflect.ClassTag[A]):riff.raft.messages.AppendData[A]" title="Permalink">
+      <a href="../../../riff/raft/messages/AppendData.html#&lt;init&gt;(responseSubscriber:F[riff.raft.AppendStatus],values:Array[A])(implicitevidence$1:scala.reflect.ClassTag[A],implicitevidence$2:riff.reactive.AsSubscriber[F]):riff.raft.messages.AppendData[A,F]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -261,10 +261,10 @@
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">AppendData</span><span class="params">(<span name="values">values: <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="riff.raft.messages.AppendData.A">A</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: <span class="extype" name="scala.reflect.ClassTag">ClassTag</span>[<span class="extype" name="riff.raft.messages.AppendData.A">A</span>]</span>)</span>
+        <span class="name">AppendData</span><span class="params">(<span name="responseSubscriber">responseSubscriber: <span class="extype" name="riff.raft.messages.AppendData.F">F</span>[<a href="../AppendStatus.html" class="extype" name="riff.raft.AppendStatus">AppendStatus</a>]</span>, <span name="values">values: <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="riff.raft.messages.AppendData.A">A</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: <span class="extype" name="scala.reflect.ClassTag">ClassTag</span>[<span class="extype" name="riff.raft.messages.AppendData.A">A</span>]</span>, <span name="arg1">arg1: <a href="../../reactive/AsSubscriber.html" class="extype" name="riff.reactive.AsSubscriber">AsSubscriber</a>[<span class="extype" name="riff.raft.messages.AppendData.F">F</span>]</span>)</span>
       </span>
       
-      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">values</dt><dd class="cmt"><p>the values to append</p></dd></dl></div>
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">responseSubscriber</dt><dd class="cmt"><p>something which can listen to status messages</p></dd><dt class="param">values</dt><dd class="cmt"><p>the values to append</p></dd></dl></div>
     </li></ol>
             </div>
 
@@ -339,6 +339,22 @@
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="riff.raft.messages.AppendData#asSubscriberEvidence" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="asSubscriberEvidence:riff.reactive.AsSubscriber[F]"></a><a id="asSubscriberEvidence:AsSubscriber[F]"></a>
+      <span class="permalink">
+      <a href="../../../riff/raft/messages/AppendData.html#asSubscriberEvidence:riff.reactive.AsSubscriber[F]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">asSubscriberEvidence</span><span class="result">: <a href="../../reactive/AsSubscriber.html" class="extype" name="riff.reactive.AsSubscriber">AsSubscriber</a>[<span class="extype" name="riff.raft.messages.AppendData.F">F</span>]</span>
+      </span>
+      
+      
     </li><li name="scala.AnyRef#clone" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="clone():Object"></a><a id="clone():AnyRef"></a>
       <span class="permalink">
@@ -394,7 +410,7 @@
         <span class="name">equals</span><span class="params">(<span name="other">other: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
       </span>
       
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="riff.raft.messages.AppendData">AppendData</a> → Equals → AnyRef → Any</dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="riff.raft.messages.AppendData">AppendData</a> → AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#finalize" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="finalize():Unit"></a>
       <span class="permalink">
@@ -522,6 +538,38 @@
                 <span class="name">@native</span><span class="args">()</span>
               
         </dd></dl></div>
+    </li><li name="riff.raft.messages.AppendData#responseSubscriber" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="responseSubscriber:F[riff.raft.AppendStatus]"></a><a id="responseSubscriber:F[AppendStatus]"></a>
+      <span class="permalink">
+      <a href="../../../riff/raft/messages/AppendData.html#responseSubscriber:F[riff.raft.AppendStatus]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">responseSubscriber</span><span class="result">: <span class="extype" name="riff.raft.messages.AppendData.F">F</span>[<a href="../AppendStatus.html" class="extype" name="riff.raft.AppendStatus">AppendStatus</a>]</span>
+      </span>
+      
+      
+    </li><li name="riff.raft.messages.AppendData#statusSubscriber" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="statusSubscriber:org.reactivestreams.Subscriber[riff.raft.AppendStatus]"></a><a id="statusSubscriber:Subscriber[AppendStatus]"></a>
+      <span class="permalink">
+      <a href="../../../riff/raft/messages/AppendData.html#statusSubscriber:org.reactivestreams.Subscriber[riff.raft.AppendStatus]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">statusSubscriber</span><span class="result">: <span class="extype" name="org.reactivestreams.Subscriber">Subscriber</span>[<a href="../AppendStatus.html" class="extype" name="riff.raft.AppendStatus">AppendStatus</a>]</span>
+      </span>
+      
+      
     </li><li name="scala.AnyRef#synchronized" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a><a id="synchronized[T0](⇒T0):T0"></a>
       <span class="permalink">
@@ -550,7 +598,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
+        <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="riff.raft.messages.AppendData">AppendData</a> → AnyRef → Any</dd></dl></div>
@@ -648,15 +696,7 @@
         </div>
 
         <div id="inheritedMembers">
-        <div class="parent" name="scala.Serializable">
-              <h3>Inherited from <span class="extype" name="scala.Serializable">Serializable</span></h3>
-            </div><div class="parent" name="java.io.Serializable">
-              <h3>Inherited from <span class="extype" name="java.io.Serializable">Serializable</span></h3>
-            </div><div class="parent" name="scala.Product">
-              <h3>Inherited from <span class="extype" name="scala.Product">Product</span></h3>
-            </div><div class="parent" name="scala.Equals">
-              <h3>Inherited from <span class="extype" name="scala.Equals">Equals</span></h3>
-            </div><div class="parent" name="riff.raft.messages.RaftMessage">
+        <div class="parent" name="riff.raft.messages.RaftMessage">
               <h3>Inherited from <a href="RaftMessage.html" class="extype" name="riff.raft.messages.RaftMessage">RaftMessage</a>[<span class="extype" name="riff.raft.messages.AppendData.A">A</span>]</h3>
             </div><div class="parent" name="scala.AnyRef">
               <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>

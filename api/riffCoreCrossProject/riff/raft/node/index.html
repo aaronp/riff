@@ -229,7 +229,27 @@
                         <span class="separator"></span>
                         <a class="trait" href="RaftNodeResult.html" title="Represents all possible results of a RaftNode having processed an event or message"></a>
                         <a href="RaftNodeResult.html" title="Represents all possible results of a RaftNode having processed an event or message">RaftNodeResult</a>
-                      </li><li name="riff.raft.timer" visbl="pub" class="indented3 " data-isabs="false" fullComment="yes" group="Ungrouped">
+                      </li><li class="current-entities indented3">
+                        <a class="object" href="RoleCallback$.html" title=""></a>
+                        <a class="trait" href="RoleCallback.html" title="This is provided as a convenience to be added to a riff.raft.node.RaftNode for anything which cares about role transitions for a particular node."></a>
+                        <a href="RoleCallback.html" title="This is provided as a convenience to be added to a riff.raft.node.RaftNode for anything which cares about role transitions for a particular node.">RoleCallback</a>
+                      </li><li name="riff.raft.reactive" visbl="pub" class="indented3 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="reactive"></a><a id="reactive:reactive"></a>
+      <span class="permalink">
+      <a href="../../riff/raft/index.html#reactive" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="../reactive/index.html"><span class="name">reactive</span></a>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../index.html" class="extype" name="riff.raft">raft</a></dd></dl></div>
+    </li><li name="riff.raft.timer" visbl="pub" class="indented3 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="timer"></a><a id="timer:timer"></a>
       <span class="permalink">
       <a href="../../riff/raft/index.html#timer" title="Permalink">
@@ -566,8 +586,7 @@ if needed (e.g. as a candidate advances through its votes, or the detail from so
       
       <p class="shortcomment cmt">The place where the different pieces which represent a Raft Node come together -- the glue code.</p><div class="fullcomment"><div class="comment cmt"><p>The place where the different pieces which represent a Raft Node come together -- the glue code.</p><p>I've looked at this a few different ways, but ultimately found this abstraction here to be the most readable,
 and follows most closely what's laid out in the raft spec.</p><p>It's not too generic/abstracted, but quite openly just orchestrates the pieces/interactions of the inputs
-into a raft node.
-</p></div><dl class="paramcmts block"><dt class="tparam">A</dt><dd class="cmt"><p>the log entry type</p></dd></dl></div>
+into a raft node.</p></div></div>
     </li><li name="riff.raft.node.RaftNodeResult" visbl="pub" class="indented0 " data-isabs="true" fullComment="yes" group="Ungrouped">
       <a id="RaftNodeResult[+A]extendsAnyRef"></a><a id="RaftNodeResult[+A]:RaftNodeResult[A]"></a>
       <span class="permalink">
@@ -586,6 +605,26 @@ into a raft node.
       <p class="shortcomment cmt">Represents all possible results of a <a href="RaftNode.html" class="extype" name="riff.raft.node.RaftNode">RaftNode</a> having processed an event or message
 </p><div class="fullcomment"><div class="comment cmt"><p>Represents all possible results of a <a href="RaftNode.html" class="extype" name="riff.raft.node.RaftNode">RaftNode</a> having processed an event or message
 </p></div><dl class="paramcmts block"><dt class="tparam">A</dt><dd class="cmt"><p>the log type</p></dd></dl></div>
+    </li><li name="riff.raft.node.RoleCallback" visbl="pub" class="indented0 " data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="RoleCallbackextendsAnyRef"></a><a id="RoleCallback:RoleCallback"></a>
+      <span class="permalink">
+      <a href="../../../riff/raft/node/index.html#RoleCallbackextendsAnyRef" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a title="This is provided as a convenience to be added to a riff.raft.node.RaftNode for anything which cares about role transitions for a particular node." href="RoleCallback.html"><span class="name">RoleCallback</span></a><span class="result"> extends <span class="extype" name="scala.AnyRef">AnyRef</span></span>
+      </span>
+      
+      <p class="shortcomment cmt">This is provided as a convenience to be added to a <a href="RaftNode.html" class="extype" name="riff.raft.node.RaftNode">riff.raft.node.RaftNode</a> for anything which cares about
+role transitions for a particular node.</p><div class="fullcomment"><div class="comment cmt"><p>This is provided as a convenience to be added to a <a href="RaftNode.html" class="extype" name="riff.raft.node.RaftNode">riff.raft.node.RaftNode</a> for anything which cares about
+role transitions for a particular node.</p><p>That behaviour could be done by subclassing the RaftNode, but subclassing brings in its own challenges/considerations.</p><p>By making this more explicit, in addition to obviating the need to to subclass <a href="RaftNode.html" class="extype" name="riff.raft.node.RaftNode">riff.raft.node.RaftNode</a>, it hopefully
+will make the code more navigable/readable
+</p></div></div>
     </li></ol>
             </div>
 
@@ -783,6 +822,22 @@ into a raft node.
       </span>
       <span class="symbol">
         <a title="" href="RaftNode$.html"><span class="name">RaftNode</span></a>
+      </span>
+      
+      
+    </li><li name="riff.raft.node.RoleCallback" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="RoleCallback"></a><a id="RoleCallback:RoleCallback"></a>
+      <span class="permalink">
+      <a href="../../../riff/raft/node/index.html#RoleCallback" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">object</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="RoleCallback$.html"><span class="name">RoleCallback</span></a>
       </span>
       
       
