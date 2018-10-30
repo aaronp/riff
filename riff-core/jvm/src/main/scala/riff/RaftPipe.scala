@@ -85,6 +85,15 @@ class RaftPipe[A, Sub[_]: AsSubscriber, Pub[_]: AsPublisher, C[_]] private (
 
 object RaftPipe {
 
+  def inMemoryClusterOf[A: ClassTag](size : Int)(
+    implicit execCtxt: ExecutionContext, clock : RaftClock): Map[NodeId, RaftPipe[A, Subscriber, Publisher, Publisher]] = {
+    val nodes = (1 to size).map { i =>
+      RaftNode.inMemory[A](s"node-$i")
+    }
+    asCluster(nodes :_*)
+  }
+
+
   /**
     * Create a cluster of the input nodes, so that each knows about its peers, and sends messages to/receives messages from each of them
     *
@@ -123,6 +132,7 @@ object RaftPipe {
 
   def apply[A: FromBytes: ToBytes: ClassTag](id: NodeId, dataDir: Path)(
     implicit ctxt: ExecutionContext): RaftPipe[A, Subscriber, Publisher, Publisher] = {
+
     implicit val clock: RaftClock = RaftClock(250.millis, RandomTimer(1.second, 2.seconds))
     val timer = ReactiveTimerCallback()
 
@@ -173,10 +183,8 @@ object RaftPipe {
     val original = ReactivePipe.multi[RaftMessage[A]](1000, true)
     import AsPublisher.syntax._
     val newOut: Publisher[RaftNodeResult[A]] = original.output.map { msg => //
-      println(s"\t\t${node.nodeId} receiving $msg")
       node.onMessage(msg)
     }
-    //val bp = BatchedPublisher(newOut, 10, 100)
     ReactivePipe(original.input, newOut)
   }
 
