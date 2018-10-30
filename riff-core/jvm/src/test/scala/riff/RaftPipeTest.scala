@@ -12,6 +12,19 @@ class RaftPipeTest extends RiffThreadedSpec {
 
   override def testTimeout = 5.seconds
 
+  "RaftPipe.client" should {
+    "send notifications when the append responses are received" in {
+      withClock(10.millis) { implicit clock =>
+
+        val fiveNodeCluster = RaftPipe.inMemoryClusterOf[String](5)
+        fiveNodeCluster.values.foreach(_.resetReceiveHeartbeat())
+
+        fiveNodeCluster.values.
+
+      }
+    }
+
+  }
   "RaftPipe.publisherFor" should {
     "publisher events destined for a particular node" in {
       withClock(testTimeout) { implicit clock =>
@@ -79,8 +92,7 @@ class RaftPipeTest extends RiffThreadedSpec {
         timer.onReceiveHeartbeatTimeout()
 
         eventually {
-          listeners.foreach { listener =>
-            listener.received.size should be > 0
+          listeners.foreach { listener => listener.received.size should be > 0
           }
         }
 

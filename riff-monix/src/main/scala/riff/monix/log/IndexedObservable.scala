@@ -53,7 +53,7 @@ object IndexedObservable {
     private val pipe = Pipe.publish[(Long, A)]
     private val (sink, feed: Observable[(Long, A)]) = pipe.multicast
 
-    override def latest() = feed
+    override def latest(): Observable[(Long, A)] = feed
 
     /**
       * Allow something to subscribe from an arbitrary index.
