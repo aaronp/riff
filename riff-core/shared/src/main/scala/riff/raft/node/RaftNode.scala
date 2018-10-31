@@ -1,10 +1,9 @@
 package riff.raft.node
 import riff.raft._
-import riff.raft.log.{LogAppendResult, LogCoords, LogEntry, RaftLog}
+import riff.raft.log._
 import riff.raft.messages.{RaftResponse, _}
 import riff.raft.node.RoleCallback.{RoleChangeEvent, RoleEvent}
 import riff.raft.timer.{RaftClock, TimerCallback, Timers}
-import riff.reactive.Publishers
 
 import scala.reflect.ClassTag
 
@@ -21,13 +20,12 @@ object RaftNode {
     )
   }
 
-  def appendResponseAsRaftNodeResult[A](
-    response: Either[NotTheLeaderException, (LogAppendResult, AddressedRequest[A])]) = {
-    response match {
-      case Left(exp) => NoOpResult(exp.getMessage)
-      case Right((_, requests)) => requests
-    }
-  }
+//  def appendResponseAsRaftNodeResult[A](response: Either[NotTheLeaderException, (LogAppendResult, AddressedRequest[A])]): RaftNodeResult[A] = {
+//    response match {
+//      case Left(exp) => NoOpResult(exp.getMessage)
+//      case Right((_, requests)) => requests
+//    }
+//  }
 }
 
 /**
@@ -62,7 +60,7 @@ class RaftNode[A](
   val maxAppendSize: Int,
   initialTimerCallback: TimerCallback[_] = null,
   roleCallback: RoleCallback = RoleCallback.NoOp)
-    extends RaftMessageHandler[A] with TimerCallback[RaftNodeResult[A]] { self =>
+    extends RaftMessageHandler[A] with TimerCallback[RaftNodeResult[A]] with AutoCloseable { self =>
 
   private val timerCallback = Option(initialTimerCallback).getOrElse(this)
 
@@ -87,38 +85,28 @@ class RaftNode[A](
     * @param data the data to append
     * @return the append result coupled w/ the append request to send if this node is the leader
     */
-  def appendIfLeader(data: Array[A]): Either[NotTheLeaderException, (LogAppendResult, AddressedRequest[A])] = {
+  def appendIfLeader(data: Array[A]): NodeAppendResult[A] = {
     currentState match {
       case leader: LeaderNodeState =>
-        val res = leader.makeAppendEntries[A](log, currentTerm(), data)
-        Right(res)
-      case _ => Left(new NotTheLeaderException(nodeId, currentTerm, currentState.leader))
+        leader.makeAppendEntries[A](log, currentTerm(), data)
+      case _ => NodeAppendResult(new NotTheLeaderException(nodeId, currentTerm, currentState.leader), AddressedRequest())
     }
   }
 
-  private lazy val notImplementedStatusPublisher: Publishers.InError[AppendStatus] = Publishers.InError[AppendStatus](new NotImplementedError())
   override def onMessage(input: RaftMessage[A]): Result = {
     input match {
       case AddressedMessage(from, msg: RequestOrResponse[A]) => handleMessage(from, msg)
       case timer: TimerMessage => onTimerMessage(timer)
-      case ad @ AppendData(_, data : Array[A]) =>
-        notImplementedStatusPublisher.subscribe(ad.statusSubscriber)
-        createAppend(data)
+      case append : AppendData[A, _] => onAppendData(append)
     }
   }
 
-  /**
-    * Used to append to this node's log and create append requests if we are the leader
-    *
-    * @param data the data to append
-    * @return either some append requests or an error output if we are not the leader
-    */
-  def createAppend(data: Array[A]): RaftNodeResult[A] = {
-    val response = appendIfLeader(data)
-    RaftNode.appendResponseAsRaftNodeResult(response)
+  def onAppendData[P[_]](request : AppendData[A, P]): NodeAppendResult[A] = {
+    appendIfLeader(request.values)
   }
 
-  final def createAppendFor(data: A, theRest : A*)(implicit tag: ClassTag[A]): Result = createAppend(data +: theRest.toArray)
+  final def createAppendFor(data: A, theRest: A*)(implicit tag: ClassTag[A]): Result =
+    appendIfLeader(data +: theRest.toArray)
 
   /**
     * Applies requests and responses coming to the node state and replies w/ any resulting messages
@@ -144,9 +132,7 @@ class RaftNode[A](
   def onResponse(from: NodeId, reply: RaftResponse): Result = {
     reply match {
       case voteResponse: RequestVoteResponse => onRequestVoteResponse(from, voteResponse)
-      case appendResponse: AppendEntriesResponse =>
-        val (_, result) = onAppendEntriesResponse(from, appendResponse)
-        result
+      case appendResponse: AppendEntriesResponse => onAppendEntriesResponse(from, appendResponse)
     }
   }
 
@@ -154,6 +140,7 @@ class RaftNode[A](
     currentState match {
       case candidate: CandidateNodeState =>
         val newState = candidate.onRequestVoteResponse(from, cluster, voteResponse)
+
         updateState(newState)
 
         if (currentState.isLeader) {
@@ -171,16 +158,17 @@ class RaftNode[A](
     * We're either the leader and should update our peer view/commit log, or aren't and should ignore it
     *
     * @param appendResponse
-    * @return the result
+    * @return the committed log coords resulting from having applied this response and the state output (either a no-op or a subsequent [[AppendEntries]] request)
     */
-  def onAppendEntriesResponse(from: NodeId, appendResponse: AppendEntriesResponse): (Seq[LogCoords], Result) = {
+  def onAppendEntriesResponse(from: NodeId, appendResponse: AppendEntriesResponse): LeaderCommittedResult[A] = {
     currentState match {
       case leader: LeaderNodeState =>
         leader.onAppendResponse(from, log, currentTerm, appendResponse, maxAppendSize)
+
       case _ =>
         val result = NoOpResult(
           s"Ignoring append response from $from as we're in role ${currentState.role}, term ${currentTerm}")
-        (Nil, result)
+        LeaderCommittedResult(Nil, result)
 
     }
   }
@@ -243,9 +231,7 @@ class RaftNode[A](
   private def makeDefaultHeartbeat() =
     AppendEntries(log.latestAppended(), currentTerm, log.latestCommit(), Array.empty[LogEntry[A]])
 
-  def onReceiveHeartbeatTimeout(): Result = {
-    onBecomeCandidateOrLeader()
-  }
+  def onReceiveHeartbeatTimeout(): AddressedRequest[A] = onBecomeCandidateOrLeader()
 
   def onRequest(from: NodeId, request: RaftRequest[A]): RaftResponse = {
     request match {
@@ -439,4 +425,12 @@ class RaftNode[A](
        |}""".stripMargin
   }
 
+  override def close(): Unit = {
+    cancelSendHeartbeat()
+    cancelReceiveHeartbeat()
+    timerCallback match {
+      case closable: AutoCloseable if ! (closable eq this) => closable.close()
+      case _ =>
+    }
+  }
 }

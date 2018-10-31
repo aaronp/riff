@@ -42,10 +42,7 @@ object FileBasedLog extends eie.io.LowPriorityIOImplicits {
     * @param ev$1
     * @tparam T
     */
-  private class ForDir[T: ToBytes: FromBytes](
-    override val dir: Path,
-    fileAttributes: List[FileAttribute[_]] = DefaultAttributes.toList)
-      extends BaseLog[T] with FileBasedLog[T] {
+  private class ForDir[T: ToBytes: FromBytes](override val dir: Path, fileAttributes: List[FileAttribute[_]] = DefaultAttributes.toList) extends BaseLog[T] with FileBasedLog[T] {
 
     private val commitFile = dir.resolve(".committed").createIfNotExists(fileAttributes: _*).ensuring(_.isFile)
 

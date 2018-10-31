@@ -23,6 +23,29 @@ trait AsPublisher[F[_]] {
   def map[A, B](f: F[A])(func: A => B): F[B]
 
   /**
+    * concatenate this value to be published first
+    *
+    * @param value
+    * @param publisher
+    * @tparam A
+    * @return
+    */
+  def cons[A](value: A, publisher: F[A]): F[A]
+
+  /** @param publisher the publisher
+    * @param predicate the predicate test
+    * @tparam A
+    * @return a publisher F[A] which completes once the predicate returns false or the elements are exhausted
+    */
+  def takeWhile[A](publisher: F[A])(predicate : A => Boolean): F[A]
+
+
+
+  /** like takeWhile, but will 'onNext' the first element which returns false
+    */
+  def takeWhileIncludeLast[A](publisher: F[A])(predicate : A => Boolean): F[A]
+
+  /**
     * Convenience method for 'subscribe', but which returns the subscriber instance:
     * {{{
     *   val mySub = publisher.subscribeWith(new FooSubscriber) // mySub will be a FooSubscriber
@@ -43,6 +66,9 @@ object AsPublisher {
     override def asPublisher[A](f: Publisher[A]): Publisher[A] = f
     override def collect[A, B](f: Publisher[A])(func: PartialFunction[A, B]): Publisher[B] = CollectPublisher(f)(func)
     override def map[A, B](f: Publisher[A])(func: A => B): Publisher[B] = MapPublisher(f)(func)
+    override def cons[A](value: A, publisher: Publisher[A]): Publisher[A] = Publishers.Cons(value, publisher)
+    override def takeWhile[A](publisher: Publisher[A])(predicate : A => Boolean): Publisher[A] = Publishers.TakeWhile(publisher, predicate, false)
+    override def takeWhileIncludeLast[A](publisher: Publisher[A])(predicate : A => Boolean): Publisher[A] = Publishers.TakeWhile(publisher, predicate, true)
   }
 
   def apply[F[_]](implicit instance: AsPublisher[F]): AsPublisher[F] = instance
@@ -62,6 +88,15 @@ object AsPublisher {
 
       def map[B](func: A => B)(implicit ev: AsPublisher[F]): F[B] = {
         AsPublisher[F].map[A, B](fa)(func)
+      }
+      def +:(value : A)(implicit ev: AsPublisher[F]): F[A] = {
+        AsPublisher[F].cons(value, fa)
+      }
+      def takeWhile(predicate : A => Boolean)(implicit ev: AsPublisher[F]): F[A] = {
+        AsPublisher[F].takeWhile(fa)(predicate)
+      }
+      def takeWhileIncludeLast(predicate : A => Boolean)(implicit ev: AsPublisher[F]): F[A] = {
+        AsPublisher[F].takeWhileIncludeLast(fa)(predicate)
       }
     }
   }

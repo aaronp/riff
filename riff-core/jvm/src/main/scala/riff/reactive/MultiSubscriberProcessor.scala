@@ -1,12 +1,12 @@
 package riff.reactive
+import com.typesafe.scalalogging.StrictLogging
 import org.reactivestreams.{Subscriber, Subscription}
 
 import scala.concurrent.ExecutionContext
 
 object MultiSubscriberProcessor {
 
-  def apply[A](queueSize: Int, delayErrorsFromSubscribers: Boolean)(
-    implicit execContext: ExecutionContext): MultiSubscriberProcessor[A] = {
+  def apply[A](queueSize: Int, delayErrorsFromSubscribers: Boolean)(implicit execContext: ExecutionContext): MultiSubscriberProcessor[A] = {
     new MultiSubscriberProcessor[A] {
       override def maxQueueSize: Int = queueSize
       override def delayErrors: Boolean = delayErrorsFromSubscribers
@@ -30,7 +30,7 @@ object MultiSubscriberProcessor {
   *
   * @param delayErrors if false, errors from any publishers will be propagated to subscribers to this MultiSubscriberProcessor
   */
-trait MultiSubscriberProcessor[A] extends AsyncPublisher[A] with Subscriber[A] {
+trait MultiSubscriberProcessor[A] extends AsyncPublisher[A] with Subscriber[A] with StrictLogging with AutoCloseable {
 
   /** @return true if we should suppress errors from any one subscription
     */
@@ -39,18 +39,22 @@ trait MultiSubscriberProcessor[A] extends AsyncPublisher[A] with Subscriber[A] {
   private var errorOpt: Option[Throwable] = None
 
   override def onSubscribe(s: Subscription): Unit = {
+    logger.debug(s"onSubscribe($s)")
     s.request(Long.MaxValue)
   }
   override final def onNext(t: A): Unit = {
+    logger.debug(s"onNext($t)")
     enqueueMessage(t)
   }
   override def onError(t: Throwable): Unit = {
+    logger.debug(s"onError($t)")
     if (!delayErrors) {
       enqueueError(t)
     }
     errorOpt = errorOpt.orElse(Option(t))
   }
   override def onComplete(): Unit = {
+    logger.debug(s"onComplete() - ignored")
     // ignore, as we may subscribe to something else
   }
 
@@ -79,4 +83,9 @@ trait MultiSubscriberProcessor[A] extends AsyncPublisher[A] with Subscriber[A] {
   def inError(exp: Throwable) = {
     enqueueError(exp)
   }
+
+  override def close() = {
+    enqueueComplete()
+  }
+
 }

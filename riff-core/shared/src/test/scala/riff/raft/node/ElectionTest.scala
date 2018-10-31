@@ -1,6 +1,6 @@
 package riff.raft.node
 import riff.RiffSpec
-import riff.raft.log.LogCoords
+import riff.raft.log.{LogAppendSuccess, LogCoords}
 import riff.raft.messages._
 
 class ElectionTest extends RiffSpec {
@@ -87,7 +87,7 @@ class ElectionTest extends RiffSpec {
       cluster.sendMessages(a.nodeId, heartbeatMsgsFromA.toList)
 
       And("an entry is appended to the leader and replicated to one other node")
-      val AddressedRequest(appendRequests) = a.createAppendFor(1000)
+      val NodeAppendResult(LogAppendSuccess(LogCoords(1, 1),LogCoords(1, 1), Nil), AddressedRequest(appendRequests)) = a.createAppendFor(1000)
       val appendRequestsByNode             = appendRequests.toMap
       appendRequestsByNode.keySet should contain only (b.nodeId, c.nodeId)
       val AddressedResponse(backToA, appendResp: AppendEntriesResponse) = b.handleMessage(a.nodeId, appendRequestsByNode(b.nodeId))

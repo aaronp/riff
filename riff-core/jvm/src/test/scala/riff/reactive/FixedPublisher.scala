@@ -6,10 +6,10 @@ import org.reactivestreams.{Publisher, Subscriber, Subscription}
 object FixedPublisher {
 
   def apply[T](first: T, theRest: T*): FixedPublisher[T] = {
-    new FixedPublisher(first +: theRest.toList)
+    new FixedPublisher(first +: theRest.toList, true)
   }
 }
-case class FixedPublisher[T](values: Iterable[T]) extends Publisher[T] {
+case class FixedPublisher[T](values: Iterable[T], allowOnComplete: Boolean) extends Publisher[T] {
   override def subscribe(s: Subscriber[_ >: T]): Unit = {
     s.onSubscribe(new Subscription {
       var remaining = values.toList
@@ -37,7 +37,7 @@ case class FixedPublisher[T](values: Iterable[T]) extends Publisher[T] {
         }
         remaining = left
         taken.foreach(s.onNext)
-        if (left.isEmpty) {
+        if (allowOnComplete && left.isEmpty) {
           s.onComplete()
         }
       }

@@ -23,8 +23,7 @@ import riff.raft.log._
   * @param scheduler the scheduler to use for the observables
   * @tparam A
   */
-case class ObservableLog[A](override val underlying: RaftLog[A])(implicit scheduler: Scheduler)
-    extends DelegateLog[A] with CommittedOps[A] with AppendOps[A] {
+case class ObservableLog[A](override val underlying: RaftLog[A])(implicit scheduler: Scheduler) extends DelegateLog[A] with CommittedOps[A] with AppendOps[A] {
 
   private val appendedVar = Var[LogAppendSuccess](null: LogAppendSuccess)
   private val committedVar = Var[LogCommitted](Nil)
@@ -62,10 +61,7 @@ case class ObservableLog[A](override val underlying: RaftLog[A])(implicit schedu
 
   def latestAppendedIndex(): LogIndex = Option(appendedVar()).map(_.lastIndex.index).getOrElse(1)
 
-  private def coordsFrom(
-    fromIndex: LogIndex,
-    coords: Observable[LogCoords],
-    readLatestReceivedIndex: => LogIndex): Observable[LogCoords] = {
+  private def coordsFrom(fromIndex: LogIndex, coords: Observable[LogCoords], readLatestReceivedIndex: => LogIndex): Observable[LogCoords] = {
     val subject = PublishToOneSubject[LogCoords]
     val connectable = ConnectableObservable.cacheUntilConnect(coords, subject)
 

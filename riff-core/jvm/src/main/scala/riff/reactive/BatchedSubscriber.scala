@@ -2,10 +2,7 @@ package riff.reactive
 import com.typesafe.scalalogging.StrictLogging
 import org.reactivestreams.{Subscriber, Subscription}
 
-case class BatchedSubscriber[A](
-  wrapped: Subscriber[_ >: A],
-  override val minimumRequestedThreshold: Int,
-  override val subscriptionBatchSize: Int)
+case class BatchedSubscriber[A](wrapped: Subscriber[_ >: A], override val minimumRequestedThreshold: Int, override val subscriptionBatchSize: Int)
     extends SingleSubscriber[A] with StrictLogging { self =>
   override def onSubscribe(s: Subscription): Unit = {
     logger.info(s"onSubscribe($s)")

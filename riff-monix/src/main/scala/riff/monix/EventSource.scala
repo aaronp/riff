@@ -45,12 +45,8 @@ object EventSource {
     * @tparam S the snapshot type
     * @tparam A the log entry type
     */
-  def inDir[S: FromBytes: ToBytes, A](
-    dataDir: Path,
-    initial: => S,
-    log: CommittedOps[A],
-    snapEvery: Int,
-    numberToKeep: Option[Int] = None)(combine: (S, A) => S): Try[Observable[S]] = {
+  def inDir[S: FromBytes: ToBytes, A](dataDir: Path, initial: => S, log: CommittedOps[A], snapEvery: Int, numberToKeep: Option[Int] = None)(
+    combine: (S, A) => S): Try[Observable[S]] = {
     apply(dao(dataDir, initial, numberToKeep), log, snapEvery)(combine)
   }
 
@@ -66,8 +62,7 @@ object EventSource {
     * @tparam A the log entry type
     * @return an observable of the updated state
     */
-  def apply[S, A](dao: StateDao[S], log: CommittedOps[A], snapEvery: Int, bufferSize: Int = 1000)(
-    combine: (S, A) => S): Try[Observable[S]] = {
+  def apply[S, A](dao: StateDao[S], log: CommittedOps[A], snapEvery: Int, bufferSize: Int = 1000)(combine: (S, A) => S): Try[Observable[S]] = {
     dao.latestSnapshot().map {
       case (latestIndex, latestSnapshot) =>
         val entries: Observable[(LogCoords, A)] = log.committedEntriesFrom(latestIndex)

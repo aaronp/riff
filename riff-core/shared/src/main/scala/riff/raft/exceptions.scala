@@ -12,8 +12,3 @@ final case class AttemptToCommitMissingIndex(attemptedIndex: LogIndex)
     extends Exception(s"couldn't find the term for $attemptedIndex")
 final case class AttemptToOverwriteACommittedIndex(attemptedLogIndex: LogIndex, latestCommittedIndex: LogIndex)
     extends Exception(s"Attempt to append $attemptedLogIndex when the latest committed index is $latestCommittedIndex")
-final case class NotTheLeaderException(attemptedNodeId: NodeId, term: Term, leadIdOpt: Option[NodeId])
-    extends Exception(
-      s"Attempt to append to node '${attemptedNodeId}' in term ${term}${leadIdOpt.fold("")(name =>
-        s". The leader is ${name}")}"
-    )

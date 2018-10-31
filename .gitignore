@@ -1,4 +1,5 @@
 .DS_Store
+*.log
 target
 .idea
 .idea_modules

@@ -1,5 +1,4 @@
 package riff.raft.timer
-import java.util.concurrent.ScheduledExecutorService
 
 /**
   * Represents the functions required to control a member node's election and heartbeat timeouts.

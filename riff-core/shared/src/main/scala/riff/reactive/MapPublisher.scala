@@ -1,7 +1,7 @@
 package riff.reactive
 import org.reactivestreams.{Publisher, Subscriber, Subscription}
 
-class MapPublisher[A, B](underlying: Publisher[A], f: A => B) extends Publisher[B] {
+class MapPublisher[A, B](underlying: Publisher[A], f: A => B) extends Publisher[B] with AutoCloseable {
   override def subscribe(wrapped: Subscriber[_ >: B]): Unit = {
     underlying.subscribe(new Subscriber[A] {
       override def onSubscribe(s: Subscription): Unit = wrapped.onSubscribe(s)
@@ -11,6 +11,12 @@ class MapPublisher[A, B](underlying: Publisher[A], f: A => B) extends Publisher[
       override def onError(t: Throwable): Unit = wrapped.onError(t)
       override def onComplete(): Unit = wrapped.onComplete()
     })
+  }
+  override def close(): Unit = {
+    underlying match {
+      case closable: AutoCloseable => closable.close()
+      case _ =>
+    }
   }
 }
 

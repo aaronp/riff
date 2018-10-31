@@ -142,12 +142,7 @@ private[reactive] case class AsyncSubscriptionState[T](
     isCancelled: Boolean = cancelled,
     isComplete: Boolean = complete,
     newCompleteSignaled: Boolean = completeSignaled) = {
-    copy(
-      totalRequested = newRequested,
-      valueQueue = newQueue,
-      cancelled = isCancelled,
-      complete = isComplete,
-      completeSignaled = newCompleteSignaled)
+    copy(totalRequested = newRequested, valueQueue = newQueue, cancelled = isCancelled, complete = isComplete, completeSignaled = newCompleteSignaled)
       .asInstanceOf[AsyncSubscriptionState[T]]
   }
 }

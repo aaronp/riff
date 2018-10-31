@@ -2,12 +2,12 @@ package riff.raft.integration
 
 package simulator
 
-import riff.raft.NotTheLeaderException
 import riff.raft.log.LogAppendResult
 import riff.raft.messages.{ReceiveHeartbeatTimeout, RequestOrResponse, SendHeartbeatTimeout, TimerMessage}
 import riff.raft.node.{RaftCluster, RaftNode, _}
 import riff.raft.timer.RaftClock
 
+import scala.annotation.tailrec
 import scala.collection.mutable.ListBuffer
 import scala.concurrent.duration._
 
@@ -114,11 +114,11 @@ class RaftSimulator private (
     * convenience method to append to whatever the leader node is -- will error if there is no leader
     *
     */
-  def appendToLeader(data: Array[String], latency: FiniteDuration = defaultLatency): Either[NotTheLeaderException, LogAppendResult] = {
+  def appendToLeader(data: Array[String], latency: FiniteDuration = defaultLatency): NodeAppendResult[String] = {
     val ldr = currentLeader()
     val ldrId = ldr.state().id
-    ldr.appendIfLeader(data).map {
-      case (appendResults, AddressedRequest(requests)) =>
+    ldr.appendIfLeader(data) match {
+      case appendResults @ NodeAppendResult(_, AddressedRequest(requests)) =>
         val newTimeline = requests.zipWithIndex.foldLeft(currentTimeline) {
           case (timeline, ((to, msg), i)) =>
             //
@@ -337,9 +337,12 @@ class RaftSimulator private (
     res
   }
 
-  private def applyResult(latency: FiniteDuration, node: String, result: RaftNode[String]#Result) = {
+  @tailrec
+  private def applyResult(latency: FiniteDuration, node: String, result: RaftNodeResult[String]): Unit = {
     result match {
       case _: NoOpResult =>
+      case LeaderCommittedResult(_, msg) => applyResult(latency, node, msg)
+      case NodeAppendResult(_, msg) => applyResult(latency, node, msg)
       case AddressedRequest(msgs) =>
         val newTimeline = msgs.zipWithIndex.foldLeft(currentTimeline) {
           case (time, ((to, msg), i)) =>

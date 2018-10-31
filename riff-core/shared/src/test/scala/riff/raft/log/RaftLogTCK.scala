@@ -7,12 +7,12 @@ trait RaftLogTCK extends RiffSpec {
   "RaftLog.entriesFrom" should {
     "return entries from a one-based index" in {
       withLog { log =>
-        log.appendAll(1, Array(LogEntry(9, "foo"), LogEntry(11, "second")))
+        log.appendAll(1, Array(LogEntry(9, "foo"), LogEntry(9, "second")))
         log.entriesFrom(0, 1) shouldBe Array(LogEntry(9, "foo"))
-        log.entriesFrom(0, 2) shouldBe Array(LogEntry(9, "foo"), LogEntry(11, "second"))
+        log.entriesFrom(0, 2) shouldBe Array(LogEntry(9, "foo"), LogEntry(9, "second"))
         log.entriesFrom(1, 1) shouldBe Array(LogEntry(9, "foo"))
-        log.entriesFrom(1, 2) shouldBe Array(LogEntry(9, "foo"), LogEntry(11, "second"))
-        log.entriesFrom(2, 1) shouldBe Array(LogEntry(11, "second"))
+        log.entriesFrom(1, 2) shouldBe Array(LogEntry(9, "foo"), LogEntry(9, "second"))
+        log.entriesFrom(2, 1) shouldBe Array(LogEntry(9, "second"))
         log.entriesFrom(2, 0) shouldBe empty
         log.entriesFrom(3, 1) shouldBe empty
       }
@@ -29,15 +29,24 @@ trait RaftLogTCK extends RiffSpec {
 
     "return an entry for one-based index" in {
       withLog { log =>
-        log.appendAll(1, Array(LogEntry(1, "foo"), LogEntry(3, "second")))
+        log.appendAll(1, Array(LogEntry(1, "foo"), LogEntry(1, "second")))
         log.entryForIndex(0) shouldBe None
         log.entryForIndex(1) shouldBe Some(LogEntry(1, "foo"))
-        log.entryForIndex(2) shouldBe Some(LogEntry(3, "second"))
+        log.entryForIndex(2) shouldBe Some(LogEntry(1, "second"))
       }
     }
   }
 
-  "RaftLog commit" should {
+  "RaftLog.commit" should {
+    "only commit the first time when given a log index and return an empty list thereafter" in {
+      withLog { log =>
+        log.append(LogCoords(2, 1), "first")
+        log.append(LogCoords(2, 2), "second")
+        log.append(LogCoords(3, 3), "third")
+        log.commit(2) shouldBe Seq(LogCoords(2, 1), LogCoords(2, 2))
+        log.commit(2) shouldBe empty
+      }
+    }
     "error when trying to commit when no entries are appended" in {
       withLog { log =>
         val exp = intercept[Exception] {
