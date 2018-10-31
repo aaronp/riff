@@ -80,9 +80,7 @@ class AsyncPublisherTest extends RiffThreadedSpec {
       * We override the creation of a subscriber within the test, a that drives the queue via the exec context.
       * We elect instead to manually pull from/apply the queued messages within the test
       */
-    override protected def newAsyncSubscription(
-      s: Subscriber[_ >: String],
-      onCancel: AsyncSubscription[String] => Unit): AsyncSubscription[String] = {
+    override protected def newAsyncSubscription(s: Subscriber[_ >: String], onCancel: AsyncSubscription[String] => Unit): AsyncSubscription[String] = {
       subscription shouldBe null
       subscription = new AsyncSubscription[String](s, 100, onCancel)
       subscription

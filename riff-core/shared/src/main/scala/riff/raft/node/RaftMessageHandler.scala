@@ -1,7 +1,6 @@
 package riff.raft.node
-import riff.raft.log.LogAppendResult
+import riff.raft.NodeId
 import riff.raft.messages.RaftMessage
-import riff.raft.{NodeId, NotTheLeaderException}
 
 /**
   * This interface represents a stateful black-box of a raft node.
@@ -14,8 +13,6 @@ import riff.raft.{NodeId, NotTheLeaderException}
 trait RaftMessageHandler[A] {
 
   type Result = RaftNodeResult[A]
-
-  type AppendResult = Either[ NotTheLeaderException, (LogAppendResult, AddressedRequest[A])]
 
   /** @return the ID of this node in the cluster
     */

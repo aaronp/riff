@@ -14,8 +14,7 @@ class NamedPipe[In, Out](val name: String, val bufferedSubscriber: Subscriber[In
 
 object NamedPipe {
 
-  def apply[A](name: String, bufferPolicy: OverflowStrategy[A] = OverflowStrategy.BackPressure(100))(
-    implicit sched: Scheduler): NamedPipe[A, A] = {
+  def apply[A](name: String, bufferPolicy: OverflowStrategy[A] = OverflowStrategy.BackPressure(100))(implicit sched: Scheduler): NamedPipe[A, A] = {
     val (feed: Observer[A], sink: Observable[A]) = Pipe.publish[A].unicast
     val s: Subscriber[A] = Subscriber(feed, sched)
     new NamedPipe[A, A](name, BufferedSubscriber(s, bufferPolicy), sink)

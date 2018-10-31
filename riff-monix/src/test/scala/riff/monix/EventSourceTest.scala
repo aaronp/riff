@@ -111,8 +111,7 @@ class EventSourceTest extends RiffMonixSpec {
 
         val finalState: Set[String] = (1 to 8).map(i => s"entry $i").toSet
 
-        withClue(
-          "the second time we run the event source, it starts from the latest snapshot, and so should only have 2 updates") {
+        withClue("the second time we run the event source, it starts from the latest snapshot, and so should only have 2 updates") {
           secondTimeStates.take(2).toListL.runSyncUnsafe(testTimeout) should contain only (
             finalState - "entry 8",
             finalState

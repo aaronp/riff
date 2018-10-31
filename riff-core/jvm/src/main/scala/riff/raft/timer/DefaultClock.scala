@@ -54,7 +54,7 @@ object DefaultClock {
   def apply(
     sendHeartbeatTimeout: FiniteDuration,
     receiveHeartbeat: RandomTimer,
-    schedulerService: ScheduledExecutorService = java.util.concurrent.Executors.newScheduledThreadPool(1),
+    schedulerService: ScheduledExecutorService = java.util.concurrent.Executors.newScheduledThreadPool(2),
     cancelMayInterruptIfRunning: Boolean = true): RaftClock = {
     new DefaultClock(sendHeartbeatTimeout, receiveHeartbeat, schedulerService, cancelMayInterruptIfRunning)
   }

@@ -16,8 +16,7 @@ import riff.raft.{AppendStatus, NodeId, RaftClient}
   * @param sched a scheduler to use for the feeds
   * @tparam A the type of data which is appended to the log (could just be a byte array, some union type, etc)
   */
-class ObservableRaftNode[A] private[monix] (underlying: RaftNode[A], input: Subscriber[RaftMessage[A]])(
-  implicit sched: Scheduler)
+class ObservableRaftNode[A] private[monix] (underlying: RaftNode[A], input: Subscriber[RaftMessage[A]])(implicit sched: Scheduler)
     extends RaftMessageHandler[A] with StrictLogging {
 
   override def toString = underlying.toString()

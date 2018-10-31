@@ -13,7 +13,7 @@ class InMemory[T]() extends BaseLog[T] {
   private var lastCommitted          = 0
 
   override protected def doCommit(index: LogIndex, entriesToCommit: immutable.IndexedSeq[LogCoords]): Unit = {
-    require(lastCommitted < index)
+    require(lastCommitted < index, s"doCommit called w/ $index when lastCommitted is $lastCommitted")
     lastCommitted = index
   }
 

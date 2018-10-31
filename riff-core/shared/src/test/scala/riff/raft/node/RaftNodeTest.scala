@@ -6,14 +6,14 @@ import riff.raft.messages._
 class RaftNodeTest extends RiffSpec {
   import RichNodeState._
 
-  "RaftNode.createAppend" should {
+  "RaftNode.appendIfLeader" should {
 
     "commit the entry immediately if it is a single node cluster" in {
       val node = newNode()
       node.onTimerMessage(ReceiveHeartbeatTimeout)
       node.state().isLeader shouldBe true
 
-      node.createAppend(Array(123))
+      node.appendIfLeader(Array(123))
       node.log.latestAppended() shouldBe LogCoords(1, 1)
       node.log.latestCommit() shouldBe 1
     }
@@ -23,7 +23,7 @@ class RaftNodeTest extends RiffSpec {
       node.onRequestVoteResponse("single peer", RequestVoteResponse(1, true))
       node.state().isLeader shouldBe true
 
-      node.createAppend(Array(123))
+      node.appendIfLeader(Array(123))
       node.log.latestAppended() shouldBe LogCoords(1, 1)
       node.log.latestCommit() shouldBe 0
     }

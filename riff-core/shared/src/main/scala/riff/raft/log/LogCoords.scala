@@ -10,7 +10,7 @@ import riff.raft.{LogIndex, Term}
 final case class LogCoords(term: Term, index: LogIndex) {
   require(term >= 0)
   require(index >= 0)
-  override def toString = s"{term=$term, index=$index}"
+  override def toString = s"LogCoords(term=$term, index=$index)"
   def asKey             = s"${term}:${index}"
 }
 

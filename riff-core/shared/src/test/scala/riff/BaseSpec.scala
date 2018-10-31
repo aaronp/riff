@@ -18,11 +18,6 @@ class BaseSpec extends WordSpec with Matchers with ScalaFutures with GivenWhenTh
     */
   implicit def testTimeout: FiniteDuration = 2.seconds
 
-  /**
-    * @return the timeout for something NOT to happen
-    */
-  def testNegativeTimeout: FiniteDuration = 300.millis
-
   def testClassName = getClass.getSimpleName.filter(_.isLetterOrDigit)
 
   implicit override def patienceConfig =

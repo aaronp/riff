@@ -176,6 +176,7 @@ lazy val riffCoreCrossProject = crossProject(JSPlatform, JVMPlatform)
     coverageMinimum       := 85,
     coverageFailOnMinimum := true,
     libraryDependencies ++= List(
+      "com.lihaoyi" %% "sourcecode"                   % "0.1.4", // % "test",
       "org.scala-js" %% "scalajs-stubs"               % scalaJSVersion % "provided",
       "com.github.aaronp" %% "eie"                    % "0.0.3",
       "org.reactivestreams"                           % "reactive-streams" % "1.0.2",
@@ -224,11 +225,7 @@ lazy val riffJsonJS = riffJsonCrossProject.js
 lazy val riffMonix = project
   .in(file("riff-monix"))
   .settings(commonSettings: _*)
-  .settings(
-    name                  := s"${repo}-monix",
-    coverageMinimum       := 80,
-    coverageFailOnMinimum := true,
-    libraryDependencies ++= Dependencies.RiffMonix)
+  .settings(name := s"${repo}-monix", coverageMinimum := 80, coverageFailOnMinimum := true, libraryDependencies ++= Dependencies.RiffMonix)
   .dependsOn(riffCoreJVM % "compile->compile;test->test")
 
 lazy val riffFs2 = project

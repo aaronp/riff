@@ -1,5 +1,5 @@
 package riff.raft.log
-import riff.raft.LogIndex
+import riff.raft.{LogIndex, NodeId, Term}
 import riff.raft.messages.AppendEntriesResponse
 
 import scala.util.control.NoStackTrace
@@ -22,7 +22,15 @@ object LogAppendResult {
   */
 final case class LogAppendSuccess(firstIndex: LogCoords, lastIndex: LogCoords, replacedIndices: Seq[LogIndex] = Nil)
     extends LogAppendResult {
-  //require(firstIndex.term == lastIndex.term, s"appended result w/ ${firstIndex} to ${lastIndex}")
+  require(firstIndex.term == lastIndex.term, s"appended result w/ ${firstIndex} to ${lastIndex}")
+  def numIndices = lastIndex.index - firstIndex.index + 1
+
+  def appendedCoords: Set[LogCoords] = {
+    val term = firstIndex.term
+    (firstIndex.index to lastIndex.index).map { logIndex =>
+      LogCoords(term, logIndex)
+    }.toSet
+  }
 
   def contains(response: AppendEntriesResponse): Boolean = {
     response.term == firstIndex.term && (response.matchIndex >= firstIndex.index && response.matchIndex <= lastIndex.index)
@@ -38,3 +46,9 @@ final case class AttemptToAppendLogEntryAtEarlierTerm(attemptedEntry: LogCoords,
     extends Exception(
       s"An attempt to append ${attemptedEntry.index} w/ term ${attemptedEntry.term} when our latest entry was $latestLogEntryAppended. If an election took place after we were the leader, the term should've been incremented")
     with LogAppendResult with NoStackTrace
+
+final case class NotTheLeaderException(attemptedNodeId: NodeId, term: Term, leadIdOpt: Option[NodeId])
+  extends Exception(
+    s"Attempt to append to node '${attemptedNodeId}' in term ${term}${leadIdOpt.fold("")(name =>
+      s". The leader is ${name}")}"
+  ) with LogAppendResult with NoStackTrace

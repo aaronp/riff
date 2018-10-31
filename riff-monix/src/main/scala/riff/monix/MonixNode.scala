@@ -11,8 +11,7 @@ import riff.raft.node._
 
 object MonixNode {
 
-  def apply[A](wrappedNode: RaftNode[A], pipe: NamedPipe[RaftMessage[A], RaftMessage[A]])(
-    implicit sched: Scheduler): MonixNode[A] = {
+  def apply[A](wrappedNode: RaftNode[A], pipe: NamedPipe[RaftMessage[A], RaftMessage[A]])(implicit sched: Scheduler): MonixNode[A] = {
 
     // use a different callback other than the node itself
     val callback = new ObservableCallback

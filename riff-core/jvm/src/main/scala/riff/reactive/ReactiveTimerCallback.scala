@@ -9,8 +9,7 @@ import scala.concurrent.ExecutionContext
   *
   * @param ctxt the execution context used for each subscriber to consumer its messages
   */
-class ReactiveTimerCallback private (override val maxQueueSize: Int = 1000)(
-  override implicit val ctxt: ExecutionContext)
+class ReactiveTimerCallback private (override val maxQueueSize: Int = 1000)(override implicit val ctxt: ExecutionContext)
     extends TimerCallback[TimerMessage] with AsyncPublisher[TimerMessage] {
 
   def onTimeout(msg: TimerMessage): TimerMessage = {

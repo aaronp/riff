@@ -124,12 +124,12 @@ object PersistentState {
     private var term                                  = 0
     override def votedFor(term: Term): Option[NodeId] = votedForByTerm.get(term)
     override def castVote(term: Term, node: NodeId): Unit = {
-      require(!votedForByTerm.contains(term), s"already voted in term $term")
+      require(!votedForByTerm.contains(term), s"already voted in term $term for ${votedForByTerm(term)}")
       votedForByTerm = votedForByTerm.updated(term, node)
     }
     override def currentTerm: Term = term
     override def currentTerm_=(newTerm: Term): PersistentState = {
-      require(newTerm >= term)
+      require(newTerm >= term, s"Attempt to set term '${term}' to a previous term '$newTerm'")
       term = newTerm
       this
     }

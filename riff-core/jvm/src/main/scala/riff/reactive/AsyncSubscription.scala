@@ -5,7 +5,6 @@ import java.util.concurrent.atomic.AtomicInteger
 import com.typesafe.scalalogging.StrictLogging
 import org.reactivestreams.{Subscriber, Subscription}
 
-import scala.collection.generic.AtomicIndexFlag
 import scala.concurrent.ExecutionContext
 import scala.util.control.NonFatal
 
@@ -17,11 +16,10 @@ import scala.util.control.NonFatal
   * @param onCancel some function to invoke when the subscription is cancelled
   * @tparam T
   */
-final class AsyncSubscription[T] private[reactive] (
-  private[reactive] val s: Subscriber[_ >: T],
-  maxQueueSize: Int,
-  onCancel: AsyncSubscription[T] => Unit)
+final class AsyncSubscription[T] private[reactive] (private[reactive] val s: Subscriber[_ >: T], maxQueueSize: Int, onCancel: AsyncSubscription[T] => Unit)
     extends Subscription with StrictLogging {
+
+  private val createdFrom = Thread.currentThread().getStackTrace.mkString("\n")
 
   type Input = AsyncSubscriptionState.Input[T]
   private val internalStateInputQueue: BlockingQueue[Input] = new ArrayBlockingQueue[Input](maxQueueSize)
@@ -33,7 +31,6 @@ final class AsyncSubscription[T] private[reactive] (
   }
 
   def enqueue(msg: T) = {
-    logger.trace(s"adding '$msg' to queue")
     doEnqueue(AsyncSubscriptionState.Push(msg))
   }
 
@@ -52,7 +49,7 @@ final class AsyncSubscription[T] private[reactive] (
 
   override def request(n: Long): Unit = {
     if (n <= 0) {
-      val err = new IllegalArgumentException(s"n must be positive, not $n")
+      val err = new IllegalArgumentException(s"request must request positive values, not $n")
       cancel()
       s.onError(err)
     } else {
@@ -72,7 +69,7 @@ final class AsyncSubscription[T] private[reactive] (
   private[reactive] def updateState(next: Input) = {
     val before = state
     state = state.update(next)
-    logger.trace(s"Updated \n$before to \n$state\n w/ $next")
+    logger.debug(s"Updated \n$before to \n$state\n w/ $next")
     state
   }
 
@@ -81,8 +78,13 @@ final class AsyncSubscription[T] private[reactive] (
   private[reactive] def inputQueueSize() = internalStateInputQueue.size
 
   private[reactive] def popNextInput(): Input = {
-    logger.trace(s"Taking next from internalStateInputQueue w/ ${internalStateInputQueue.size} elements")
-    val next = internalStateInputQueue.take()
+    logger.debug(s"Taking next from internalStateInputQueue w/ ${internalStateInputQueue.size} elements")
+//    val next = internalStateInputQueue.take()
+    var next = internalStateInputQueue.poll(1, TimeUnit.SECONDS)
+    while (next == null && !state.done) {
+      logger.debug(s"Waiting for value w/ $state")
+      next = internalStateInputQueue.poll(1, TimeUnit.SECONDS)
+    }
     logger.trace(s"took $next, internalStateInputQueue is now ${internalStateInputQueue.size}")
     next
   }
@@ -90,10 +92,13 @@ final class AsyncSubscription[T] private[reactive] (
   private[reactive] def canContinue() = state.continue
 
   private def doEnqueue(input: Input) = {
+
+    logger.debug(s"enqueueing '$input' to queue ${internalStateInputQueue.size()}")
     try {
       internalStateInputQueue.add(input)
     } catch {
       case NonFatal(err) =>
+        logger.warn(s"error enqueueing '$input' w/ maxQueueSize=$maxQueueSize: $err\nWHICH WAS CREATED FROM:\n$createdFrom\n\n\n\n")
         cancel()
         s.onError(err)
     }
@@ -132,10 +137,7 @@ object AsyncSubscription {
     ExecutionContext.fromExecutor(service)
   }
 
-  def apply[T](
-    s: Subscriber[_ >: T],
-    maxQueueSize: Int,
-    onCancel: AsyncSubscription[T] => Unit): AsyncSubscription[T] = {
+  def apply[T](s: Subscriber[_ >: T], maxQueueSize: Int, onCancel: AsyncSubscription[T] => Unit): AsyncSubscription[T] = {
     val sub = new AsyncSubscription[T](s, maxQueueSize, onCancel)
 
     /**
@@ -145,7 +147,7 @@ object AsyncSubscription {
       override def run(): Unit = {
         try {
           while (sub.processNext()) {
-            // processNext has already don the work, just loop and pull the next input
+            // processNext has already done the work, just loop and pull the next input
           }
         } catch {
           case NonFatal(e) =>

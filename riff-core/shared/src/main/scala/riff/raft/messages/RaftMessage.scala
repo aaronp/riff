@@ -122,7 +122,7 @@ final case class AppendEntries[A](
     } else {
       entries.take(4).mkString("", ",", ",...")
     }
-    s"""AppendEntries(previous=$previous, term=$term, commitIndex=$commitIndex}, ${entrySize} entries=[$entryStr])"""
+    s"""AppendEntries(previous=$previous, term=$term, commitIndex=$commitIndex, ${entrySize} entries=[$entryStr])"""
   }
 }
 
@@ -138,12 +138,13 @@ sealed trait RaftResponse extends RequestOrResponse[Nothing]
 
 final case class RequestVoteResponse(term: Term, granted: Boolean) extends RaftResponse
 
-final case class AppendEntriesResponse private (term: Term, success: Boolean, matchIndex: Int) extends RaftResponse {
+final case class AppendEntriesResponse private (term: Term, success: Boolean, matchIndex: LogIndex) extends RaftResponse {
+  def coords = LogCoords(term, matchIndex)
   require(success || matchIndex == 0, s"Match index '${matchIndex}' should instead be 0 if success is false")
   require(matchIndex >= 0, s"Match index '${matchIndex}' should never be negative")
 }
 
 object AppendEntriesResponse {
   def fail(term: Term) = AppendEntriesResponse(term, false, 0)
-  def ok(term: Term, matchIndex: Int) = AppendEntriesResponse(term, true, matchIndex)
+  def ok(term: Term, matchIndex: LogIndex) = AppendEntriesResponse(term, true, matchIndex)
 }

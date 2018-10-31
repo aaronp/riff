@@ -5,8 +5,7 @@ import riff.raft.timer.{RaftClock, TimerCallback}
 
 import scala.concurrent.duration.FiniteDuration
 
-class Fs2Clock(sendHeartbeatTimeout: FiniteDuration, receiveHeartbeatTimeout: FiniteDuration)(implicit sched: Scheduler)
-    extends RaftClock {
+class Fs2Clock(sendHeartbeatTimeout: FiniteDuration, receiveHeartbeatTimeout: FiniteDuration)(implicit sched: Scheduler) extends RaftClock {
   type CancelT = Int //Cancelable
 
   override def cancelTimeout(c: CancelT): Unit = {
@@ -32,8 +31,7 @@ class Fs2Clock(sendHeartbeatTimeout: FiniteDuration, receiveHeartbeatTimeout: Fi
 
 object Fs2Clock {
 
-  def apply(sendHeartbeatTimeout: FiniteDuration, receiveHeartbeatTimeout: FiniteDuration)(
-    implicit sched: Scheduler) = {
+  def apply(sendHeartbeatTimeout: FiniteDuration, receiveHeartbeatTimeout: FiniteDuration)(implicit sched: Scheduler) = {
 
     new Fs2Clock(sendHeartbeatTimeout, receiveHeartbeatTimeout)
   }

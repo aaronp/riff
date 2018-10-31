@@ -25,7 +25,8 @@ private[node] class LeadersClusterView(cluster: RaftCluster) {
     * @return the number of nodes which have AT LEAST the same match index
     */
   def matchIndexCount(index: LogIndex): Int = {
-    cluster.peers.count { id => peersByKey.get(id).map(_.matchIndex).exists(_ >= index)
+    cluster.peers.count { id => //
+      peersByKey.get(id).map(_.matchIndex).exists(_ >= index)
     }
   }
 

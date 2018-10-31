@@ -1,5 +1,6 @@
 package riff.reactive
 
+import com.typesafe.scalalogging.StrictLogging
 import org.reactivestreams.{Publisher, Subscriber}
 
 import scala.collection.mutable.ListBuffer
@@ -17,7 +18,7 @@ import scala.concurrent.ExecutionContext
   * @param ctxt the execution context used for each subscriber to consumer its messages
   * @tparam A the type of data which is appended to the log (could just be a byte array, some union type, etc)
   */
-trait AsyncPublisher[T] extends Publisher[T] {
+trait AsyncPublisher[T] extends Publisher[T] with StrictLogging with AutoCloseable {
   implicit def ctxt: ExecutionContext
 
   private val subscriptions = ListBuffer[AsyncSubscription[T]]()
@@ -58,6 +59,7 @@ trait AsyncPublisher[T] extends Publisher[T] {
   }
 
   override def subscribe(s: Subscriber[_ >: T]): Unit = {
+    logger.debug(s"subscribe($s)")
     errorOpt match {
       case Some(err) =>
         s.onSubscribe(Publishers.NoOpSubscription)
@@ -70,9 +72,7 @@ trait AsyncPublisher[T] extends Publisher[T] {
   }
 
   // protected scope added for test, so we can drive the subscription via the test
-  protected def newAsyncSubscription(
-    s: Subscriber[_ >: T],
-    onCancel: AsyncSubscription[T] => Unit): AsyncSubscription[T] = {
+  protected def newAsyncSubscription(s: Subscriber[_ >: T], onCancel: AsyncSubscription[T] => Unit): AsyncSubscription[T] = {
     AsyncSubscription[T](s, maxQueueSize, onCancel)
   }
 
@@ -91,5 +91,9 @@ trait AsyncPublisher[T] extends Publisher[T] {
   }
   protected def enqueueCancel(): Unit = {
     subscriptions.foreach(_.cancel())
+  }
+
+  override def close() = {
+    enqueueComplete()
   }
 }

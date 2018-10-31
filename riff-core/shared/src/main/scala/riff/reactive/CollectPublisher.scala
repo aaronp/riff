@@ -8,7 +8,7 @@ import org.reactivestreams.{Publisher, Subscriber, Subscription}
   * @param predicate
   * @tparam A
   */
-class CollectPublisher[-A, B](underlying: Publisher[A], func: PartialFunction[A, B]) extends Publisher[B] {
+class CollectPublisher[-A, B](underlying: Publisher[A], func: PartialFunction[A, B]) extends Publisher[B] with AutoCloseable {
   override def subscribe(wrappedSubscriber: Subscriber[_ >: B]): Unit = {
     underlying.subscribe(new Subscriber[A]() { self =>
       var subscription: Subscription = null
@@ -22,14 +22,21 @@ class CollectPublisher[-A, B](underlying: Publisher[A], func: PartialFunction[A,
       override def onError(err: Throwable): Unit = {
         wrappedSubscriber.onError(err)
       }
-      override def onNext(onMsg: A): Unit = {
-        if (func.isDefinedAt(onMsg)) {
-          wrappedSubscriber.onNext(func(onMsg))
+      override def onNext(next: A): Unit = {
+        if (func.isDefinedAt(next)) {
+          wrappedSubscriber.onNext(func(next))
         } else if (subscription != null) {
           subscription.request(1)
         }
       }
     })
+  }
+
+  override def close(): Unit = {
+    underlying match {
+      case closable: AutoCloseable => closable.close()
+      case _ =>
+    }
   }
 }
 

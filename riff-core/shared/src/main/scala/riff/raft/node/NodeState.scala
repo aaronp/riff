@@ -70,7 +70,7 @@ final case class LeaderNodeState(override val id: NodeId, clusterView: LeadersCl
     * @tparam A
     * @return the result from appending the entries to the leader's log, as well as an addressed request
     */
-  def makeAppendEntries[A](log: RaftLog[A], currentTerm: Term, data: Array[A]): (LogAppendResult, AddressedRequest[A]) = {
+  def makeAppendEntries[A](log: RaftLog[A], currentTerm: Term, data: Array[A]): NodeAppendResult[A] = {
     val previous: LogCoords         = log.latestAppended()
     val entries: Array[LogEntry[A]] = data.map(LogEntry(currentTerm, _))
     val appendResult                = log.appendAll(previous.index + 1, entries)
@@ -91,8 +91,9 @@ final case class LeaderNodeState(override val id: NodeId, clusterView: LeadersCl
         peersWithMatchingLogs.map(_ -> request)
       }
     }
-    appendResult -> AddressedRequest(requests)
+    NodeAppendResult(appendResult, AddressedRequest(requests))
   }
+
 
   override val role = Leader
 
@@ -113,20 +114,23 @@ final case class LeaderNodeState(override val id: NodeId, clusterView: LeadersCl
                           log: RaftLog[A],
                           currentTerm: Term,
                           appendResponse: AppendEntriesResponse,
-                          maxAppendSize: Int): (Seq[LogCoords], RaftNodeResult[A]) = {
+                          maxAppendSize: Int): LeaderCommittedResult[A] = {
 
     val latestAppended = log.latestAppended()
 
     //
     // first update the cluster view - update or decrement the nextIndex, matchIndex
     //
-    clusterView.update(from, appendResponse) match {
+    val (committedCoords, result) = clusterView.update(from, appendResponse) match {
       case Some(newPeerState) if appendResponse.success =>
         val values: Array[LogEntry[A]] = log.entriesFrom(newPeerState.nextIndex, maxAppendSize)
 
         // if the majority of the peers have the same match index
         val count = clusterView.matchIndexCount(appendResponse.matchIndex) + 1
 
+        // this logic will try to commit as soon as the majority is received, but only the first will return coords.
+        // e.g. in a 5 node cluster, once we have the 2nd successful ack, we'll commit. When we get the 3rd and 4th,
+        // this code will still invoke 'log.commit', but the log will return an empty result
         val committed: Seq[LogCoords] = if (isMajority(count, clusterSize)) {
           log.commit(appendResponse.matchIndex)
         } else {
@@ -170,6 +174,8 @@ final case class LeaderNodeState(override val id: NodeId, clusterView: LeadersCl
 
         (Nil, reply)
     }
+
+    LeaderCommittedResult(committedCoords, result)
   }
 }
 

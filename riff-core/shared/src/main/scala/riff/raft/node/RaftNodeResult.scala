@@ -1,5 +1,6 @@
 package riff.raft.node
 import riff.raft.NodeId
+import riff.raft.log.{LogAppendResult, LogCoords}
 import riff.raft.messages.{RaftRequest, RaftResponse}
 
 /**
@@ -29,7 +30,9 @@ object NoOpResult {
   * @tparam NodeKey the node type
   * @tparam A the log type
   */
-final case class AddressedRequest[A](requests: Iterable[(NodeId, RaftRequest[A])]) extends RaftNodeResult[A]
+final case class AddressedRequest[A](requests: Iterable[(NodeId, RaftRequest[A])]) extends RaftNodeResult[A] {
+  def size = requests.size
+}
 
 object AddressedRequest {
   def apply[A](requests: (NodeId, RaftRequest[A])*): AddressedRequest[A] = new AddressedRequest(requests)
@@ -43,3 +46,33 @@ object AddressedRequest {
   * @tparam NodeKey the raft node
   */
 final case class AddressedResponse(replyTo: NodeId, msg: RaftResponse) extends RaftNodeResult[Nothing]
+
+/** This was introduced after having first just having:
+  * 1) AddressedRequest
+  * 2) AddressedResponse
+  * 3) NoOpResult
+  *
+  * which seemed ok. Unfortunately we have situations (namely when the node is a leader) when we want more
+  * information about e.g. commit/log append data so we can expose that data to a client.
+  *
+  * We could start introducing 'Either', 'Xor', etc types, but I'd like to avoid:
+  * 1) the extra wrapping penalty
+  * 2) overly-complex return types
+  *
+  * though the second is at the expense of scenarios which have to pattern-match on the result types
+  *
+  * @param committed if an [[riff.raft.messages.AppendEntriesResponse]] resulted in committing a log entry, these are the coordinates of those committed entries
+  * @param response either a no-op (e.g. log) result or potentially an [[AddressedRequest]] to send the next data required
+  * @tparam A the log type
+  */
+final case class LeaderCommittedResult[A](committed: Seq[LogCoords], response: RaftNodeResult[A]) extends RaftNodeResult[A]
+
+/**
+  * Like [[LeaderCommittedResult]] this was added so we could explicitly expose the extra information when appending data as a leader
+  * as a result of an [[riff.raft.messages.AppendEntries]] request.
+  *
+  * @param appendResult result of appending some data to this node
+  * @param request the request(s) (as wrapped in a AddressedRequest) to send
+  * @tparam A the log type
+  */
+final case class NodeAppendResult[A](appendResult: LogAppendResult, request: AddressedRequest[A]) extends RaftNodeResult[A]
