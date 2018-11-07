@@ -11,8 +11,8 @@ class MultiSubscriberProcessorTest extends RiffThreadedSpec {
       // a bunch of stuff which attempts to build confidence (though not prove) a subscriber to our  'MultiSubscriberProcessor'
       // will invoke 'onNext' in a threadsafe manner
       object setup {
-        val numItemsToPush = 1000
-        val numThreads = 10
+        val numItemsToPush = 500
+        val numThreads = 6
         val queueSize = numItemsToPush * numThreads
         val multiSubscriber = MultiSubscriberProcessor[String](queueSize, true)
 
