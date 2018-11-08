@@ -1,7 +1,7 @@
 package riff.raft.node
 import riff.raft.NodeId
 import riff.raft.log.{LogAppendResult, LogCoords}
-import riff.raft.messages.{RaftRequest, RaftResponse}
+import riff.raft.messages.{AddressedMessage, RaftRequest, RaftResponse}
 
 /**
   * Represents all possible results of a [[RaftNode]] having processed an event or message
@@ -9,7 +9,13 @@ import riff.raft.messages.{RaftRequest, RaftResponse}
   * @tparam NodeKey the node type
   * @tparam A the log type
   */
-sealed trait RaftNodeResult[+A]
+sealed trait RaftNodeResult[+A] {
+
+  /** @param targetNodeId
+    * @return a representation of this result as a collection of [[AddressedMessage]]s which are either to or from this node
+    */
+  def toNode(targetNodeId : NodeId) : Seq[AddressedMessage[A]]
+}
 
 /**
   * Marker interface for a no-op result of a node having processed an event or message.
@@ -20,7 +26,9 @@ sealed trait RaftNodeResult[+A]
 sealed trait NoOpResult extends RaftNodeResult[Nothing]
 
 object NoOpResult {
-  case class LogMessageResult(msg: String) extends NoOpResult
+  case class LogMessageResult(msg: String) extends NoOpResult {
+    override def toNode(targetNodeId: NodeId) = Nil
+  }
   def apply(msg: String) = LogMessageResult(msg)
 }
 
@@ -32,6 +40,11 @@ object NoOpResult {
   */
 final case class AddressedRequest[A](requests: Iterable[(NodeId, RaftRequest[A])]) extends RaftNodeResult[A] {
   def size = requests.size
+  override def toNode(targetNodeId: NodeId) = {
+    requests.collect {
+      case (`targetNodeId`, msg) => AddressedMessage[A](targetNodeId, msg)
+    }.toSeq
+  }
 }
 
 object AddressedRequest {
@@ -45,7 +58,15 @@ object AddressedRequest {
   * @param msg the response, presumably to a request sent from the 'replyTo' node
   * @tparam NodeKey the raft node
   */
-final case class AddressedResponse(replyTo: NodeId, msg: RaftResponse) extends RaftNodeResult[Nothing]
+final case class AddressedResponse(replyTo: NodeId, msg: RaftResponse) extends RaftNodeResult[Nothing] {
+  override def toNode(targetNodeId: NodeId) = {
+    if (replyTo == targetNodeId) {
+      Seq(AddressedMessage(replyTo, msg))
+    } else {
+      Nil
+    }
+  }
+}
 
 /** This was introduced after having first just having:
   * 1) AddressedRequest
@@ -65,7 +86,9 @@ final case class AddressedResponse(replyTo: NodeId, msg: RaftResponse) extends R
   * @param response either a no-op (e.g. log) result or potentially an [[AddressedRequest]] to send the next data required
   * @tparam A the log type
   */
-final case class LeaderCommittedResult[A](committed: Seq[LogCoords], response: RaftNodeResult[A]) extends RaftNodeResult[A]
+final case class LeaderCommittedResult[A](committed: Seq[LogCoords], response: RaftNodeResult[A]) extends RaftNodeResult[A] {
+  override def toNode(targetNodeId: NodeId): Seq[AddressedMessage[A]] = response.toNode(targetNodeId)
+}
 
 /**
   * Like [[LeaderCommittedResult]] this was added so we could explicitly expose the extra information when appending data as a leader
@@ -75,4 +98,8 @@ final case class LeaderCommittedResult[A](committed: Seq[LogCoords], response: R
   * @param request the request(s) (as wrapped in a AddressedRequest) to send
   * @tparam A the log type
   */
-final case class NodeAppendResult[A](appendResult: LogAppendResult, request: AddressedRequest[A]) extends RaftNodeResult[A]
+final case class NodeAppendResult[A](appendResult: LogAppendResult, request: AddressedRequest[A]) extends RaftNodeResult[A] {
+  override def toNode(targetNodeId: NodeId): Seq[AddressedMessage[A]] = {
+    request.toNode(targetNodeId)
+  }
+}

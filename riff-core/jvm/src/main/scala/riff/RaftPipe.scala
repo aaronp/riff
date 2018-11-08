@@ -12,7 +12,6 @@ import riff.raft.timer.{RaftClock, RandomTimer, Timers}
 import riff.reactive.AsPublisher.syntax._
 import riff.reactive.{ReactiveTimerCallback, _}
 
-import scala.annotation.tailrec
 import scala.concurrent.ExecutionContext
 import scala.concurrent.duration._
 import scala.reflect.ClassTag
@@ -39,13 +38,14 @@ import scala.util.Properties
   * @tparam C
   * @tparam H
   */
-class RaftPipe[A, Sub[_]: AsSubscriber, Pub[_]: AsPublisher, C[_], H <: RaftMessageHandler[A]] private (
-  val nodeId: NodeId,
+class RaftPipe[A, Sub[_]: AsSubscriber, Pub[_]: AsPublisher, C[_], H <: RaftMessageHandler[A]](
   val handler: H,
   private[riff] val pipe: ReactivePipe[RaftMessage[A], RaftNodeResult[A], Sub, Pub],
   val client: RaftClient[C, A]
 ) extends AutoCloseable {
   def input: Sub[RaftMessage[A]] = pipe.input
+
+  def nodeId = handler.nodeId
 
   def resetReceiveHeartbeat()(implicit ev: H =:= RaftNode[A]) = {
     ev(handler).resetReceiveHeartbeat()
@@ -64,29 +64,12 @@ class RaftPipe[A, Sub[_]: AsSubscriber, Pub[_]: AsPublisher, C[_], H <: RaftMess
     require(targetNodeId != nodeId, s"Attempted loop - can't create an input from $targetNodeId to itself")
 
     object MessageTo {
-      @tailrec
       def unapply(result: RaftNodeResult[A]): Option[AddressedMessage[A]] = {
-        result match {
-          case LeaderCommittedResult(_, resp) => unapply(resp)
-          case AddressedRequest(requests) =>
-            //
-            // here a message from 'peerId' is sending a message to 'targetId',
-            // so we translate that into an AddressedMessage FROM peerId
-            //
-            val filtered: Iterable[AddressedMessage[A]] = requests.collect {
-              case (`targetNodeId`, msg) => AddressedMessage[A](nodeId, msg)
-            }
-
-            // At this point we've taken the single output result from a node and filtered it out on
-            // messages to 'us' (where 'us' is this peer). And so, if one input to a RaftNode results
-            // in more than one messages to another node that's a bug
-            filtered.toList match {
-              case List(toUs) => Option(toUs)
-              case Nil => None
-              case many => sys.error(s"${many.size} messages were sent to $targetNodeId from $nodeId: ${many}")
-            }
-          case AddressedResponse(`targetNodeId`, msg) => Option(AddressedMessage[A](nodeId, msg))
-          case _ => None
+        // change the message to be 'from' this node
+        result.toNode(targetNodeId).map(_.copy(from = nodeId)) match {
+          case Seq(toUs) => Option(toUs)
+          case Seq() => None
+          case many => sys.error(s"${many.size} messages were sent to $targetNodeId: ${many}")
         }
       }
     }
@@ -107,7 +90,7 @@ class RaftPipe[A, Sub[_]: AsSubscriber, Pub[_]: AsPublisher, C[_], H <: RaftMess
 object RaftPipe {
 
   def inMemoryClusterOf[A: ClassTag](size: Int)(implicit execCtxt: ExecutionContext, clock: RaftClock): Map[NodeId, RaftPipe[A, Subscriber, Publisher, Publisher, RaftNode[A]]] = {
-    val nodes = (1 to size).map { i =>
+    val nodes = (1 to size).map { i => //
       RaftNode.inMemory[A](s"node-$i")
     }
     asCluster(nodes: _*)
@@ -128,12 +111,12 @@ object RaftPipe {
     require(ids.size == nodes.length, s"multiple nodes given w/ the same id: '${duplicates.mkString("[", ",", "]")}'")
 
     val raftInstById: Map[NodeId, RaftPipe[A, Subscriber, Publisher, Publisher, RaftNode[A]]] = nodes.map { n =>
-      val timer = ReactiveTimerCallback()
-      val node = n.withCluster(RaftCluster(ids - n.nodeId)).withTimerCallback(timer)
+      val timerCallback = ReactiveTimerCallback()
+      val node = n.withCluster(RaftCluster(ids - n.nodeId)).withTimerCallback(timerCallback)
 
-      val raftPipe = raftPipeForNode[A, RaftNode[A]](node.nodeId, node, 1000)
+      val raftPipe = raftPipeForNode[A, RaftNode[A]](node, 1000)
 
-      timer.subscribe(raftPipe.input)
+      timerCallback.subscribe(raftPipe.input)
       node.nodeId -> raftPipe
     }.toMap
 
@@ -153,7 +136,7 @@ object RaftPipe {
     val timer = ReactiveTimerCallback()
 
     val node = newSingleNode(id, dataDir).withTimerCallback(timer)
-    val pipe: RaftPipe[A, Subscriber, Publisher, Publisher, RaftNode[A]] = raftPipeForNode(node.nodeId, node, 1000)
+    val pipe: RaftPipe[A, Subscriber, Publisher, Publisher, RaftNode[A]] = raftPipeForNode(node, 1000)
 
     timer.subscribe(pipe.input)
 
@@ -177,15 +160,9 @@ object RaftPipe {
 
   private[riff] def raftPipeForNode[A: ClassTag, Handler <: RaftMessageHandler[A]](handler: Handler, queueSize: Int)(
     implicit executionContext: ExecutionContext): RaftPipe[A, Subscriber, Publisher, Publisher, Handler] = {
-    raftPipeForNode(handler.nodeId, handler, queueSize)
-  }
-
-  private[riff] def raftPipeForNode[A: ClassTag, Handler <: RaftMessageHandler[A]](nodeId: NodeId, handler: Handler, queueSize: Int)(
-    implicit executionContext: ExecutionContext): RaftPipe[A, Subscriber, Publisher, Publisher, Handler] = {
-
     val pipe: ReactivePipe[RaftMessage[A], RaftNodeResult[A], Subscriber, Publisher] = pipeForNode[A](handler, queueSize)
 
-    new RaftPipe[A, Subscriber, Publisher, Publisher, Handler](nodeId, handler, pipe, ReactiveClient(pipe))
+    new RaftPipe[A, Subscriber, Publisher, Publisher, Handler](handler, pipe, ReactiveClient(pipe.inputSubscriber))
   }
 
   /**
