@@ -29,7 +29,7 @@ val Core = config("riff-core")
 val RiffMonix = config("riff-monix")
 val RiffFs2 = config("riff-fs2")
 val RiffAkka = config("riff-akka")
-//val RiffWeb   = config("riff-web")
+//val RiffWeb   = config("riff-vertx")
 
 git.remoteRepo  := s"git@github.com:$username/$repo.git"
 ghpagesNoJekyll := true
@@ -245,7 +245,7 @@ lazy val riffAkka = project
   .settings(libraryDependencies ++= Dependencies.RiffAkka)
 
 lazy val riffWeb = project
-  .in(file("riff-web"))
+  .in(file("riff-vertx"))
   .dependsOn(riffMonix % "compile->compile;test->test")
   .dependsOn(riffCoreJVM % "compile->compile;test->test")
   .dependsOn(riffJsonJVM % "compile->compile;test->test")

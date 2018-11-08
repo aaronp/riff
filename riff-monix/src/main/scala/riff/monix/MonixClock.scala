@@ -4,10 +4,8 @@ import riff.raft.timer.{RaftClock, RandomTimer, TimerCallback}
 
 import scala.concurrent.duration._
 
-class MonixClock(sendHeartbeatTimeout: FiniteDuration, receiveHeartbeatMinMaxTimeout: (FiniteDuration, FiniteDuration))(implicit sched: Scheduler) extends RaftClock {
+class MonixClock(sendHeartbeatTimeout: FiniteDuration, receivedRandom: RandomTimer)(implicit sched: Scheduler) extends RaftClock {
   type CancelT = Cancelable
-
-  private val receivedRandom = new RandomTimer(receiveHeartbeatMinMaxTimeout._1, receiveHeartbeatMinMaxTimeout._2)
 
   override def cancelTimeout(c: Cancelable): Unit = c.cancel()
 
@@ -30,9 +28,9 @@ class MonixClock(sendHeartbeatTimeout: FiniteDuration, receiveHeartbeatMinMaxTim
 
 object MonixClock {
 
-  def apply()(implicit sched: Scheduler): MonixClock = apply(250.millis, (1.second, 2.seconds))
+  def apply()(implicit sched: Scheduler): MonixClock = apply(250.millis, RandomTimer(1.second, 2.seconds))
 
-  def apply(sendHeartbeatTimeout: FiniteDuration, receiveHeartbeatMinMaxTimeout: (FiniteDuration, FiniteDuration))(implicit sched: Scheduler): MonixClock = {
+  def apply(sendHeartbeatTimeout: FiniteDuration, receiveHeartbeatMinMaxTimeout: RandomTimer)(implicit sched: Scheduler): MonixClock = {
     new MonixClock(sendHeartbeatTimeout, receiveHeartbeatMinMaxTimeout)
   }
 }

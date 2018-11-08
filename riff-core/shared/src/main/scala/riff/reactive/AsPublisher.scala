@@ -8,7 +8,7 @@ import org.reactivestreams.{Publisher, Subscriber}
   * @tparam F the typeclass which can be represented as a publisher
   */
 trait AsPublisher[F[_]] {
-  def asPublisher[A](f: F[A]): Publisher[A]
+  def asPublisher[A](publisher: F[A]): Publisher[A]
 
   /** apply the partial function to the F[A], which is the equivalent of a filter/map operation
     *
@@ -18,9 +18,9 @@ trait AsPublisher[F[_]] {
     * @tparam B the mapped (collected) type
     * @return a new F[B] based on the application of the func to the underlying F[A]
     */
-  def collect[A, B](f: F[A])(func: PartialFunction[A, B]): F[B]
+  def collect[A, B](publisher: F[A])(func: PartialFunction[A, B]): F[B]
 
-  def map[A, B](f: F[A])(func: A => B): F[B]
+  def map[A, B](publisher: F[A])(func: A => B): F[B]
 
   /**
     * concatenate this value to be published first

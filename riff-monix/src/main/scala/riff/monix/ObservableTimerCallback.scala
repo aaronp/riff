@@ -1,9 +1,10 @@
 package riff.monix
-import monix.execution.Scheduler
-import monix.reactive.Observable
+import monix.execution.{Cancelable, Scheduler}
+import monix.reactive.{Observable, Observer}
 import monix.reactive.OverflowStrategy.DropOld
+import monix.reactive.observers.Subscriber
 import monix.reactive.subjects.Var
-import riff.raft.messages.{RaftMessage, ReceiveHeartbeatTimeout, SendHeartbeatTimeout}
+import riff.raft.messages.{ReceiveHeartbeatTimeout, SendHeartbeatTimeout, TimerMessage}
 import riff.raft.timer.TimerCallback
 
 /**
@@ -11,16 +12,22 @@ import riff.raft.timer.TimerCallback
   *
   * @param sched
   */
-class ObservableCallback(implicit sched: Scheduler) extends TimerCallback[Unit] {
+class ObservableTimerCallback(implicit sched: Scheduler) extends TimerCallback[Unit] {
   private val sendTimeoutsVar = Var[Boolean](false)
 
-  def sendTimeout: Observable[RaftMessage[Nothing]] =
+  def sendTimeout: Observable[TimerMessage] =
     sendTimeoutsVar.filter(identity).map(_ => SendHeartbeatTimeout).asyncBoundary(DropOld(2))
   override def onSendHeartbeatTimeout(): Unit = sendTimeoutsVar := true
 
   private val receiveTimeoutsVar = Var[Boolean](false)
 
-  def receiveTimeouts: Observable[RaftMessage[Nothing]] =
+  def receiveTimeouts: Observable[TimerMessage] =
     receiveTimeoutsVar.filter(identity).map(_ => ReceiveHeartbeatTimeout).asyncBoundary(DropOld(2))
+
   override def onReceiveHeartbeatTimeout(): Unit = receiveTimeoutsVar := true
+
+  def subscribe(subscriber: Observer[TimerMessage]): Cancelable = {
+    sendTimeout.subscribe(subscriber)
+    receiveTimeouts.subscribe(subscriber)
+  }
 }

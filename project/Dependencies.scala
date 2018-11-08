@@ -42,13 +42,11 @@ object Dependencies {
     val akkaHttp = List("", "-core").map { suffix => "com.typesafe.akka" %% s"akka-http$suffix" % "10.1.5"
     } :+ cors :+ akkaCirce :+ ("com.typesafe.akka" %% "akka-http-testkit" % "10.1.5" % "test")
 
-    val akkaStreams = "com.typesafe.akka" %% "akka-stream" % "2.5.12"
-
     val akka = List(
       "com.typesafe.akka" %% "akka-actor"   % "2.5.14",
       "com.typesafe.akka" %% "akka-testkit" % "2.5.14" % Test
     )
-    streams +: akkaStreams +: akkaHttp ::: akka ::: logging ::: testDependencies
+    streams +: akkaHttp ::: akka ::: logging ::: testDependencies
   }
   val RiffHttp4s: List[ModuleID] = http4s ::: logging ::: testDependencies
   val RiffWeb: List[ModuleID] = config :: monix ::: vertx ::: logging ::: testDependencies
