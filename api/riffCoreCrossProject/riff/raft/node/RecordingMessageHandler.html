@@ -101,10 +101,10 @@
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../../index.html" class="extype" name="riff">riff</a></dd></dl></div>
-    </li><li name="riff.raft.log" visbl="pub" class="indented3 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="log"></a><a id="log:log"></a>
+    </li><li name="riff.raft.node" visbl="pub" class="indented3 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="node"></a><a id="node:node"></a>
       <span class="permalink">
-      <a href="../../riff/raft/index.html#log" title="Permalink">
+      <a href="../../riff/raft/index.html#node" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -113,70 +113,106 @@
         <span class="kind">package</span>
       </span>
       <span class="symbol">
-        <a title="" href="index.html"><span class="name">log</span></a>
+        <a title="" href="index.html"><span class="name">node</span></a>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../index.html" class="extype" name="riff.raft">raft</a></dd></dl></div>
     </li><li class="current-entities indented3">
+                        <a class="object" href="AddressedRequest$.html" title=""></a>
+                        <a class="class" href="AddressedRequest.html" title="A sequence of requests to send out as a result of a RaftNode having processed an event or message"></a>
+                        <a href="AddressedRequest.html" title="A sequence of requests to send out as a result of a RaftNode having processed an event or message">AddressedRequest</a>
+                      </li><li class="current-entities indented3">
+                        <span class="separator"></span>
+                        <a class="class" href="AddressedResponse.html" title="Combines a 'replyTo' node with a response"></a>
+                        <a href="AddressedResponse.html" title="Combines a 'replyTo' node with a response">AddressedResponse</a>
+                      </li><li class="current-entities indented3">
+                        <span class="separator"></span>
+                        <a class="object" href="Candidate$.html" title=""></a>
+                        <a href="Candidate$.html" title="">Candidate</a>
+                      </li><li class="current-entities indented3">
+                        <span class="separator"></span>
+                        <a class="class" href="CandidateNodeState.html" title=""></a>
+                        <a href="CandidateNodeState.html" title="">CandidateNodeState</a>
+                      </li><li class="current-entities indented3">
+                        <span class="separator"></span>
+                        <a class="class" href="CandidateState.html" title="Contains the functions for when a node becomes a candidate due to a heartbeat timeout"></a>
+                        <a href="CandidateState.html" title="Contains the functions for when a node becomes a candidate due to a heartbeat timeout">CandidateState</a>
+                      </li><li class="current-entities indented3">
+                        <span class="separator"></span>
+                        <a class="object" href="Follower$.html" title=""></a>
+                        <a href="Follower$.html" title="">Follower</a>
+                      </li><li class="current-entities indented3">
+                        <span class="separator"></span>
+                        <a class="class" href="FollowerNodeState.html" title=""></a>
+                        <a href="FollowerNodeState.html" title="">FollowerNodeState</a>
+                      </li><li class="current-entities indented3">
+                        <span class="separator"></span>
+                        <a class="object" href="Leader$.html" title=""></a>
+                        <a href="Leader$.html" title="">Leader</a>
+                      </li><li class="current-entities indented3">
+                        <span class="separator"></span>
+                        <a class="class" href="LeaderCommittedResult.html" title="This was introduced after having first just having: 1) AddressedRequest 2) AddressedResponse 3) NoOpResult"></a>
+                        <a href="LeaderCommittedResult.html" title="This was introduced after having first just having: 1) AddressedRequest 2) AddressedResponse 3) NoOpResult">LeaderCommittedResult</a>
+                      </li><li class="current-entities indented3">
+                        <a class="object" href="LeaderNodeState$.html" title=""></a>
+                        <a class="class" href="LeaderNodeState.html" title=""></a>
+                        <a href="LeaderNodeState.html" title="">LeaderNodeState</a>
+                      </li><li class="current-entities indented3">
+                        <span class="separator"></span>
+                        <a class="object" href="LeadersClusterView$.html" title=""></a>
+                        <a href="LeadersClusterView$.html" title="">LeadersClusterView</a>
+                      </li><li class="current-entities indented3">
+                        <a class="object" href="NIOPersistentState$.html" title=""></a>
+                        <a class="class" href="NIOPersistentState.html" title="Some PersistentState written to the file system using java.nio"></a>
+                        <a href="NIOPersistentState.html" title="Some PersistentState written to the file system using java.nio">NIOPersistentState</a>
+                      </li><li class="current-entities indented3">
+                        <a class="object" href="NoOpResult$.html" title=""></a>
+                        <a class="trait" href="NoOpResult.html" title="Marker interface for a no-op result of a node having processed an event or message."></a>
+                        <a href="NoOpResult.html" title="Marker interface for a no-op result of a node having processed an event or message.">NoOpResult</a>
+                      </li><li class="current-entities indented3">
+                        <span class="separator"></span>
+                        <a class="class" href="NodeAppendResult.html" title="Like LeaderCommittedResult this was added so we could explicitly expose the extra information when appending data as a leader as a result of an riff.raft.messages.AppendEntries request."></a>
+                        <a href="NodeAppendResult.html" title="Like LeaderCommittedResult this was added so we could explicitly expose the extra information when appending data as a leader as a result of an riff.raft.messages.AppendEntries request.">NodeAppendResult</a>
+                      </li><li class="current-entities indented3">
+                        <span class="separator"></span>
+                        <a class="trait" href="NodeRole.html" title=""></a>
+                        <a href="NodeRole.html" title="">NodeRole</a>
+                      </li><li class="current-entities indented3">
+                        <span class="separator"></span>
+                        <a class="trait" href="NodeState.html" title="Represents an in-memory state matching a node's role"></a>
+                        <a href="NodeState.html" title="Represents an in-memory state matching a node's role">NodeState</a>
+                      </li><li class="current-entities indented3">
+                        <a class="object" href="Peer$.html" title=""></a>
+                        <a class="class" href="Peer.html" title="The view of a peer in the cluster"></a>
+                        <a href="Peer.html" title="The view of a peer in the cluster">Peer</a>
+                      </li><li class="current-entities indented3">
+                        <a class="object" href="PersistentState$.html" title=""></a>
+                        <a class="trait" href="PersistentState.html" title="Keeps track of a node's internal state: 1) what term it is 2) who the chuff it voted for"></a>
+                        <a href="PersistentState.html" title="Keeps track of a node's internal state: 1) what term it is 2) who the chuff it voted for">PersistentState</a>
+                      </li><li class="current-entities indented3">
+                        <a class="object" href="RaftCluster$.html" title=""></a>
+                        <a class="trait" href="RaftCluster.html" title="Represents something which knows about the peers in the cluster."></a>
+                        <a href="RaftCluster.html" title="Represents something which knows about the peers in the cluster.">RaftCluster</a>
+                      </li><li class="current-entities indented3">
+                        <span class="separator"></span>
+                        <a class="trait" href="RaftMessageHandler.html" title="This interface represents a stateful black-box of a raft node."></a>
+                        <a href="RaftMessageHandler.html" title="This interface represents a stateful black-box of a raft node.">RaftMessageHandler</a>
+                      </li><li class="current-entities indented3">
+                        <a class="object" href="RaftNode$.html" title=""></a>
+                        <a class="class" href="RaftNode.html" title="The place where the different pieces which represent a Raft Node come together -- the glue code."></a>
+                        <a href="RaftNode.html" title="The place where the different pieces which represent a Raft Node come together -- the glue code.">RaftNode</a>
+                      </li><li class="current-entities indented3">
+                        <span class="separator"></span>
+                        <a class="trait" href="RaftNodeResult.html" title="Represents all possible results of a RaftNode having processed an event or message"></a>
+                        <a href="RaftNodeResult.html" title="Represents all possible results of a RaftNode having processed an event or message">RaftNodeResult</a>
+                      </li><li class="current-entities indented3">
                         <span class="separator"></span>
                         <a class="class" href="" title=""></a>
-                        <a href="" title="">AttemptToAppendLogEntryAtEarlierTerm</a>
+                        <a href="" title="">RecordingMessageHandler</a>
                       </li><li class="current-entities indented3">
-                        <span class="separator"></span>
-                        <a class="class" href="AttemptToSkipLogEntry.html" title=""></a>
-                        <a href="AttemptToSkipLogEntry.html" title="">AttemptToSkipLogEntry</a>
-                      </li><li class="current-entities indented3">
-                        <span class="separator"></span>
-                        <a class="class" href="CachingLog.html" title="Wraps a log by keeping in memory the latest commit/append index"></a>
-                        <a href="CachingLog.html" title="Wraps a log by keeping in memory the latest commit/append index">CachingLog</a>
-                      </li><li class="current-entities indented3">
-                        <span class="separator"></span>
-                        <a class="trait" href="DelegateLog.html" title=""></a>
-                        <a href="DelegateLog.html" title="">DelegateLog</a>
-                      </li><li class="current-entities indented3">
-                        <a class="object" href="FileBasedLog$.html" title=""></a>
-                        <a class="trait" href="FileBasedLog.html" title=""></a>
-                        <a href="FileBasedLog.html" title="">FileBasedLog</a>
-                      </li><li class="current-entities indented3">
-                        <span class="separator"></span>
-                        <a class="class" href="InMemory.html" title="An in-memory persistent log."></a>
-                        <a href="InMemory.html" title="An in-memory persistent log.">InMemory</a>
-                      </li><li class="current-entities indented3">
-                        <a class="object" href="LogAppendResult$.html" title=""></a>
-                        <a class="trait" href="LogAppendResult.html" title=""></a>
-                        <a href="LogAppendResult.html" title="">LogAppendResult</a>
-                      </li><li class="current-entities indented3">
-                        <span class="separator"></span>
-                        <a class="class" href="LogAppendSuccess.html" title="Represents the return type of a file-based raft log"></a>
-                        <a href="LogAppendSuccess.html" title="Represents the return type of a file-based raft log">LogAppendSuccess</a>
-                      </li><li class="current-entities indented3">
-                        <a class="object" href="LogCoords$.html" title=""></a>
-                        <a class="class" href="LogCoords.html" title="Represents the coords of a log entry"></a>
-                        <a href="LogCoords.html" title="Represents the coords of a log entry">LogCoords</a>
-                      </li><li class="current-entities indented3">
-                        <span class="separator"></span>
-                        <a class="class" href="LogEntry.html" title=""></a>
-                        <a href="LogEntry.html" title="">LogEntry</a>
-                      </li><li class="current-entities indented3">
-                        <a class="object" href="LogState$.html" title=""></a>
-                        <a class="class" href="LogState.html" title=""></a>
-                        <a href="LogState.html" title="">LogState</a>
-                      </li><li class="current-entities indented3">
-                        <span class="separator"></span>
-                        <a class="class" href="NotTheLeaderException.html" title=""></a>
-                        <a href="NotTheLeaderException.html" title="">NotTheLeaderException</a>
-                      </li><li class="current-entities indented3">
-                        <a class="object" href="RaftLog$.html" title=""></a>
-                        <a class="trait" href="RaftLog.html" title="The persistent log"></a>
-                        <a href="RaftLog.html" title="The persistent log">RaftLog</a>
-                      </li><li class="current-entities indented3">
-                        <span class="separator"></span>
-                        <a class="trait" href="RaftLogOps.html" title="A base type for the raft log."></a>
-                        <a href="RaftLogOps.html" title="A base type for the raft log.">RaftLogOps</a>
-                      </li><li class="current-entities indented3">
-                        <a class="object" href="StateMachineLog$.html" title=""></a>
-                        <a class="class" href="StateMachineLog.html" title="Invokes a function when log entries are committed"></a>
-                        <a href="StateMachineLog.html" title="Invokes a function when log entries are committed">StateMachineLog</a>
+                        <a class="object" href="RoleCallback$.html" title=""></a>
+                        <a class="trait" href="RoleCallback.html" title="This is provided as a convenience to be added to a riff.raft.node.RaftNode for anything which cares about role transitions for a particular node."></a>
+                        <a href="RoleCallback.html" title="This is provided as a convenience to be added to a riff.raft.node.RaftNode for anything which cares about role transitions for a particular node.">RoleCallback</a>
                       </li>
               </ul>
             </div>
@@ -185,9 +221,9 @@
             <body class="class type">
       <div id="definition">
         <div class="big-circle class">c</div>
-        <p id="owner"><a href="../../index.html" class="extype" name="riff">riff</a>.<a href="../index.html" class="extype" name="riff.raft">raft</a>.<a href="index.html" class="extype" name="riff.raft.log">log</a></p>
-        <h1>AttemptToAppendLogEntryAtEarlierTerm<span class="permalink">
-      <a href="../../../riff/raft/log/AttemptToAppendLogEntryAtEarlierTerm.html" title="Permalink">
+        <p id="owner"><a href="../../index.html" class="extype" name="riff">riff</a>.<a href="../index.html" class="extype" name="riff.raft">raft</a>.<a href="index.html" class="extype" name="riff.raft.node">node</a></p>
+        <h1>RecordingMessageHandler<span class="permalink">
+      <a href="../../../riff/raft/node/RecordingMessageHandler.html" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span></h1>
@@ -196,11 +232,11 @@
 
       <h4 id="signature" class="signature">
       <span class="modifier_kind">
-        <span class="modifier">final </span>
+        <span class="modifier"></span>
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">AttemptToAppendLogEntryAtEarlierTerm</span><span class="params">(<span name="attemptedEntry">attemptedEntry: <a href="LogCoords.html" class="extype" name="riff.raft.log.LogCoords">LogCoords</a></span>, <span name="latestLogEntryAppended">latestLogEntryAppended: <a href="LogCoords.html" class="extype" name="riff.raft.log.LogCoords">LogCoords</a></span>)</span><span class="result"> extends <span class="extype" name="scala.Exception">Exception</span> with <a href="LogAppendResult.html" class="extype" name="riff.raft.log.LogAppendResult">LogAppendResult</a> with <span class="extype" name="scala.util.control.NoStackTrace">NoStackTrace</span> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <span class="name">RecordingMessageHandler</span><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="underlying">underlying: <a href="RaftMessageHandler.html" class="extype" name="riff.raft.node.RaftMessageHandler">RaftMessageHandler</a>[<span class="extype" name="riff.raft.node.RecordingMessageHandler.A">A</span>]</span>)</span><span class="result"> extends <a href="RaftMessageHandler.html" class="extype" name="riff.raft.node.RaftMessageHandler">RaftMessageHandler</a>[<span class="extype" name="riff.raft.node.RecordingMessageHandler.A">A</span>] with <span class="extype" name="com.typesafe.scalalogging.StrictLogging">StrictLogging</span> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
 
@@ -209,7 +245,7 @@
           <span class="toggle">
             Linear Supertypes
           </span>
-          <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <span class="extype" name="scala.util.control.NoStackTrace">NoStackTrace</span>, <a href="LogAppendResult.html" class="extype" name="riff.raft.log.LogAppendResult">LogAppendResult</a>, <span class="extype" name="java.lang.Exception">Exception</span>, <span class="extype" name="java.lang.Throwable">Throwable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <span class="extype" name="com.typesafe.scalalogging.StrictLogging">StrictLogging</span>, <a href="RaftMessageHandler.html" class="extype" name="riff.raft.node.RaftMessageHandler">RaftMessageHandler</a>[<span class="extype" name="riff.raft.node.RecordingMessageHandler.A">A</span>], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
         
 
@@ -235,7 +271,7 @@
                   <span class="filtertype">Inherited<br />
                   </span>
                   <ol id="linearization">
-                    <li class="in" name="riff.raft.log.AttemptToAppendLogEntryAtEarlierTerm"><span>AttemptToAppendLogEntryAtEarlierTerm</span></li><li class="in" name="scala.Serializable"><span>Serializable</span></li><li class="in" name="scala.Product"><span>Product</span></li><li class="in" name="scala.Equals"><span>Equals</span></li><li class="in" name="scala.util.control.NoStackTrace"><span>NoStackTrace</span></li><li class="in" name="riff.raft.log.LogAppendResult"><span>LogAppendResult</span></li><li class="in" name="java.lang.Exception"><span>Exception</span></li><li class="in" name="java.lang.Throwable"><span>Throwable</span></li><li class="in" name="java.io.Serializable"><span>Serializable</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                    <li class="in" name="riff.raft.node.RecordingMessageHandler"><span>RecordingMessageHandler</span></li><li class="in" name="scala.Serializable"><span>Serializable</span></li><li class="in" name="java.io.Serializable"><span>Serializable</span></li><li class="in" name="scala.Product"><span>Product</span></li><li class="in" name="scala.Equals"><span>Equals</span></li><li class="in" name="com.typesafe.scalalogging.StrictLogging"><span>StrictLogging</span></li><li class="in" name="riff.raft.node.RaftMessageHandler"><span>RaftMessageHandler</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                   </ol>
                 </div><div class="ancestors">
               <span class="filtertype"></span>
@@ -255,10 +291,10 @@
         <div id="allMembers">
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
-              <ol><li name="riff.raft.log.AttemptToAppendLogEntryAtEarlierTerm#&lt;init&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="&lt;init&gt;(attemptedEntry:riff.raft.log.LogCoords,latestLogEntryAppended:riff.raft.log.LogCoords):riff.raft.log.AttemptToAppendLogEntryAtEarlierTerm"></a><a id="&lt;init&gt;:AttemptToAppendLogEntryAtEarlierTerm"></a>
+              <ol><li name="riff.raft.node.RecordingMessageHandler#&lt;init&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="&lt;init&gt;(underlying:riff.raft.node.RaftMessageHandler[A]):riff.raft.node.RecordingMessageHandler[A]"></a><a id="&lt;init&gt;:RecordingMessageHandler[A]"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/log/AttemptToAppendLogEntryAtEarlierTerm.html#&lt;init&gt;(attemptedEntry:riff.raft.log.LogCoords,latestLogEntryAppended:riff.raft.log.LogCoords):riff.raft.log.AttemptToAppendLogEntryAtEarlierTerm" title="Permalink">
+      <a href="../../../riff/raft/node/RecordingMessageHandler.html#&lt;init&gt;(underlying:riff.raft.node.RaftMessageHandler[A]):riff.raft.node.RecordingMessageHandler[A]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -267,14 +303,33 @@
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">AttemptToAppendLogEntryAtEarlierTerm</span><span class="params">(<span name="attemptedEntry">attemptedEntry: <a href="LogCoords.html" class="extype" name="riff.raft.log.LogCoords">LogCoords</a></span>, <span name="latestLogEntryAppended">latestLogEntryAppended: <a href="LogCoords.html" class="extype" name="riff.raft.log.LogCoords">LogCoords</a></span>)</span>
+        <span class="name">RecordingMessageHandler</span><span class="params">(<span name="underlying">underlying: <a href="RaftMessageHandler.html" class="extype" name="riff.raft.node.RaftMessageHandler">RaftMessageHandler</a>[<span class="extype" name="riff.raft.node.RecordingMessageHandler.A">A</span>]</span>)</span>
       </span>
       
       
     </li></ol>
             </div>
 
-        
+        <div id="types" class="types members">
+              <h3>Type Members</h3>
+              <ol><li name="riff.raft.node.RaftMessageHandler.Result" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="Result=riff.raft.node.RaftNodeResult[A]"></a><a id="Result:Result"></a>
+      <span class="permalink">
+      <a href="../../../riff/raft/node/RecordingMessageHandler.html#Result=riff.raft.node.RaftNodeResult[A]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">type</span>
+      </span>
+      <span class="symbol">
+        <span class="name">Result</span><span class="result alias"> = <a href="RaftNodeResult.html" class="extype" name="riff.raft.node.RaftNodeResult">RaftNodeResult</a>[<span class="extype" name="riff.raft.node.RecordingMessageHandler.A">A</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="RaftMessageHandler.html" class="extype" name="riff.raft.node.RaftMessageHandler">RaftMessageHandler</a></dd></dl></div>
+    </li></ol>
+            </div>
 
         
 
@@ -284,7 +339,7 @@
                 <li name="scala.AnyRef#!=" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="!=(x$1:Any):Boolean"></a><a id="!=(Any):Boolean"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/log/AttemptToAppendLogEntryAtEarlierTerm.html#!=(x$1:Any):Boolean" title="Permalink">
+      <a href="../../../riff/raft/node/RecordingMessageHandler.html#!=(x$1:Any):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -300,7 +355,7 @@
     </li><li name="scala.AnyRef###" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="##():Int"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/log/AttemptToAppendLogEntryAtEarlierTerm.html###():Int" title="Permalink">
+      <a href="../../../riff/raft/node/RecordingMessageHandler.html###():Int" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -316,7 +371,7 @@
     </li><li name="scala.AnyRef#==" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="==(x$1:Any):Boolean"></a><a id="==(Any):Boolean"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/log/AttemptToAppendLogEntryAtEarlierTerm.html#==(x$1:Any):Boolean" title="Permalink">
+      <a href="../../../riff/raft/node/RecordingMessageHandler.html#==(x$1:Any):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -329,26 +384,10 @@
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
-    </li><li name="java.lang.Throwable#addSuppressed" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="addSuppressed(x$1:Throwable):Unit"></a><a id="addSuppressed(Throwable):Unit"></a>
-      <span class="permalink">
-      <a href="../../../riff/raft/log/AttemptToAppendLogEntryAtEarlierTerm.html#addSuppressed(x$1:Throwable):Unit" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier">final </span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">addSuppressed</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="java.lang.Throwable">Throwable</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
-      </span>
-      
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Throwable</dd></dl></div>
     </li><li name="scala.Any#asInstanceOf" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="asInstanceOf[T0]:T0"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/log/AttemptToAppendLogEntryAtEarlierTerm.html#asInstanceOf[T0]:T0" title="Permalink">
+      <a href="../../../riff/raft/node/RecordingMessageHandler.html#asInstanceOf[T0]:T0" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -361,26 +400,10 @@
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
-    </li><li name="riff.raft.log.AttemptToAppendLogEntryAtEarlierTerm#attemptedEntry" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="attemptedEntry:riff.raft.log.LogCoords"></a><a id="attemptedEntry:LogCoords"></a>
-      <span class="permalink">
-      <a href="../../../riff/raft/log/AttemptToAppendLogEntryAtEarlierTerm.html#attemptedEntry:riff.raft.log.LogCoords" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">attemptedEntry</span><span class="result">: <a href="LogCoords.html" class="extype" name="riff.raft.log.LogCoords">LogCoords</a></span>
-      </span>
-      
-      
     </li><li name="scala.AnyRef#clone" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="clone():Object"></a><a id="clone():AnyRef"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/log/AttemptToAppendLogEntryAtEarlierTerm.html#clone():Object" title="Permalink">
+      <a href="../../../riff/raft/node/RecordingMessageHandler.html#clone():Object" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -404,7 +427,7 @@
     </li><li name="scala.AnyRef#eq" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a><a id="eq(AnyRef):Boolean"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/log/AttemptToAppendLogEntryAtEarlierTerm.html#eq(x$1:AnyRef):Boolean" title="Permalink">
+      <a href="../../../riff/raft/node/RecordingMessageHandler.html#eq(x$1:AnyRef):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -417,26 +440,10 @@
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="scala.util.control.NoStackTrace#fillInStackTrace" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="fillInStackTrace():Throwable"></a>
-      <span class="permalink">
-      <a href="../../../riff/raft/log/AttemptToAppendLogEntryAtEarlierTerm.html#fillInStackTrace():Throwable" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">fillInStackTrace</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Throwable">Throwable</span></span>
-      </span>
-      
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>NoStackTrace → Throwable</dd></dl></div>
     </li><li name="scala.AnyRef#finalize" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="finalize():Unit"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/log/AttemptToAppendLogEntryAtEarlierTerm.html#finalize():Unit" title="Permalink">
+      <a href="../../../riff/raft/node/RecordingMessageHandler.html#finalize():Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -455,26 +462,10 @@
     </span>)</span>
               
         </dd></dl></div>
-    </li><li name="java.lang.Throwable#getCause" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="getCause():Throwable"></a>
-      <span class="permalink">
-      <a href="../../../riff/raft/log/AttemptToAppendLogEntryAtEarlierTerm.html#getCause():Throwable" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">getCause</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.Throwable">Throwable</span></span>
-      </span>
-      
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Throwable</dd></dl></div>
     </li><li name="scala.AnyRef#getClass" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="getClass():Class[_]"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/log/AttemptToAppendLogEntryAtEarlierTerm.html#getClass():Class[_]" title="Permalink">
+      <a href="../../../riff/raft/node/RecordingMessageHandler.html#getClass():Class[_]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -490,90 +481,10 @@
                 <span class="name">@native</span><span class="args">()</span>
               
         </dd></dl></div>
-    </li><li name="java.lang.Throwable#getLocalizedMessage" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="getLocalizedMessage():String"></a>
-      <span class="permalink">
-      <a href="../../../riff/raft/log/AttemptToAppendLogEntryAtEarlierTerm.html#getLocalizedMessage():String" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">getLocalizedMessage</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
-      </span>
-      
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Throwable</dd></dl></div>
-    </li><li name="java.lang.Throwable#getMessage" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="getMessage():String"></a>
-      <span class="permalink">
-      <a href="../../../riff/raft/log/AttemptToAppendLogEntryAtEarlierTerm.html#getMessage():String" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">getMessage</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
-      </span>
-      
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Throwable</dd></dl></div>
-    </li><li name="java.lang.Throwable#getStackTrace" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="getStackTrace():Array[StackTraceElement]"></a>
-      <span class="permalink">
-      <a href="../../../riff/raft/log/AttemptToAppendLogEntryAtEarlierTerm.html#getStackTrace():Array[StackTraceElement]" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">getStackTrace</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="java.lang.StackTraceElement">StackTraceElement</span>]</span>
-      </span>
-      
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Throwable</dd></dl></div>
-    </li><li name="java.lang.Throwable#getSuppressed" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="getSuppressed():Array[Throwable]"></a>
-      <span class="permalink">
-      <a href="../../../riff/raft/log/AttemptToAppendLogEntryAtEarlierTerm.html#getSuppressed():Array[Throwable]" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier">final </span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">getSuppressed</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="java.lang.Throwable">Throwable</span>]</span>
-      </span>
-      
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Throwable</dd></dl></div>
-    </li><li name="java.lang.Throwable#initCause" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="initCause(x$1:Throwable):Throwable"></a><a id="initCause(Throwable):Throwable"></a>
-      <span class="permalink">
-      <a href="../../../riff/raft/log/AttemptToAppendLogEntryAtEarlierTerm.html#initCause(x$1:Throwable):Throwable" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">initCause</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="java.lang.Throwable">Throwable</span></span>)</span><span class="result">: <span class="extype" name="java.lang.Throwable">Throwable</span></span>
-      </span>
-      
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Throwable</dd></dl></div>
     </li><li name="scala.Any#isInstanceOf" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="isInstanceOf[T0]:Boolean"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/log/AttemptToAppendLogEntryAtEarlierTerm.html#isInstanceOf[T0]:Boolean" title="Permalink">
+      <a href="../../../riff/raft/node/RecordingMessageHandler.html#isInstanceOf[T0]:Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -586,10 +497,10 @@
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
-    </li><li name="riff.raft.log.AttemptToAppendLogEntryAtEarlierTerm#latestLogEntryAppended" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="latestLogEntryAppended:riff.raft.log.LogCoords"></a><a id="latestLogEntryAppended:LogCoords"></a>
+    </li><li name="com.typesafe.scalalogging.StrictLogging#logger" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="logger:com.typesafe.scalalogging.Logger"></a><a id="logger:Logger"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/log/AttemptToAppendLogEntryAtEarlierTerm.html#latestLogEntryAppended:riff.raft.log.LogCoords" title="Permalink">
+      <a href="../../../riff/raft/node/RecordingMessageHandler.html#logger:com.typesafe.scalalogging.Logger" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -598,14 +509,14 @@
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">latestLogEntryAppended</span><span class="result">: <a href="LogCoords.html" class="extype" name="riff.raft.log.LogCoords">LogCoords</a></span>
+        <span class="name">logger</span><span class="result">: <span class="extype" name="com.typesafe.scalalogging.Logger">Logger</span></span>
       </span>
       
-      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Definition Classes</dt><dd>StrictLogging</dd></dl></div>
     </li><li name="scala.AnyRef#ne" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a><a id="ne(AnyRef):Boolean"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/log/AttemptToAppendLogEntryAtEarlierTerm.html#ne(x$1:AnyRef):Boolean" title="Permalink">
+      <a href="../../../riff/raft/node/RecordingMessageHandler.html#ne(x$1:AnyRef):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -618,10 +529,26 @@
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="riff.raft.node.RecordingMessageHandler#nodeId" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="nodeId:riff.raft.NodeId"></a><a id="nodeId:NodeId"></a>
+      <span class="permalink">
+      <a href="../../../riff/raft/node/RecordingMessageHandler.html#nodeId:riff.raft.NodeId" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">nodeId</span><span class="result">: <a href="../index.html#NodeId=String" class="extmbr" name="riff.raft.NodeId">NodeId</a></span>
+      </span>
+      
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>the ID of this node in the cluster</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="riff.raft.node.RecordingMessageHandler">RecordingMessageHandler</a> → <a href="RaftMessageHandler.html" class="extype" name="riff.raft.node.RaftMessageHandler">RaftMessageHandler</a></dd></dl></div>
     </li><li name="scala.AnyRef#notify" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notify():Unit"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/log/AttemptToAppendLogEntryAtEarlierTerm.html#notify():Unit" title="Permalink">
+      <a href="../../../riff/raft/node/RecordingMessageHandler.html#notify():Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -640,7 +567,7 @@
     </li><li name="scala.AnyRef#notifyAll" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notifyAll():Unit"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/log/AttemptToAppendLogEntryAtEarlierTerm.html#notifyAll():Unit" title="Permalink">
+      <a href="../../../riff/raft/node/RecordingMessageHandler.html#notifyAll():Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -656,10 +583,10 @@
                 <span class="name">@native</span><span class="args">()</span>
               
         </dd></dl></div>
-    </li><li name="java.lang.Throwable#printStackTrace" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="printStackTrace(x$1:java.io.PrintWriter):Unit"></a><a id="printStackTrace(PrintWriter):Unit"></a>
+    </li><li name="riff.raft.node.RecordingMessageHandler#onMessage" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="onMessage(input:riff.raft.messages.RaftMessage[A]):RecordingMessageHandler.this.Result"></a><a id="onMessage(RaftMessage[A]):Result"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/log/AttemptToAppendLogEntryAtEarlierTerm.html#printStackTrace(x$1:java.io.PrintWriter):Unit" title="Permalink">
+      <a href="../../../riff/raft/node/RecordingMessageHandler.html#onMessage(input:riff.raft.messages.RaftMessage[A]):RecordingMessageHandler.this.Result" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -668,62 +595,14 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">printStackTrace</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="java.io.PrintWriter">PrintWriter</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+        <span class="name">onMessage</span><span class="params">(<span name="input">input: <a href="../messages/RaftMessage.html" class="extype" name="riff.raft.messages.RaftMessage">RaftMessage</a>[<span class="extype" name="riff.raft.node.RecordingMessageHandler.A">A</span>]</span>)</span><span class="result">: <a href="#Result=riff.raft.node.RaftNodeResult[A]" class="extmbr" name="riff.raft.node.RecordingMessageHandler.Result">Result</a></span>
       </span>
       
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Throwable</dd></dl></div>
-    </li><li name="java.lang.Throwable#printStackTrace" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="printStackTrace(x$1:java.io.PrintStream):Unit"></a><a id="printStackTrace(PrintStream):Unit"></a>
-      <span class="permalink">
-      <a href="../../../riff/raft/log/AttemptToAppendLogEntryAtEarlierTerm.html#printStackTrace(x$1:java.io.PrintStream):Unit" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">printStackTrace</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="java.io.PrintStream">PrintStream</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
-      </span>
-      
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Throwable</dd></dl></div>
-    </li><li name="java.lang.Throwable#printStackTrace" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="printStackTrace():Unit"></a>
-      <span class="permalink">
-      <a href="../../../riff/raft/log/AttemptToAppendLogEntryAtEarlierTerm.html#printStackTrace():Unit" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">printStackTrace</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
-      </span>
-      
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Throwable</dd></dl></div>
-    </li><li name="java.lang.Throwable#setStackTrace" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="setStackTrace(x$1:Array[StackTraceElement]):Unit"></a><a id="setStackTrace(Array[StackTraceElement]):Unit"></a>
-      <span class="permalink">
-      <a href="../../../riff/raft/log/AttemptToAppendLogEntryAtEarlierTerm.html#setStackTrace(x$1:Array[StackTraceElement]):Unit" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">setStackTrace</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="java.lang.StackTraceElement">StackTraceElement</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
-      </span>
-      
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Throwable</dd></dl></div>
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>the response</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="riff.raft.node.RecordingMessageHandler">RecordingMessageHandler</a> → <a href="RaftMessageHandler.html" class="extype" name="riff.raft.node.RaftMessageHandler">RaftMessageHandler</a></dd></dl></div>
     </li><li name="scala.AnyRef#synchronized" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a><a id="synchronized[T0](⇒T0):T0"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/log/AttemptToAppendLogEntryAtEarlierTerm.html#synchronized[T0](x$1:=&gt;T0):T0" title="Permalink">
+      <a href="../../../riff/raft/node/RecordingMessageHandler.html#synchronized[T0](x$1:=&gt;T0):T0" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -736,26 +615,26 @@
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="java.lang.Throwable#toString" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="toString():String"></a>
+    </li><li name="riff.raft.node.RecordingMessageHandler#underlying" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="underlying:riff.raft.node.RaftMessageHandler[A]"></a><a id="underlying:RaftMessageHandler[A]"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/log/AttemptToAppendLogEntryAtEarlierTerm.html#toString():String" title="Permalink">
+      <a href="../../../riff/raft/node/RecordingMessageHandler.html#underlying:riff.raft.node.RaftMessageHandler[A]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
       <span class="modifier_kind">
         <span class="modifier"></span>
-        <span class="kind">def</span>
+        <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
+        <span class="name">underlying</span><span class="result">: <a href="RaftMessageHandler.html" class="extype" name="riff.raft.node.RaftMessageHandler">RaftMessageHandler</a>[<span class="extype" name="riff.raft.node.RecordingMessageHandler.A">A</span>]</span>
       </span>
       
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Throwable → AnyRef → Any</dd></dl></div>
+      
     </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait():Unit"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/log/AttemptToAppendLogEntryAtEarlierTerm.html#wait():Unit" title="Permalink">
+      <a href="../../../riff/raft/node/RecordingMessageHandler.html#wait():Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -777,7 +656,7 @@
     </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait(x$1:Long,x$2:Int):Unit"></a><a id="wait(Long,Int):Unit"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/log/AttemptToAppendLogEntryAtEarlierTerm.html#wait(x$1:Long,x$2:Int):Unit" title="Permalink">
+      <a href="../../../riff/raft/node/RecordingMessageHandler.html#wait(x$1:Long,x$2:Int):Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -799,7 +678,7 @@
     </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait(x$1:Long):Unit"></a><a id="wait(Long):Unit"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/log/AttemptToAppendLogEntryAtEarlierTerm.html#wait(x$1:Long):Unit" title="Permalink">
+      <a href="../../../riff/raft/node/RecordingMessageHandler.html#wait(x$1:Long):Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -832,20 +711,16 @@
         <div id="inheritedMembers">
         <div class="parent" name="scala.Serializable">
               <h3>Inherited from <span class="extype" name="scala.Serializable">Serializable</span></h3>
+            </div><div class="parent" name="java.io.Serializable">
+              <h3>Inherited from <span class="extype" name="java.io.Serializable">Serializable</span></h3>
             </div><div class="parent" name="scala.Product">
               <h3>Inherited from <span class="extype" name="scala.Product">Product</span></h3>
             </div><div class="parent" name="scala.Equals">
               <h3>Inherited from <span class="extype" name="scala.Equals">Equals</span></h3>
-            </div><div class="parent" name="scala.util.control.NoStackTrace">
-              <h3>Inherited from <span class="extype" name="scala.util.control.NoStackTrace">NoStackTrace</span></h3>
-            </div><div class="parent" name="riff.raft.log.LogAppendResult">
-              <h3>Inherited from <a href="LogAppendResult.html" class="extype" name="riff.raft.log.LogAppendResult">LogAppendResult</a></h3>
-            </div><div class="parent" name="java.lang.Exception">
-              <h3>Inherited from <span class="extype" name="java.lang.Exception">Exception</span></h3>
-            </div><div class="parent" name="java.lang.Throwable">
-              <h3>Inherited from <span class="extype" name="java.lang.Throwable">Throwable</span></h3>
-            </div><div class="parent" name="java.io.Serializable">
-              <h3>Inherited from <span class="extype" name="java.io.Serializable">Serializable</span></h3>
+            </div><div class="parent" name="com.typesafe.scalalogging.StrictLogging">
+              <h3>Inherited from <span class="extype" name="com.typesafe.scalalogging.StrictLogging">StrictLogging</span></h3>
+            </div><div class="parent" name="riff.raft.node.RaftMessageHandler">
+              <h3>Inherited from <a href="RaftMessageHandler.html" class="extype" name="riff.raft.node.RaftMessageHandler">RaftMessageHandler</a>[<span class="extype" name="riff.raft.node.RecordingMessageHandler.A">A</span>]</h3>
             </div><div class="parent" name="scala.AnyRef">
               <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
             </div><div class="parent" name="scala.Any">

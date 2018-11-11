@@ -126,10 +126,6 @@
                         <a class="trait" href="" title="Represents observable operations which can be performed on a riff.raft.log.RaftLog for committed log entries"></a>
                         <a href="" title="Represents observable operations which can be performed on a riff.raft.log.RaftLog for committed log entries">CommittedOps</a>
                       </li><li class="current-entities indented3">
-                        <a class="object" href="IndexedObservable$.html" title=""></a>
-                        <a class="trait" href="IndexedObservable.html" title="Represents something which can be subscribed to from a particular index."></a>
-                        <a href="IndexedObservable.html" title="Represents something which can be subscribed to from a particular index.">IndexedObservable</a>
-                      </li><li class="current-entities indented3">
                         <a class="object" href="ObservableLog$.html" title=""></a>
                         <a class="class" href="ObservableLog.html" title="Wraps a riff.raft.log.RaftLog for a local node which exposes Observable data publishers for: $ Appended LogCoords $ Appended LogEntry $ Appended LogCoords from a historic index $ Appended LogEntry from a historic index $ Committed LogCoords $ Committed LogEntry $ Committed LogCoords from a historic index $ Committed LogEntry from a historic index"></a>
                         <a href="ObservableLog.html" title="Wraps a riff.raft.log.RaftLog for a local node which exposes Observable data publishers for: $ Appended LogCoords $ Appended LogEntry $ Appended LogCoords from a historic index $ Appended LogEntry from a historic index $ Committed LogCoords $ Committed LogEntry $ Committed LogCoords from a historic index $ Committed LogEntry from a historic index">ObservableLog</a>
@@ -249,7 +245,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">committedCoordsFrom</span><span class="params">(<span name="index">index: <a href="../../raft/index.html#LogIndex=Int" class="extmbr" name="riff.raft.LogIndex">LogIndex</a></span>)</span><span class="result">: <span class="extype" name="monix.reactive.Observable">Observable</span>[<span class="extype" name="riff.raft.log.LogCoords">LogCoords</span>]</span>
+        <span class="name">committedCoordsFrom</span><span class="params">(<span name="index">index: <span class="extype" name="riff.raft.LogIndex">LogIndex</span></span>)</span><span class="result">: <span class="extype" name="monix.reactive.Observable">Observable</span>[<span class="extype" name="riff.raft.log.LogCoords">LogCoords</span>]</span>
       </span>
       
       <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">index</dt><dd class="cmt"><p>the (one based!) index from which we'd like to read the committed coords</p></dd><dt>returns</dt><dd class="cmt"><p>an observable of all committed entries from the given index</p></dd></dl></div>
@@ -391,7 +387,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">committedEntriesFrom</span><span class="params">(<span name="index">index: <a href="../../raft/index.html#LogIndex=Int" class="extmbr" name="riff.raft.LogIndex">LogIndex</a></span>)</span><span class="result">: <span class="extype" name="monix.reactive.Observable">Observable</span>[(<span class="extype" name="riff.raft.log.LogCoords">LogCoords</span>, <span class="extype" name="riff.monix.log.CommittedOps.A">A</span>)]</span>
+        <span class="name">committedEntriesFrom</span><span class="params">(<span name="index">index: <span class="extype" name="riff.raft.LogIndex">LogIndex</span></span>)</span><span class="result">: <span class="extype" name="monix.reactive.Observable">Observable</span>[(<span class="extype" name="riff.raft.log.LogCoords">LogCoords</span>, <span class="extype" name="riff.monix.log.CommittedOps.A">A</span>)]</span>
       </span>
       
       <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">index</dt><dd class="cmt"><p>the (one based!) index from which to observe</p></dd><dt>returns</dt><dd class="cmt"><p>an observable of the log entries from a particular index</p></dd></dl></div>

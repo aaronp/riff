@@ -110,9 +110,21 @@
                         <a class="trait" href="AsSubscriber.html" title="Represents any F[_] which can be represented as a Subscriber"></a>
                         <a href="AsSubscriber.html" title="Represents any F[_] which can be represented as a Subscriber">AsSubscriber</a>
                       </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="trait" href="AsyncPublisher.html" title="A hot publisher to multiple subscribers, where new subscriptions simply begin observing the messages as the point of subscription."></a>
+                        <a href="AsyncPublisher.html" title="A hot publisher to multiple subscribers, where new subscriptions simply begin observing the messages as the point of subscription.">AsyncPublisher</a>
+                      </li><li class="current-entities indented2">
                         <a class="object" href="AsyncSubscription$.html" title=""></a>
                         <a class="class" href="AsyncSubscription.html" title="Represents a subscription whose actions are handled via a Runnable pulling values from a blocking internalStateInputQueue submitted on a provided execution context"></a>
                         <a href="AsyncSubscription.html" title="Represents a subscription whose actions are handled via a Runnable pulling values from a blocking internalStateInputQueue submitted on a provided execution context">AsyncSubscription</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="BatchedPublisher.html" title=""></a>
+                        <a href="BatchedPublisher.html" title="">BatchedPublisher</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="BatchedSubscriber.html" title=""></a>
+                        <a href="BatchedSubscriber.html" title="">BatchedSubscriber</a>
                       </li><li class="current-entities indented2">
                         <a class="object" href="CollectPublisher$.html" title=""></a>
                         <a class="class" href="" title="Simple implementation of a publisher which can filter its published elements"></a>
@@ -133,10 +145,6 @@
                         <a class="object" href="ReactivePipe$.html" title=""></a>
                         <a class="class" href="ReactivePipe.html" title="Represents an input/output pipe"></a>
                         <a href="ReactivePipe.html" title="Represents an input/output pipe">ReactivePipe</a>
-                      </li><li class="current-entities indented2">
-                        <span class="separator"></span>
-                        <a class="trait" href="ReactivePublisher.html" title="A hot publisher to multiple subscribers, where new subscriptions simply begin observing the messages as the point of subscription."></a>
-                        <a href="ReactivePublisher.html" title="A hot publisher to multiple subscribers, where new subscriptions simply begin observing the messages as the point of subscription.">ReactivePublisher</a>
                       </li><li class="current-entities indented2">
                         <a class="object" href="ReactiveTimerCallback$.html" title=""></a>
                         <a class="class" href="ReactiveTimerCallback.html" title="An implementation of a TimerCallback which publishes TimerMessages"></a>
@@ -178,7 +186,7 @@
         <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <span class="name">CollectPublisher</span><span class="tparams">[<span name="A">-A</span>, <span name="B">B</span>]</span><span class="result"> extends <span class="extype" name="org.reactivestreams.Publisher">Publisher</span>[<span class="extype" name="riff.reactive.CollectPublisher.B">B</span>]</span>
+        <span class="name">CollectPublisher</span><span class="tparams">[<span name="A">-A</span>, <span name="B">B</span>]</span><span class="result"> extends <span class="extype" name="org.reactivestreams.Publisher">Publisher</span>[<span class="extype" name="riff.reactive.CollectPublisher.B">B</span>] with <span class="extype" name="java.lang.AutoCloseable">AutoCloseable</span></span>
       </span>
       </h4>
 
@@ -188,7 +196,7 @@
           <span class="toggle">
             Linear Supertypes
           </span>
-          <div class="superTypes hiddenContent"><span class="extype" name="org.reactivestreams.Publisher">Publisher</span>[<span class="extype" name="riff.reactive.CollectPublisher.B">B</span>], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><span class="extype" name="java.lang.AutoCloseable">AutoCloseable</span>, <span class="extype" name="org.reactivestreams.Publisher">Publisher</span>[<span class="extype" name="riff.reactive.CollectPublisher.B">B</span>], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
         
 
@@ -214,7 +222,7 @@
                   <span class="filtertype">Inherited<br />
                   </span>
                   <ol id="linearization">
-                    <li class="in" name="riff.reactive.CollectPublisher"><span>CollectPublisher</span></li><li class="in" name="org.reactivestreams.Publisher"><span>Publisher</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                    <li class="in" name="riff.reactive.CollectPublisher"><span>CollectPublisher</span></li><li class="in" name="java.lang.AutoCloseable"><span>AutoCloseable</span></li><li class="in" name="org.reactivestreams.Publisher"><span>Publisher</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                   </ol>
                 </div><div class="ancestors">
               <span class="filtertype"></span>
@@ -348,6 +356,22 @@
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="riff.reactive.CollectPublisher#close" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="close():Unit"></a>
+      <span class="permalink">
+      <a href="../../riff/reactive/CollectPublisher.html#close():Unit" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">close</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="riff.reactive.CollectPublisher">CollectPublisher</a> → AutoCloseable</dd></dl></div>
     </li><li name="scala.AnyRef#eq" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a><a id="eq(AnyRef):Boolean"></a>
       <span class="permalink">
@@ -636,7 +660,9 @@
         </div>
 
         <div id="inheritedMembers">
-        <div class="parent" name="org.reactivestreams.Publisher">
+        <div class="parent" name="java.lang.AutoCloseable">
+              <h3>Inherited from <span class="extype" name="java.lang.AutoCloseable">AutoCloseable</span></h3>
+            </div><div class="parent" name="org.reactivestreams.Publisher">
               <h3>Inherited from <span class="extype" name="org.reactivestreams.Publisher">Publisher</span>[<span class="extype" name="riff.reactive.CollectPublisher.B">B</span>]</h3>
             </div><div class="parent" name="scala.AnyRef">
               <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>

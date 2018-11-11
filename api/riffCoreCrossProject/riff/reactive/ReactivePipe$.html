@@ -110,9 +110,21 @@
                         <a class="trait" href="AsSubscriber.html" title="Represents any F[_] which can be represented as a Subscriber"></a>
                         <a href="AsSubscriber.html" title="Represents any F[_] which can be represented as a Subscriber">AsSubscriber</a>
                       </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="trait" href="AsyncPublisher.html" title="A hot publisher to multiple subscribers, where new subscriptions simply begin observing the messages as the point of subscription."></a>
+                        <a href="AsyncPublisher.html" title="A hot publisher to multiple subscribers, where new subscriptions simply begin observing the messages as the point of subscription.">AsyncPublisher</a>
+                      </li><li class="current-entities indented2">
                         <a class="object" href="AsyncSubscription$.html" title=""></a>
                         <a class="class" href="AsyncSubscription.html" title="Represents a subscription whose actions are handled via a Runnable pulling values from a blocking internalStateInputQueue submitted on a provided execution context"></a>
                         <a href="AsyncSubscription.html" title="Represents a subscription whose actions are handled via a Runnable pulling values from a blocking internalStateInputQueue submitted on a provided execution context">AsyncSubscription</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="BatchedPublisher.html" title=""></a>
+                        <a href="BatchedPublisher.html" title="">BatchedPublisher</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="BatchedSubscriber.html" title=""></a>
+                        <a href="BatchedSubscriber.html" title="">BatchedSubscriber</a>
                       </li><li class="current-entities indented2">
                         <a class="object" href="CollectPublisher$.html" title=""></a>
                         <a class="class" href="CollectPublisher.html" title="Simple implementation of a publisher which can filter its published elements"></a>
@@ -133,10 +145,6 @@
                         <a class="object" href="" title=""></a>
                         <a class="class" href="ReactivePipe.html" title="Represents an input/output pipe"></a>
                         <a href="ReactivePipe.html" title="Represents an input/output pipe">ReactivePipe</a>
-                      </li><li class="current-entities indented2">
-                        <span class="separator"></span>
-                        <a class="trait" href="ReactivePublisher.html" title="A hot publisher to multiple subscribers, where new subscriptions simply begin observing the messages as the point of subscription."></a>
-                        <a href="ReactivePublisher.html" title="A hot publisher to multiple subscribers, where new subscriptions simply begin observing the messages as the point of subscription.">ReactivePublisher</a>
                       </li><li class="current-entities indented2">
                         <a class="object" href="ReactiveTimerCallback$.html" title=""></a>
                         <a class="class" href="ReactiveTimerCallback.html" title="An implementation of a TimerCallback which publishes TimerMessages"></a>
@@ -236,9 +244,9 @@
         <div id="types" class="types members">
               <h3>Type Members</h3>
               <ol><li name="riff.reactive.ReactivePipe.Instance" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="Instance[A]extendsReactivePublisher[A]withSingleSubscriber[A]"></a><a id="Instance[A]:Instance[A]"></a>
+      <a id="Instance[A]extendsAsyncPublisher[A]withSingleSubscriber[A]withAutoCloseable"></a><a id="Instance[A]:Instance[A]"></a>
       <span class="permalink">
-      <a href="../../riff/reactive/ReactivePipe$.html#Instance[A]extendsReactivePublisher[A]withSingleSubscriber[A]" title="Permalink">
+      <a href="../../riff/reactive/ReactivePipe$.html#Instance[A]extendsAsyncPublisher[A]withSingleSubscriber[A]withAutoCloseable" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -247,7 +255,7 @@
         <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <a title="" href="ReactivePipe$$Instance.html"><span class="name">Instance</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends <a href="ReactivePublisher.html" class="extype" name="riff.reactive.ReactivePublisher">ReactivePublisher</a>[<span class="extype" name="riff.reactive.ReactivePipe.Instance.A">A</span>] with <a href="SingleSubscriber.html" class="extype" name="riff.reactive.SingleSubscriber">SingleSubscriber</a>[<span class="extype" name="riff.reactive.ReactivePipe.Instance.A">A</span>]</span>
+        <a title="" href="ReactivePipe$$Instance.html"><span class="name">Instance</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends <a href="AsyncPublisher.html" class="extype" name="riff.reactive.AsyncPublisher">AsyncPublisher</a>[<span class="extype" name="riff.reactive.ReactivePipe.Instance.A">A</span>] with <a href="SingleSubscriber.html" class="extype" name="riff.reactive.SingleSubscriber">SingleSubscriber</a>[<span class="extype" name="riff.reactive.ReactivePipe.Instance.A">A</span>] with <span class="extype" name="java.lang.AutoCloseable">AutoCloseable</span></span>
       </span>
       
       
@@ -456,9 +464,9 @@
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
     </li><li name="riff.reactive.ReactivePipe#multi" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="multi[A](subscriptionBatchSize:Int,minimumRequestedThreshold:Int)(implicitexecutionContext:scala.concurrent.ExecutionContext):riff.reactive.ReactivePipe[A,org.reactivestreams.Subscriber,org.reactivestreams.Publisher]"></a><a id="multi[A](Int,Int)(ExecutionContext):ReactivePipe[A,Subscriber,Publisher]"></a>
+      <a id="multi[A](queueSize:Int,delayErrors:Boolean,minimumRequestedThreshold:Int,subscriptionBatchSize:Int)(implicitexecutionContext:scala.concurrent.ExecutionContext):riff.reactive.ReactivePipe[A,A,org.reactivestreams.Subscriber,org.reactivestreams.Publisher]"></a><a id="multi[A](Int,Boolean,Int,Int)(ExecutionContext):ReactivePipe[A,A,Subscriber,Publisher]"></a>
       <span class="permalink">
-      <a href="../../riff/reactive/ReactivePipe$.html#multi[A](subscriptionBatchSize:Int,minimumRequestedThreshold:Int)(implicitexecutionContext:scala.concurrent.ExecutionContext):riff.reactive.ReactivePipe[A,org.reactivestreams.Subscriber,org.reactivestreams.Publisher]" title="Permalink">
+      <a href="../../riff/reactive/ReactivePipe$.html#multi[A](queueSize:Int,delayErrors:Boolean,minimumRequestedThreshold:Int,subscriptionBatchSize:Int)(implicitexecutionContext:scala.concurrent.ExecutionContext):riff.reactive.ReactivePipe[A,A,org.reactivestreams.Subscriber,org.reactivestreams.Publisher]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -467,7 +475,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">multi</span><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="subscriptionBatchSize">subscriptionBatchSize: <span class="extype" name="scala.Int">Int</span> = <span class="symbol">10</span></span>, <span name="minimumRequestedThreshold">minimumRequestedThreshold: <span class="extype" name="scala.Int">Int</span> = <span class="symbol">100</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="executionContext">executionContext: <span class="extype" name="scala.concurrent.ExecutionContext">ExecutionContext</span></span>)</span><span class="result">: <a href="ReactivePipe.html" class="extype" name="riff.reactive.ReactivePipe">ReactivePipe</a>[<span class="extype" name="riff.reactive.ReactivePipe.multi.A">A</span>, <span class="extype" name="org.reactivestreams.Subscriber">Subscriber</span>, <span class="extype" name="org.reactivestreams.Publisher">Publisher</span>]</span>
+        <span class="name">multi</span><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="queueSize">queueSize: <span class="extype" name="scala.Int">Int</span></span>, <span name="delayErrors">delayErrors: <span class="extype" name="scala.Boolean">Boolean</span></span>, <span name="minimumRequestedThreshold">minimumRequestedThreshold: <span class="extype" name="scala.Int">Int</span> = <span class="symbol">10</span></span>, <span name="subscriptionBatchSize">subscriptionBatchSize: <span class="extype" name="scala.Int">Int</span> = <span class="symbol">100</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="executionContext">executionContext: <span class="extype" name="scala.concurrent.ExecutionContext">ExecutionContext</span></span>)</span><span class="result">: <a href="ReactivePipe.html" class="extype" name="riff.reactive.ReactivePipe">ReactivePipe</a>[<span class="extype" name="riff.reactive.ReactivePipe.multi.A">A</span>, <span class="extype" name="riff.reactive.ReactivePipe.multi.A">A</span>, <span class="extype" name="org.reactivestreams.Subscriber">Subscriber</span>, <span class="extype" name="org.reactivestreams.Publisher">Publisher</span>]</span>
       </span>
       
       
@@ -526,9 +534,9 @@
               
         </dd></dl></div>
     </li><li name="riff.reactive.ReactivePipe#single" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="single[A](subscriptionBatchSize:Int,minimumRequestedThreshold:Int)(implicitexecutionContext:scala.concurrent.ExecutionContext):riff.reactive.ReactivePipe[A,org.reactivestreams.Subscriber,org.reactivestreams.Publisher]"></a><a id="single[A](Int,Int)(ExecutionContext):ReactivePipe[A,Subscriber,Publisher]"></a>
+      <a id="single[A](maxQueueSize:Int,minimumRequestedThreshold:Int,subscriptionBatchSize:Int)(implicitexecutionContext:scala.concurrent.ExecutionContext):riff.reactive.ReactivePipe[A,A,org.reactivestreams.Subscriber,org.reactivestreams.Publisher]"></a><a id="single[A](Int,Int,Int)(ExecutionContext):ReactivePipe[A,A,Subscriber,Publisher]"></a>
       <span class="permalink">
-      <a href="../../riff/reactive/ReactivePipe$.html#single[A](subscriptionBatchSize:Int,minimumRequestedThreshold:Int)(implicitexecutionContext:scala.concurrent.ExecutionContext):riff.reactive.ReactivePipe[A,org.reactivestreams.Subscriber,org.reactivestreams.Publisher]" title="Permalink">
+      <a href="../../riff/reactive/ReactivePipe$.html#single[A](maxQueueSize:Int,minimumRequestedThreshold:Int,subscriptionBatchSize:Int)(implicitexecutionContext:scala.concurrent.ExecutionContext):riff.reactive.ReactivePipe[A,A,org.reactivestreams.Subscriber,org.reactivestreams.Publisher]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -537,7 +545,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">single</span><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="subscriptionBatchSize">subscriptionBatchSize: <span class="extype" name="scala.Int">Int</span> = <span class="symbol">10</span></span>, <span name="minimumRequestedThreshold">minimumRequestedThreshold: <span class="extype" name="scala.Int">Int</span> = <span class="symbol">100</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="executionContext">executionContext: <span class="extype" name="scala.concurrent.ExecutionContext">ExecutionContext</span></span>)</span><span class="result">: <a href="ReactivePipe.html" class="extype" name="riff.reactive.ReactivePipe">ReactivePipe</a>[<span class="extype" name="riff.reactive.ReactivePipe.single.A">A</span>, <span class="extype" name="org.reactivestreams.Subscriber">Subscriber</span>, <span class="extype" name="org.reactivestreams.Publisher">Publisher</span>]</span>
+        <span class="name">single</span><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="maxQueueSize">maxQueueSize: <span class="extype" name="scala.Int">Int</span></span>, <span name="minimumRequestedThreshold">minimumRequestedThreshold: <span class="extype" name="scala.Int">Int</span></span>, <span name="subscriptionBatchSize">subscriptionBatchSize: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="executionContext">executionContext: <span class="extype" name="scala.concurrent.ExecutionContext">ExecutionContext</span></span>)</span><span class="result">: <a href="ReactivePipe.html" class="extype" name="riff.reactive.ReactivePipe">ReactivePipe</a>[<span class="extype" name="riff.reactive.ReactivePipe.single.A">A</span>, <span class="extype" name="riff.reactive.ReactivePipe.single.A">A</span>, <span class="extype" name="org.reactivestreams.Subscriber">Subscriber</span>, <span class="extype" name="org.reactivestreams.Publisher">Publisher</span>]</span>
       </span>
       
       

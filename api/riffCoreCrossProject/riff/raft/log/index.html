@@ -162,6 +162,10 @@
                         <a class="class" href="LogState.html" title=""></a>
                         <a href="LogState.html" title="">LogState</a>
                       </li><li class="current-entities indented3">
+                        <span class="separator"></span>
+                        <a class="class" href="NotTheLeaderException.html" title=""></a>
+                        <a href="NotTheLeaderException.html" title="">NotTheLeaderException</a>
+                      </li><li class="current-entities indented3">
                         <a class="object" href="RaftLog$.html" title=""></a>
                         <a class="trait" href="RaftLog.html" title="The persistent log"></a>
                         <a href="RaftLog.html" title="The persistent log">RaftLog</a>
@@ -479,6 +483,22 @@
       </span>
       <span class="symbol">
         <a title="" href="LogState.html"><span class="name">LogState</span></a><span class="params">(<span name="commitIndex">commitIndex: <a href="../index.html#LogIndex=Int" class="extmbr" name="riff.raft.LogIndex">LogIndex</a></span>, <span name="latestTerm">latestTerm: <a href="../index.html#Term=Int" class="extmbr" name="riff.raft.Term">Term</a></span>, <span name="latestIndex">latestIndex: <a href="../index.html#LogIndex=Int" class="extmbr" name="riff.raft.LogIndex">LogIndex</a></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      
+    </li><li name="riff.raft.log.NotTheLeaderException" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="NotTheLeaderExceptionextendsExceptionwithLogAppendResultwithNoStackTracewithProductwithSerializable"></a><a id="NotTheLeaderException:NotTheLeaderException"></a>
+      <span class="permalink">
+      <a href="../../../riff/raft/log/index.html#NotTheLeaderExceptionextendsExceptionwithLogAppendResultwithNoStackTracewithProductwithSerializable" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="NotTheLeaderException.html"><span class="name">NotTheLeaderException</span></a><span class="params">(<span name="attemptedNodeId">attemptedNodeId: <a href="../index.html#NodeId=String" class="extmbr" name="riff.raft.NodeId">NodeId</a></span>, <span name="term">term: <a href="../index.html#Term=Int" class="extmbr" name="riff.raft.Term">Term</a></span>, <span name="leadIdOpt">leadIdOpt: <span class="extype" name="scala.Option">Option</span>[<a href="../index.html#NodeId=String" class="extmbr" name="riff.raft.NodeId">NodeId</a>]</span>)</span><span class="result"> extends <span class="extype" name="scala.Exception">Exception</span> with <a href="LogAppendResult.html" class="extype" name="riff.raft.log.LogAppendResult">LogAppendResult</a> with <span class="extype" name="scala.util.control.NoStackTrace">NoStackTrace</span> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       
       

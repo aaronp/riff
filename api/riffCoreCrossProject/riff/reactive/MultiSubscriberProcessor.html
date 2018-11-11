@@ -110,9 +110,21 @@
                         <a class="trait" href="AsSubscriber.html" title="Represents any F[_] which can be represented as a Subscriber"></a>
                         <a href="AsSubscriber.html" title="Represents any F[_] which can be represented as a Subscriber">AsSubscriber</a>
                       </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="trait" href="AsyncPublisher.html" title="A hot publisher to multiple subscribers, where new subscriptions simply begin observing the messages as the point of subscription."></a>
+                        <a href="AsyncPublisher.html" title="A hot publisher to multiple subscribers, where new subscriptions simply begin observing the messages as the point of subscription.">AsyncPublisher</a>
+                      </li><li class="current-entities indented2">
                         <a class="object" href="AsyncSubscription$.html" title=""></a>
                         <a class="class" href="AsyncSubscription.html" title="Represents a subscription whose actions are handled via a Runnable pulling values from a blocking internalStateInputQueue submitted on a provided execution context"></a>
                         <a href="AsyncSubscription.html" title="Represents a subscription whose actions are handled via a Runnable pulling values from a blocking internalStateInputQueue submitted on a provided execution context">AsyncSubscription</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="BatchedPublisher.html" title=""></a>
+                        <a href="BatchedPublisher.html" title="">BatchedPublisher</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="BatchedSubscriber.html" title=""></a>
+                        <a href="BatchedSubscriber.html" title="">BatchedSubscriber</a>
                       </li><li class="current-entities indented2">
                         <a class="object" href="CollectPublisher$.html" title=""></a>
                         <a class="class" href="CollectPublisher.html" title="Simple implementation of a publisher which can filter its published elements"></a>
@@ -133,10 +145,6 @@
                         <a class="object" href="ReactivePipe$.html" title=""></a>
                         <a class="class" href="ReactivePipe.html" title="Represents an input/output pipe"></a>
                         <a href="ReactivePipe.html" title="Represents an input/output pipe">ReactivePipe</a>
-                      </li><li class="current-entities indented2">
-                        <span class="separator"></span>
-                        <a class="trait" href="ReactivePublisher.html" title="A hot publisher to multiple subscribers, where new subscriptions simply begin observing the messages as the point of subscription."></a>
-                        <a href="ReactivePublisher.html" title="A hot publisher to multiple subscribers, where new subscriptions simply begin observing the messages as the point of subscription.">ReactivePublisher</a>
                       </li><li class="current-entities indented2">
                         <a class="object" href="ReactiveTimerCallback$.html" title=""></a>
                         <a class="class" href="ReactiveTimerCallback.html" title="An implementation of a TimerCallback which publishes TimerMessages"></a>
@@ -178,7 +186,7 @@
         <span class="kind">trait</span>
       </span>
       <span class="symbol">
-        <span class="name">MultiSubscriberProcessor</span><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends <a href="ReactivePublisher.html" class="extype" name="riff.reactive.ReactivePublisher">ReactivePublisher</a>[<span class="extype" name="riff.reactive.MultiSubscriberProcessor.A">A</span>] with <span class="extype" name="org.reactivestreams.Subscriber">Subscriber</span>[<span class="extype" name="riff.reactive.MultiSubscriberProcessor.A">A</span>]</span>
+        <span class="name">MultiSubscriberProcessor</span><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends <a href="AsyncPublisher.html" class="extype" name="riff.reactive.AsyncPublisher">AsyncPublisher</a>[<span class="extype" name="riff.reactive.MultiSubscriberProcessor.A">A</span>] with <span class="extype" name="org.reactivestreams.Subscriber">Subscriber</span>[<span class="extype" name="riff.reactive.MultiSubscriberProcessor.A">A</span>] with <span class="extype" name="com.typesafe.scalalogging.StrictLogging">StrictLogging</span> with <span class="extype" name="java.lang.AutoCloseable">AutoCloseable</span></span>
       </span>
       </h4>
 
@@ -193,7 +201,7 @@ sub.subscribe(...)</pre></div><div class="toggleContainer block">
           <span class="toggle">
             Linear Supertypes
           </span>
-          <div class="superTypes hiddenContent"><span class="extype" name="org.reactivestreams.Subscriber">Subscriber</span>[<span class="extype" name="riff.reactive.MultiSubscriberProcessor.A">A</span>], <a href="ReactivePublisher.html" class="extype" name="riff.reactive.ReactivePublisher">ReactivePublisher</a>[<span class="extype" name="riff.reactive.MultiSubscriberProcessor.A">A</span>], <span class="extype" name="org.reactivestreams.Publisher">Publisher</span>[<span class="extype" name="riff.reactive.MultiSubscriberProcessor.A">A</span>], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><span class="extype" name="org.reactivestreams.Subscriber">Subscriber</span>[<span class="extype" name="riff.reactive.MultiSubscriberProcessor.A">A</span>], <a href="AsyncPublisher.html" class="extype" name="riff.reactive.AsyncPublisher">AsyncPublisher</a>[<span class="extype" name="riff.reactive.MultiSubscriberProcessor.A">A</span>], <span class="extype" name="java.lang.AutoCloseable">AutoCloseable</span>, <span class="extype" name="com.typesafe.scalalogging.StrictLogging">StrictLogging</span>, <span class="extype" name="org.reactivestreams.Publisher">Publisher</span>[<span class="extype" name="riff.reactive.MultiSubscriberProcessor.A">A</span>], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
         
 
@@ -219,7 +227,7 @@ sub.subscribe(...)</pre></div><div class="toggleContainer block">
                   <span class="filtertype">Inherited<br />
                   </span>
                   <ol id="linearization">
-                    <li class="in" name="riff.reactive.MultiSubscriberProcessor"><span>MultiSubscriberProcessor</span></li><li class="in" name="org.reactivestreams.Subscriber"><span>Subscriber</span></li><li class="in" name="riff.reactive.ReactivePublisher"><span>ReactivePublisher</span></li><li class="in" name="org.reactivestreams.Publisher"><span>Publisher</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                    <li class="in" name="riff.reactive.MultiSubscriberProcessor"><span>MultiSubscriberProcessor</span></li><li class="in" name="org.reactivestreams.Subscriber"><span>Subscriber</span></li><li class="in" name="riff.reactive.AsyncPublisher"><span>AsyncPublisher</span></li><li class="in" name="java.lang.AutoCloseable"><span>AutoCloseable</span></li><li class="in" name="com.typesafe.scalalogging.StrictLogging"><span>StrictLogging</span></li><li class="in" name="org.reactivestreams.Publisher"><span>Publisher</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                   </ol>
                 </div><div class="ancestors">
               <span class="filtertype"></span>
@@ -243,7 +251,7 @@ sub.subscribe(...)</pre></div><div class="toggleContainer block">
 
         <div class="values members">
               <h3>Abstract Value Members</h3>
-              <ol><li name="riff.reactive.ReactivePublisher#ctxt" visbl="pub" class="indented0 " data-isabs="true" fullComment="yes" group="Ungrouped">
+              <ol><li name="riff.reactive.AsyncPublisher#ctxt" visbl="pub" class="indented0 " data-isabs="true" fullComment="yes" group="Ungrouped">
       <a id="ctxt:scala.concurrent.ExecutionContext"></a><a id="ctxt:ExecutionContext"></a>
       <span class="permalink">
       <a href="../../riff/reactive/MultiSubscriberProcessor.html#ctxt:scala.concurrent.ExecutionContext" title="Permalink">
@@ -258,7 +266,7 @@ sub.subscribe(...)</pre></div><div class="toggleContainer block">
         <span class="name">ctxt</span><span class="result">: <span class="extype" name="scala.concurrent.ExecutionContext">ExecutionContext</span></span>
       </span>
       
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="ReactivePublisher.html" class="extype" name="riff.reactive.ReactivePublisher">ReactivePublisher</a></dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="AsyncPublisher.html" class="extype" name="riff.reactive.AsyncPublisher">AsyncPublisher</a></dd></dl></div>
     </li><li name="riff.reactive.MultiSubscriberProcessor#delayErrors" visbl="pub" class="indented0 " data-isabs="true" fullComment="yes" group="Ungrouped">
       <a id="delayErrors:Boolean"></a>
       <span class="permalink">
@@ -275,6 +283,23 @@ sub.subscribe(...)</pre></div><div class="toggleContainer block">
       </span>
       
       <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>true if we should suppress errors from any one subscription</p></dd></dl></div>
+    </li><li name="riff.reactive.AsyncPublisher#maxQueueSize" visbl="prt" class="indented0 " data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="maxQueueSize:Int"></a>
+      <span class="permalink">
+      <a href="../../riff/reactive/MultiSubscriberProcessor.html#maxQueueSize:Int" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">maxQueueSize</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      
+      <p class="shortcomment cmt">We enqueue request(n), push, cancel and completed requests as instructions to the subscribers.</p><div class="fullcomment"><div class="comment cmt"><p>We enqueue request(n), push, cancel and completed requests as instructions to the subscribers.
+These instructions are kept in a queue with this as its max size</p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>the queue size for the subscriber messages (push, request, cancel, etc)</p></dd></dl><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Definition Classes</dt><dd><a href="AsyncPublisher.html" class="extype" name="riff.reactive.AsyncPublisher">AsyncPublisher</a></dd></dl></div>
     </li></ol>
             </div>
 
@@ -329,7 +354,7 @@ sub.subscribe(...)</pre></div><div class="toggleContainer block">
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
-    </li><li name="riff.reactive.ReactivePublisher#add" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+    </li><li name="riff.reactive.AsyncPublisher#add" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="add(sub:riff.reactive.AsyncSubscription[T]):riff.reactive.AsyncSubscription[T]"></a><a id="add(AsyncSubscription[A]):AsyncSubscription[A]"></a>
       <span class="permalink">
       <a href="../../riff/reactive/MultiSubscriberProcessor.html#add(sub:riff.reactive.AsyncSubscription[T]):riff.reactive.AsyncSubscription[T]" title="Permalink">
@@ -344,7 +369,7 @@ sub.subscribe(...)</pre></div><div class="toggleContainer block">
         <span class="name">add</span><span class="params">(<span name="sub">sub: <a href="AsyncSubscription.html" class="extype" name="riff.reactive.AsyncSubscription">AsyncSubscription</a>[<span class="extype" name="riff.reactive.MultiSubscriberProcessor.A">A</span>]</span>)</span><span class="result">: <a href="AsyncSubscription.html" class="extype" name="riff.reactive.AsyncSubscription">AsyncSubscription</a>[<span class="extype" name="riff.reactive.MultiSubscriberProcessor.A">A</span>]</span>
       </span>
       
-      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Definition Classes</dt><dd><a href="ReactivePublisher.html" class="extype" name="riff.reactive.ReactivePublisher">ReactivePublisher</a></dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Definition Classes</dt><dd><a href="AsyncPublisher.html" class="extype" name="riff.reactive.AsyncPublisher">AsyncPublisher</a></dd></dl></div>
     </li><li name="scala.Any#asInstanceOf" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="asInstanceOf[T0]:T0"></a>
       <span class="permalink">
@@ -385,6 +410,22 @@ sub.subscribe(...)</pre></div><div class="toggleContainer block">
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="riff.reactive.MultiSubscriberProcessor#close" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="close():Unit"></a>
+      <span class="permalink">
+      <a href="../../riff/reactive/MultiSubscriberProcessor.html#close():Unit" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">close</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="riff.reactive.MultiSubscriberProcessor">MultiSubscriberProcessor</a> → <a href="AsyncPublisher.html" class="extype" name="riff.reactive.AsyncPublisher">AsyncPublisher</a> → AutoCloseable</dd></dl></div>
     </li><li name="riff.reactive.MultiSubscriberProcessor#complete" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="complete(propagateErrors:Boolean):Unit"></a><a id="complete(Boolean):Unit"></a>
       <span class="permalink">
@@ -404,7 +445,7 @@ sub.subscribe(...)</pre></div><div class="toggleContainer block">
 handed to a publisher at any time, so this will explicitly complete and downstream
 subscribers and thus release any resources used.
 </p></div></div>
-    </li><li name="riff.reactive.ReactivePublisher#enqueueCancel" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+    </li><li name="riff.reactive.AsyncPublisher#enqueueCancel" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="enqueueCancel():Unit"></a>
       <span class="permalink">
       <a href="../../riff/reactive/MultiSubscriberProcessor.html#enqueueCancel():Unit" title="Permalink">
@@ -419,8 +460,8 @@ subscribers and thus release any resources used.
         <span class="name">enqueueCancel</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       
-      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Definition Classes</dt><dd><a href="ReactivePublisher.html" class="extype" name="riff.reactive.ReactivePublisher">ReactivePublisher</a></dd></dl></div>
-    </li><li name="riff.reactive.ReactivePublisher#enqueueComplete" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Definition Classes</dt><dd><a href="AsyncPublisher.html" class="extype" name="riff.reactive.AsyncPublisher">AsyncPublisher</a></dd></dl></div>
+    </li><li name="riff.reactive.AsyncPublisher#enqueueComplete" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="enqueueComplete():Unit"></a>
       <span class="permalink">
       <a href="../../riff/reactive/MultiSubscriberProcessor.html#enqueueComplete():Unit" title="Permalink">
@@ -435,8 +476,8 @@ subscribers and thus release any resources used.
         <span class="name">enqueueComplete</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       
-      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Definition Classes</dt><dd><a href="ReactivePublisher.html" class="extype" name="riff.reactive.ReactivePublisher">ReactivePublisher</a></dd></dl></div>
-    </li><li name="riff.reactive.ReactivePublisher#enqueueError" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Definition Classes</dt><dd><a href="AsyncPublisher.html" class="extype" name="riff.reactive.AsyncPublisher">AsyncPublisher</a></dd></dl></div>
+    </li><li name="riff.reactive.AsyncPublisher#enqueueError" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="enqueueError(result:Throwable):Unit"></a><a id="enqueueError(Throwable):Unit"></a>
       <span class="permalink">
       <a href="../../riff/reactive/MultiSubscriberProcessor.html#enqueueError(result:Throwable):Unit" title="Permalink">
@@ -451,8 +492,8 @@ subscribers and thus release any resources used.
         <span class="name">enqueueError</span><span class="params">(<span name="result">result: <span class="extype" name="scala.Throwable">Throwable</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       
-      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Definition Classes</dt><dd><a href="ReactivePublisher.html" class="extype" name="riff.reactive.ReactivePublisher">ReactivePublisher</a></dd></dl></div>
-    </li><li name="riff.reactive.ReactivePublisher#enqueueMessage" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Definition Classes</dt><dd><a href="AsyncPublisher.html" class="extype" name="riff.reactive.AsyncPublisher">AsyncPublisher</a></dd></dl></div>
+    </li><li name="riff.reactive.AsyncPublisher#enqueueMessage" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="enqueueMessage(message:T):Unit"></a><a id="enqueueMessage(A):Unit"></a>
       <span class="permalink">
       <a href="../../riff/reactive/MultiSubscriberProcessor.html#enqueueMessage(message:T):Unit" title="Permalink">
@@ -467,8 +508,8 @@ subscribers and thus release any resources used.
         <span class="name">enqueueMessage</span><span class="params">(<span name="message">message: <span class="extype" name="riff.reactive.MultiSubscriberProcessor.A">A</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       
-      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Definition Classes</dt><dd><a href="ReactivePublisher.html" class="extype" name="riff.reactive.ReactivePublisher">ReactivePublisher</a></dd></dl></div>
-    </li><li name="riff.reactive.ReactivePublisher#enqueueMessages" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Definition Classes</dt><dd><a href="AsyncPublisher.html" class="extype" name="riff.reactive.AsyncPublisher">AsyncPublisher</a></dd></dl></div>
+    </li><li name="riff.reactive.AsyncPublisher#enqueueMessages" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="enqueueMessages(messages:Iterable[T]):Unit"></a><a id="enqueueMessages(Iterable[A]):Unit"></a>
       <span class="permalink">
       <a href="../../riff/reactive/MultiSubscriberProcessor.html#enqueueMessages(messages:Iterable[T]):Unit" title="Permalink">
@@ -483,7 +524,7 @@ subscribers and thus release any resources used.
         <span class="name">enqueueMessages</span><span class="params">(<span name="messages">messages: <span class="extype" name="scala.Iterable">Iterable</span>[<span class="extype" name="riff.reactive.MultiSubscriberProcessor.A">A</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       
-      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Definition Classes</dt><dd><a href="ReactivePublisher.html" class="extype" name="riff.reactive.ReactivePublisher">ReactivePublisher</a></dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Definition Classes</dt><dd><a href="AsyncPublisher.html" class="extype" name="riff.reactive.AsyncPublisher">AsyncPublisher</a></dd></dl></div>
     </li><li name="scala.AnyRef#eq" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a><a id="eq(AnyRef):Boolean"></a>
       <span class="permalink">
@@ -610,23 +651,22 @@ will be subscribed to ma
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
-    </li><li name="riff.reactive.ReactivePublisher#maxQueueSize" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="maxQueueSize:Int"></a>
+    </li><li name="com.typesafe.scalalogging.StrictLogging#logger" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="logger:com.typesafe.scalalogging.Logger"></a><a id="logger:Logger"></a>
       <span class="permalink">
-      <a href="../../riff/reactive/MultiSubscriberProcessor.html#maxQueueSize:Int" title="Permalink">
+      <a href="../../riff/reactive/MultiSubscriberProcessor.html#logger:com.typesafe.scalalogging.Logger" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
       <span class="modifier_kind">
         <span class="modifier"></span>
-        <span class="kind">def</span>
+        <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">maxQueueSize</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+        <span class="name">logger</span><span class="result">: <span class="extype" name="com.typesafe.scalalogging.Logger">Logger</span></span>
       </span>
       
-      <p class="shortcomment cmt">We enqueue request(n), push, cancel and completed requests as instructions to the subscribers.</p><div class="fullcomment"><div class="comment cmt"><p>We enqueue request(n), push, cancel and completed requests as instructions to the subscribers.
-These instructions are kept in a queue with this as its max size</p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>the queue size for the subscriber messages (push, request, cancel, etc)</p></dd></dl><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Definition Classes</dt><dd><a href="ReactivePublisher.html" class="extype" name="riff.reactive.ReactivePublisher">ReactivePublisher</a></dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Definition Classes</dt><dd>StrictLogging</dd></dl></div>
     </li><li name="scala.AnyRef#ne" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a><a id="ne(AnyRef):Boolean"></a>
       <span class="permalink">
@@ -643,7 +683,7 @@ These instructions are kept in a queue with this as its max size</p></div><dl cl
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="riff.reactive.ReactivePublisher#newAsyncSubscription" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+    </li><li name="riff.reactive.AsyncPublisher#newAsyncSubscription" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="newAsyncSubscription(s:org.reactivestreams.Subscriber[_&gt;:T],onCancel:riff.reactive.AsyncSubscription[T]=&gt;Unit):riff.reactive.AsyncSubscription[T]"></a><a id="newAsyncSubscription(Subscriber[_&gt;:A],(AsyncSubscription[A])⇒Unit):AsyncSubscription[A]"></a>
       <span class="permalink">
       <a href="../../riff/reactive/MultiSubscriberProcessor.html#newAsyncSubscription(s:org.reactivestreams.Subscriber[_&gt;:T],onCancel:riff.reactive.AsyncSubscription[T]=&gt;Unit):riff.reactive.AsyncSubscription[T]" title="Permalink">
@@ -658,7 +698,7 @@ These instructions are kept in a queue with this as its max size</p></div><dl cl
         <span class="name">newAsyncSubscription</span><span class="params">(<span name="s">s: <span class="extype" name="org.reactivestreams.Subscriber">Subscriber</span>[_ &gt;: <span class="extype" name="riff.reactive.MultiSubscriberProcessor.A">A</span>]</span>, <span name="onCancel">onCancel: (<a href="AsyncSubscription.html" class="extype" name="riff.reactive.AsyncSubscription">AsyncSubscription</a>[<span class="extype" name="riff.reactive.MultiSubscriberProcessor.A">A</span>]) ⇒ <span class="extype" name="scala.Unit">Unit</span></span>)</span><span class="result">: <a href="AsyncSubscription.html" class="extype" name="riff.reactive.AsyncSubscription">AsyncSubscription</a>[<span class="extype" name="riff.reactive.MultiSubscriberProcessor.A">A</span>]</span>
       </span>
       
-      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Definition Classes</dt><dd><a href="ReactivePublisher.html" class="extype" name="riff.reactive.ReactivePublisher">ReactivePublisher</a></dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Definition Classes</dt><dd><a href="AsyncPublisher.html" class="extype" name="riff.reactive.AsyncPublisher">AsyncPublisher</a></dd></dl></div>
     </li><li name="scala.AnyRef#notify" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notify():Unit"></a>
       <span class="permalink">
@@ -761,7 +801,7 @@ These instructions are kept in a queue with this as its max size</p></div><dl cl
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="riff.reactive.MultiSubscriberProcessor">MultiSubscriberProcessor</a> → Subscriber</dd></dl></div>
-    </li><li name="riff.reactive.ReactivePublisher#remove" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+    </li><li name="riff.reactive.AsyncPublisher#remove" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="remove(sub:riff.reactive.AsyncSubscription[T]):riff.reactive.AsyncSubscription[T]"></a><a id="remove(AsyncSubscription[A]):AsyncSubscription[A]"></a>
       <span class="permalink">
       <a href="../../riff/reactive/MultiSubscriberProcessor.html#remove(sub:riff.reactive.AsyncSubscription[T]):riff.reactive.AsyncSubscription[T]" title="Permalink">
@@ -776,8 +816,8 @@ These instructions are kept in a queue with this as its max size</p></div><dl cl
         <span class="name">remove</span><span class="params">(<span name="sub">sub: <a href="AsyncSubscription.html" class="extype" name="riff.reactive.AsyncSubscription">AsyncSubscription</a>[<span class="extype" name="riff.reactive.MultiSubscriberProcessor.A">A</span>]</span>)</span><span class="result">: <a href="AsyncSubscription.html" class="extype" name="riff.reactive.AsyncSubscription">AsyncSubscription</a>[<span class="extype" name="riff.reactive.MultiSubscriberProcessor.A">A</span>]</span>
       </span>
       
-      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Definition Classes</dt><dd><a href="ReactivePublisher.html" class="extype" name="riff.reactive.ReactivePublisher">ReactivePublisher</a></dd></dl></div>
-    </li><li name="riff.reactive.ReactivePublisher#subscribe" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Definition Classes</dt><dd><a href="AsyncPublisher.html" class="extype" name="riff.reactive.AsyncPublisher">AsyncPublisher</a></dd></dl></div>
+    </li><li name="riff.reactive.AsyncPublisher#subscribe" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="subscribe(s:org.reactivestreams.Subscriber[_&gt;:T]):Unit"></a><a id="subscribe(Subscriber[_&gt;:A]):Unit"></a>
       <span class="permalink">
       <a href="../../riff/reactive/MultiSubscriberProcessor.html#subscribe(s:org.reactivestreams.Subscriber[_&gt;:T]):Unit" title="Permalink">
@@ -792,8 +832,8 @@ These instructions are kept in a queue with this as its max size</p></div><dl cl
         <span class="name">subscribe</span><span class="params">(<span name="s">s: <span class="extype" name="org.reactivestreams.Subscriber">Subscriber</span>[_ &gt;: <span class="extype" name="riff.reactive.MultiSubscriberProcessor.A">A</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
       </span>
       
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="ReactivePublisher.html" class="extype" name="riff.reactive.ReactivePublisher">ReactivePublisher</a> → Publisher</dd></dl></div>
-    </li><li name="riff.reactive.ReactivePublisher#subscribeWith" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="AsyncPublisher.html" class="extype" name="riff.reactive.AsyncPublisher">AsyncPublisher</a> → Publisher</dd></dl></div>
+    </li><li name="riff.reactive.AsyncPublisher#subscribeWith" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="subscribeWith[S&lt;:org.reactivestreams.Subscriber[_&gt;:T]](s:S):S"></a><a id="subscribeWith[S&lt;:Subscriber[_&gt;:A]](S):S"></a>
       <span class="permalink">
       <a href="../../riff/reactive/MultiSubscriberProcessor.html#subscribeWith[S&lt;:org.reactivestreams.Subscriber[_&gt;:T]](s:S):S" title="Permalink">
@@ -805,10 +845,10 @@ These instructions are kept in a queue with this as its max size</p></div><dl cl
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">subscribeWith</span><span class="tparams">[<span name="S">S &lt;: <span class="extype" name="org.reactivestreams.Subscriber">Subscriber</span>[_ &gt;: <span class="extype" name="riff.reactive.MultiSubscriberProcessor.A">A</span>]</span>]</span><span class="params">(<span name="s">s: <span class="extype" name="riff.reactive.ReactivePublisher.subscribeWith.S">S</span></span>)</span><span class="result">: <span class="extype" name="riff.reactive.ReactivePublisher.subscribeWith.S">S</span></span>
+        <span class="name">subscribeWith</span><span class="tparams">[<span name="S">S &lt;: <span class="extype" name="org.reactivestreams.Subscriber">Subscriber</span>[_ &gt;: <span class="extype" name="riff.reactive.MultiSubscriberProcessor.A">A</span>]</span>]</span><span class="params">(<span name="s">s: <span class="extype" name="riff.reactive.AsyncPublisher.subscribeWith.S">S</span></span>)</span><span class="result">: <span class="extype" name="riff.reactive.AsyncPublisher.subscribeWith.S">S</span></span>
       </span>
       
-      <p class="shortcomment cmt">Convenience method for 'subscribe', but which returns the subscriber instance:</p><div class="fullcomment"><div class="comment cmt"><p>Convenience method for 'subscribe', but which returns the subscriber instance:</p><pre><span class="kw">val</span> mySub = publisher.subscribeWith(<span class="kw">new</span> FooSubscriber) <span class="cmt">// mySub will be a FooSubscriber</span></pre></div><dl class="paramcmts block"><dt class="tparam">S</dt><dd class="cmt"><p>the subscriber type</p></dd><dt class="param">s</dt><dd class="cmt"><p>the subscriber to return</p></dd><dt>returns</dt><dd class="cmt"><p>the same subscriber</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="ReactivePublisher.html" class="extype" name="riff.reactive.ReactivePublisher">ReactivePublisher</a></dd></dl></div>
+      <p class="shortcomment cmt">Convenience method for 'subscribe', but which returns the subscriber instance:</p><div class="fullcomment"><div class="comment cmt"><p>Convenience method for 'subscribe', but which returns the subscriber instance:</p><pre><span class="kw">val</span> mySub = publisher.subscribeWith(<span class="kw">new</span> FooSubscriber) <span class="cmt">// mySub will be a FooSubscriber</span></pre></div><dl class="paramcmts block"><dt class="tparam">S</dt><dd class="cmt"><p>the subscriber type</p></dd><dt class="param">s</dt><dd class="cmt"><p>the subscriber to return</p></dd><dt>returns</dt><dd class="cmt"><p>the same subscriber</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="AsyncPublisher.html" class="extype" name="riff.reactive.AsyncPublisher">AsyncPublisher</a></dd></dl></div>
     </li><li name="scala.AnyRef#synchronized" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a><a id="synchronized[T0](⇒T0):T0"></a>
       <span class="permalink">
@@ -921,8 +961,12 @@ These instructions are kept in a queue with this as its max size</p></div><dl cl
         <div id="inheritedMembers">
         <div class="parent" name="org.reactivestreams.Subscriber">
               <h3>Inherited from <span class="extype" name="org.reactivestreams.Subscriber">Subscriber</span>[<span class="extype" name="riff.reactive.MultiSubscriberProcessor.A">A</span>]</h3>
-            </div><div class="parent" name="riff.reactive.ReactivePublisher">
-              <h3>Inherited from <a href="ReactivePublisher.html" class="extype" name="riff.reactive.ReactivePublisher">ReactivePublisher</a>[<span class="extype" name="riff.reactive.MultiSubscriberProcessor.A">A</span>]</h3>
+            </div><div class="parent" name="riff.reactive.AsyncPublisher">
+              <h3>Inherited from <a href="AsyncPublisher.html" class="extype" name="riff.reactive.AsyncPublisher">AsyncPublisher</a>[<span class="extype" name="riff.reactive.MultiSubscriberProcessor.A">A</span>]</h3>
+            </div><div class="parent" name="java.lang.AutoCloseable">
+              <h3>Inherited from <span class="extype" name="java.lang.AutoCloseable">AutoCloseable</span></h3>
+            </div><div class="parent" name="com.typesafe.scalalogging.StrictLogging">
+              <h3>Inherited from <span class="extype" name="com.typesafe.scalalogging.StrictLogging">StrictLogging</span></h3>
             </div><div class="parent" name="org.reactivestreams.Publisher">
               <h3>Inherited from <span class="extype" name="org.reactivestreams.Publisher">Publisher</span>[<span class="extype" name="riff.reactive.MultiSubscriberProcessor.A">A</span>]</h3>
             </div><div class="parent" name="scala.AnyRef">

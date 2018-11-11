@@ -150,6 +150,10 @@
                         <a class="object" href="Leader$.html" title=""></a>
                         <a href="Leader$.html" title="">Leader</a>
                       </li><li class="current-entities indented3">
+                        <span class="separator"></span>
+                        <a class="class" href="LeaderCommittedResult.html" title="This was introduced after having first just having: 1) AddressedRequest 2) AddressedResponse 3) NoOpResult"></a>
+                        <a href="LeaderCommittedResult.html" title="This was introduced after having first just having: 1) AddressedRequest 2) AddressedResponse 3) NoOpResult">LeaderCommittedResult</a>
+                      </li><li class="current-entities indented3">
                         <a class="object" href="LeaderNodeState$.html" title=""></a>
                         <a class="class" href="LeaderNodeState.html" title=""></a>
                         <a href="LeaderNodeState.html" title="">LeaderNodeState</a>
@@ -165,6 +169,10 @@
                         <a class="object" href="NoOpResult$.html" title=""></a>
                         <a class="trait" href="NoOpResult.html" title="Marker interface for a no-op result of a node having processed an event or message."></a>
                         <a href="NoOpResult.html" title="Marker interface for a no-op result of a node having processed an event or message.">NoOpResult</a>
+                      </li><li class="current-entities indented3">
+                        <span class="separator"></span>
+                        <a class="class" href="NodeAppendResult.html" title="Like LeaderCommittedResult this was added so we could explicitly expose the extra information when appending data as a leader as a result of an riff.raft.messages.AppendEntries request."></a>
+                        <a href="NodeAppendResult.html" title="Like LeaderCommittedResult this was added so we could explicitly expose the extra information when appending data as a leader as a result of an riff.raft.messages.AppendEntries request.">NodeAppendResult</a>
                       </li><li class="current-entities indented3">
                         <span class="separator"></span>
                         <a class="trait" href="NodeRole.html" title=""></a>
@@ -197,6 +205,10 @@
                         <span class="separator"></span>
                         <a class="trait" href="" title="Represents all possible results of a RaftNode having processed an event or message"></a>
                         <a href="" title="Represents all possible results of a RaftNode having processed an event or message">RaftNodeResult</a>
+                      </li><li class="current-entities indented3">
+                        <span class="separator"></span>
+                        <a class="class" href="RecordingMessageHandler.html" title=""></a>
+                        <a href="RecordingMessageHandler.html" title="">RecordingMessageHandler</a>
                       </li><li class="current-entities indented3">
                         <a class="object" href="RoleCallback$.html" title=""></a>
                         <a class="trait" href="RoleCallback.html" title="This is provided as a convenience to be added to a riff.raft.node.RaftNode for anything which cares about role transitions for a particular node."></a>
@@ -239,7 +251,7 @@
             <span class="toggle">
               Known Subclasses
             </span>
-            <div class="subClasses hiddenContent"><a href="AddressedRequest.html" class="extype" name="riff.raft.node.AddressedRequest">AddressedRequest</a>, <a href="AddressedResponse.html" class="extype" name="riff.raft.node.AddressedResponse">AddressedResponse</a>, <a href="NoOpResult.html" class="extype" name="riff.raft.node.NoOpResult">NoOpResult</a>, <a href="NoOpResult$$LogMessageResult.html" class="extype" name="riff.raft.node.NoOpResult.LogMessageResult">LogMessageResult</a></div>
+            <div class="subClasses hiddenContent"><a href="AddressedRequest.html" class="extype" name="riff.raft.node.AddressedRequest">AddressedRequest</a>, <a href="AddressedResponse.html" class="extype" name="riff.raft.node.AddressedResponse">AddressedResponse</a>, <a href="LeaderCommittedResult.html" class="extype" name="riff.raft.node.LeaderCommittedResult">LeaderCommittedResult</a>, <a href="NoOpResult.html" class="extype" name="riff.raft.node.NoOpResult">NoOpResult</a>, <a href="NoOpResult$$LogMessageResult.html" class="extype" name="riff.raft.node.NoOpResult.LogMessageResult">LogMessageResult</a>, <a href="NodeAppendResult.html" class="extype" name="riff.raft.node.NodeAppendResult">NodeAppendResult</a></div>
           </div></div>
         
 
@@ -287,10 +299,29 @@
 
         
 
-        
+        <div class="values members">
+              <h3>Abstract Value Members</h3>
+              <ol><li name="riff.raft.node.RaftNodeResult#toNode" visbl="pub" class="indented0 " data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="toNode(targetNodeId:riff.raft.NodeId):Seq[riff.raft.messages.AddressedMessage[A]]"></a><a id="toNode(NodeId):Seq[AddressedMessage[A]]"></a>
+      <span class="permalink">
+      <a href="../../../riff/raft/node/RaftNodeResult.html#toNode(targetNodeId:riff.raft.NodeId):Seq[riff.raft.messages.AddressedMessage[A]]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">toNode</span><span class="params">(<span name="targetNodeId">targetNodeId: <a href="../index.html#NodeId=String" class="extmbr" name="riff.raft.NodeId">NodeId</a></span>)</span><span class="result">: <span class="extype" name="scala.Seq">Seq</span>[<a href="../messages/AddressedMessage.html" class="extype" name="riff.raft.messages.AddressedMessage">AddressedMessage</a>[<span class="extype" name="riff.raft.node.RaftNodeResult.A">A</span>]]</span>
+      </span>
+      
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>a representation of this result as a collection of <span class="extype" name="AddressedMessage">AddressedMessage</span>s which are either to or from this node</p></dd></dl></div>
+    </li></ol>
+            </div>
 
         <div class="values members">
-              <h3>Value Members</h3>
+              <h3>Concrete Value Members</h3>
               <ol>
                 <li name="scala.AnyRef#!=" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="!=(x$1:Any):Boolean"></a><a id="!=(Any):Boolean"></a>

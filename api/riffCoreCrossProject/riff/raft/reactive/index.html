@@ -167,8 +167,8 @@
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../index.html" class="extype" name="riff.raft">raft</a></dd></dl></div>
     </li><li class="current-entities indented3">
                         <span class="separator"></span>
-                        <a class="class" href="ReactiveHandler.html" title="The idea is to create a 'pipe' of RaftMessage[A] --&gt; RaftNodeResult[A]."></a>
-                        <a href="ReactiveHandler.html" title="The idea is to create a 'pipe' of RaftMessage[A] --&gt; RaftNodeResult[A].">ReactiveHandler</a>
+                        <a class="class" href="ReactiveClient.html" title=""></a>
+                        <a href="ReactiveClient.html" title="">ReactiveClient</a>
                       </li><li name="riff.raft.timer" visbl="pub" class="indented3 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="timer"></a><a id="timer:timer"></a>
       <span class="permalink">
@@ -224,27 +224,22 @@
 
         <div id="types" class="types members">
               <h3>Type Members</h3>
-              <ol><li name="riff.raft.reactive.ReactiveHandler" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="ReactiveHandler[A,F[_]]extendsRaftMessageHandler[A]"></a><a id="ReactiveHandler[A,F[_]]:ReactiveHandler[A,F]"></a>
+              <ol><li name="riff.raft.reactive.ReactiveClient" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="ReactiveClient[A]extendsRaftClient[org.reactivestreams.Publisher,A]withProductwithSerializable"></a><a id="ReactiveClient[A]:ReactiveClient[A]"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/reactive/index.html#ReactiveHandler[A,F[_]]extendsRaftMessageHandler[A]" title="Permalink">
+      <a href="../../../riff/raft/reactive/index.html#ReactiveClient[A]extendsRaftClient[org.reactivestreams.Publisher,A]withProductwithSerializable" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
       <span class="modifier_kind">
         <span class="modifier"></span>
-        <span class="kind">class</span>
+        <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a title="The idea is to create a 'pipe' of RaftMessage[A] --&gt; RaftNodeResult[A]." href="ReactiveHandler.html"><span class="name">ReactiveHandler</span></a><span class="tparams">[<span name="A">A</span>, <span name="F">F<span class="tparams">[<span name="_">_</span>]</span></span>]</span><span class="result"> extends <a href="../node/RaftMessageHandler.html" class="extype" name="riff.raft.node.RaftMessageHandler">RaftMessageHandler</a>[<span class="extype" name="riff.raft.reactive.ReactiveHandler.A">A</span>]</span>
+        <a title="" href="ReactiveClient.html"><span class="name">ReactiveClient</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="inputSubscriber">inputSubscriber: <span class="extype" name="org.reactivestreams.Subscriber">Subscriber</span>[<a href="../messages/RaftMessage.html" class="extype" name="riff.raft.messages.RaftMessage">RaftMessage</a>[<span class="extype" name="riff.raft.reactive.ReactiveClient.A">A</span>]]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="evidence$1">evidence$1: <span class="extype" name="scala.reflect.ClassTag">ClassTag</span>[<span class="extype" name="riff.raft.reactive.ReactiveClient.A">A</span>]</span>, <span name="executionContext">executionContext: <span class="extype" name="scala.concurrent.ExecutionContext">ExecutionContext</span></span>)</span><span class="result"> extends <a href="../RaftClient.html" class="extype" name="riff.raft.RaftClient">RaftClient</a>[<span class="extype" name="org.reactivestreams.Publisher">Publisher</span>, <span class="extype" name="riff.raft.reactive.ReactiveClient.A">A</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       
-      <p class="shortcomment cmt">The idea is to create a 'pipe' of RaftMessage[A] --&gt; RaftNodeResult[A].</p><div class="fullcomment"><div class="comment cmt"><p>The idea is to create a 'pipe' of RaftMessage[A] --&gt; RaftNodeResult[A].</p><p>We start with a simple pipe of RaftMessage[A] --&gt; RaftMessage[A] where the input (subscriber)
-is a <a href="../../reactive/MultiSubscriberProcessor.html" class="extype" name="riff.reactive.MultiSubscriberProcessor">riff.reactive.MultiSubscriberProcessor</a> that can subscribe to the other nodes in the cluster,
-as well as a <a href="../../reactive/ReactiveTimerCallback.html" class="extype" name="riff.reactive.ReactiveTimerCallback">riff.reactive.ReactiveTimerCallback</a> (or similar) which publishes an event when a <a href="../timer/RaftClock.html" class="extype" name="riff.raft.timer.RaftClock">riff.raft.timer.RaftClock</a>
-times out.</p><p>We can then map the 'output' Publisher to transform the inputs via this 'onMessage' handler, which intercepts <span class="extype" name="AppendData">AppendData</span>
-messages in order to fulfill their subscribers
-</p></div><dl class="paramcmts block"><dt class="tparam">A</dt><dd class="cmt"><p>the type of data which is appended to the log (could just be a byte array, some union type, etc)</p></dd></dl></div>
+      
     </li></ol>
             </div>
 

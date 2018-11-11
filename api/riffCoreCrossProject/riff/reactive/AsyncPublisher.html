@@ -106,13 +106,13 @@
                         <a class="trait" href="AsPublisher.html" title="Represents the ability for some type F[_] to be converted to a publisher, in addition to perform some basic algebra on the F[_] (such as collecting into another F[_])"></a>
                         <a href="AsPublisher.html" title="Represents the ability for some type F[_] to be converted to a publisher, in addition to perform some basic algebra on the F[_] (such as collecting into another F[_])">AsPublisher</a>
                       </li><li class="current-entities indented2">
-                        <a class="object" href="" title=""></a>
+                        <a class="object" href="AsSubscriber$.html" title=""></a>
                         <a class="trait" href="AsSubscriber.html" title="Represents any F[_] which can be represented as a Subscriber"></a>
                         <a href="AsSubscriber.html" title="Represents any F[_] which can be represented as a Subscriber">AsSubscriber</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="trait" href="AsyncPublisher.html" title="A hot publisher to multiple subscribers, where new subscriptions simply begin observing the messages as the point of subscription."></a>
-                        <a href="AsyncPublisher.html" title="A hot publisher to multiple subscribers, where new subscriptions simply begin observing the messages as the point of subscription.">AsyncPublisher</a>
+                        <a class="trait" href="" title="A hot publisher to multiple subscribers, where new subscriptions simply begin observing the messages as the point of subscription."></a>
+                        <a href="" title="A hot publisher to multiple subscribers, where new subscriptions simply begin observing the messages as the point of subscription.">AsyncPublisher</a>
                       </li><li class="current-entities indented2">
                         <a class="object" href="AsyncSubscription$.html" title=""></a>
                         <a class="class" href="AsyncSubscription.html" title="Represents a subscription whose actions are handled via a Runnable pulling values from a blocking internalStateInputQueue submitted on a provided execution context"></a>
@@ -166,37 +166,42 @@
             </div>
           </div>
           <div id="content">
-            <body class="object value">
+            <body class="trait type">
       <div id="definition">
-        <a href="AsSubscriber.html" title="See companion trait"><div class="big-circle object-companion-trait">o</div></a>
+        <div class="big-circle trait">t</div>
         <p id="owner"><a href="../index.html" class="extype" name="riff">riff</a>.<a href="index.html" class="extype" name="riff.reactive">reactive</a></p>
-        <h1><a href="AsSubscriber.html" title="See companion trait">AsSubscriber</a><span class="permalink">
-      <a href="../../riff/reactive/AsSubscriber$.html" title="Permalink">
+        <h1>AsyncPublisher<span class="permalink">
+      <a href="../../riff/reactive/AsyncPublisher.html" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span></h1>
-        <h3><span class="morelinks"><div>
-            Companion <a href="AsSubscriber.html" title="See companion trait">trait AsSubscriber</a>
-          </div></span></h3>
+        <h3><span class="morelinks"></span></h3>
       </div>
 
       <h4 id="signature" class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
-        <span class="kind">object</span>
+        <span class="kind">trait</span>
       </span>
       <span class="symbol">
-        <span class="name">AsSubscriber</span>
+        <span class="name">AsyncPublisher</span><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <span class="extype" name="org.reactivestreams.Publisher">Publisher</span>[<span class="extype" name="riff.reactive.AsyncPublisher.T">T</span>] with <span class="extype" name="com.typesafe.scalalogging.StrictLogging">StrictLogging</span> with <span class="extype" name="java.lang.AutoCloseable">AutoCloseable</span></span>
       </span>
       </h4>
 
       
-          <div id="comment" class="fullcommenttop"><div class="toggleContainer block">
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>A hot publisher to multiple subscribers, where new subscriptions simply begin observing the messages as the point of
+subscription. Each subscription maintains its own queue, and so slow consumers can end up eating up memory.</p><p>This is quite a basic implementation of a reactive-stream, without real attention to efficiency or performance.</p><p>Consider using the raft-monix, raft-fs2 or raft-akka libraries for a more robust approach.
+</p></div><div class="toggleContainer block">
           <span class="toggle">
             Linear Supertypes
           </span>
-          <div class="superTypes hiddenContent"><span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
-        </div></div>
+          <div class="superTypes hiddenContent"><span class="extype" name="java.lang.AutoCloseable">AutoCloseable</span>, <span class="extype" name="com.typesafe.scalalogging.StrictLogging">StrictLogging</span>, <span class="extype" name="org.reactivestreams.Publisher">Publisher</span>[<span class="extype" name="riff.reactive.AsyncPublisher.T">T</span>], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+        </div><div class="toggleContainer block">
+            <span class="toggle">
+              Known Subclasses
+            </span>
+            <div class="subClasses hiddenContent"><a href="MultiSubscriberProcessor.html" class="extype" name="riff.reactive.MultiSubscriberProcessor">MultiSubscriberProcessor</a>, <a href="ReactivePipe$$Instance.html" class="extype" name="riff.reactive.ReactivePipe.Instance">Instance</a>, <a href="ReactiveTimerCallback.html" class="extype" name="riff.reactive.ReactiveTimerCallback">ReactiveTimerCallback</a>, <a href="ReplayPublisher.html" class="extype" name="riff.reactive.ReplayPublisher">ReplayPublisher</a></div>
+          </div></div>
         
 
       <div id="mbrsel">
@@ -221,7 +226,7 @@
                   <span class="filtertype">Inherited<br />
                   </span>
                   <ol id="linearization">
-                    <li class="in" name="riff.reactive.AsSubscriber"><span>AsSubscriber</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                    <li class="in" name="riff.reactive.AsyncPublisher"><span>AsyncPublisher</span></li><li class="in" name="java.lang.AutoCloseable"><span>AutoCloseable</span></li><li class="in" name="com.typesafe.scalalogging.StrictLogging"><span>StrictLogging</span></li><li class="in" name="org.reactivestreams.Publisher"><span>Publisher</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                   </ol>
                 </div><div class="ancestors">
               <span class="filtertype"></span>
@@ -243,15 +248,51 @@
 
         
 
-        
+        <div class="values members">
+              <h3>Abstract Value Members</h3>
+              <ol><li name="riff.reactive.AsyncPublisher#ctxt" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="ctxt:scala.concurrent.ExecutionContext"></a><a id="ctxt:ExecutionContext"></a>
+      <span class="permalink">
+      <a href="../../riff/reactive/AsyncPublisher.html#ctxt:scala.concurrent.ExecutionContext" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">implicit abstract </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">ctxt</span><span class="result">: <span class="extype" name="scala.concurrent.ExecutionContext">ExecutionContext</span></span>
+      </span>
+      
+      
+    </li><li name="riff.reactive.AsyncPublisher#maxQueueSize" visbl="prt" class="indented0 " data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="maxQueueSize:Int"></a>
+      <span class="permalink">
+      <a href="../../riff/reactive/AsyncPublisher.html#maxQueueSize:Int" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">maxQueueSize</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      
+      <p class="shortcomment cmt">We enqueue request(n), push, cancel and completed requests as instructions to the subscribers.</p><div class="fullcomment"><div class="comment cmt"><p>We enqueue request(n), push, cancel and completed requests as instructions to the subscribers.
+These instructions are kept in a queue with this as its max size</p></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>the queue size for the subscriber messages (push, request, cancel, etc)</p></dd></dl><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd></dl></div>
+    </li></ol>
+            </div>
 
         <div class="values members">
-              <h3>Value Members</h3>
+              <h3>Concrete Value Members</h3>
               <ol>
                 <li name="scala.AnyRef#!=" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="!=(x$1:Any):Boolean"></a><a id="!=(Any):Boolean"></a>
       <span class="permalink">
-      <a href="../../riff/reactive/AsSubscriber$.html#!=(x$1:Any):Boolean" title="Permalink">
+      <a href="../../riff/reactive/AsyncPublisher.html#!=(x$1:Any):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -267,7 +308,7 @@
     </li><li name="scala.AnyRef###" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="##():Int"></a>
       <span class="permalink">
-      <a href="../../riff/reactive/AsSubscriber$.html###():Int" title="Permalink">
+      <a href="../../riff/reactive/AsyncPublisher.html###():Int" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -283,7 +324,7 @@
     </li><li name="scala.AnyRef#==" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="==(x$1:Any):Boolean"></a><a id="==(Any):Boolean"></a>
       <span class="permalink">
-      <a href="../../riff/reactive/AsSubscriber$.html#==(x$1:Any):Boolean" title="Permalink">
+      <a href="../../riff/reactive/AsyncPublisher.html#==(x$1:Any):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -296,10 +337,10 @@
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
-    </li><li name="riff.reactive.AsSubscriber#apply" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="apply[F[_]](implicitinstance:riff.reactive.AsSubscriber[F]):riff.reactive.AsSubscriber[F]"></a><a id="apply[F[_]](AsSubscriber[F]):AsSubscriber[F]"></a>
+    </li><li name="riff.reactive.AsyncPublisher#add" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="add(sub:riff.reactive.AsyncSubscription[T]):riff.reactive.AsyncSubscription[T]"></a><a id="add(AsyncSubscription[T]):AsyncSubscription[T]"></a>
       <span class="permalink">
-      <a href="../../riff/reactive/AsSubscriber$.html#apply[F[_]](implicitinstance:riff.reactive.AsSubscriber[F]):riff.reactive.AsSubscriber[F]" title="Permalink">
+      <a href="../../riff/reactive/AsyncPublisher.html#add(sub:riff.reactive.AsyncSubscription[T]):riff.reactive.AsyncSubscription[T]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -308,14 +349,14 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">apply</span><span class="tparams">[<span name="F">F<span class="tparams">[<span name="_">_</span>]</span></span>]</span><span class="params">(<span class="implicit">implicit </span><span name="instance">instance: <a href="AsSubscriber.html" class="extype" name="riff.reactive.AsSubscriber">AsSubscriber</a>[<span class="extype" name="riff.reactive.AsSubscriber.apply.F">F</span>]</span>)</span><span class="result">: <a href="AsSubscriber.html" class="extype" name="riff.reactive.AsSubscriber">AsSubscriber</a>[<span class="extype" name="riff.reactive.AsSubscriber.apply.F">F</span>]</span>
+        <span class="name">add</span><span class="params">(<span name="sub">sub: <a href="AsyncSubscription.html" class="extype" name="riff.reactive.AsyncSubscription">AsyncSubscription</a>[<span class="extype" name="riff.reactive.AsyncPublisher.T">T</span>]</span>)</span><span class="result">: <a href="AsyncSubscription.html" class="extype" name="riff.reactive.AsyncSubscription">AsyncSubscription</a>[<span class="extype" name="riff.reactive.AsyncPublisher.T">T</span>]</span>
       </span>
       
-      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd></dl></div>
     </li><li name="scala.Any#asInstanceOf" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="asInstanceOf[T0]:T0"></a>
       <span class="permalink">
-      <a href="../../riff/reactive/AsSubscriber$.html#asInstanceOf[T0]:T0" title="Permalink">
+      <a href="../../riff/reactive/AsyncPublisher.html#asInstanceOf[T0]:T0" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -331,7 +372,7 @@
     </li><li name="scala.AnyRef#clone" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="clone():Object"></a><a id="clone():AnyRef"></a>
       <span class="permalink">
-      <a href="../../riff/reactive/AsSubscriber$.html#clone():Object" title="Permalink">
+      <a href="../../riff/reactive/AsyncPublisher.html#clone():Object" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -352,10 +393,106 @@
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="riff.reactive.AsyncPublisher#close" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="close():Unit"></a>
+      <span class="permalink">
+      <a href="../../riff/reactive/AsyncPublisher.html#close():Unit" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">close</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="riff.reactive.AsyncPublisher">AsyncPublisher</a> → AutoCloseable</dd></dl></div>
+    </li><li name="riff.reactive.AsyncPublisher#enqueueCancel" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="enqueueCancel():Unit"></a>
+      <span class="permalink">
+      <a href="../../riff/reactive/AsyncPublisher.html#enqueueCancel():Unit" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">enqueueCancel</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd></dl></div>
+    </li><li name="riff.reactive.AsyncPublisher#enqueueComplete" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="enqueueComplete():Unit"></a>
+      <span class="permalink">
+      <a href="../../riff/reactive/AsyncPublisher.html#enqueueComplete():Unit" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">enqueueComplete</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd></dl></div>
+    </li><li name="riff.reactive.AsyncPublisher#enqueueError" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="enqueueError(result:Throwable):Unit"></a><a id="enqueueError(Throwable):Unit"></a>
+      <span class="permalink">
+      <a href="../../riff/reactive/AsyncPublisher.html#enqueueError(result:Throwable):Unit" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">enqueueError</span><span class="params">(<span name="result">result: <span class="extype" name="scala.Throwable">Throwable</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd></dl></div>
+    </li><li name="riff.reactive.AsyncPublisher#enqueueMessage" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="enqueueMessage(message:T):Unit"></a><a id="enqueueMessage(T):Unit"></a>
+      <span class="permalink">
+      <a href="../../riff/reactive/AsyncPublisher.html#enqueueMessage(message:T):Unit" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">enqueueMessage</span><span class="params">(<span name="message">message: <span class="extype" name="riff.reactive.AsyncPublisher.T">T</span></span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd></dl></div>
+    </li><li name="riff.reactive.AsyncPublisher#enqueueMessages" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="enqueueMessages(messages:Iterable[T]):Unit"></a><a id="enqueueMessages(Iterable[T]):Unit"></a>
+      <span class="permalink">
+      <a href="../../riff/reactive/AsyncPublisher.html#enqueueMessages(messages:Iterable[T]):Unit" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">enqueueMessages</span><span class="params">(<span name="messages">messages: <span class="extype" name="scala.Iterable">Iterable</span>[<span class="extype" name="riff.reactive.AsyncPublisher.T">T</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd></dl></div>
     </li><li name="scala.AnyRef#eq" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a><a id="eq(AnyRef):Boolean"></a>
       <span class="permalink">
-      <a href="../../riff/reactive/AsSubscriber$.html#eq(x$1:AnyRef):Boolean" title="Permalink">
+      <a href="../../riff/reactive/AsyncPublisher.html#eq(x$1:AnyRef):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -371,7 +508,7 @@
     </li><li name="scala.AnyRef#equals" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="equals(x$1:Any):Boolean"></a><a id="equals(Any):Boolean"></a>
       <span class="permalink">
-      <a href="../../riff/reactive/AsSubscriber$.html#equals(x$1:Any):Boolean" title="Permalink">
+      <a href="../../riff/reactive/AsyncPublisher.html#equals(x$1:Any):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -387,7 +524,7 @@
     </li><li name="scala.AnyRef#finalize" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="finalize():Unit"></a>
       <span class="permalink">
-      <a href="../../riff/reactive/AsSubscriber$.html#finalize():Unit" title="Permalink">
+      <a href="../../riff/reactive/AsyncPublisher.html#finalize():Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -409,7 +546,7 @@
     </li><li name="scala.AnyRef#getClass" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="getClass():Class[_]"></a>
       <span class="permalink">
-      <a href="../../riff/reactive/AsSubscriber$.html#getClass():Class[_]" title="Permalink">
+      <a href="../../riff/reactive/AsyncPublisher.html#getClass():Class[_]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -428,7 +565,7 @@
     </li><li name="scala.AnyRef#hashCode" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="hashCode():Int"></a>
       <span class="permalink">
-      <a href="../../riff/reactive/AsSubscriber$.html#hashCode():Int" title="Permalink">
+      <a href="../../riff/reactive/AsyncPublisher.html#hashCode():Int" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -447,7 +584,7 @@
     </li><li name="scala.Any#isInstanceOf" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="isInstanceOf[T0]:Boolean"></a>
       <span class="permalink">
-      <a href="../../riff/reactive/AsSubscriber$.html#isInstanceOf[T0]:Boolean" title="Permalink">
+      <a href="../../riff/reactive/AsyncPublisher.html#isInstanceOf[T0]:Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -460,10 +597,26 @@
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
+    </li><li name="com.typesafe.scalalogging.StrictLogging#logger" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="logger:com.typesafe.scalalogging.Logger"></a><a id="logger:Logger"></a>
+      <span class="permalink">
+      <a href="../../riff/reactive/AsyncPublisher.html#logger:com.typesafe.scalalogging.Logger" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">logger</span><span class="result">: <span class="extype" name="com.typesafe.scalalogging.Logger">Logger</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Definition Classes</dt><dd>StrictLogging</dd></dl></div>
     </li><li name="scala.AnyRef#ne" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a><a id="ne(AnyRef):Boolean"></a>
       <span class="permalink">
-      <a href="../../riff/reactive/AsSubscriber$.html#ne(x$1:AnyRef):Boolean" title="Permalink">
+      <a href="../../riff/reactive/AsyncPublisher.html#ne(x$1:AnyRef):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -476,10 +629,26 @@
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="riff.reactive.AsyncPublisher#newAsyncSubscription" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="newAsyncSubscription(s:org.reactivestreams.Subscriber[_&gt;:T],onCancel:riff.reactive.AsyncSubscription[T]=&gt;Unit):riff.reactive.AsyncSubscription[T]"></a><a id="newAsyncSubscription(Subscriber[_&gt;:T],(AsyncSubscription[T])⇒Unit):AsyncSubscription[T]"></a>
+      <span class="permalink">
+      <a href="../../riff/reactive/AsyncPublisher.html#newAsyncSubscription(s:org.reactivestreams.Subscriber[_&gt;:T],onCancel:riff.reactive.AsyncSubscription[T]=&gt;Unit):riff.reactive.AsyncSubscription[T]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">newAsyncSubscription</span><span class="params">(<span name="s">s: <span class="extype" name="org.reactivestreams.Subscriber">Subscriber</span>[_ &gt;: <span class="extype" name="riff.reactive.AsyncPublisher.T">T</span>]</span>, <span name="onCancel">onCancel: (<a href="AsyncSubscription.html" class="extype" name="riff.reactive.AsyncSubscription">AsyncSubscription</a>[<span class="extype" name="riff.reactive.AsyncPublisher.T">T</span>]) ⇒ <span class="extype" name="scala.Unit">Unit</span></span>)</span><span class="result">: <a href="AsyncSubscription.html" class="extype" name="riff.reactive.AsyncSubscription">AsyncSubscription</a>[<span class="extype" name="riff.reactive.AsyncPublisher.T">T</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd></dl></div>
     </li><li name="scala.AnyRef#notify" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notify():Unit"></a>
       <span class="permalink">
-      <a href="../../riff/reactive/AsSubscriber$.html#notify():Unit" title="Permalink">
+      <a href="../../riff/reactive/AsyncPublisher.html#notify():Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -498,7 +667,7 @@
     </li><li name="scala.AnyRef#notifyAll" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notifyAll():Unit"></a>
       <span class="permalink">
-      <a href="../../riff/reactive/AsSubscriber$.html#notifyAll():Unit" title="Permalink">
+      <a href="../../riff/reactive/AsyncPublisher.html#notifyAll():Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -514,10 +683,58 @@
                 <span class="name">@native</span><span class="args">()</span>
               
         </dd></dl></div>
+    </li><li name="riff.reactive.AsyncPublisher#remove" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="remove(sub:riff.reactive.AsyncSubscription[T]):riff.reactive.AsyncSubscription[T]"></a><a id="remove(AsyncSubscription[T]):AsyncSubscription[T]"></a>
+      <span class="permalink">
+      <a href="../../riff/reactive/AsyncPublisher.html#remove(sub:riff.reactive.AsyncSubscription[T]):riff.reactive.AsyncSubscription[T]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">remove</span><span class="params">(<span name="sub">sub: <a href="AsyncSubscription.html" class="extype" name="riff.reactive.AsyncSubscription">AsyncSubscription</a>[<span class="extype" name="riff.reactive.AsyncPublisher.T">T</span>]</span>)</span><span class="result">: <a href="AsyncSubscription.html" class="extype" name="riff.reactive.AsyncSubscription">AsyncSubscription</a>[<span class="extype" name="riff.reactive.AsyncPublisher.T">T</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd></dl></div>
+    </li><li name="riff.reactive.AsyncPublisher#subscribe" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="subscribe(s:org.reactivestreams.Subscriber[_&gt;:T]):Unit"></a><a id="subscribe(Subscriber[_&gt;:T]):Unit"></a>
+      <span class="permalink">
+      <a href="../../riff/reactive/AsyncPublisher.html#subscribe(s:org.reactivestreams.Subscriber[_&gt;:T]):Unit" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">subscribe</span><span class="params">(<span name="s">s: <span class="extype" name="org.reactivestreams.Subscriber">Subscriber</span>[_ &gt;: <span class="extype" name="riff.reactive.AsyncPublisher.T">T</span>]</span>)</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="riff.reactive.AsyncPublisher">AsyncPublisher</a> → Publisher</dd></dl></div>
+    </li><li name="riff.reactive.AsyncPublisher#subscribeWith" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="subscribeWith[S&lt;:org.reactivestreams.Subscriber[_&gt;:T]](s:S):S"></a><a id="subscribeWith[S&lt;:Subscriber[_&gt;:T]](S):S"></a>
+      <span class="permalink">
+      <a href="../../riff/reactive/AsyncPublisher.html#subscribeWith[S&lt;:org.reactivestreams.Subscriber[_&gt;:T]](s:S):S" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">subscribeWith</span><span class="tparams">[<span name="S">S &lt;: <span class="extype" name="org.reactivestreams.Subscriber">Subscriber</span>[_ &gt;: <span class="extype" name="riff.reactive.AsyncPublisher.T">T</span>]</span>]</span><span class="params">(<span name="s">s: <span class="extype" name="riff.reactive.AsyncPublisher.subscribeWith.S">S</span></span>)</span><span class="result">: <span class="extype" name="riff.reactive.AsyncPublisher.subscribeWith.S">S</span></span>
+      </span>
+      
+      <p class="shortcomment cmt">Convenience method for 'subscribe', but which returns the subscriber instance:</p><div class="fullcomment"><div class="comment cmt"><p>Convenience method for 'subscribe', but which returns the subscriber instance:</p><pre><span class="kw">val</span> mySub = publisher.subscribeWith(<span class="kw">new</span> FooSubscriber) <span class="cmt">// mySub will be a FooSubscriber</span></pre></div><dl class="paramcmts block"><dt class="tparam">S</dt><dd class="cmt"><p>the subscriber type</p></dd><dt class="param">s</dt><dd class="cmt"><p>the subscriber to return</p></dd><dt>returns</dt><dd class="cmt"><p>the same subscriber</p></dd></dl></div>
     </li><li name="scala.AnyRef#synchronized" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a><a id="synchronized[T0](⇒T0):T0"></a>
       <span class="permalink">
-      <a href="../../riff/reactive/AsSubscriber$.html#synchronized[T0](x$1:=&gt;T0):T0" title="Permalink">
+      <a href="../../riff/reactive/AsyncPublisher.html#synchronized[T0](x$1:=&gt;T0):T0" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -533,7 +750,7 @@
     </li><li name="scala.AnyRef#toString" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="toString():String"></a>
       <span class="permalink">
-      <a href="../../riff/reactive/AsSubscriber$.html#toString():String" title="Permalink">
+      <a href="../../riff/reactive/AsyncPublisher.html#toString():String" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -549,7 +766,7 @@
     </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait():Unit"></a>
       <span class="permalink">
-      <a href="../../riff/reactive/AsSubscriber$.html#wait():Unit" title="Permalink">
+      <a href="../../riff/reactive/AsyncPublisher.html#wait():Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -571,7 +788,7 @@
     </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait(x$1:Long,x$2:Int):Unit"></a><a id="wait(Long,Int):Unit"></a>
       <span class="permalink">
-      <a href="../../riff/reactive/AsSubscriber$.html#wait(x$1:Long,x$2:Int):Unit" title="Permalink">
+      <a href="../../riff/reactive/AsyncPublisher.html#wait(x$1:Long,x$2:Int):Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -593,7 +810,7 @@
     </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait(x$1:Long):Unit"></a><a id="wait(Long):Unit"></a>
       <span class="permalink">
-      <a href="../../riff/reactive/AsSubscriber$.html#wait(x$1:Long):Unit" title="Permalink">
+      <a href="../../riff/reactive/AsyncPublisher.html#wait(x$1:Long):Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -614,38 +831,6 @@
     </span>)</span>
               
         </dd></dl></div>
-    </li><li name="riff.reactive.AsSubscriber.Identity" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="Identity"></a><a id="Identity:Identity"></a>
-      <span class="permalink">
-      <a href="../../riff/reactive/AsSubscriber$.html#Identity" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier">implicit </span>
-        <span class="kind">object</span>
-      </span>
-      <span class="symbol">
-        <a title="" href="AsSubscriber$$Identity$.html"><span class="name">Identity</span></a><span class="result"> extends <a href="AsSubscriber.html" class="extype" name="riff.reactive.AsSubscriber">AsSubscriber</a>[<span class="extype" name="org.reactivestreams.Subscriber">Subscriber</span>]</span>
-      </span>
-      
-      
-    </li><li name="riff.reactive.AsSubscriber.syntax" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="syntax"></a><a id="syntax:syntax"></a>
-      <span class="permalink">
-      <a href="../../riff/reactive/AsSubscriber$.html#syntax" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">object</span>
-      </span>
-      <span class="symbol">
-        <a title="" href="AsSubscriber$$syntax$.html"><span class="name">syntax</span></a>
-      </span>
-      
-      
     </li>
               </ol>
             </div>
@@ -656,7 +841,13 @@
         </div>
 
         <div id="inheritedMembers">
-        <div class="parent" name="scala.AnyRef">
+        <div class="parent" name="java.lang.AutoCloseable">
+              <h3>Inherited from <span class="extype" name="java.lang.AutoCloseable">AutoCloseable</span></h3>
+            </div><div class="parent" name="com.typesafe.scalalogging.StrictLogging">
+              <h3>Inherited from <span class="extype" name="com.typesafe.scalalogging.StrictLogging">StrictLogging</span></h3>
+            </div><div class="parent" name="org.reactivestreams.Publisher">
+              <h3>Inherited from <span class="extype" name="org.reactivestreams.Publisher">Publisher</span>[<span class="extype" name="riff.reactive.AsyncPublisher.T">T</span>]</h3>
+            </div><div class="parent" name="scala.AnyRef">
               <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
             </div><div class="parent" name="scala.Any">
               <h3>Inherited from <span class="extype" name="scala.Any">Any</span></h3>

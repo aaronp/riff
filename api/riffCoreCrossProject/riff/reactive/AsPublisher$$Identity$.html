@@ -332,6 +332,24 @@
       <p class="shortcomment cmt">apply the partial function to the F[A], which is the equivalent of a filter/map operation
 </p><div class="fullcomment"><div class="comment cmt"><p>apply the partial function to the F[A], which is the equivalent of a filter/map operation
 </p></div><dl class="paramcmts block"><dt class="tparam">A</dt><dd class="cmt"><p>the original type</p></dd><dt class="tparam">B</dt><dd class="cmt"><p>the mapped (collected) type</p></dd><dt class="param">f</dt><dd class="cmt"><p>the F[A] instance to wrap</p></dd><dt class="param">func</dt><dd class="cmt"><p>the collection function</p></dd><dt>returns</dt><dd class="cmt"><p>a new F[B] based on the application of the func to the underlying F[A]</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="riff.reactive.AsPublisher.Identity">Identity</a> → <a href="AsPublisher.html" class="extype" name="riff.reactive.AsPublisher">AsPublisher</a></dd></dl></div>
+    </li><li name="riff.reactive.AsPublisher.Identity#cons" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="cons[A](value:A,publisher:org.reactivestreams.Publisher[A]):org.reactivestreams.Publisher[A]"></a><a id="cons[A](A,Publisher[A]):Publisher[A]"></a>
+      <span class="permalink">
+      <a href="../../riff/reactive/AsPublisher$$Identity$.html#cons[A](value:A,publisher:org.reactivestreams.Publisher[A]):org.reactivestreams.Publisher[A]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">cons</span><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="value">value: <span class="extype" name="riff.reactive.AsPublisher.Identity.cons.A">A</span></span>, <span name="publisher">publisher: <span class="extype" name="org.reactivestreams.Publisher">Publisher</span>[<span class="extype" name="riff.reactive.AsPublisher.Identity.cons.A">A</span>]</span>)</span><span class="result">: <span class="extype" name="org.reactivestreams.Publisher">Publisher</span>[<span class="extype" name="riff.reactive.AsPublisher.Identity.cons.A">A</span>]</span>
+      </span>
+      
+      <p class="shortcomment cmt">concatenate this value to be published first
+</p><div class="fullcomment"><div class="comment cmt"><p>concatenate this value to be published first
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="riff.reactive.AsPublisher.Identity">Identity</a> → <a href="AsPublisher.html" class="extype" name="riff.reactive.AsPublisher">AsPublisher</a></dd></dl></div>
     </li><li name="scala.AnyRef#eq" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a><a id="eq(AnyRef):Boolean"></a>
       <span class="permalink">
@@ -542,6 +560,40 @@
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
+    </li><li name="riff.reactive.AsPublisher.Identity#takeWhile" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="takeWhile[A](publisher:org.reactivestreams.Publisher[A])(predicate:A=&gt;Boolean):org.reactivestreams.Publisher[A]"></a><a id="takeWhile[A](Publisher[A])((A)⇒Boolean):Publisher[A]"></a>
+      <span class="permalink">
+      <a href="../../riff/reactive/AsPublisher$$Identity$.html#takeWhile[A](publisher:org.reactivestreams.Publisher[A])(predicate:A=&gt;Boolean):org.reactivestreams.Publisher[A]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">takeWhile</span><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="publisher">publisher: <span class="extype" name="org.reactivestreams.Publisher">Publisher</span>[<span class="extype" name="riff.reactive.AsPublisher.Identity.takeWhile.A">A</span>]</span>)</span><span class="params">(<span name="predicate">predicate: (<span class="extype" name="riff.reactive.AsPublisher.Identity.takeWhile.A">A</span>) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <span class="extype" name="org.reactivestreams.Publisher">Publisher</span>[<span class="extype" name="riff.reactive.AsPublisher.Identity.takeWhile.A">A</span>]</span>
+      </span>
+      
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">publisher</dt><dd class="cmt"><p>the publisher</p></dd><dt class="param">predicate</dt><dd class="cmt"><p>the predicate test</p></dd><dt>returns</dt><dd class="cmt"><p>a publisher F[A] which completes once the predicate returns false or the elements are exhausted</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="riff.reactive.AsPublisher.Identity">Identity</a> → <a href="AsPublisher.html" class="extype" name="riff.reactive.AsPublisher">AsPublisher</a></dd></dl></div>
+    </li><li name="riff.reactive.AsPublisher.Identity#takeWhileIncludeLast" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="takeWhileIncludeLast[A](publisher:org.reactivestreams.Publisher[A])(predicate:A=&gt;Boolean):org.reactivestreams.Publisher[A]"></a><a id="takeWhileIncludeLast[A](Publisher[A])((A)⇒Boolean):Publisher[A]"></a>
+      <span class="permalink">
+      <a href="../../riff/reactive/AsPublisher$$Identity$.html#takeWhileIncludeLast[A](publisher:org.reactivestreams.Publisher[A])(predicate:A=&gt;Boolean):org.reactivestreams.Publisher[A]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">takeWhileIncludeLast</span><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="publisher">publisher: <span class="extype" name="org.reactivestreams.Publisher">Publisher</span>[<span class="extype" name="riff.reactive.AsPublisher.Identity.takeWhileIncludeLast.A">A</span>]</span>)</span><span class="params">(<span name="predicate">predicate: (<span class="extype" name="riff.reactive.AsPublisher.Identity.takeWhileIncludeLast.A">A</span>) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <span class="extype" name="org.reactivestreams.Publisher">Publisher</span>[<span class="extype" name="riff.reactive.AsPublisher.Identity.takeWhileIncludeLast.A">A</span>]</span>
+      </span>
+      
+      <p class="shortcomment cmt">like takeWhile, but will 'onNext' the first element which returns false
+</p><div class="fullcomment"><div class="comment cmt"><p>like takeWhile, but will 'onNext' the first element which returns false
+</p></div><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="riff.reactive.AsPublisher.Identity">Identity</a> → <a href="AsPublisher.html" class="extype" name="riff.reactive.AsPublisher">AsPublisher</a></dd></dl></div>
     </li><li name="scala.AnyRef#toString" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="toString():String"></a>
       <span class="permalink">

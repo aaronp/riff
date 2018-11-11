@@ -101,10 +101,10 @@
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../../index.html" class="extype" name="riff">riff</a></dd></dl></div>
-    </li><li name="riff.raft.reactive" visbl="pub" class="indented3 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="reactive"></a><a id="reactive:reactive"></a>
+    </li><li name="riff.raft.node" visbl="pub" class="indented3 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="node"></a><a id="node:node"></a>
       <span class="permalink">
-      <a href="../../riff/raft/index.html#reactive" title="Permalink">
+      <a href="../../riff/raft/index.html#node" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -113,14 +113,106 @@
         <span class="kind">package</span>
       </span>
       <span class="symbol">
-        <a title="" href="index.html"><span class="name">reactive</span></a>
+        <a title="" href="index.html"><span class="name">node</span></a>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../index.html" class="extype" name="riff.raft">raft</a></dd></dl></div>
     </li><li class="current-entities indented3">
+                        <a class="object" href="AddressedRequest$.html" title=""></a>
+                        <a class="class" href="AddressedRequest.html" title="A sequence of requests to send out as a result of a RaftNode having processed an event or message"></a>
+                        <a href="AddressedRequest.html" title="A sequence of requests to send out as a result of a RaftNode having processed an event or message">AddressedRequest</a>
+                      </li><li class="current-entities indented3">
                         <span class="separator"></span>
-                        <a class="class" href="" title="The idea is to create a 'pipe' of RaftMessage[A] --&gt; RaftNodeResult[A]."></a>
-                        <a href="" title="The idea is to create a 'pipe' of RaftMessage[A] --&gt; RaftNodeResult[A].">ReactiveHandler</a>
+                        <a class="class" href="AddressedResponse.html" title="Combines a 'replyTo' node with a response"></a>
+                        <a href="AddressedResponse.html" title="Combines a 'replyTo' node with a response">AddressedResponse</a>
+                      </li><li class="current-entities indented3">
+                        <span class="separator"></span>
+                        <a class="object" href="Candidate$.html" title=""></a>
+                        <a href="Candidate$.html" title="">Candidate</a>
+                      </li><li class="current-entities indented3">
+                        <span class="separator"></span>
+                        <a class="class" href="CandidateNodeState.html" title=""></a>
+                        <a href="CandidateNodeState.html" title="">CandidateNodeState</a>
+                      </li><li class="current-entities indented3">
+                        <span class="separator"></span>
+                        <a class="class" href="CandidateState.html" title="Contains the functions for when a node becomes a candidate due to a heartbeat timeout"></a>
+                        <a href="CandidateState.html" title="Contains the functions for when a node becomes a candidate due to a heartbeat timeout">CandidateState</a>
+                      </li><li class="current-entities indented3">
+                        <span class="separator"></span>
+                        <a class="object" href="Follower$.html" title=""></a>
+                        <a href="Follower$.html" title="">Follower</a>
+                      </li><li class="current-entities indented3">
+                        <span class="separator"></span>
+                        <a class="class" href="FollowerNodeState.html" title=""></a>
+                        <a href="FollowerNodeState.html" title="">FollowerNodeState</a>
+                      </li><li class="current-entities indented3">
+                        <span class="separator"></span>
+                        <a class="object" href="Leader$.html" title=""></a>
+                        <a href="Leader$.html" title="">Leader</a>
+                      </li><li class="current-entities indented3">
+                        <span class="separator"></span>
+                        <a class="class" href="LeaderCommittedResult.html" title="This was introduced after having first just having: 1) AddressedRequest 2) AddressedResponse 3) NoOpResult"></a>
+                        <a href="LeaderCommittedResult.html" title="This was introduced after having first just having: 1) AddressedRequest 2) AddressedResponse 3) NoOpResult">LeaderCommittedResult</a>
+                      </li><li class="current-entities indented3">
+                        <a class="object" href="LeaderNodeState$.html" title=""></a>
+                        <a class="class" href="LeaderNodeState.html" title=""></a>
+                        <a href="LeaderNodeState.html" title="">LeaderNodeState</a>
+                      </li><li class="current-entities indented3">
+                        <span class="separator"></span>
+                        <a class="object" href="LeadersClusterView$.html" title=""></a>
+                        <a href="LeadersClusterView$.html" title="">LeadersClusterView</a>
+                      </li><li class="current-entities indented3">
+                        <a class="object" href="NIOPersistentState$.html" title=""></a>
+                        <a class="class" href="NIOPersistentState.html" title="Some PersistentState written to the file system using java.nio"></a>
+                        <a href="NIOPersistentState.html" title="Some PersistentState written to the file system using java.nio">NIOPersistentState</a>
+                      </li><li class="current-entities indented3">
+                        <a class="object" href="NoOpResult$.html" title=""></a>
+                        <a class="trait" href="NoOpResult.html" title="Marker interface for a no-op result of a node having processed an event or message."></a>
+                        <a href="NoOpResult.html" title="Marker interface for a no-op result of a node having processed an event or message.">NoOpResult</a>
+                      </li><li class="current-entities indented3">
+                        <span class="separator"></span>
+                        <a class="class" href="" title="Like LeaderCommittedResult this was added so we could explicitly expose the extra information when appending data as a leader as a result of an riff.raft.messages.AppendEntries request."></a>
+                        <a href="" title="Like LeaderCommittedResult this was added so we could explicitly expose the extra information when appending data as a leader as a result of an riff.raft.messages.AppendEntries request.">NodeAppendResult</a>
+                      </li><li class="current-entities indented3">
+                        <span class="separator"></span>
+                        <a class="trait" href="NodeRole.html" title=""></a>
+                        <a href="NodeRole.html" title="">NodeRole</a>
+                      </li><li class="current-entities indented3">
+                        <span class="separator"></span>
+                        <a class="trait" href="NodeState.html" title="Represents an in-memory state matching a node's role"></a>
+                        <a href="NodeState.html" title="Represents an in-memory state matching a node's role">NodeState</a>
+                      </li><li class="current-entities indented3">
+                        <a class="object" href="Peer$.html" title=""></a>
+                        <a class="class" href="Peer.html" title="The view of a peer in the cluster"></a>
+                        <a href="Peer.html" title="The view of a peer in the cluster">Peer</a>
+                      </li><li class="current-entities indented3">
+                        <a class="object" href="PersistentState$.html" title=""></a>
+                        <a class="trait" href="PersistentState.html" title="Keeps track of a node's internal state: 1) what term it is 2) who the chuff it voted for"></a>
+                        <a href="PersistentState.html" title="Keeps track of a node's internal state: 1) what term it is 2) who the chuff it voted for">PersistentState</a>
+                      </li><li class="current-entities indented3">
+                        <a class="object" href="RaftCluster$.html" title=""></a>
+                        <a class="trait" href="RaftCluster.html" title="Represents something which knows about the peers in the cluster."></a>
+                        <a href="RaftCluster.html" title="Represents something which knows about the peers in the cluster.">RaftCluster</a>
+                      </li><li class="current-entities indented3">
+                        <span class="separator"></span>
+                        <a class="trait" href="RaftMessageHandler.html" title="This interface represents a stateful black-box of a raft node."></a>
+                        <a href="RaftMessageHandler.html" title="This interface represents a stateful black-box of a raft node.">RaftMessageHandler</a>
+                      </li><li class="current-entities indented3">
+                        <a class="object" href="RaftNode$.html" title=""></a>
+                        <a class="class" href="RaftNode.html" title="The place where the different pieces which represent a Raft Node come together -- the glue code."></a>
+                        <a href="RaftNode.html" title="The place where the different pieces which represent a Raft Node come together -- the glue code.">RaftNode</a>
+                      </li><li class="current-entities indented3">
+                        <span class="separator"></span>
+                        <a class="trait" href="RaftNodeResult.html" title="Represents all possible results of a RaftNode having processed an event or message"></a>
+                        <a href="RaftNodeResult.html" title="Represents all possible results of a RaftNode having processed an event or message">RaftNodeResult</a>
+                      </li><li class="current-entities indented3">
+                        <span class="separator"></span>
+                        <a class="class" href="RecordingMessageHandler.html" title=""></a>
+                        <a href="RecordingMessageHandler.html" title="">RecordingMessageHandler</a>
+                      </li><li class="current-entities indented3">
+                        <a class="object" href="RoleCallback$.html" title=""></a>
+                        <a class="trait" href="RoleCallback.html" title="This is provided as a convenience to be added to a riff.raft.node.RaftNode for anything which cares about role transitions for a particular node."></a>
+                        <a href="RoleCallback.html" title="This is provided as a convenience to be added to a riff.raft.node.RaftNode for anything which cares about role transitions for a particular node.">RoleCallback</a>
                       </li>
               </ul>
             </div>
@@ -129,9 +221,9 @@
             <body class="class type">
       <div id="definition">
         <div class="big-circle class">c</div>
-        <p id="owner"><a href="../../index.html" class="extype" name="riff">riff</a>.<a href="../index.html" class="extype" name="riff.raft">raft</a>.<a href="index.html" class="extype" name="riff.raft.reactive">reactive</a></p>
-        <h1>ReactiveHandler<span class="permalink">
-      <a href="../../../riff/raft/reactive/ReactiveHandler.html" title="Permalink">
+        <p id="owner"><a href="../../index.html" class="extype" name="riff">riff</a>.<a href="../index.html" class="extype" name="riff.raft">raft</a>.<a href="index.html" class="extype" name="riff.raft.node">node</a></p>
+        <h1>NodeAppendResult<span class="permalink">
+      <a href="../../../riff/raft/node/NodeAppendResult.html" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span></h1>
@@ -140,25 +232,22 @@
 
       <h4 id="signature" class="signature">
       <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">class</span>
+        <span class="modifier">final </span>
+        <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">ReactiveHandler</span><span class="tparams">[<span name="A">A</span>, <span name="F">F<span class="tparams">[<span name="_">_</span>]</span></span>]</span><span class="result"> extends <a href="../node/RaftMessageHandler.html" class="extype" name="riff.raft.node.RaftMessageHandler">RaftMessageHandler</a>[<span class="extype" name="riff.raft.reactive.ReactiveHandler.A">A</span>]</span>
+        <span class="name">NodeAppendResult</span><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="appendResult">appendResult: <a href="../log/LogAppendResult.html" class="extype" name="riff.raft.log.LogAppendResult">LogAppendResult</a></span>, <span name="request">request: <a href="AddressedRequest.html" class="extype" name="riff.raft.node.AddressedRequest">AddressedRequest</a>[<span class="extype" name="riff.raft.node.NodeAppendResult.A">A</span>]</span>)</span><span class="result"> extends <a href="RaftNodeResult.html" class="extype" name="riff.raft.node.RaftNodeResult">RaftNodeResult</a>[<span class="extype" name="riff.raft.node.NodeAppendResult.A">A</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
 
       
-          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>The idea is to create a 'pipe' of RaftMessage[A] --&gt; RaftNodeResult[A].</p><p>We start with a simple pipe of RaftMessage[A] --&gt; RaftMessage[A] where the input (subscriber)
-is a <a href="../../reactive/MultiSubscriberProcessor.html" class="extype" name="riff.reactive.MultiSubscriberProcessor">riff.reactive.MultiSubscriberProcessor</a> that can subscribe to the other nodes in the cluster,
-as well as a <a href="../../reactive/ReactiveTimerCallback.html" class="extype" name="riff.reactive.ReactiveTimerCallback">riff.reactive.ReactiveTimerCallback</a> (or similar) which publishes an event when a <a href="../timer/RaftClock.html" class="extype" name="riff.raft.timer.RaftClock">riff.raft.timer.RaftClock</a>
-times out.</p><p>We can then map the 'output' Publisher to transform the inputs via this 'onMessage' handler, which intercepts <span class="extype" name="AppendData">AppendData</span>
-messages in order to fulfill their subscribers
-</p></div><dl class="paramcmts block"><dt class="tparam">A</dt><dd class="cmt"><p>the type of data which is appended to the log (could just be a byte array, some union type, etc)</p></dd></dl><div class="toggleContainer block">
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Like <a href="LeaderCommittedResult.html" class="extype" name="riff.raft.node.LeaderCommittedResult">LeaderCommittedResult</a> this was added so we could explicitly expose the extra information when appending data as a leader
+as a result of an <a href="../messages/AppendEntries.html" class="extype" name="riff.raft.messages.AppendEntries">riff.raft.messages.AppendEntries</a> request.
+</p></div><dl class="paramcmts block"><dt class="tparam">A</dt><dd class="cmt"><p>the log type</p></dd><dt class="param">appendResult</dt><dd class="cmt"><p>result of appending some data to this node</p></dd><dt class="param">request</dt><dd class="cmt"><p>the request(s) (as wrapped in a AddressedRequest) to send</p></dd></dl><div class="toggleContainer block">
           <span class="toggle">
             Linear Supertypes
           </span>
-          <div class="superTypes hiddenContent"><a href="../node/RaftMessageHandler.html" class="extype" name="riff.raft.node.RaftMessageHandler">RaftMessageHandler</a>[<span class="extype" name="riff.raft.reactive.ReactiveHandler.A">A</span>], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <a href="RaftNodeResult.html" class="extype" name="riff.raft.node.RaftNodeResult">RaftNodeResult</a>[<span class="extype" name="riff.raft.node.NodeAppendResult.A">A</span>], <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
         
 
@@ -184,7 +273,7 @@ messages in order to fulfill their subscribers
                   <span class="filtertype">Inherited<br />
                   </span>
                   <ol id="linearization">
-                    <li class="in" name="riff.raft.reactive.ReactiveHandler"><span>ReactiveHandler</span></li><li class="in" name="riff.raft.node.RaftMessageHandler"><span>RaftMessageHandler</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                    <li class="in" name="riff.raft.node.NodeAppendResult"><span>NodeAppendResult</span></li><li class="in" name="scala.Serializable"><span>Serializable</span></li><li class="in" name="java.io.Serializable"><span>Serializable</span></li><li class="in" name="scala.Product"><span>Product</span></li><li class="in" name="scala.Equals"><span>Equals</span></li><li class="in" name="riff.raft.node.RaftNodeResult"><span>RaftNodeResult</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                   </ol>
                 </div><div class="ancestors">
               <span class="filtertype"></span>
@@ -204,10 +293,10 @@ messages in order to fulfill their subscribers
         <div id="allMembers">
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
-              <ol><li name="riff.raft.reactive.ReactiveHandler#&lt;init&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="&lt;init&gt;(node:riff.raft.node.RaftNode[A],input:F[riff.raft.messages.RaftMessage[A]])(implicitevidence$1:riff.reactive.AsPublisher[F],implicitexecutionContext:scala.concurrent.ExecutionContext):riff.raft.reactive.ReactiveHandler[A,F]"></a><a id="&lt;init&gt;:ReactiveHandler[A,F]"></a>
+              <ol><li name="riff.raft.node.NodeAppendResult#&lt;init&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="&lt;init&gt;(appendResult:riff.raft.log.LogAppendResult,request:riff.raft.node.AddressedRequest[A]):riff.raft.node.NodeAppendResult[A]"></a><a id="&lt;init&gt;:NodeAppendResult[A]"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/reactive/ReactiveHandler.html#&lt;init&gt;(node:riff.raft.node.RaftNode[A],input:F[riff.raft.messages.RaftMessage[A]])(implicitevidence$1:riff.reactive.AsPublisher[F],implicitexecutionContext:scala.concurrent.ExecutionContext):riff.raft.reactive.ReactiveHandler[A,F]" title="Permalink">
+      <a href="../../../riff/raft/node/NodeAppendResult.html#&lt;init&gt;(appendResult:riff.raft.log.LogAppendResult,request:riff.raft.node.AddressedRequest[A]):riff.raft.node.NodeAppendResult[A]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -216,49 +305,14 @@ messages in order to fulfill their subscribers
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">ReactiveHandler</span><span class="params">(<span name="node">node: <a href="../node/RaftNode.html" class="extype" name="riff.raft.node.RaftNode">RaftNode</a>[<span class="extype" name="riff.raft.reactive.ReactiveHandler.A">A</span>]</span>, <span name="input">input: <span class="extype" name="riff.raft.reactive.ReactiveHandler.F">F</span>[<a href="../messages/RaftMessage.html" class="extype" name="riff.raft.messages.RaftMessage">RaftMessage</a>[<span class="extype" name="riff.raft.reactive.ReactiveHandler.A">A</span>]]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: <a href="../../reactive/AsPublisher.html" class="extype" name="riff.reactive.AsPublisher">AsPublisher</a>[<span class="extype" name="riff.raft.reactive.ReactiveHandler.F">F</span>]</span>, <span name="executionContext">executionContext: <span class="extype" name="scala.concurrent.ExecutionContext">ExecutionContext</span></span>)</span>
+        <span class="name">NodeAppendResult</span><span class="params">(<span name="appendResult">appendResult: <a href="../log/LogAppendResult.html" class="extype" name="riff.raft.log.LogAppendResult">LogAppendResult</a></span>, <span name="request">request: <a href="AddressedRequest.html" class="extype" name="riff.raft.node.AddressedRequest">AddressedRequest</a>[<span class="extype" name="riff.raft.node.NodeAppendResult.A">A</span>]</span>)</span>
       </span>
       
-      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">node</dt><dd class="cmt"><p>the wrapped node which will handle the</p></dd></dl></div>
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">appendResult</dt><dd class="cmt"><p>result of appending some data to this node</p></dd><dt class="param">request</dt><dd class="cmt"><p>the request(s) (as wrapped in a AddressedRequest) to send</p></dd></dl></div>
     </li></ol>
             </div>
 
-        <div id="types" class="types members">
-              <h3>Type Members</h3>
-              <ol><li name="riff.raft.node.RaftMessageHandler.AppendResult" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="AppendResult=Either[riff.raft.NotTheLeaderException,(riff.raft.log.LogAppendResult,riff.raft.node.AddressedRequest[A])]"></a><a id="AppendResult:AppendResult"></a>
-      <span class="permalink">
-      <a href="../../../riff/raft/reactive/ReactiveHandler.html#AppendResult=Either[riff.raft.NotTheLeaderException,(riff.raft.log.LogAppendResult,riff.raft.node.AddressedRequest[A])]" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">type</span>
-      </span>
-      <span class="symbol">
-        <span class="name">AppendResult</span><span class="result alias"> = <span class="extype" name="scala.util.Either">Either</span>[<a href="../NotTheLeaderException.html" class="extype" name="riff.raft.NotTheLeaderException">NotTheLeaderException</a>, (<a href="../log/LogAppendResult.html" class="extype" name="riff.raft.log.LogAppendResult">LogAppendResult</a>, <a href="../node/AddressedRequest.html" class="extype" name="riff.raft.node.AddressedRequest">AddressedRequest</a>[<span class="extype" name="riff.raft.reactive.ReactiveHandler.A">A</span>])]</span>
-      </span>
-      
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../node/RaftMessageHandler.html" class="extype" name="riff.raft.node.RaftMessageHandler">RaftMessageHandler</a></dd></dl></div>
-    </li><li name="riff.raft.node.RaftMessageHandler.Result" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="Result=riff.raft.node.RaftNodeResult[A]"></a><a id="Result:Result"></a>
-      <span class="permalink">
-      <a href="../../../riff/raft/reactive/ReactiveHandler.html#Result=riff.raft.node.RaftNodeResult[A]" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">type</span>
-      </span>
-      <span class="symbol">
-        <span class="name">Result</span><span class="result alias"> = <a href="../node/RaftNodeResult.html" class="extype" name="riff.raft.node.RaftNodeResult">RaftNodeResult</a>[<span class="extype" name="riff.raft.reactive.ReactiveHandler.A">A</span>]</span>
-      </span>
-      
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../node/RaftMessageHandler.html" class="extype" name="riff.raft.node.RaftMessageHandler">RaftMessageHandler</a></dd></dl></div>
-    </li></ol>
-            </div>
+        
 
         
 
@@ -268,7 +322,7 @@ messages in order to fulfill their subscribers
                 <li name="scala.AnyRef#!=" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="!=(x$1:Any):Boolean"></a><a id="!=(Any):Boolean"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/reactive/ReactiveHandler.html#!=(x$1:Any):Boolean" title="Permalink">
+      <a href="../../../riff/raft/node/NodeAppendResult.html#!=(x$1:Any):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -284,7 +338,7 @@ messages in order to fulfill their subscribers
     </li><li name="scala.AnyRef###" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="##():Int"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/reactive/ReactiveHandler.html###():Int" title="Permalink">
+      <a href="../../../riff/raft/node/NodeAppendResult.html###():Int" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -300,7 +354,7 @@ messages in order to fulfill their subscribers
     </li><li name="scala.AnyRef#==" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="==(x$1:Any):Boolean"></a><a id="==(Any):Boolean"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/reactive/ReactiveHandler.html#==(x$1:Any):Boolean" title="Permalink">
+      <a href="../../../riff/raft/node/NodeAppendResult.html#==(x$1:Any):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -313,10 +367,26 @@ messages in order to fulfill their subscribers
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="riff.raft.node.NodeAppendResult#appendResult" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="appendResult:riff.raft.log.LogAppendResult"></a><a id="appendResult:LogAppendResult"></a>
+      <span class="permalink">
+      <a href="../../../riff/raft/node/NodeAppendResult.html#appendResult:riff.raft.log.LogAppendResult" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">val</span>
+      </span>
+      <span class="symbol">
+        <span class="name">appendResult</span><span class="result">: <a href="../log/LogAppendResult.html" class="extype" name="riff.raft.log.LogAppendResult">LogAppendResult</a></span>
+      </span>
+      
+      
     </li><li name="scala.Any#asInstanceOf" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="asInstanceOf[T0]:T0"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/reactive/ReactiveHandler.html#asInstanceOf[T0]:T0" title="Permalink">
+      <a href="../../../riff/raft/node/NodeAppendResult.html#asInstanceOf[T0]:T0" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -332,7 +402,7 @@ messages in order to fulfill their subscribers
     </li><li name="scala.AnyRef#clone" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="clone():Object"></a><a id="clone():AnyRef"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/reactive/ReactiveHandler.html#clone():Object" title="Permalink">
+      <a href="../../../riff/raft/node/NodeAppendResult.html#clone():Object" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -356,7 +426,7 @@ messages in order to fulfill their subscribers
     </li><li name="scala.AnyRef#eq" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a><a id="eq(AnyRef):Boolean"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/reactive/ReactiveHandler.html#eq(x$1:AnyRef):Boolean" title="Permalink">
+      <a href="../../../riff/raft/node/NodeAppendResult.html#eq(x$1:AnyRef):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -369,26 +439,10 @@ messages in order to fulfill their subscribers
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="scala.AnyRef#equals" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="equals(x$1:Any):Boolean"></a><a id="equals(Any):Boolean"></a>
-      <span class="permalink">
-      <a href="../../../riff/raft/reactive/ReactiveHandler.html#equals(x$1:Any):Boolean" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">equals</span><span class="params">(<span name="arg0">arg0: <span class="extype" name="scala.Any">Any</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
-      </span>
-      
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#finalize" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="finalize():Unit"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/reactive/ReactiveHandler.html#finalize():Unit" title="Permalink">
+      <a href="../../../riff/raft/node/NodeAppendResult.html#finalize():Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -410,7 +464,7 @@ messages in order to fulfill their subscribers
     </li><li name="scala.AnyRef#getClass" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="getClass():Class[_]"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/reactive/ReactiveHandler.html#getClass():Class[_]" title="Permalink">
+      <a href="../../../riff/raft/node/NodeAppendResult.html#getClass():Class[_]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -426,29 +480,10 @@ messages in order to fulfill their subscribers
                 <span class="name">@native</span><span class="args">()</span>
               
         </dd></dl></div>
-    </li><li name="scala.AnyRef#hashCode" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="hashCode():Int"></a>
-      <span class="permalink">
-      <a href="../../../riff/raft/reactive/ReactiveHandler.html#hashCode():Int" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">hashCode</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
-      </span>
-      
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd><dt>Annotations</dt><dd>
-                <span class="name">@native</span><span class="args">()</span>
-              
-        </dd></dl></div>
     </li><li name="scala.Any#isInstanceOf" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="isInstanceOf[T0]:Boolean"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/reactive/ReactiveHandler.html#isInstanceOf[T0]:Boolean" title="Permalink">
+      <a href="../../../riff/raft/node/NodeAppendResult.html#isInstanceOf[T0]:Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -464,7 +499,7 @@ messages in order to fulfill their subscribers
     </li><li name="scala.AnyRef#ne" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a><a id="ne(AnyRef):Boolean"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/reactive/ReactiveHandler.html#ne(x$1:AnyRef):Boolean" title="Permalink">
+      <a href="../../../riff/raft/node/NodeAppendResult.html#ne(x$1:AnyRef):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -477,26 +512,10 @@ messages in order to fulfill their subscribers
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="riff.raft.reactive.ReactiveHandler#nodeId" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="nodeId:riff.raft.NodeId"></a><a id="nodeId:NodeId"></a>
-      <span class="permalink">
-      <a href="../../../riff/raft/reactive/ReactiveHandler.html#nodeId:riff.raft.NodeId" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">nodeId</span><span class="result">: <a href="../index.html#NodeId=String" class="extmbr" name="riff.raft.NodeId">NodeId</a></span>
-      </span>
-      
-      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>the ID of this node in the cluster</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="riff.raft.reactive.ReactiveHandler">ReactiveHandler</a> → <a href="../node/RaftMessageHandler.html" class="extype" name="riff.raft.node.RaftMessageHandler">RaftMessageHandler</a></dd></dl></div>
     </li><li name="scala.AnyRef#notify" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notify():Unit"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/reactive/ReactiveHandler.html#notify():Unit" title="Permalink">
+      <a href="../../../riff/raft/node/NodeAppendResult.html#notify():Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -515,7 +534,7 @@ messages in order to fulfill their subscribers
     </li><li name="scala.AnyRef#notifyAll" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notifyAll():Unit"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/reactive/ReactiveHandler.html#notifyAll():Unit" title="Permalink">
+      <a href="../../../riff/raft/node/NodeAppendResult.html#notifyAll():Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -531,26 +550,26 @@ messages in order to fulfill their subscribers
                 <span class="name">@native</span><span class="args">()</span>
               
         </dd></dl></div>
-    </li><li name="riff.raft.reactive.ReactiveHandler#onMessage" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="onMessage(msg:riff.raft.messages.RaftMessage[A]):ReactiveHandler.this.Result"></a><a id="onMessage(RaftMessage[A]):Result"></a>
+    </li><li name="riff.raft.node.NodeAppendResult#request" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="request:riff.raft.node.AddressedRequest[A]"></a><a id="request:AddressedRequest[A]"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/reactive/ReactiveHandler.html#onMessage(msg:riff.raft.messages.RaftMessage[A]):ReactiveHandler.this.Result" title="Permalink">
+      <a href="../../../riff/raft/node/NodeAppendResult.html#request:riff.raft.node.AddressedRequest[A]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
       <span class="modifier_kind">
         <span class="modifier"></span>
-        <span class="kind">def</span>
+        <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">onMessage</span><span class="params">(<span name="msg">msg: <a href="../messages/RaftMessage.html" class="extype" name="riff.raft.messages.RaftMessage">RaftMessage</a>[<span class="extype" name="riff.raft.reactive.ReactiveHandler.A">A</span>]</span>)</span><span class="result">: <a href="#Result=riff.raft.node.RaftNodeResult[A]" class="extmbr" name="riff.raft.reactive.ReactiveHandler.Result">Result</a></span>
+        <span class="name">request</span><span class="result">: <a href="AddressedRequest.html" class="extype" name="riff.raft.node.AddressedRequest">AddressedRequest</a>[<span class="extype" name="riff.raft.node.NodeAppendResult.A">A</span>]</span>
       </span>
       
-      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">msg</dt><dd class="cmt"><p>the Raft message</p></dd><dt>returns</dt><dd class="cmt"><p>the response</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="riff.raft.reactive.ReactiveHandler">ReactiveHandler</a> → <a href="../node/RaftMessageHandler.html" class="extype" name="riff.raft.node.RaftMessageHandler">RaftMessageHandler</a></dd></dl></div>
+      
     </li><li name="scala.AnyRef#synchronized" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a><a id="synchronized[T0](⇒T0):T0"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/reactive/ReactiveHandler.html#synchronized[T0](x$1:=&gt;T0):T0" title="Permalink">
+      <a href="../../../riff/raft/node/NodeAppendResult.html#synchronized[T0](x$1:=&gt;T0):T0" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -563,10 +582,10 @@ messages in order to fulfill their subscribers
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="scala.AnyRef#toString" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="toString():String"></a>
+    </li><li name="riff.raft.node.NodeAppendResult#toNode" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="toNode(targetNodeId:riff.raft.NodeId):Seq[riff.raft.messages.AddressedMessage[A]]"></a><a id="toNode(NodeId):Seq[AddressedMessage[A]]"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/reactive/ReactiveHandler.html#toString():String" title="Permalink">
+      <a href="../../../riff/raft/node/NodeAppendResult.html#toNode(targetNodeId:riff.raft.NodeId):Seq[riff.raft.messages.AddressedMessage[A]]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -575,14 +594,14 @@ messages in order to fulfill their subscribers
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
+        <span class="name">toNode</span><span class="params">(<span name="targetNodeId">targetNodeId: <a href="../index.html#NodeId=String" class="extmbr" name="riff.raft.NodeId">NodeId</a></span>)</span><span class="result">: <span class="extype" name="scala.Seq">Seq</span>[<a href="../messages/AddressedMessage.html" class="extype" name="riff.raft.messages.AddressedMessage">AddressedMessage</a>[<span class="extype" name="riff.raft.node.NodeAppendResult.A">A</span>]]</span>
       </span>
       
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>a representation of this result as a collection of <span class="extype" name="AddressedMessage">AddressedMessage</span>s which are either to or from this node</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="riff.raft.node.NodeAppendResult">NodeAppendResult</a> → <a href="RaftNodeResult.html" class="extype" name="riff.raft.node.RaftNodeResult">RaftNodeResult</a></dd></dl></div>
     </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait():Unit"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/reactive/ReactiveHandler.html#wait():Unit" title="Permalink">
+      <a href="../../../riff/raft/node/NodeAppendResult.html#wait():Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -604,7 +623,7 @@ messages in order to fulfill their subscribers
     </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait(x$1:Long,x$2:Int):Unit"></a><a id="wait(Long,Int):Unit"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/reactive/ReactiveHandler.html#wait(x$1:Long,x$2:Int):Unit" title="Permalink">
+      <a href="../../../riff/raft/node/NodeAppendResult.html#wait(x$1:Long,x$2:Int):Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -626,7 +645,7 @@ messages in order to fulfill their subscribers
     </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait(x$1:Long):Unit"></a><a id="wait(Long):Unit"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/reactive/ReactiveHandler.html#wait(x$1:Long):Unit" title="Permalink">
+      <a href="../../../riff/raft/node/NodeAppendResult.html#wait(x$1:Long):Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -657,8 +676,16 @@ messages in order to fulfill their subscribers
         </div>
 
         <div id="inheritedMembers">
-        <div class="parent" name="riff.raft.node.RaftMessageHandler">
-              <h3>Inherited from <a href="../node/RaftMessageHandler.html" class="extype" name="riff.raft.node.RaftMessageHandler">RaftMessageHandler</a>[<span class="extype" name="riff.raft.reactive.ReactiveHandler.A">A</span>]</h3>
+        <div class="parent" name="scala.Serializable">
+              <h3>Inherited from <span class="extype" name="scala.Serializable">Serializable</span></h3>
+            </div><div class="parent" name="java.io.Serializable">
+              <h3>Inherited from <span class="extype" name="java.io.Serializable">Serializable</span></h3>
+            </div><div class="parent" name="scala.Product">
+              <h3>Inherited from <span class="extype" name="scala.Product">Product</span></h3>
+            </div><div class="parent" name="scala.Equals">
+              <h3>Inherited from <span class="extype" name="scala.Equals">Equals</span></h3>
+            </div><div class="parent" name="riff.raft.node.RaftNodeResult">
+              <h3>Inherited from <a href="RaftNodeResult.html" class="extype" name="riff.raft.node.RaftNodeResult">RaftNodeResult</a>[<span class="extype" name="riff.raft.node.NodeAppendResult.A">A</span>]</h3>
             </div><div class="parent" name="scala.AnyRef">
               <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
             </div><div class="parent" name="scala.Any">

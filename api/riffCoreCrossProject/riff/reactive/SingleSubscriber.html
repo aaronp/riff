@@ -110,9 +110,21 @@
                         <a class="trait" href="AsSubscriber.html" title="Represents any F[_] which can be represented as a Subscriber"></a>
                         <a href="AsSubscriber.html" title="Represents any F[_] which can be represented as a Subscriber">AsSubscriber</a>
                       </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="trait" href="AsyncPublisher.html" title="A hot publisher to multiple subscribers, where new subscriptions simply begin observing the messages as the point of subscription."></a>
+                        <a href="AsyncPublisher.html" title="A hot publisher to multiple subscribers, where new subscriptions simply begin observing the messages as the point of subscription.">AsyncPublisher</a>
+                      </li><li class="current-entities indented2">
                         <a class="object" href="AsyncSubscription$.html" title=""></a>
                         <a class="class" href="AsyncSubscription.html" title="Represents a subscription whose actions are handled via a Runnable pulling values from a blocking internalStateInputQueue submitted on a provided execution context"></a>
                         <a href="AsyncSubscription.html" title="Represents a subscription whose actions are handled via a Runnable pulling values from a blocking internalStateInputQueue submitted on a provided execution context">AsyncSubscription</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="BatchedPublisher.html" title=""></a>
+                        <a href="BatchedPublisher.html" title="">BatchedPublisher</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="BatchedSubscriber.html" title=""></a>
+                        <a href="BatchedSubscriber.html" title="">BatchedSubscriber</a>
                       </li><li class="current-entities indented2">
                         <a class="object" href="CollectPublisher$.html" title=""></a>
                         <a class="class" href="CollectPublisher.html" title="Simple implementation of a publisher which can filter its published elements"></a>
@@ -133,10 +145,6 @@
                         <a class="object" href="ReactivePipe$.html" title=""></a>
                         <a class="class" href="ReactivePipe.html" title="Represents an input/output pipe"></a>
                         <a href="ReactivePipe.html" title="Represents an input/output pipe">ReactivePipe</a>
-                      </li><li class="current-entities indented2">
-                        <span class="separator"></span>
-                        <a class="trait" href="ReactivePublisher.html" title="A hot publisher to multiple subscribers, where new subscriptions simply begin observing the messages as the point of subscription."></a>
-                        <a href="ReactivePublisher.html" title="A hot publisher to multiple subscribers, where new subscriptions simply begin observing the messages as the point of subscription.">ReactivePublisher</a>
                       </li><li class="current-entities indented2">
                         <a class="object" href="ReactiveTimerCallback$.html" title=""></a>
                         <a class="class" href="ReactiveTimerCallback.html" title="An implementation of a TimerCallback which publishes TimerMessages"></a>
@@ -191,7 +199,7 @@ for error-handling behvior.</p></div><div class="toggleContainer block">
             <span class="toggle">
               Known Subclasses
             </span>
-            <div class="subClasses hiddenContent"><a href="ReactivePipe$$Instance.html" class="extype" name="riff.reactive.ReactivePipe.Instance">Instance</a></div>
+            <div class="subClasses hiddenContent"><a href="BatchedSubscriber.html" class="extype" name="riff.reactive.BatchedSubscriber">BatchedSubscriber</a>, <a href="ReactivePipe$$Instance.html" class="extype" name="riff.reactive.ReactivePipe.Instance">Instance</a></div>
           </div></div>
         
 
@@ -289,6 +297,38 @@ for error-handling behvior.</p></div><div class="toggleContainer block">
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd></dl></div>
+    </li><li name="riff.reactive.SingleSubscriber#minimumRequestedThreshold" visbl="prt" class="indented0 " data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="minimumRequestedThreshold:Int"></a>
+      <span class="permalink">
+      <a href="../../riff/reactive/SingleSubscriber.html#minimumRequestedThreshold:Int" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">minimumRequestedThreshold</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>the number of elements received of the 'subscriptionBatchSize', below which another 'request(&lt;subscriptionBatchSize&gt;)' request is made</p></dd></dl><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd></dl></div>
+    </li><li name="riff.reactive.SingleSubscriber#subscriptionBatchSize" visbl="prt" class="indented0 " data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="subscriptionBatchSize:Int"></a>
+      <span class="permalink">
+      <a href="../../riff/reactive/SingleSubscriber.html#subscriptionBatchSize:Int" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">subscriptionBatchSize</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
+      </span>
+      
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>the number of elements requested from its subscription</p></dd></dl><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd></dl></div>
     </li></ol>
             </div>
 
@@ -507,22 +547,6 @@ for error-handling behvior.</p></div><div class="toggleContainer block">
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
-    </li><li name="riff.reactive.SingleSubscriber#minimumRequestedThreshold" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="minimumRequestedThreshold:Int"></a>
-      <span class="permalink">
-      <a href="../../riff/reactive/SingleSubscriber.html#minimumRequestedThreshold:Int" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">minimumRequestedThreshold</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
-      </span>
-      
-      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>the number of elements received of the 'subscriptionBatchSize', below which another 'request(&lt;subscriptionBatchSize&gt;)' request is made</p></dd></dl><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd></dl></div>
     </li><li name="scala.AnyRef#ne" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a><a id="ne(AnyRef):Boolean"></a>
       <span class="permalink">
@@ -657,22 +681,6 @@ for error-handling behvior.</p></div><div class="toggleContainer block">
       </span>
       
       <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">n</dt><dd class="cmt"><p>the number of elements to request</p></dd><dt>returns</dt><dd class="cmt"><p>true if there was a subscription from which to request, false otherwise</p></dd></dl></div>
-    </li><li name="riff.reactive.SingleSubscriber#subscriptionBatchSize" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="subscriptionBatchSize:Int"></a>
-      <span class="permalink">
-      <a href="../../riff/reactive/SingleSubscriber.html#subscriptionBatchSize:Int" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">subscriptionBatchSize</span><span class="result">: <span class="extype" name="scala.Int">Int</span></span>
-      </span>
-      
-      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>the number of elements requested from its subscription</p></dd></dl><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd></dl></div>
     </li><li name="scala.AnyRef#synchronized" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a><a id="synchronized[T0](⇒T0):T0"></a>
       <span class="permalink">

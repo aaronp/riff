@@ -150,6 +150,10 @@
                         <a class="object" href="Leader$.html" title=""></a>
                         <a href="Leader$.html" title="">Leader</a>
                       </li><li class="current-entities indented3">
+                        <span class="separator"></span>
+                        <a class="class" href="LeaderCommittedResult.html" title="This was introduced after having first just having: 1) AddressedRequest 2) AddressedResponse 3) NoOpResult"></a>
+                        <a href="LeaderCommittedResult.html" title="This was introduced after having first just having: 1) AddressedRequest 2) AddressedResponse 3) NoOpResult">LeaderCommittedResult</a>
+                      </li><li class="current-entities indented3">
                         <a class="object" href="LeaderNodeState$.html" title=""></a>
                         <a class="class" href="" title=""></a>
                         <a href="" title="">LeaderNodeState</a>
@@ -165,6 +169,10 @@
                         <a class="object" href="NoOpResult$.html" title=""></a>
                         <a class="trait" href="NoOpResult.html" title="Marker interface for a no-op result of a node having processed an event or message."></a>
                         <a href="NoOpResult.html" title="Marker interface for a no-op result of a node having processed an event or message.">NoOpResult</a>
+                      </li><li class="current-entities indented3">
+                        <span class="separator"></span>
+                        <a class="class" href="NodeAppendResult.html" title="Like LeaderCommittedResult this was added so we could explicitly expose the extra information when appending data as a leader as a result of an riff.raft.messages.AppendEntries request."></a>
+                        <a href="NodeAppendResult.html" title="Like LeaderCommittedResult this was added so we could explicitly expose the extra information when appending data as a leader as a result of an riff.raft.messages.AppendEntries request.">NodeAppendResult</a>
                       </li><li class="current-entities indented3">
                         <span class="separator"></span>
                         <a class="trait" href="NodeRole.html" title=""></a>
@@ -197,6 +205,10 @@
                         <span class="separator"></span>
                         <a class="trait" href="RaftNodeResult.html" title="Represents all possible results of a RaftNode having processed an event or message"></a>
                         <a href="RaftNodeResult.html" title="Represents all possible results of a RaftNode having processed an event or message">RaftNodeResult</a>
+                      </li><li class="current-entities indented3">
+                        <span class="separator"></span>
+                        <a class="class" href="RecordingMessageHandler.html" title=""></a>
+                        <a href="RecordingMessageHandler.html" title="">RecordingMessageHandler</a>
                       </li><li class="current-entities indented3">
                         <a class="object" href="RoleCallback$.html" title=""></a>
                         <a class="trait" href="RoleCallback.html" title="This is provided as a convenience to be added to a riff.raft.node.RaftNode for anything which cares about role transitions for a particular node."></a>
@@ -645,9 +657,9 @@
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="riff.raft.node.LeaderNodeState">LeaderNodeState</a> → <a href="NodeState.html" class="extype" name="riff.raft.node.NodeState">NodeState</a></dd></dl></div>
     </li><li name="riff.raft.node.LeaderNodeState#makeAppendEntries" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="makeAppendEntries[A](log:riff.raft.log.RaftLog[A],currentTerm:riff.raft.Term,data:Array[A]):(riff.raft.log.LogAppendResult,riff.raft.node.AddressedRequest[A])"></a><a id="makeAppendEntries[A](RaftLog[A],Term,Array[A]):(LogAppendResult,AddressedRequest[A])"></a>
+      <a id="makeAppendEntries[A](log:riff.raft.log.RaftLog[A],currentTerm:riff.raft.Term,data:Array[A]):riff.raft.node.NodeAppendResult[A]"></a><a id="makeAppendEntries[A](RaftLog[A],Term,Array[A]):NodeAppendResult[A]"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/node/LeaderNodeState.html#makeAppendEntries[A](log:riff.raft.log.RaftLog[A],currentTerm:riff.raft.Term,data:Array[A]):(riff.raft.log.LogAppendResult,riff.raft.node.AddressedRequest[A])" title="Permalink">
+      <a href="../../../riff/raft/node/LeaderNodeState.html#makeAppendEntries[A](log:riff.raft.log.RaftLog[A],currentTerm:riff.raft.Term,data:Array[A]):riff.raft.node.NodeAppendResult[A]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -656,7 +668,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">makeAppendEntries</span><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="log">log: <a href="../log/RaftLog.html" class="extype" name="riff.raft.log.RaftLog">RaftLog</a>[<span class="extype" name="riff.raft.node.LeaderNodeState.makeAppendEntries.A">A</span>]</span>, <span name="currentTerm">currentTerm: <a href="../index.html#Term=Int" class="extmbr" name="riff.raft.Term">Term</a></span>, <span name="data">data: <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="riff.raft.node.LeaderNodeState.makeAppendEntries.A">A</span>]</span>)</span><span class="result">: (<a href="../log/LogAppendResult.html" class="extype" name="riff.raft.log.LogAppendResult">LogAppendResult</a>, <a href="AddressedRequest.html" class="extype" name="riff.raft.node.AddressedRequest">AddressedRequest</a>[<span class="extype" name="riff.raft.node.LeaderNodeState.makeAppendEntries.A">A</span>])</span>
+        <span class="name">makeAppendEntries</span><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="log">log: <a href="../log/RaftLog.html" class="extype" name="riff.raft.log.RaftLog">RaftLog</a>[<span class="extype" name="riff.raft.node.LeaderNodeState.makeAppendEntries.A">A</span>]</span>, <span name="currentTerm">currentTerm: <a href="../index.html#Term=Int" class="extmbr" name="riff.raft.Term">Term</a></span>, <span name="data">data: <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="riff.raft.node.LeaderNodeState.makeAppendEntries.A">A</span>]</span>)</span><span class="result">: <a href="NodeAppendResult.html" class="extype" name="riff.raft.node.NodeAppendResult">NodeAppendResult</a>[<span class="extype" name="riff.raft.node.LeaderNodeState.makeAppendEntries.A">A</span>]</span>
       </span>
       
       <p class="shortcomment cmt">appends the data to the given leader's log, returning the append result and append requests based on the clusterView
@@ -717,9 +729,9 @@
               
         </dd></dl></div>
     </li><li name="riff.raft.node.LeaderNodeState#onAppendResponse" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="onAppendResponse[A](from:riff.raft.NodeId,log:riff.raft.log.RaftLog[A],currentTerm:riff.raft.Term,appendResponse:riff.raft.messages.AppendEntriesResponse,maxAppendSize:Int):(Seq[riff.raft.log.LogCoords],riff.raft.node.RaftNodeResult[A])"></a><a id="onAppendResponse[A](NodeId,RaftLog[A],Term,AppendEntriesResponse,Int):(Seq[LogCoords],RaftNodeResult[A])"></a>
+      <a id="onAppendResponse[A](from:riff.raft.NodeId,log:riff.raft.log.RaftLog[A],currentTerm:riff.raft.Term,appendResponse:riff.raft.messages.AppendEntriesResponse,maxAppendSize:Int):riff.raft.node.LeaderCommittedResult[A]"></a><a id="onAppendResponse[A](NodeId,RaftLog[A],Term,AppendEntriesResponse,Int):LeaderCommittedResult[A]"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/node/LeaderNodeState.html#onAppendResponse[A](from:riff.raft.NodeId,log:riff.raft.log.RaftLog[A],currentTerm:riff.raft.Term,appendResponse:riff.raft.messages.AppendEntriesResponse,maxAppendSize:Int):(Seq[riff.raft.log.LogCoords],riff.raft.node.RaftNodeResult[A])" title="Permalink">
+      <a href="../../../riff/raft/node/LeaderNodeState.html#onAppendResponse[A](from:riff.raft.NodeId,log:riff.raft.log.RaftLog[A],currentTerm:riff.raft.Term,appendResponse:riff.raft.messages.AppendEntriesResponse,maxAppendSize:Int):riff.raft.node.LeaderCommittedResult[A]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -728,7 +740,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">onAppendResponse</span><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="from">from: <a href="../index.html#NodeId=String" class="extmbr" name="riff.raft.NodeId">NodeId</a></span>, <span name="log">log: <a href="../log/RaftLog.html" class="extype" name="riff.raft.log.RaftLog">RaftLog</a>[<span class="extype" name="riff.raft.node.LeaderNodeState.onAppendResponse.A">A</span>]</span>, <span name="currentTerm">currentTerm: <a href="../index.html#Term=Int" class="extmbr" name="riff.raft.Term">Term</a></span>, <span name="appendResponse">appendResponse: <a href="../messages/AppendEntriesResponse.html" class="extype" name="riff.raft.messages.AppendEntriesResponse">AppendEntriesResponse</a></span>, <span name="maxAppendSize">maxAppendSize: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: (<span class="extype" name="scala.Seq">Seq</span>[<a href="../log/LogCoords.html" class="extype" name="riff.raft.log.LogCoords">LogCoords</a>], <a href="RaftNodeResult.html" class="extype" name="riff.raft.node.RaftNodeResult">RaftNodeResult</a>[<span class="extype" name="riff.raft.node.LeaderNodeState.onAppendResponse.A">A</span>])</span>
+        <span class="name">onAppendResponse</span><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="from">from: <a href="../index.html#NodeId=String" class="extmbr" name="riff.raft.NodeId">NodeId</a></span>, <span name="log">log: <a href="../log/RaftLog.html" class="extype" name="riff.raft.log.RaftLog">RaftLog</a>[<span class="extype" name="riff.raft.node.LeaderNodeState.onAppendResponse.A">A</span>]</span>, <span name="currentTerm">currentTerm: <a href="../index.html#Term=Int" class="extmbr" name="riff.raft.Term">Term</a></span>, <span name="appendResponse">appendResponse: <a href="../messages/AppendEntriesResponse.html" class="extype" name="riff.raft.messages.AppendEntriesResponse">AppendEntriesResponse</a></span>, <span name="maxAppendSize">maxAppendSize: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <a href="LeaderCommittedResult.html" class="extype" name="riff.raft.node.LeaderCommittedResult">LeaderCommittedResult</a>[<span class="extype" name="riff.raft.node.LeaderNodeState.onAppendResponse.A">A</span>]</span>
       </span>
       
       <p class="shortcomment cmt">Handle the append response coming from the 'from' node

@@ -182,6 +182,10 @@
                         <a class="object" href="Leader$.html" title=""></a>
                         <a href="Leader$.html" title="">Leader</a>
                       </li><li class="current-entities indented3">
+                        <span class="separator"></span>
+                        <a class="class" href="LeaderCommittedResult.html" title="This was introduced after having first just having: 1) AddressedRequest 2) AddressedResponse 3) NoOpResult"></a>
+                        <a href="LeaderCommittedResult.html" title="This was introduced after having first just having: 1) AddressedRequest 2) AddressedResponse 3) NoOpResult">LeaderCommittedResult</a>
+                      </li><li class="current-entities indented3">
                         <a class="object" href="LeaderNodeState$.html" title=""></a>
                         <a class="class" href="LeaderNodeState.html" title=""></a>
                         <a href="LeaderNodeState.html" title="">LeaderNodeState</a>
@@ -197,6 +201,10 @@
                         <a class="object" href="NoOpResult$.html" title=""></a>
                         <a class="trait" href="NoOpResult.html" title="Marker interface for a no-op result of a node having processed an event or message."></a>
                         <a href="NoOpResult.html" title="Marker interface for a no-op result of a node having processed an event or message.">NoOpResult</a>
+                      </li><li class="current-entities indented3">
+                        <span class="separator"></span>
+                        <a class="class" href="NodeAppendResult.html" title="Like LeaderCommittedResult this was added so we could explicitly expose the extra information when appending data as a leader as a result of an riff.raft.messages.AppendEntries request."></a>
+                        <a href="NodeAppendResult.html" title="Like LeaderCommittedResult this was added so we could explicitly expose the extra information when appending data as a leader as a result of an riff.raft.messages.AppendEntries request.">NodeAppendResult</a>
                       </li><li class="current-entities indented3">
                         <span class="separator"></span>
                         <a class="trait" href="NodeRole.html" title=""></a>
@@ -229,6 +237,10 @@
                         <span class="separator"></span>
                         <a class="trait" href="RaftNodeResult.html" title="Represents all possible results of a RaftNode having processed an event or message"></a>
                         <a href="RaftNodeResult.html" title="Represents all possible results of a RaftNode having processed an event or message">RaftNodeResult</a>
+                      </li><li class="current-entities indented3">
+                        <span class="separator"></span>
+                        <a class="class" href="RecordingMessageHandler.html" title=""></a>
+                        <a href="RecordingMessageHandler.html" title="">RecordingMessageHandler</a>
                       </li><li class="current-entities indented3">
                         <a class="object" href="RoleCallback$.html" title=""></a>
                         <a class="trait" href="RoleCallback.html" title="This is provided as a convenience to be added to a riff.raft.node.RaftNode for anything which cares about role transitions for a particular node."></a>
@@ -413,6 +425,32 @@
       </span>
       
       
+    </li><li name="riff.raft.node.LeaderCommittedResult" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="LeaderCommittedResult[A]extendsRaftNodeResult[A]withProductwithSerializable"></a><a id="LeaderCommittedResult[A]:LeaderCommittedResult[A]"></a>
+      <span class="permalink">
+      <a href="../../../riff/raft/node/index.html#LeaderCommittedResult[A]extendsRaftNodeResult[A]withProductwithSerializable" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a title="This was introduced after having first just having: 1) AddressedRequest 2) AddressedResponse 3) NoOpResult" href="LeaderCommittedResult.html"><span class="name">LeaderCommittedResult</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="committed">committed: <span class="extype" name="scala.Seq">Seq</span>[<a href="../log/LogCoords.html" class="extype" name="riff.raft.log.LogCoords">LogCoords</a>]</span>, <span name="response">response: <a href="RaftNodeResult.html" class="extype" name="riff.raft.node.RaftNodeResult">RaftNodeResult</a>[<span class="extype" name="riff.raft.node.LeaderCommittedResult.A">A</span>]</span>)</span><span class="result"> extends <a href="RaftNodeResult.html" class="extype" name="riff.raft.node.RaftNodeResult">RaftNodeResult</a>[<span class="extype" name="riff.raft.node.LeaderCommittedResult.A">A</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      <p class="shortcomment cmt">This was introduced after having first just having:
+1) AddressedRequest
+2) AddressedResponse
+3) NoOpResult</p><div class="fullcomment"><div class="comment cmt"><p>This was introduced after having first just having:
+1) AddressedRequest
+2) AddressedResponse
+3) NoOpResult</p><p>which seemed ok. Unfortunately we have situations (namely when the node is a leader) when we want more
+information about e.g. commit/log append data so we can expose that data to a client.</p><p>We could start introducing 'Either', 'Xor', etc types, but I'd like to avoid:
+1) the extra wrapping penalty
+2) overly-complex return types</p><p>though the second is at the expense of scenarios which have to pattern-match on the result types
+</p></div><dl class="paramcmts block"><dt class="tparam">A</dt><dd class="cmt"><p>the log type</p></dd><dt class="param">committed</dt><dd class="cmt"><p>if an <a href="../messages/AppendEntriesResponse.html" class="extype" name="riff.raft.messages.AppendEntriesResponse">riff.raft.messages.AppendEntriesResponse</a> resulted in committing a log entry, these are the coordinates of those committed entries</p></dd><dt class="param">response</dt><dd class="cmt"><p>either a no-op (e.g. log) result or potentially an <a href="AddressedRequest.html" class="extype" name="riff.raft.node.AddressedRequest">AddressedRequest</a> to send the next data required</p></dd></dl></div>
     </li><li name="riff.raft.node.LeaderNodeState" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="LeaderNodeStateextendsNodeStatewithProductwithSerializable"></a><a id="LeaderNodeState:LeaderNodeState"></a>
       <span class="permalink">
@@ -464,6 +502,25 @@
       <p class="shortcomment cmt">Marker interface for a no-op result of a node having processed an event or message.</p><div class="fullcomment"><div class="comment cmt"><p>Marker interface for a no-op result of a node having processed an event or message.</p><p>At the moment there is just a 'log message' implementation, but we could make the results more strongly-typed
 if needed (e.g. as a candidate advances through its votes, or the detail from some invalid action)
 </p></div></div>
+    </li><li name="riff.raft.node.NodeAppendResult" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="NodeAppendResult[A]extendsRaftNodeResult[A]withProductwithSerializable"></a><a id="NodeAppendResult[A]:NodeAppendResult[A]"></a>
+      <span class="permalink">
+      <a href="../../../riff/raft/node/index.html#NodeAppendResult[A]extendsRaftNodeResult[A]withProductwithSerializable" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a title="Like LeaderCommittedResult this was added so we could explicitly expose the extra information when appending data as a leader as a result of an riff.raft.messages.AppendEntries request." href="NodeAppendResult.html"><span class="name">NodeAppendResult</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="appendResult">appendResult: <a href="../log/LogAppendResult.html" class="extype" name="riff.raft.log.LogAppendResult">LogAppendResult</a></span>, <span name="request">request: <a href="AddressedRequest.html" class="extype" name="riff.raft.node.AddressedRequest">AddressedRequest</a>[<span class="extype" name="riff.raft.node.NodeAppendResult.A">A</span>]</span>)</span><span class="result"> extends <a href="RaftNodeResult.html" class="extype" name="riff.raft.node.RaftNodeResult">RaftNodeResult</a>[<span class="extype" name="riff.raft.node.NodeAppendResult.A">A</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      <p class="shortcomment cmt">Like <a href="LeaderCommittedResult.html" class="extype" name="riff.raft.node.LeaderCommittedResult">LeaderCommittedResult</a> this was added so we could explicitly expose the extra information when appending data as a leader
+as a result of an <a href="../messages/AppendEntries.html" class="extype" name="riff.raft.messages.AppendEntries">riff.raft.messages.AppendEntries</a> request.</p><div class="fullcomment"><div class="comment cmt"><p>Like <a href="LeaderCommittedResult.html" class="extype" name="riff.raft.node.LeaderCommittedResult">LeaderCommittedResult</a> this was added so we could explicitly expose the extra information when appending data as a leader
+as a result of an <a href="../messages/AppendEntries.html" class="extype" name="riff.raft.messages.AppendEntries">riff.raft.messages.AppendEntries</a> request.
+</p></div><dl class="paramcmts block"><dt class="tparam">A</dt><dd class="cmt"><p>the log type</p></dd><dt class="param">appendResult</dt><dd class="cmt"><p>result of appending some data to this node</p></dd><dt class="param">request</dt><dd class="cmt"><p>the request(s) (as wrapped in a AddressedRequest) to send</p></dd></dl></div>
     </li><li name="riff.raft.node.NodeRole" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
       <a id="NodeRoleextendsAnyRef"></a><a id="NodeRole:NodeRole"></a>
       <span class="permalink">
@@ -570,9 +627,9 @@ if needed (e.g. as a candidate advances through its votes, or the detail from so
       <p class="shortcomment cmt">This interface represents a stateful black-box of a raft node.</p><div class="fullcomment"><div class="comment cmt"><p>This interface represents a stateful black-box of a raft node.</p><p>It is typically NOT THREAD SAFE, but rather something which simply something which can take inputs and produce outputs
 </p></div><dl class="paramcmts block"><dt class="tparam">A</dt><dd class="cmt"><p>the type of data which is appended to the log (could just be a byte array, some union type, etc)</p></dd></dl></div>
     </li><li name="riff.raft.node.RaftNode" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="RaftNode[A]extendsRaftMessageHandler[A]withTimerCallback[riff.raft.node.RaftNodeResult[A]]"></a><a id="RaftNode[A]:RaftNode[A]"></a>
+      <a id="RaftNode[A]extendsRaftMessageHandler[A]withTimerCallback[riff.raft.node.RaftNodeResult[A]]withAutoCloseable"></a><a id="RaftNode[A]:RaftNode[A]"></a>
       <span class="permalink">
-      <a href="../../../riff/raft/node/index.html#RaftNode[A]extendsRaftMessageHandler[A]withTimerCallback[riff.raft.node.RaftNodeResult[A]]" title="Permalink">
+      <a href="../../../riff/raft/node/index.html#RaftNode[A]extendsRaftMessageHandler[A]withTimerCallback[riff.raft.node.RaftNodeResult[A]]withAutoCloseable" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -581,7 +638,7 @@ if needed (e.g. as a candidate advances through its votes, or the detail from so
         <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <a title="The place where the different pieces which represent a Raft Node come together -- the glue code." href="RaftNode.html"><span class="name">RaftNode</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends <a href="RaftMessageHandler.html" class="extype" name="riff.raft.node.RaftMessageHandler">RaftMessageHandler</a>[<span class="extype" name="riff.raft.node.RaftNode.A">A</span>] with <a href="../timer/TimerCallback.html" class="extype" name="riff.raft.timer.TimerCallback">TimerCallback</a>[<a href="RaftNodeResult.html" class="extype" name="riff.raft.node.RaftNodeResult">RaftNodeResult</a>[<span class="extype" name="riff.raft.node.RaftNode.A">A</span>]]</span>
+        <a title="The place where the different pieces which represent a Raft Node come together -- the glue code." href="RaftNode.html"><span class="name">RaftNode</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends <a href="RaftMessageHandler.html" class="extype" name="riff.raft.node.RaftMessageHandler">RaftMessageHandler</a>[<span class="extype" name="riff.raft.node.RaftNode.A">A</span>] with <a href="../timer/TimerCallback.html" class="extype" name="riff.raft.timer.TimerCallback">TimerCallback</a>[<a href="RaftNodeResult.html" class="extype" name="riff.raft.node.RaftNodeResult">RaftNodeResult</a>[<span class="extype" name="riff.raft.node.RaftNode.A">A</span>]] with <span class="extype" name="java.lang.AutoCloseable">AutoCloseable</span></span>
       </span>
       
       <p class="shortcomment cmt">The place where the different pieces which represent a Raft Node come together -- the glue code.</p><div class="fullcomment"><div class="comment cmt"><p>The place where the different pieces which represent a Raft Node come together -- the glue code.</p><p>I've looked at this a few different ways, but ultimately found this abstraction here to be the most readable,
@@ -605,6 +662,22 @@ into a raft node.</p></div></div>
       <p class="shortcomment cmt">Represents all possible results of a <a href="RaftNode.html" class="extype" name="riff.raft.node.RaftNode">RaftNode</a> having processed an event or message
 </p><div class="fullcomment"><div class="comment cmt"><p>Represents all possible results of a <a href="RaftNode.html" class="extype" name="riff.raft.node.RaftNode">RaftNode</a> having processed an event or message
 </p></div><dl class="paramcmts block"><dt class="tparam">A</dt><dd class="cmt"><p>the log type</p></dd></dl></div>
+    </li><li name="riff.raft.node.RecordingMessageHandler" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="RecordingMessageHandler[A]extendsRaftMessageHandler[A]withStrictLoggingwithProductwithSerializable"></a><a id="RecordingMessageHandler[A]:RecordingMessageHandler[A]"></a>
+      <span class="permalink">
+      <a href="../../../riff/raft/node/index.html#RecordingMessageHandler[A]extendsRaftMessageHandler[A]withStrictLoggingwithProductwithSerializable" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="RecordingMessageHandler.html"><span class="name">RecordingMessageHandler</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="underlying">underlying: <a href="RaftMessageHandler.html" class="extype" name="riff.raft.node.RaftMessageHandler">RaftMessageHandler</a>[<span class="extype" name="riff.raft.node.RecordingMessageHandler.A">A</span>]</span>)</span><span class="result"> extends <a href="RaftMessageHandler.html" class="extype" name="riff.raft.node.RaftMessageHandler">RaftMessageHandler</a>[<span class="extype" name="riff.raft.node.RecordingMessageHandler.A">A</span>] with <span class="extype" name="com.typesafe.scalalogging.StrictLogging">StrictLogging</span> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      
     </li><li name="riff.raft.node.RoleCallback" visbl="pub" class="indented0 " data-isabs="true" fullComment="yes" group="Ungrouped">
       <a id="RoleCallbackextendsAnyRef"></a><a id="RoleCallback:RoleCallback"></a>
       <span class="permalink">

@@ -122,33 +122,33 @@
                         <a class="object" href="EventSource$.html" title="Contains a function for applying a log type A to a state S, and persisting that state."></a>
                         <a href="EventSource$.html" title="Contains a function for applying a log type A to a state S, and persisting that state.">EventSource</a>
                       </li><li class="current-entities indented2">
+                        <a class="object" href="LowPriorityRiffMonixImplicits$.html" title=""></a>
+                        <a class="trait" href="LowPriorityRiffMonixImplicits.html" title=""></a>
+                        <a href="LowPriorityRiffMonixImplicits.html" title="">LowPriorityRiffMonixImplicits</a>
+                      </li><li class="current-entities indented2">
                         <a class="object" href="" title=""></a>
                         <a class="class" href="MonixClock.html" title=""></a>
                         <a href="MonixClock.html" title="">MonixClock</a>
-                      </li><li class="current-entities indented2">
-                        <a class="object" href="MonixCluster$.html" title=""></a>
-                        <a class="class" href="MonixCluster.html" title="This is more of a toy/test, as it sets up all the cluster members in the same JVM."></a>
-                        <a href="MonixCluster.html" title="This is more of a toy/test, as it sets up all the cluster members in the same JVM.">MonixCluster</a>
-                      </li><li class="current-entities indented2">
-                        <a class="object" href="MonixNode$.html" title=""></a>
-                        <a class="class" href="MonixNode.html" title="Contains all the constituent parts use to construct a RaftNode."></a>
-                        <a href="MonixNode.html" title="Contains all the constituent parts use to construct a RaftNode.">MonixNode</a>
                       </li><li class="current-entities indented2">
                         <a class="object" href="NamedPipe$.html" title=""></a>
                         <a class="class" href="NamedPipe.html" title=""></a>
                         <a href="NamedPipe.html" title="">NamedPipe</a>
                       </li><li class="current-entities indented2">
-                        <span class="separator"></span>
-                        <a class="class" href="ObservableCallback.html" title="Provides a means to observe the nodes timeouts"></a>
-                        <a href="ObservableCallback.html" title="Provides a means to observe the nodes timeouts">ObservableCallback</a>
-                      </li><li class="current-entities indented2">
-                        <span class="separator"></span>
-                        <a class="class" href="ObservableRaftNode.html" title="Wraps a RaftNode's onMessage so as to exposes observable requests and responses"></a>
-                        <a href="ObservableRaftNode.html" title="Wraps a RaftNode's onMessage so as to exposes observable requests and responses">ObservableRaftNode</a>
-                      </li><li class="current-entities indented2">
                         <a class="object" href="ObservableState$.html" title=""></a>
                         <a class="class" href="ObservableState.html" title="Provides a means to represent a riff.raft.node.RaftNode's role as an Observable:"></a>
                         <a href="ObservableState.html" title="Provides a means to represent a riff.raft.node.RaftNode's role as an Observable:">ObservableState</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="ObservableTimerCallback.html" title="Provides a means to observe the nodes timeouts"></a>
+                        <a href="ObservableTimerCallback.html" title="Provides a means to observe the nodes timeouts">ObservableTimerCallback</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="RaftPipeMonix$.html" title=""></a>
+                        <a href="RaftPipeMonix$.html" title="">RaftPipeMonix</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="RiffMonixClient.html" title=""></a>
+                        <a href="RiffMonixClient.html" title="">RiffMonixClient</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="object" href="RiffSchedulers$.html" title=""></a>
@@ -293,9 +293,9 @@
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="riff.monix.MonixClock#apply" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="apply(sendHeartbeatTimeout:scala.concurrent.duration.FiniteDuration,receiveHeartbeatMinMaxTimeout:(scala.concurrent.duration.FiniteDuration,scala.concurrent.duration.FiniteDuration))(implicitsched:monix.execution.Scheduler):riff.monix.MonixClock"></a><a id="apply(FiniteDuration,(FiniteDuration,FiniteDuration))(Scheduler):MonixClock"></a>
+      <a id="apply(sendHeartbeatTimeout:scala.concurrent.duration.FiniteDuration,receiveHeartbeatMinMaxTimeout:riff.raft.timer.RandomTimer)(implicitsched:monix.execution.Scheduler):riff.monix.MonixClock"></a><a id="apply(FiniteDuration,RandomTimer)(Scheduler):MonixClock"></a>
       <span class="permalink">
-      <a href="../../riff/monix/MonixClock$.html#apply(sendHeartbeatTimeout:scala.concurrent.duration.FiniteDuration,receiveHeartbeatMinMaxTimeout:(scala.concurrent.duration.FiniteDuration,scala.concurrent.duration.FiniteDuration))(implicitsched:monix.execution.Scheduler):riff.monix.MonixClock" title="Permalink">
+      <a href="../../riff/monix/MonixClock$.html#apply(sendHeartbeatTimeout:scala.concurrent.duration.FiniteDuration,receiveHeartbeatMinMaxTimeout:riff.raft.timer.RandomTimer)(implicitsched:monix.execution.Scheduler):riff.monix.MonixClock" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -304,7 +304,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">apply</span><span class="params">(<span name="sendHeartbeatTimeout">sendHeartbeatTimeout: <a href="http://www.scala-lang.org/api/2.12.7/scala/concurrent/duration/FiniteDuration.html#scala.concurrent.duration.FiniteDuration" class="extype" name="scala.concurrent.duration.FiniteDuration">FiniteDuration</a></span>, <span name="receiveHeartbeatMinMaxTimeout">receiveHeartbeatMinMaxTimeout: (<a href="http://www.scala-lang.org/api/2.12.7/scala/concurrent/duration/FiniteDuration.html#scala.concurrent.duration.FiniteDuration" class="extype" name="scala.concurrent.duration.FiniteDuration">FiniteDuration</a>, <a href="http://www.scala-lang.org/api/2.12.7/scala/concurrent/duration/FiniteDuration.html#scala.concurrent.duration.FiniteDuration" class="extype" name="scala.concurrent.duration.FiniteDuration">FiniteDuration</a>)</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="sched">sched: <span class="extype" name="monix.execution.Scheduler">Scheduler</span></span>)</span><span class="result">: <a href="MonixClock.html" class="extype" name="riff.monix.MonixClock">MonixClock</a></span>
+        <span class="name">apply</span><span class="params">(<span name="sendHeartbeatTimeout">sendHeartbeatTimeout: <a href="http://www.scala-lang.org/api/2.12.7/scala/concurrent/duration/FiniteDuration.html#scala.concurrent.duration.FiniteDuration" class="extype" name="scala.concurrent.duration.FiniteDuration">FiniteDuration</a></span>, <span name="receiveHeartbeatMinMaxTimeout">receiveHeartbeatMinMaxTimeout: <span class="extype" name="riff.raft.timer.RandomTimer">RandomTimer</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="sched">sched: <span class="extype" name="monix.execution.Scheduler">Scheduler</span></span>)</span><span class="result">: <a href="MonixClock.html" class="extype" name="riff.monix.MonixClock">MonixClock</a></span>
       </span>
       
       

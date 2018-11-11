@@ -122,33 +122,33 @@
                         <a class="object" href="EventSource$.html" title="Contains a function for applying a log type A to a state S, and persisting that state."></a>
                         <a href="EventSource$.html" title="Contains a function for applying a log type A to a state S, and persisting that state.">EventSource</a>
                       </li><li class="current-entities indented2">
+                        <a class="object" href="LowPriorityRiffMonixImplicits$.html" title=""></a>
+                        <a class="trait" href="LowPriorityRiffMonixImplicits.html" title=""></a>
+                        <a href="LowPriorityRiffMonixImplicits.html" title="">LowPriorityRiffMonixImplicits</a>
+                      </li><li class="current-entities indented2">
                         <a class="object" href="MonixClock$.html" title=""></a>
                         <a class="class" href="MonixClock.html" title=""></a>
                         <a href="MonixClock.html" title="">MonixClock</a>
-                      </li><li class="current-entities indented2">
-                        <a class="object" href="MonixCluster$.html" title=""></a>
-                        <a class="class" href="MonixCluster.html" title="This is more of a toy/test, as it sets up all the cluster members in the same JVM."></a>
-                        <a href="MonixCluster.html" title="This is more of a toy/test, as it sets up all the cluster members in the same JVM.">MonixCluster</a>
-                      </li><li class="current-entities indented2">
-                        <a class="object" href="MonixNode$.html" title=""></a>
-                        <a class="class" href="MonixNode.html" title="Contains all the constituent parts use to construct a RaftNode."></a>
-                        <a href="MonixNode.html" title="Contains all the constituent parts use to construct a RaftNode.">MonixNode</a>
                       </li><li class="current-entities indented2">
                         <a class="object" href="NamedPipe$.html" title=""></a>
                         <a class="class" href="NamedPipe.html" title=""></a>
                         <a href="NamedPipe.html" title="">NamedPipe</a>
                       </li><li class="current-entities indented2">
-                        <span class="separator"></span>
-                        <a class="class" href="ObservableCallback.html" title="Provides a means to observe the nodes timeouts"></a>
-                        <a href="ObservableCallback.html" title="Provides a means to observe the nodes timeouts">ObservableCallback</a>
-                      </li><li class="current-entities indented2">
-                        <span class="separator"></span>
-                        <a class="class" href="" title="Wraps a RaftNode's onMessage so as to exposes observable requests and responses"></a>
-                        <a href="" title="Wraps a RaftNode's onMessage so as to exposes observable requests and responses">ObservableRaftNode</a>
-                      </li><li class="current-entities indented2">
                         <a class="object" href="ObservableState$.html" title=""></a>
                         <a class="class" href="ObservableState.html" title="Provides a means to represent a riff.raft.node.RaftNode's role as an Observable:"></a>
                         <a href="ObservableState.html" title="Provides a means to represent a riff.raft.node.RaftNode's role as an Observable:">ObservableState</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="ObservableTimerCallback.html" title="Provides a means to observe the nodes timeouts"></a>
+                        <a href="ObservableTimerCallback.html" title="Provides a means to observe the nodes timeouts">ObservableTimerCallback</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="" title=""></a>
+                        <a href="" title="">RaftPipeMonix</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="RiffMonixClient.html" title=""></a>
+                        <a href="RiffMonixClient.html" title="">RiffMonixClient</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="object" href="RiffSchedulers$.html" title=""></a>
@@ -162,12 +162,12 @@
             </div>
           </div>
           <div id="content">
-            <body class="class type">
+            <body class="object value">
       <div id="definition">
-        <div class="big-circle class">c</div>
+        <div class="big-circle object">o</div>
         <p id="owner"><a href="../index.html" class="extype" name="riff">riff</a>.<a href="index.html" class="extype" name="riff.monix">monix</a></p>
-        <h1>ObservableRaftNode<span class="permalink">
-      <a href="../../riff/monix/ObservableRaftNode.html" title="Permalink">
+        <h1>RaftPipeMonix<span class="permalink">
+      <a href="../../riff/monix/RaftPipeMonix$.html" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span></h1>
@@ -177,20 +177,19 @@
       <h4 id="signature" class="signature">
       <span class="modifier_kind">
         <span class="modifier"></span>
-        <span class="kind">class</span>
+        <span class="kind">object</span>
       </span>
       <span class="symbol">
-        <span class="name">ObservableRaftNode</span><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends <span class="extype" name="riff.raft.node.RaftMessageHandler">RaftMessageHandler</span>[<span class="extype" name="riff.monix.ObservableRaftNode.A">A</span>] with <span class="extype" name="com.typesafe.scalalogging.StrictLogging">StrictLogging</span></span>
+        <span class="name">RaftPipeMonix</span><span class="result"> extends <a href="LowPriorityRiffMonixImplicits.html" class="extype" name="riff.monix.LowPriorityRiffMonixImplicits">LowPriorityRiffMonixImplicits</a></span>
       </span>
       </h4>
 
       
-          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Wraps a RaftNode's onMessage so as to exposes observable requests and responses
-</p></div><dl class="paramcmts block"><dt class="tparam">A</dt><dd class="cmt"><p>the type of data which is appended to the log (could just be a byte array, some union type, etc)</p></dd></dl><div class="toggleContainer block">
+          <div id="comment" class="fullcommenttop"><div class="toggleContainer block">
           <span class="toggle">
             Linear Supertypes
           </span>
-          <div class="superTypes hiddenContent"><span class="extype" name="com.typesafe.scalalogging.StrictLogging">StrictLogging</span>, <span class="extype" name="riff.raft.node.RaftMessageHandler">RaftMessageHandler</span>[<span class="extype" name="riff.monix.ObservableRaftNode.A">A</span>], <a href="http://www.scala-lang.org/api/2.12.7/scala/AnyRef.html#scala.AnyRef" class="extype" name="scala.AnyRef">AnyRef</a>, <a href="http://www.scala-lang.org/api/2.12.7/scala/Any.html#scala.Any" class="extype" name="scala.Any">Any</a></div>
+          <div class="superTypes hiddenContent"><a href="LowPriorityRiffMonixImplicits.html" class="extype" name="riff.monix.LowPriorityRiffMonixImplicits">LowPriorityRiffMonixImplicits</a>, <a href="http://www.scala-lang.org/api/2.12.7/scala/AnyRef.html#scala.AnyRef" class="extype" name="scala.AnyRef">AnyRef</a>, <a href="http://www.scala-lang.org/api/2.12.7/scala/Any.html#scala.Any" class="extype" name="scala.Any">Any</a></div>
         </div></div>
         
 
@@ -216,7 +215,7 @@
                   <span class="filtertype">Inherited<br />
                   </span>
                   <ol id="linearization">
-                    <li class="in" name="riff.monix.ObservableRaftNode"><span>ObservableRaftNode</span></li><li class="in" name="com.typesafe.scalalogging.StrictLogging"><span>StrictLogging</span></li><li class="in" name="riff.raft.node.RaftMessageHandler"><span>RaftMessageHandler</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                    <li class="in" name="riff.monix.RaftPipeMonix"><span>RaftPipeMonix</span></li><li class="in" name="riff.monix.LowPriorityRiffMonixImplicits"><span>LowPriorityRiffMonixImplicits</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                   </ol>
                 </div><div class="ancestors">
               <span class="filtertype"></span>
@@ -236,42 +235,7 @@
         <div id="allMembers">
         
 
-        <div id="types" class="types members">
-              <h3>Type Members</h3>
-              <ol><li name="riff.raft.node.RaftMessageHandler.AppendResult" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="AppendResult=Either[riff.raft.NotTheLeaderException,(riff.raft.log.LogAppendResult,riff.raft.node.AddressedRequest[A])]"></a><a id="AppendResult:AppendResult"></a>
-      <span class="permalink">
-      <a href="../../riff/monix/ObservableRaftNode.html#AppendResult=Either[riff.raft.NotTheLeaderException,(riff.raft.log.LogAppendResult,riff.raft.node.AddressedRequest[A])]" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">type</span>
-      </span>
-      <span class="symbol">
-        <span class="name">AppendResult</span><span class="result alias"> = <span class="extype" name="scala.util.Either">Either</span>[<span class="extype" name="riff.raft.NotTheLeaderException">NotTheLeaderException</span>, (<span class="extype" name="riff.raft.log.LogAppendResult">LogAppendResult</span>, <span class="extype" name="riff.raft.node.AddressedRequest">AddressedRequest</span>[<span class="extype" name="riff.monix.ObservableRaftNode.A">A</span>])]</span>
-      </span>
-      
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>RaftMessageHandler</dd></dl></div>
-    </li><li name="riff.raft.node.RaftMessageHandler.Result" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="Result=riff.raft.node.RaftNodeResult[A]"></a><a id="Result:Result"></a>
-      <span class="permalink">
-      <a href="../../riff/monix/ObservableRaftNode.html#Result=riff.raft.node.RaftNodeResult[A]" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">type</span>
-      </span>
-      <span class="symbol">
-        <span class="name">Result</span><span class="result alias"> = <span class="extype" name="riff.raft.node.RaftNodeResult">RaftNodeResult</span>[<span class="extype" name="riff.monix.ObservableRaftNode.A">A</span>]</span>
-      </span>
-      
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>RaftMessageHandler</dd></dl></div>
-    </li></ol>
-            </div>
+        
 
         
 
@@ -281,7 +245,7 @@
                 <li name="scala.AnyRef#!=" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="!=(x$1:Any):Boolean"></a><a id="!=(Any):Boolean"></a>
       <span class="permalink">
-      <a href="../../riff/monix/ObservableRaftNode.html#!=(x$1:Any):Boolean" title="Permalink">
+      <a href="../../riff/monix/RaftPipeMonix$.html#!=(x$1:Any):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -297,7 +261,7 @@
     </li><li name="scala.AnyRef###" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="##():Int"></a>
       <span class="permalink">
-      <a href="../../riff/monix/ObservableRaftNode.html###():Int" title="Permalink">
+      <a href="../../riff/monix/RaftPipeMonix$.html###():Int" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -313,7 +277,7 @@
     </li><li name="scala.AnyRef#==" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="==(x$1:Any):Boolean"></a><a id="==(Any):Boolean"></a>
       <span class="permalink">
-      <a href="../../riff/monix/ObservableRaftNode.html#==(x$1:Any):Boolean" title="Permalink">
+      <a href="../../riff/monix/RaftPipeMonix$.html#==(x$1:Any):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -326,10 +290,59 @@
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
+    </li><li name="riff.monix.RaftPipeMonix#apply" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="apply[A](id:riff.raft.NodeId,dataDir:java.nio.file.Path)(implicitevidence$6:eie.io.FromBytes[A],implicitevidence$7:eie.io.ToBytes[A],implicitevidence$8:scala.reflect.ClassTag[A],implicitsched:monix.execution.Scheduler):riff.RaftPipe[A,monix.reactive.Observer,monix.reactive.Observable,monix.reactive.Observable,riff.raft.node.RaftNode[A]]"></a><a id="apply[A](NodeId,Path)(FromBytes[A],ToBytes[A],ClassTag[A],Scheduler):RaftPipe[A,Observer,Observable,Observable,RaftNode[A]]"></a>
+      <span class="permalink">
+      <a href="../../riff/monix/RaftPipeMonix$.html#apply[A](id:riff.raft.NodeId,dataDir:java.nio.file.Path)(implicitevidence$6:eie.io.FromBytes[A],implicitevidence$7:eie.io.ToBytes[A],implicitevidence$8:scala.reflect.ClassTag[A],implicitsched:monix.execution.Scheduler):riff.RaftPipe[A,monix.reactive.Observer,monix.reactive.Observable,monix.reactive.Observable,riff.raft.node.RaftNode[A]]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">apply</span><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="id">id: <span class="extype" name="riff.raft.NodeId">NodeId</span></span>, <span name="dataDir">dataDir: <span class="extype" name="java.nio.file.Path">Path</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: <span class="extype" name="eie.io.FromBytes">FromBytes</span>[<span class="extype" name="riff.monix.RaftPipeMonix.apply.A">A</span>]</span>, <span name="arg1">arg1: <span class="extype" name="eie.io.ToBytes">ToBytes</span>[<span class="extype" name="riff.monix.RaftPipeMonix.apply.A">A</span>]</span>, <span name="arg2">arg2: <a href="http://www.scala-lang.org/api/2.12.7/scala/reflect/ClassTag.html#scala.reflect.ClassTag" class="extype" name="scala.reflect.ClassTag">ClassTag</a>[<span class="extype" name="riff.monix.RaftPipeMonix.apply.A">A</span>]</span>, <span name="sched">sched: <span class="extype" name="monix.execution.Scheduler">Scheduler</span></span>)</span><span class="result">: <span class="extype" name="riff.RaftPipe">RaftPipe</span>[<span class="extype" name="riff.monix.RaftPipeMonix.apply.A">A</span>, <span class="extype" name="monix.reactive.Observer">Observer</span>, <span class="extype" name="monix.reactive.Observable">Observable</span>, <span class="extype" name="monix.reactive.Observable">Observable</span>, <span class="extype" name="riff.raft.node.RaftNode">RaftNode</span>[<span class="extype" name="riff.monix.RaftPipeMonix.apply.A">A</span>]]</span>
+      </span>
+      
+      
+    </li><li name="riff.monix.RaftPipeMonix#apply" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="apply[A](id:riff.raft.NodeId)(implicitevidence$3:eie.io.FromBytes[A],implicitevidence$4:eie.io.ToBytes[A],implicitevidence$5:scala.reflect.ClassTag[A],implicitsched:monix.execution.Scheduler):riff.RaftPipe[A,monix.reactive.Observer,monix.reactive.Observable,monix.reactive.Observable,riff.raft.node.RaftNode[A]]"></a><a id="apply[A](NodeId)(FromBytes[A],ToBytes[A],ClassTag[A],Scheduler):RaftPipe[A,Observer,Observable,Observable,RaftNode[A]]"></a>
+      <span class="permalink">
+      <a href="../../riff/monix/RaftPipeMonix$.html#apply[A](id:riff.raft.NodeId)(implicitevidence$3:eie.io.FromBytes[A],implicitevidence$4:eie.io.ToBytes[A],implicitevidence$5:scala.reflect.ClassTag[A],implicitsched:monix.execution.Scheduler):riff.RaftPipe[A,monix.reactive.Observer,monix.reactive.Observable,monix.reactive.Observable,riff.raft.node.RaftNode[A]]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">apply</span><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="id">id: <span class="extype" name="riff.raft.NodeId">NodeId</span> = <span class="symbol">&quot;single-node-cluster&quot;</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: <span class="extype" name="eie.io.FromBytes">FromBytes</span>[<span class="extype" name="riff.monix.RaftPipeMonix.apply.A">A</span>]</span>, <span name="arg1">arg1: <span class="extype" name="eie.io.ToBytes">ToBytes</span>[<span class="extype" name="riff.monix.RaftPipeMonix.apply.A">A</span>]</span>, <span name="arg2">arg2: <a href="http://www.scala-lang.org/api/2.12.7/scala/reflect/ClassTag.html#scala.reflect.ClassTag" class="extype" name="scala.reflect.ClassTag">ClassTag</a>[<span class="extype" name="riff.monix.RaftPipeMonix.apply.A">A</span>]</span>, <span name="sched">sched: <span class="extype" name="monix.execution.Scheduler">Scheduler</span></span>)</span><span class="result">: <span class="extype" name="riff.RaftPipe">RaftPipe</span>[<span class="extype" name="riff.monix.RaftPipeMonix.apply.A">A</span>, <span class="extype" name="monix.reactive.Observer">Observer</span>, <span class="extype" name="monix.reactive.Observable">Observable</span>, <span class="extype" name="monix.reactive.Observable">Observable</span>, <span class="extype" name="riff.raft.node.RaftNode">RaftNode</span>[<span class="extype" name="riff.monix.RaftPipeMonix.apply.A">A</span>]]</span>
+      </span>
+      
+      
+    </li><li name="riff.monix.RaftPipeMonix#asCluster" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="asCluster[A](nodes:riff.raft.node.RaftNode[A]*)(implicitevidence$2:scala.reflect.ClassTag[A],implicitsched:monix.execution.Scheduler):Map[riff.raft.NodeId,riff.RaftPipe[A,monix.reactive.Observer,monix.reactive.Observable,monix.reactive.Observable,riff.raft.node.RaftNode[A]]]"></a><a id="asCluster[A](RaftNode[A]*)(ClassTag[A],Scheduler):Map[NodeId,RaftPipe[A,Observer,Observable,Observable,RaftNode[A]]]"></a>
+      <span class="permalink">
+      <a href="../../riff/monix/RaftPipeMonix$.html#asCluster[A](nodes:riff.raft.node.RaftNode[A]*)(implicitevidence$2:scala.reflect.ClassTag[A],implicitsched:monix.execution.Scheduler):Map[riff.raft.NodeId,riff.RaftPipe[A,monix.reactive.Observer,monix.reactive.Observable,monix.reactive.Observable,riff.raft.node.RaftNode[A]]]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">asCluster</span><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="nodes">nodes: <span class="extype" name="riff.raft.node.RaftNode">RaftNode</span>[<span class="extype" name="riff.monix.RaftPipeMonix.asCluster.A">A</span>]*</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: <a href="http://www.scala-lang.org/api/2.12.7/scala/reflect/ClassTag.html#scala.reflect.ClassTag" class="extype" name="scala.reflect.ClassTag">ClassTag</a>[<span class="extype" name="riff.monix.RaftPipeMonix.asCluster.A">A</span>]</span>, <span name="sched">sched: <span class="extype" name="monix.execution.Scheduler">Scheduler</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.Map">Map</span>[<span class="extype" name="riff.raft.NodeId">NodeId</span>, <span class="extype" name="riff.RaftPipe">RaftPipe</span>[<span class="extype" name="riff.monix.RaftPipeMonix.asCluster.A">A</span>, <span class="extype" name="monix.reactive.Observer">Observer</span>, <span class="extype" name="monix.reactive.Observable">Observable</span>, <span class="extype" name="monix.reactive.Observable">Observable</span>, <span class="extype" name="riff.raft.node.RaftNode">RaftNode</span>[<span class="extype" name="riff.monix.RaftPipeMonix.asCluster.A">A</span>]]]</span>
+      </span>
+      
+      <p class="shortcomment cmt">Create a cluster of the input nodes, so that each knows about its peers, and sends messages to/receives messages from each of them
+</p>
     </li><li name="scala.Any#asInstanceOf" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="asInstanceOf[T0]:T0"></a>
       <span class="permalink">
-      <a href="../../riff/monix/ObservableRaftNode.html#asInstanceOf[T0]:T0" title="Permalink">
+      <a href="../../riff/monix/RaftPipeMonix$.html#asInstanceOf[T0]:T0" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -345,7 +358,7 @@
     </li><li name="scala.AnyRef#clone" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="clone():Object"></a><a id="clone():AnyRef"></a>
       <span class="permalink">
-      <a href="../../riff/monix/ObservableRaftNode.html#clone():Object" title="Permalink">
+      <a href="../../riff/monix/RaftPipeMonix$.html#clone():Object" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -369,7 +382,7 @@
     </li><li name="scala.AnyRef#eq" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a><a id="eq(AnyRef):Boolean"></a>
       <span class="permalink">
-      <a href="../../riff/monix/ObservableRaftNode.html#eq(x$1:AnyRef):Boolean" title="Permalink">
+      <a href="../../riff/monix/RaftPipeMonix$.html#eq(x$1:AnyRef):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -385,7 +398,7 @@
     </li><li name="scala.AnyRef#equals" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="equals(x$1:Any):Boolean"></a><a id="equals(Any):Boolean"></a>
       <span class="permalink">
-      <a href="../../riff/monix/ObservableRaftNode.html#equals(x$1:Any):Boolean" title="Permalink">
+      <a href="../../riff/monix/RaftPipeMonix$.html#equals(x$1:Any):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -401,7 +414,7 @@
     </li><li name="scala.AnyRef#finalize" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="finalize():Unit"></a>
       <span class="permalink">
-      <a href="../../riff/monix/ObservableRaftNode.html#finalize():Unit" title="Permalink">
+      <a href="../../riff/monix/RaftPipeMonix$.html#finalize():Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -423,7 +436,7 @@
     </li><li name="scala.AnyRef#getClass" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="getClass():Class[_]"></a>
       <span class="permalink">
-      <a href="../../riff/monix/ObservableRaftNode.html#getClass():Class[_]" title="Permalink">
+      <a href="../../riff/monix/RaftPipeMonix$.html#getClass():Class[_]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -442,7 +455,7 @@
     </li><li name="scala.AnyRef#hashCode" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="hashCode():Int"></a>
       <span class="permalink">
-      <a href="../../riff/monix/ObservableRaftNode.html#hashCode():Int" title="Permalink">
+      <a href="../../riff/monix/RaftPipeMonix$.html#hashCode():Int" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -458,10 +471,10 @@
                 <span class="name">@native</span><span class="args">()</span>
               
         </dd></dl></div>
-    </li><li name="riff.monix.ObservableRaftNode#inputsObservable" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="inputsObservable:monix.reactive.Observable[riff.raft.messages.RaftMessage[A]]"></a><a id="inputsObservable:Observable[RaftMessage[A]]"></a>
+    </li><li name="riff.monix.RaftPipeMonix#inMemoryClusterOf" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="inMemoryClusterOf[A](size:Int)(implicitevidence$1:scala.reflect.ClassTag[A],implicitsched:monix.execution.Scheduler,implicitclock:riff.raft.timer.RaftClock):Map[riff.raft.NodeId,riff.RaftPipe[A,monix.reactive.Observer,monix.reactive.Observable,monix.reactive.Observable,riff.raft.node.RaftNode[A]]]"></a><a id="inMemoryClusterOf[A](Int)(ClassTag[A],Scheduler,RaftClock):Map[NodeId,RaftPipe[A,Observer,Observable,Observable,RaftNode[A]]]"></a>
       <span class="permalink">
-      <a href="../../riff/monix/ObservableRaftNode.html#inputsObservable:monix.reactive.Observable[riff.raft.messages.RaftMessage[A]]" title="Permalink">
+      <a href="../../riff/monix/RaftPipeMonix$.html#inMemoryClusterOf[A](size:Int)(implicitevidence$1:scala.reflect.ClassTag[A],implicitsched:monix.execution.Scheduler,implicitclock:riff.raft.timer.RaftClock):Map[riff.raft.NodeId,riff.RaftPipe[A,monix.reactive.Observer,monix.reactive.Observable,monix.reactive.Observable,riff.raft.node.RaftNode[A]]]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -470,14 +483,14 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">inputsObservable</span><span class="result">: <span class="extype" name="monix.reactive.Observable">Observable</span>[<span class="extype" name="riff.raft.messages.RaftMessage">RaftMessage</span>[<span class="extype" name="riff.monix.ObservableRaftNode.A">A</span>]]</span>
+        <span class="name">inMemoryClusterOf</span><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="size">size: <a href="http://www.scala-lang.org/api/2.12.7/scala/Int.html#scala.Int" class="extype" name="scala.Int">Int</a></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: <a href="http://www.scala-lang.org/api/2.12.7/scala/reflect/ClassTag.html#scala.reflect.ClassTag" class="extype" name="scala.reflect.ClassTag">ClassTag</a>[<span class="extype" name="riff.monix.RaftPipeMonix.inMemoryClusterOf.A">A</span>]</span>, <span name="sched">sched: <span class="extype" name="monix.execution.Scheduler">Scheduler</span></span>, <span name="clock">clock: <span class="extype" name="riff.raft.timer.RaftClock">RaftClock</span></span>)</span><span class="result">: <span class="extype" name="scala.Predef.Map">Map</span>[<span class="extype" name="riff.raft.NodeId">NodeId</span>, <span class="extype" name="riff.RaftPipe">RaftPipe</span>[<span class="extype" name="riff.monix.RaftPipeMonix.inMemoryClusterOf.A">A</span>, <span class="extype" name="monix.reactive.Observer">Observer</span>, <span class="extype" name="monix.reactive.Observable">Observable</span>, <span class="extype" name="monix.reactive.Observable">Observable</span>, <span class="extype" name="riff.raft.node.RaftNode">RaftNode</span>[<span class="extype" name="riff.monix.RaftPipeMonix.inMemoryClusterOf.A">A</span>]]]</span>
       </span>
       
       
     </li><li name="scala.Any#isInstanceOf" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="isInstanceOf[T0]:Boolean"></a>
       <span class="permalink">
-      <a href="../../riff/monix/ObservableRaftNode.html#isInstanceOf[T0]:Boolean" title="Permalink">
+      <a href="../../riff/monix/RaftPipeMonix$.html#isInstanceOf[T0]:Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -490,42 +503,10 @@
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
-    </li><li name="riff.monix.ObservableRaftNode#log" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="log:riff.raft.log.RaftLog[A]"></a><a id="log:RaftLog[A]"></a>
-      <span class="permalink">
-      <a href="../../riff/monix/ObservableRaftNode.html#log:riff.raft.log.RaftLog[A]" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">log</span><span class="result">: <span class="extype" name="riff.raft.log.RaftLog">RaftLog</span>[<span class="extype" name="riff.monix.ObservableRaftNode.A">A</span>]</span>
-      </span>
-      
-      
-    </li><li name="com.typesafe.scalalogging.StrictLogging#logger" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="logger:com.typesafe.scalalogging.Logger"></a><a id="logger:Logger"></a>
-      <span class="permalink">
-      <a href="../../riff/monix/ObservableRaftNode.html#logger:com.typesafe.scalalogging.Logger" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">logger</span><span class="result">: <span class="extype" name="com.typesafe.scalalogging.Logger">Logger</span></span>
-      </span>
-      
-      <div class="fullcomment"><dl class="attributes block"> <dt>Attributes</dt><dd>protected </dd><dt>Definition Classes</dt><dd>StrictLogging</dd></dl></div>
     </li><li name="scala.AnyRef#ne" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a><a id="ne(AnyRef):Boolean"></a>
       <span class="permalink">
-      <a href="../../riff/monix/ObservableRaftNode.html#ne(x$1:AnyRef):Boolean" title="Permalink">
+      <a href="../../riff/monix/RaftPipeMonix$.html#ne(x$1:AnyRef):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -538,26 +519,10 @@
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="riff.monix.ObservableRaftNode#nodeId" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="nodeId:riff.raft.NodeId"></a><a id="nodeId:NodeId"></a>
-      <span class="permalink">
-      <a href="../../riff/monix/ObservableRaftNode.html#nodeId:riff.raft.NodeId" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">nodeId</span><span class="result">: <a href="../raft/index.html#NodeId=String" class="extmbr" name="riff.raft.NodeId">NodeId</a></span>
-      </span>
-      
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="riff.monix.ObservableRaftNode">ObservableRaftNode</a> → RaftMessageHandler</dd></dl></div>
     </li><li name="scala.AnyRef#notify" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notify():Unit"></a>
       <span class="permalink">
-      <a href="../../riff/monix/ObservableRaftNode.html#notify():Unit" title="Permalink">
+      <a href="../../riff/monix/RaftPipeMonix$.html#notify():Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -576,7 +541,7 @@
     </li><li name="scala.AnyRef#notifyAll" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notifyAll():Unit"></a>
       <span class="permalink">
-      <a href="../../riff/monix/ObservableRaftNode.html#notifyAll():Unit" title="Permalink">
+      <a href="../../riff/monix/RaftPipeMonix$.html#notifyAll():Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -592,10 +557,42 @@
                 <span class="name">@native</span><span class="args">()</span>
               
         </dd></dl></div>
-    </li><li name="riff.monix.ObservableRaftNode#onMessage" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="onMessage(input:riff.raft.messages.RaftMessage[A]):ObservableRaftNode.this.Result"></a><a id="onMessage(RaftMessage[A]):Result"></a>
+    </li><li name="riff.monix.LowPriorityRiffMonixImplicits#observableAsPublisher" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="observableAsPublisher(implicitscheduler:monix.execution.Scheduler):riff.reactive.AsPublisher[monix.reactive.Observable]"></a><a id="observableAsPublisher(Scheduler):AsPublisher[Observable]"></a>
       <span class="permalink">
-      <a href="../../riff/monix/ObservableRaftNode.html#onMessage(input:riff.raft.messages.RaftMessage[A]):ObservableRaftNode.this.Result" title="Permalink">
+      <a href="../../riff/monix/RaftPipeMonix$.html#observableAsPublisher(implicitscheduler:monix.execution.Scheduler):riff.reactive.AsPublisher[monix.reactive.Observable]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">observableAsPublisher</span><span class="params">(<span class="implicit">implicit </span><span name="scheduler">scheduler: <span class="extype" name="monix.execution.Scheduler">Scheduler</span></span>)</span><span class="result">: <span class="extype" name="riff.reactive.AsPublisher">AsPublisher</span>[<span class="extype" name="monix.reactive.Observable">Observable</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="LowPriorityRiffMonixImplicits.html" class="extype" name="riff.monix.LowPriorityRiffMonixImplicits">LowPriorityRiffMonixImplicits</a></dd></dl></div>
+    </li><li name="riff.monix.LowPriorityRiffMonixImplicits#observerAsSubscriber" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="observerAsSubscriber(implicitscheduler:monix.execution.Scheduler):riff.reactive.AsSubscriber[monix.reactive.Observer]"></a><a id="observerAsSubscriber(Scheduler):AsSubscriber[Observer]"></a>
+      <span class="permalink">
+      <a href="../../riff/monix/RaftPipeMonix$.html#observerAsSubscriber(implicitscheduler:monix.execution.Scheduler):riff.reactive.AsSubscriber[monix.reactive.Observer]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">implicit </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">observerAsSubscriber</span><span class="params">(<span class="implicit">implicit </span><span name="scheduler">scheduler: <span class="extype" name="monix.execution.Scheduler">Scheduler</span></span>)</span><span class="result">: <span class="extype" name="riff.reactive.AsSubscriber">AsSubscriber</span>[<span class="extype" name="monix.reactive.Observer">Observer</span>]</span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="LowPriorityRiffMonixImplicits.html" class="extype" name="riff.monix.LowPriorityRiffMonixImplicits">LowPriorityRiffMonixImplicits</a></dd></dl></div>
+    </li><li name="riff.monix.RaftPipeMonix#raftPipeForNode" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="raftPipeForNode[A,Handler&lt;:riff.raft.node.RaftMessageHandler[A]](handler:Handler)(implicitevidence$9:scala.reflect.ClassTag[A],implicitsched:monix.execution.Scheduler):riff.RaftPipe[A,monix.reactive.Observer,monix.reactive.Observable,monix.reactive.Observable,Handler]"></a><a id="raftPipeForNode[A,Handler&lt;:RaftMessageHandler[A]](Handler)(ClassTag[A],Scheduler):RaftPipe[A,Observer,Observable,Observable,Handler]"></a>
+      <span class="permalink">
+      <a href="../../riff/monix/RaftPipeMonix$.html#raftPipeForNode[A,Handler&lt;:riff.raft.node.RaftMessageHandler[A]](handler:Handler)(implicitevidence$9:scala.reflect.ClassTag[A],implicitsched:monix.execution.Scheduler):riff.RaftPipe[A,monix.reactive.Observer,monix.reactive.Observable,monix.reactive.Observable,Handler]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -604,62 +601,14 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">onMessage</span><span class="params">(<span name="input">input: <span class="extype" name="riff.raft.messages.RaftMessage">RaftMessage</span>[<span class="extype" name="riff.monix.ObservableRaftNode.A">A</span>]</span>)</span><span class="result">: <a href="#Result=riff.raft.node.RaftNodeResult[A]" class="extmbr" name="riff.monix.ObservableRaftNode.Result">Result</a></span>
-      </span>
-      
-      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>the response</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="riff.monix.ObservableRaftNode">ObservableRaftNode</a> → RaftMessageHandler</dd></dl></div>
-    </li><li name="riff.monix.ObservableRaftNode#resetReceiveHeartbeat" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="resetReceiveHeartbeat():Unit"></a>
-      <span class="permalink">
-      <a href="../../riff/monix/ObservableRaftNode.html#resetReceiveHeartbeat():Unit" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">resetReceiveHeartbeat</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.12.7/scala/Unit.html#scala.Unit" class="extype" name="scala.Unit">Unit</a></span>
-      </span>
-      
-      
-    </li><li name="riff.monix.ObservableRaftNode#responsesAsObservable" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="responsesAsObservable:monix.reactive.Observable[ObservableRaftNode.this.Result]"></a><a id="responsesAsObservable:Observable[Result]"></a>
-      <span class="permalink">
-      <a href="../../riff/monix/ObservableRaftNode.html#responsesAsObservable:monix.reactive.Observable[ObservableRaftNode.this.Result]" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">responsesAsObservable</span><span class="result">: <span class="extype" name="monix.reactive.Observable">Observable</span>[<a href="#Result=riff.raft.node.RaftNodeResult[A]" class="extmbr" name="riff.monix.ObservableRaftNode.Result">Result</a>]</span>
-      </span>
-      
-      
-    </li><li name="riff.monix.ObservableRaftNode#role" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="role():riff.raft.node.NodeRole"></a><a id="role():NodeRole"></a>
-      <span class="permalink">
-      <a href="../../riff/monix/ObservableRaftNode.html#role():riff.raft.node.NodeRole" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">role</span><span class="params">()</span><span class="result">: <span class="extype" name="riff.raft.node.NodeRole">NodeRole</span></span>
+        <span class="name">raftPipeForNode</span><span class="tparams">[<span name="A">A</span>, <span name="Handler">Handler &lt;: <span class="extype" name="riff.raft.node.RaftMessageHandler">RaftMessageHandler</span>[<span class="extype" name="riff.monix.RaftPipeMonix.raftPipeForNode.A">A</span>]</span>]</span><span class="params">(<span name="handler">handler: <span class="extype" name="riff.monix.RaftPipeMonix.raftPipeForNode.Handler">Handler</span></span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: <a href="http://www.scala-lang.org/api/2.12.7/scala/reflect/ClassTag.html#scala.reflect.ClassTag" class="extype" name="scala.reflect.ClassTag">ClassTag</a>[<span class="extype" name="riff.monix.RaftPipeMonix.raftPipeForNode.A">A</span>]</span>, <span name="sched">sched: <span class="extype" name="monix.execution.Scheduler">Scheduler</span></span>)</span><span class="result">: <span class="extype" name="riff.RaftPipe">RaftPipe</span>[<span class="extype" name="riff.monix.RaftPipeMonix.raftPipeForNode.A">A</span>, <span class="extype" name="monix.reactive.Observer">Observer</span>, <span class="extype" name="monix.reactive.Observable">Observable</span>, <span class="extype" name="monix.reactive.Observable">Observable</span>, <span class="extype" name="riff.monix.RaftPipeMonix.raftPipeForNode.Handler">Handler</span>]</span>
       </span>
       
       
     </li><li name="scala.AnyRef#synchronized" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a><a id="synchronized[T0](⇒T0):T0"></a>
       <span class="permalink">
-      <a href="../../riff/monix/ObservableRaftNode.html#synchronized[T0](x$1:=&gt;T0):T0" title="Permalink">
+      <a href="../../riff/monix/RaftPipeMonix$.html#synchronized[T0](x$1:=&gt;T0):T0" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -672,10 +621,10 @@
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="riff.monix.ObservableRaftNode#toString" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+    </li><li name="scala.AnyRef#toString" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="toString():String"></a>
       <span class="permalink">
-      <a href="../../riff/monix/ObservableRaftNode.html#toString():String" title="Permalink">
+      <a href="../../riff/monix/RaftPipeMonix$.html#toString():String" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -684,14 +633,14 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Predef.String">String</span></span>
+        <span class="name">toString</span><span class="params">()</span><span class="result">: <span class="extype" name="java.lang.String">String</span></span>
       </span>
       
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="riff.monix.ObservableRaftNode">ObservableRaftNode</a> → AnyRef → Any</dd></dl></div>
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef → Any</dd></dl></div>
     </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait():Unit"></a>
       <span class="permalink">
-      <a href="../../riff/monix/ObservableRaftNode.html#wait():Unit" title="Permalink">
+      <a href="../../riff/monix/RaftPipeMonix$.html#wait():Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -713,7 +662,7 @@
     </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait(x$1:Long,x$2:Int):Unit"></a><a id="wait(Long,Int):Unit"></a>
       <span class="permalink">
-      <a href="../../riff/monix/ObservableRaftNode.html#wait(x$1:Long,x$2:Int):Unit" title="Permalink">
+      <a href="../../riff/monix/RaftPipeMonix$.html#wait(x$1:Long,x$2:Int):Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -735,7 +684,7 @@
     </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait(x$1:Long):Unit"></a><a id="wait(Long):Unit"></a>
       <span class="permalink">
-      <a href="../../riff/monix/ObservableRaftNode.html#wait(x$1:Long):Unit" title="Permalink">
+      <a href="../../riff/monix/RaftPipeMonix$.html#wait(x$1:Long):Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -766,10 +715,8 @@
         </div>
 
         <div id="inheritedMembers">
-        <div class="parent" name="com.typesafe.scalalogging.StrictLogging">
-              <h3>Inherited from <span class="extype" name="com.typesafe.scalalogging.StrictLogging">StrictLogging</span></h3>
-            </div><div class="parent" name="riff.raft.node.RaftMessageHandler">
-              <h3>Inherited from <span class="extype" name="riff.raft.node.RaftMessageHandler">RaftMessageHandler</span>[<span class="extype" name="riff.monix.ObservableRaftNode.A">A</span>]</h3>
+        <div class="parent" name="riff.monix.LowPriorityRiffMonixImplicits">
+              <h3>Inherited from <a href="LowPriorityRiffMonixImplicits.html" class="extype" name="riff.monix.LowPriorityRiffMonixImplicits">LowPriorityRiffMonixImplicits</a></h3>
             </div><div class="parent" name="scala.AnyRef">
               <h3>Inherited from <a href="http://www.scala-lang.org/api/2.12.7/scala/AnyRef.html#scala.AnyRef" class="extype" name="scala.AnyRef">AnyRef</a></h3>
             </div><div class="parent" name="scala.Any">

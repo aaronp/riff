@@ -110,9 +110,21 @@
                         <a class="trait" href="AsSubscriber.html" title="Represents any F[_] which can be represented as a Subscriber"></a>
                         <a href="AsSubscriber.html" title="Represents any F[_] which can be represented as a Subscriber">AsSubscriber</a>
                       </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="trait" href="AsyncPublisher.html" title="A hot publisher to multiple subscribers, where new subscriptions simply begin observing the messages as the point of subscription."></a>
+                        <a href="AsyncPublisher.html" title="A hot publisher to multiple subscribers, where new subscriptions simply begin observing the messages as the point of subscription.">AsyncPublisher</a>
+                      </li><li class="current-entities indented2">
                         <a class="object" href="AsyncSubscription$.html" title=""></a>
                         <a class="class" href="AsyncSubscription.html" title="Represents a subscription whose actions are handled via a Runnable pulling values from a blocking internalStateInputQueue submitted on a provided execution context"></a>
                         <a href="AsyncSubscription.html" title="Represents a subscription whose actions are handled via a Runnable pulling values from a blocking internalStateInputQueue submitted on a provided execution context">AsyncSubscription</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="BatchedPublisher.html" title=""></a>
+                        <a href="BatchedPublisher.html" title="">BatchedPublisher</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="BatchedSubscriber.html" title=""></a>
+                        <a href="BatchedSubscriber.html" title="">BatchedSubscriber</a>
                       </li><li class="current-entities indented2">
                         <a class="object" href="CollectPublisher$.html" title=""></a>
                         <a class="class" href="CollectPublisher.html" title="Simple implementation of a publisher which can filter its published elements"></a>
@@ -133,10 +145,6 @@
                         <a class="object" href="ReactivePipe$.html" title=""></a>
                         <a class="class" href="ReactivePipe.html" title="Represents an input/output pipe"></a>
                         <a href="ReactivePipe.html" title="Represents an input/output pipe">ReactivePipe</a>
-                      </li><li class="current-entities indented2">
-                        <span class="separator"></span>
-                        <a class="trait" href="ReactivePublisher.html" title="A hot publisher to multiple subscribers, where new subscriptions simply begin observing the messages as the point of subscription."></a>
-                        <a href="ReactivePublisher.html" title="A hot publisher to multiple subscribers, where new subscriptions simply begin observing the messages as the point of subscription.">ReactivePublisher</a>
                       </li><li class="current-entities indented2">
                         <a class="object" href="ReactiveTimerCallback$.html" title=""></a>
                         <a class="class" href="ReactiveTimerCallback.html" title="An implementation of a TimerCallback which publishes TimerMessages"></a>
@@ -245,9 +253,9 @@ the F[_] (such as collecting into another F[_])
         <div class="values members">
               <h3>Abstract Value Members</h3>
               <ol><li name="riff.reactive.AsPublisher#asPublisher" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="asPublisher[A](f:F[A]):org.reactivestreams.Publisher[A]"></a><a id="asPublisher[A](F[A]):Publisher[A]"></a>
+      <a id="asPublisher[A](publisher:F[A]):org.reactivestreams.Publisher[A]"></a><a id="asPublisher[A](F[A]):Publisher[A]"></a>
       <span class="permalink">
-      <a href="../../riff/reactive/AsPublisher.html#asPublisher[A](f:F[A]):org.reactivestreams.Publisher[A]" title="Permalink">
+      <a href="../../riff/reactive/AsPublisher.html#asPublisher[A](publisher:F[A]):org.reactivestreams.Publisher[A]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -256,14 +264,14 @@ the F[_] (such as collecting into another F[_])
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">asPublisher</span><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="f">f: <span class="extype" name="riff.reactive.AsPublisher.F">F</span>[<span class="extype" name="riff.reactive.AsPublisher.asPublisher.A">A</span>]</span>)</span><span class="result">: <span class="extype" name="org.reactivestreams.Publisher">Publisher</span>[<span class="extype" name="riff.reactive.AsPublisher.asPublisher.A">A</span>]</span>
+        <span class="name">asPublisher</span><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="publisher">publisher: <span class="extype" name="riff.reactive.AsPublisher.F">F</span>[<span class="extype" name="riff.reactive.AsPublisher.asPublisher.A">A</span>]</span>)</span><span class="result">: <span class="extype" name="org.reactivestreams.Publisher">Publisher</span>[<span class="extype" name="riff.reactive.AsPublisher.asPublisher.A">A</span>]</span>
       </span>
       
       
     </li><li name="riff.reactive.AsPublisher#collect" visbl="pub" class="indented0 " data-isabs="true" fullComment="yes" group="Ungrouped">
-      <a id="collect[A,B](f:F[A])(func:PartialFunction[A,B]):F[B]"></a><a id="collect[A,B](F[A])(PartialFunction[A,B]):F[B]"></a>
+      <a id="collect[A,B](publisher:F[A])(func:PartialFunction[A,B]):F[B]"></a><a id="collect[A,B](F[A])(PartialFunction[A,B]):F[B]"></a>
       <span class="permalink">
-      <a href="../../riff/reactive/AsPublisher.html#collect[A,B](f:F[A])(func:PartialFunction[A,B]):F[B]" title="Permalink">
+      <a href="../../riff/reactive/AsPublisher.html#collect[A,B](publisher:F[A])(func:PartialFunction[A,B]):F[B]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -272,16 +280,16 @@ the F[_] (such as collecting into another F[_])
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">collect</span><span class="tparams">[<span name="A">A</span>, <span name="B">B</span>]</span><span class="params">(<span name="f">f: <span class="extype" name="riff.reactive.AsPublisher.F">F</span>[<span class="extype" name="riff.reactive.AsPublisher.collect.A">A</span>]</span>)</span><span class="params">(<span name="func">func: <span class="extype" name="scala.PartialFunction">PartialFunction</span>[<span class="extype" name="riff.reactive.AsPublisher.collect.A">A</span>, <span class="extype" name="riff.reactive.AsPublisher.collect.B">B</span>]</span>)</span><span class="result">: <span class="extype" name="riff.reactive.AsPublisher.F">F</span>[<span class="extype" name="riff.reactive.AsPublisher.collect.B">B</span>]</span>
+        <span class="name">collect</span><span class="tparams">[<span name="A">A</span>, <span name="B">B</span>]</span><span class="params">(<span name="publisher">publisher: <span class="extype" name="riff.reactive.AsPublisher.F">F</span>[<span class="extype" name="riff.reactive.AsPublisher.collect.A">A</span>]</span>)</span><span class="params">(<span name="func">func: <span class="extype" name="scala.PartialFunction">PartialFunction</span>[<span class="extype" name="riff.reactive.AsPublisher.collect.A">A</span>, <span class="extype" name="riff.reactive.AsPublisher.collect.B">B</span>]</span>)</span><span class="result">: <span class="extype" name="riff.reactive.AsPublisher.F">F</span>[<span class="extype" name="riff.reactive.AsPublisher.collect.B">B</span>]</span>
       </span>
       
       <p class="shortcomment cmt">apply the partial function to the F[A], which is the equivalent of a filter/map operation
 </p><div class="fullcomment"><div class="comment cmt"><p>apply the partial function to the F[A], which is the equivalent of a filter/map operation
-</p></div><dl class="paramcmts block"><dt class="tparam">A</dt><dd class="cmt"><p>the original type</p></dd><dt class="tparam">B</dt><dd class="cmt"><p>the mapped (collected) type</p></dd><dt class="param">f</dt><dd class="cmt"><p>the F[A] instance to wrap</p></dd><dt class="param">func</dt><dd class="cmt"><p>the collection function</p></dd><dt>returns</dt><dd class="cmt"><p>a new F[B] based on the application of the func to the underlying F[A]</p></dd></dl></div>
-    </li><li name="riff.reactive.AsPublisher#map" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="map[A,B](f:F[A])(func:A=&gt;B):F[B]"></a><a id="map[A,B](F[A])((A)⇒B):F[B]"></a>
+</p></div><dl class="paramcmts block"><dt class="tparam">A</dt><dd class="cmt"><p>the original type</p></dd><dt class="tparam">B</dt><dd class="cmt"><p>the mapped (collected) type</p></dd><dt class="param">func</dt><dd class="cmt"><p>the collection function</p></dd><dt>returns</dt><dd class="cmt"><p>a new F[B] based on the application of the func to the underlying F[A]</p></dd></dl></div>
+    </li><li name="riff.reactive.AsPublisher#cons" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="cons[A](value:A,publisher:F[A]):F[A]"></a><a id="cons[A](A,F[A]):F[A]"></a>
       <span class="permalink">
-      <a href="../../riff/reactive/AsPublisher.html#map[A,B](f:F[A])(func:A=&gt;B):F[B]" title="Permalink">
+      <a href="../../riff/reactive/AsPublisher.html#cons[A](value:A,publisher:F[A]):F[A]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -290,10 +298,60 @@ the F[_] (such as collecting into another F[_])
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">map</span><span class="tparams">[<span name="A">A</span>, <span name="B">B</span>]</span><span class="params">(<span name="f">f: <span class="extype" name="riff.reactive.AsPublisher.F">F</span>[<span class="extype" name="riff.reactive.AsPublisher.map.A">A</span>]</span>)</span><span class="params">(<span name="func">func: (<span class="extype" name="riff.reactive.AsPublisher.map.A">A</span>) ⇒ <span class="extype" name="riff.reactive.AsPublisher.map.B">B</span></span>)</span><span class="result">: <span class="extype" name="riff.reactive.AsPublisher.F">F</span>[<span class="extype" name="riff.reactive.AsPublisher.map.B">B</span>]</span>
+        <span class="name">cons</span><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="value">value: <span class="extype" name="riff.reactive.AsPublisher.cons.A">A</span></span>, <span name="publisher">publisher: <span class="extype" name="riff.reactive.AsPublisher.F">F</span>[<span class="extype" name="riff.reactive.AsPublisher.cons.A">A</span>]</span>)</span><span class="result">: <span class="extype" name="riff.reactive.AsPublisher.F">F</span>[<span class="extype" name="riff.reactive.AsPublisher.cons.A">A</span>]</span>
+      </span>
+      
+      <p class="shortcomment cmt">concatenate this value to be published first
+</p>
+    </li><li name="riff.reactive.AsPublisher#map" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="map[A,B](publisher:F[A])(func:A=&gt;B):F[B]"></a><a id="map[A,B](F[A])((A)⇒B):F[B]"></a>
+      <span class="permalink">
+      <a href="../../riff/reactive/AsPublisher.html#map[A,B](publisher:F[A])(func:A=&gt;B):F[B]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">map</span><span class="tparams">[<span name="A">A</span>, <span name="B">B</span>]</span><span class="params">(<span name="publisher">publisher: <span class="extype" name="riff.reactive.AsPublisher.F">F</span>[<span class="extype" name="riff.reactive.AsPublisher.map.A">A</span>]</span>)</span><span class="params">(<span name="func">func: (<span class="extype" name="riff.reactive.AsPublisher.map.A">A</span>) ⇒ <span class="extype" name="riff.reactive.AsPublisher.map.B">B</span></span>)</span><span class="result">: <span class="extype" name="riff.reactive.AsPublisher.F">F</span>[<span class="extype" name="riff.reactive.AsPublisher.map.B">B</span>]</span>
       </span>
       
       
+    </li><li name="riff.reactive.AsPublisher#takeWhile" visbl="pub" class="indented0 " data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="takeWhile[A](publisher:F[A])(predicate:A=&gt;Boolean):F[A]"></a><a id="takeWhile[A](F[A])((A)⇒Boolean):F[A]"></a>
+      <span class="permalink">
+      <a href="../../riff/reactive/AsPublisher.html#takeWhile[A](publisher:F[A])(predicate:A=&gt;Boolean):F[A]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">takeWhile</span><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="publisher">publisher: <span class="extype" name="riff.reactive.AsPublisher.F">F</span>[<span class="extype" name="riff.reactive.AsPublisher.takeWhile.A">A</span>]</span>)</span><span class="params">(<span name="predicate">predicate: (<span class="extype" name="riff.reactive.AsPublisher.takeWhile.A">A</span>) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <span class="extype" name="riff.reactive.AsPublisher.F">F</span>[<span class="extype" name="riff.reactive.AsPublisher.takeWhile.A">A</span>]</span>
+      </span>
+      
+      <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">publisher</dt><dd class="cmt"><p>the publisher</p></dd><dt class="param">predicate</dt><dd class="cmt"><p>the predicate test</p></dd><dt>returns</dt><dd class="cmt"><p>a publisher F[A] which completes once the predicate returns false or the elements are exhausted</p></dd></dl></div>
+    </li><li name="riff.reactive.AsPublisher#takeWhileIncludeLast" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="takeWhileIncludeLast[A](publisher:F[A])(predicate:A=&gt;Boolean):F[A]"></a><a id="takeWhileIncludeLast[A](F[A])((A)⇒Boolean):F[A]"></a>
+      <span class="permalink">
+      <a href="../../riff/reactive/AsPublisher.html#takeWhileIncludeLast[A](publisher:F[A])(predicate:A=&gt;Boolean):F[A]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">abstract </span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">takeWhileIncludeLast</span><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="publisher">publisher: <span class="extype" name="riff.reactive.AsPublisher.F">F</span>[<span class="extype" name="riff.reactive.AsPublisher.takeWhileIncludeLast.A">A</span>]</span>)</span><span class="params">(<span name="predicate">predicate: (<span class="extype" name="riff.reactive.AsPublisher.takeWhileIncludeLast.A">A</span>) ⇒ <span class="extype" name="scala.Boolean">Boolean</span></span>)</span><span class="result">: <span class="extype" name="riff.reactive.AsPublisher.F">F</span>[<span class="extype" name="riff.reactive.AsPublisher.takeWhileIncludeLast.A">A</span>]</span>
+      </span>
+      
+      <p class="shortcomment cmt">like takeWhile, but will 'onNext' the first element which returns false
+</p>
     </li></ol>
             </div>
 

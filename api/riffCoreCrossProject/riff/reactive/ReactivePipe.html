@@ -110,9 +110,21 @@
                         <a class="trait" href="AsSubscriber.html" title="Represents any F[_] which can be represented as a Subscriber"></a>
                         <a href="AsSubscriber.html" title="Represents any F[_] which can be represented as a Subscriber">AsSubscriber</a>
                       </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="trait" href="AsyncPublisher.html" title="A hot publisher to multiple subscribers, where new subscriptions simply begin observing the messages as the point of subscription."></a>
+                        <a href="AsyncPublisher.html" title="A hot publisher to multiple subscribers, where new subscriptions simply begin observing the messages as the point of subscription.">AsyncPublisher</a>
+                      </li><li class="current-entities indented2">
                         <a class="object" href="AsyncSubscription$.html" title=""></a>
                         <a class="class" href="AsyncSubscription.html" title="Represents a subscription whose actions are handled via a Runnable pulling values from a blocking internalStateInputQueue submitted on a provided execution context"></a>
                         <a href="AsyncSubscription.html" title="Represents a subscription whose actions are handled via a Runnable pulling values from a blocking internalStateInputQueue submitted on a provided execution context">AsyncSubscription</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="BatchedPublisher.html" title=""></a>
+                        <a href="BatchedPublisher.html" title="">BatchedPublisher</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="BatchedSubscriber.html" title=""></a>
+                        <a href="BatchedSubscriber.html" title="">BatchedSubscriber</a>
                       </li><li class="current-entities indented2">
                         <a class="object" href="CollectPublisher$.html" title=""></a>
                         <a class="class" href="CollectPublisher.html" title="Simple implementation of a publisher which can filter its published elements"></a>
@@ -133,10 +145,6 @@
                         <a class="object" href="ReactivePipe$.html" title=""></a>
                         <a class="class" href="" title="Represents an input/output pipe"></a>
                         <a href="" title="Represents an input/output pipe">ReactivePipe</a>
-                      </li><li class="current-entities indented2">
-                        <span class="separator"></span>
-                        <a class="trait" href="ReactivePublisher.html" title="A hot publisher to multiple subscribers, where new subscriptions simply begin observing the messages as the point of subscription."></a>
-                        <a href="ReactivePublisher.html" title="A hot publisher to multiple subscribers, where new subscriptions simply begin observing the messages as the point of subscription.">ReactivePublisher</a>
                       </li><li class="current-entities indented2">
                         <a class="object" href="ReactiveTimerCallback$.html" title=""></a>
                         <a class="class" href="ReactiveTimerCallback.html" title="An implementation of a TimerCallback which publishes TimerMessages"></a>
@@ -178,7 +186,7 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">ReactivePipe</span><span class="tparams">[<span name="A">A</span>, <span name="Sub">Sub<span class="tparams">[<span name="_">_</span>]</span></span>, <span name="Pub">Pub<span class="tparams">[<span name="_">_</span>]</span></span>]</span><span class="params">(<span name="input">input: <span class="extype" name="riff.reactive.ReactivePipe.Sub">Sub</span>[<span class="extype" name="riff.reactive.ReactivePipe.A">A</span>]</span>, <span name="output">output: <span class="extype" name="riff.reactive.ReactivePipe.Pub">Pub</span>[<span class="extype" name="riff.reactive.ReactivePipe.A">A</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="evidence$1">evidence$1: <a href="AsSubscriber.html" class="extype" name="riff.reactive.AsSubscriber">AsSubscriber</a>[<span class="extype" name="riff.reactive.ReactivePipe.Sub">Sub</span>]</span>, <span name="evidence$2">evidence$2: <a href="AsPublisher.html" class="extype" name="riff.reactive.AsPublisher">AsPublisher</a>[<span class="extype" name="riff.reactive.ReactivePipe.Pub">Pub</span>]</span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <span class="name">ReactivePipe</span><span class="tparams">[<span name="In">In</span>, <span name="Out">Out</span>, <span name="Sub">Sub<span class="tparams">[<span name="_">_</span>]</span></span>, <span name="Pub">Pub<span class="tparams">[<span name="_">_</span>]</span></span>]</span><span class="params">(<span name="input">input: <span class="extype" name="riff.reactive.ReactivePipe.Sub">Sub</span>[<span class="extype" name="riff.reactive.ReactivePipe.In">In</span>]</span>, <span name="output">output: <span class="extype" name="riff.reactive.ReactivePipe.Pub">Pub</span>[<span class="extype" name="riff.reactive.ReactivePipe.Out">Out</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="evidence$1">evidence$1: <a href="AsSubscriber.html" class="extype" name="riff.reactive.AsSubscriber">AsSubscriber</a>[<span class="extype" name="riff.reactive.ReactivePipe.Sub">Sub</span>]</span>, <span name="evidence$2">evidence$2: <a href="AsPublisher.html" class="extype" name="riff.reactive.AsPublisher">AsPublisher</a>[<span class="extype" name="riff.reactive.ReactivePipe.Pub">Pub</span>]</span>)</span><span class="result"> extends <span class="extype" name="java.lang.AutoCloseable">AutoCloseable</span> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
 
@@ -188,7 +196,7 @@
           <span class="toggle">
             Linear Supertypes
           </span>
-          <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <span class="extype" name="java.lang.AutoCloseable">AutoCloseable</span>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
         
 
@@ -214,7 +222,7 @@
                   <span class="filtertype">Inherited<br />
                   </span>
                   <ol id="linearization">
-                    <li class="in" name="riff.reactive.ReactivePipe"><span>ReactivePipe</span></li><li class="in" name="scala.Serializable"><span>Serializable</span></li><li class="in" name="java.io.Serializable"><span>Serializable</span></li><li class="in" name="scala.Product"><span>Product</span></li><li class="in" name="scala.Equals"><span>Equals</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                    <li class="in" name="riff.reactive.ReactivePipe"><span>ReactivePipe</span></li><li class="in" name="scala.Serializable"><span>Serializable</span></li><li class="in" name="java.io.Serializable"><span>Serializable</span></li><li class="in" name="scala.Product"><span>Product</span></li><li class="in" name="scala.Equals"><span>Equals</span></li><li class="in" name="java.lang.AutoCloseable"><span>AutoCloseable</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                   </ol>
                 </div><div class="ancestors">
               <span class="filtertype"></span>
@@ -235,9 +243,9 @@
         <div id="constructors" class="members">
               <h3>Instance Constructors</h3>
               <ol><li name="riff.reactive.ReactivePipe#&lt;init&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="&lt;init&gt;(input:Sub[A],output:Pub[A])(implicitevidence$1:riff.reactive.AsSubscriber[Sub],implicitevidence$2:riff.reactive.AsPublisher[Pub]):riff.reactive.ReactivePipe[A,Sub,Pub]"></a><a id="&lt;init&gt;:ReactivePipe[A,Sub,Pub]"></a>
+      <a id="&lt;init&gt;(input:Sub[In],output:Pub[Out])(implicitevidence$1:riff.reactive.AsSubscriber[Sub],implicitevidence$2:riff.reactive.AsPublisher[Pub]):riff.reactive.ReactivePipe[In,Out,Sub,Pub]"></a><a id="&lt;init&gt;:ReactivePipe[In,Out,Sub,Pub]"></a>
       <span class="permalink">
-      <a href="../../riff/reactive/ReactivePipe.html#&lt;init&gt;(input:Sub[A],output:Pub[A])(implicitevidence$1:riff.reactive.AsSubscriber[Sub],implicitevidence$2:riff.reactive.AsPublisher[Pub]):riff.reactive.ReactivePipe[A,Sub,Pub]" title="Permalink">
+      <a href="../../riff/reactive/ReactivePipe.html#&lt;init&gt;(input:Sub[In],output:Pub[Out])(implicitevidence$1:riff.reactive.AsSubscriber[Sub],implicitevidence$2:riff.reactive.AsPublisher[Pub]):riff.reactive.ReactivePipe[In,Out,Sub,Pub]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -246,7 +254,7 @@
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">ReactivePipe</span><span class="params">(<span name="input">input: <span class="extype" name="riff.reactive.ReactivePipe.Sub">Sub</span>[<span class="extype" name="riff.reactive.ReactivePipe.A">A</span>]</span>, <span name="output">output: <span class="extype" name="riff.reactive.ReactivePipe.Pub">Pub</span>[<span class="extype" name="riff.reactive.ReactivePipe.A">A</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: <a href="AsSubscriber.html" class="extype" name="riff.reactive.AsSubscriber">AsSubscriber</a>[<span class="extype" name="riff.reactive.ReactivePipe.Sub">Sub</span>]</span>, <span name="arg1">arg1: <a href="AsPublisher.html" class="extype" name="riff.reactive.AsPublisher">AsPublisher</a>[<span class="extype" name="riff.reactive.ReactivePipe.Pub">Pub</span>]</span>)</span>
+        <span class="name">ReactivePipe</span><span class="params">(<span name="input">input: <span class="extype" name="riff.reactive.ReactivePipe.Sub">Sub</span>[<span class="extype" name="riff.reactive.ReactivePipe.In">In</span>]</span>, <span name="output">output: <span class="extype" name="riff.reactive.ReactivePipe.Pub">Pub</span>[<span class="extype" name="riff.reactive.ReactivePipe.Out">Out</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="arg0">arg0: <a href="AsSubscriber.html" class="extype" name="riff.reactive.AsSubscriber">AsSubscriber</a>[<span class="extype" name="riff.reactive.ReactivePipe.Sub">Sub</span>]</span>, <span name="arg1">arg1: <a href="AsPublisher.html" class="extype" name="riff.reactive.AsPublisher">AsPublisher</a>[<span class="extype" name="riff.reactive.ReactivePipe.Pub">Pub</span>]</span>)</span>
       </span>
       
       
@@ -348,6 +356,22 @@
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="riff.reactive.ReactivePipe#close" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="close():Unit"></a>
+      <span class="permalink">
+      <a href="../../riff/reactive/ReactivePipe.html#close():Unit" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">close</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="riff.reactive.ReactivePipe">ReactivePipe</a> → AutoCloseable</dd></dl></div>
     </li><li name="scala.AnyRef#eq" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a><a id="eq(AnyRef):Boolean"></a>
       <span class="permalink">
@@ -406,9 +430,9 @@
               
         </dd></dl></div>
     </li><li name="riff.reactive.ReactivePipe#input" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="input:Sub[A]"></a>
+      <a id="input:Sub[In]"></a>
       <span class="permalink">
-      <a href="../../riff/reactive/ReactivePipe.html#input:Sub[A]" title="Permalink">
+      <a href="../../riff/reactive/ReactivePipe.html#input:Sub[In]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -417,14 +441,14 @@
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">input</span><span class="result">: <span class="extype" name="riff.reactive.ReactivePipe.Sub">Sub</span>[<span class="extype" name="riff.reactive.ReactivePipe.A">A</span>]</span>
+        <span class="name">input</span><span class="result">: <span class="extype" name="riff.reactive.ReactivePipe.Sub">Sub</span>[<span class="extype" name="riff.reactive.ReactivePipe.In">In</span>]</span>
       </span>
       
       
     </li><li name="riff.reactive.ReactivePipe#inputSubscriber" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="inputSubscriber:org.reactivestreams.Subscriber[A]"></a><a id="inputSubscriber:Subscriber[A]"></a>
+      <a id="inputSubscriber:org.reactivestreams.Subscriber[In]"></a><a id="inputSubscriber:Subscriber[In]"></a>
       <span class="permalink">
-      <a href="../../riff/reactive/ReactivePipe.html#inputSubscriber:org.reactivestreams.Subscriber[A]" title="Permalink">
+      <a href="../../riff/reactive/ReactivePipe.html#inputSubscriber:org.reactivestreams.Subscriber[In]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -433,7 +457,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">inputSubscriber</span><span class="result">: <span class="extype" name="org.reactivestreams.Subscriber">Subscriber</span>[<span class="extype" name="riff.reactive.ReactivePipe.A">A</span>]</span>
+        <span class="name">inputSubscriber</span><span class="result">: <span class="extype" name="org.reactivestreams.Subscriber">Subscriber</span>[<span class="extype" name="riff.reactive.ReactivePipe.In">In</span>]</span>
       </span>
       
       
@@ -508,9 +532,9 @@
               
         </dd></dl></div>
     </li><li name="riff.reactive.ReactivePipe#output" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="output:Pub[A]"></a>
+      <a id="output:Pub[Out]"></a>
       <span class="permalink">
-      <a href="../../riff/reactive/ReactivePipe.html#output:Pub[A]" title="Permalink">
+      <a href="../../riff/reactive/ReactivePipe.html#output:Pub[Out]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -519,14 +543,14 @@
         <span class="kind">val</span>
       </span>
       <span class="symbol">
-        <span class="name">output</span><span class="result">: <span class="extype" name="riff.reactive.ReactivePipe.Pub">Pub</span>[<span class="extype" name="riff.reactive.ReactivePipe.A">A</span>]</span>
+        <span class="name">output</span><span class="result">: <span class="extype" name="riff.reactive.ReactivePipe.Pub">Pub</span>[<span class="extype" name="riff.reactive.ReactivePipe.Out">Out</span>]</span>
       </span>
       
       
     </li><li name="riff.reactive.ReactivePipe#outputPublisher" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="outputPublisher:org.reactivestreams.Publisher[A]"></a><a id="outputPublisher:Publisher[A]"></a>
+      <a id="outputPublisher:org.reactivestreams.Publisher[Out]"></a><a id="outputPublisher:Publisher[Out]"></a>
       <span class="permalink">
-      <a href="../../riff/reactive/ReactivePipe.html#outputPublisher:org.reactivestreams.Publisher[A]" title="Permalink">
+      <a href="../../riff/reactive/ReactivePipe.html#outputPublisher:org.reactivestreams.Publisher[Out]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -535,14 +559,14 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">outputPublisher</span><span class="result">: <span class="extype" name="org.reactivestreams.Publisher">Publisher</span>[<span class="extype" name="riff.reactive.ReactivePipe.A">A</span>]</span>
+        <span class="name">outputPublisher</span><span class="result">: <span class="extype" name="org.reactivestreams.Publisher">Publisher</span>[<span class="extype" name="riff.reactive.ReactivePipe.Out">Out</span>]</span>
       </span>
       
       
     </li><li name="riff.reactive.ReactivePipe#subscribeWith" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="subscribeWith[S&lt;:org.reactivestreams.Subscriber[_&gt;:A]](s:S):S"></a><a id="subscribeWith[S&lt;:Subscriber[_&gt;:A]](S):S"></a>
+      <a id="subscribeWith[S&lt;:org.reactivestreams.Subscriber[_&gt;:Out]](s:S):S"></a><a id="subscribeWith[S&lt;:Subscriber[_&gt;:Out]](S):S"></a>
       <span class="permalink">
-      <a href="../../riff/reactive/ReactivePipe.html#subscribeWith[S&lt;:org.reactivestreams.Subscriber[_&gt;:A]](s:S):S" title="Permalink">
+      <a href="../../riff/reactive/ReactivePipe.html#subscribeWith[S&lt;:org.reactivestreams.Subscriber[_&gt;:Out]](s:S):S" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -551,7 +575,7 @@
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">subscribeWith</span><span class="tparams">[<span name="S">S &lt;: <span class="extype" name="org.reactivestreams.Subscriber">Subscriber</span>[_ &gt;: <span class="extype" name="riff.reactive.ReactivePipe.A">A</span>]</span>]</span><span class="params">(<span name="s">s: <span class="extype" name="riff.reactive.ReactivePipe.subscribeWith.S">S</span></span>)</span><span class="result">: <span class="extype" name="riff.reactive.ReactivePipe.subscribeWith.S">S</span></span>
+        <span class="name">subscribeWith</span><span class="tparams">[<span name="S">S &lt;: <span class="extype" name="org.reactivestreams.Subscriber">Subscriber</span>[_ &gt;: <span class="extype" name="riff.reactive.ReactivePipe.Out">Out</span>]</span>]</span><span class="params">(<span name="s">s: <span class="extype" name="riff.reactive.ReactivePipe.subscribeWith.S">S</span></span>)</span><span class="result">: <span class="extype" name="riff.reactive.ReactivePipe.subscribeWith.S">S</span></span>
       </span>
       
       <p class="shortcomment cmt">Convenience method for 'subscribe', but which returns the subscriber instance:</p><div class="fullcomment"><div class="comment cmt"><p>Convenience method for 'subscribe', but which returns the subscriber instance:</p><pre><span class="kw">val</span> mySub = publisher.subscribeWith(<span class="kw">new</span> FooSubscriber) <span class="cmt">// mySub will be a FooSubscriber</span></pre></div><dl class="paramcmts block"><dt class="tparam">S</dt><dd class="cmt"><p>the subscriber type</p></dd><dt class="param">s</dt><dd class="cmt"><p>the subscriber to return</p></dd><dt>returns</dt><dd class="cmt"><p>the same subscriber</p></dd></dl></div>
@@ -657,6 +681,8 @@
               <h3>Inherited from <span class="extype" name="scala.Product">Product</span></h3>
             </div><div class="parent" name="scala.Equals">
               <h3>Inherited from <span class="extype" name="scala.Equals">Equals</span></h3>
+            </div><div class="parent" name="java.lang.AutoCloseable">
+              <h3>Inherited from <span class="extype" name="java.lang.AutoCloseable">AutoCloseable</span></h3>
             </div><div class="parent" name="scala.AnyRef">
               <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
             </div><div class="parent" name="scala.Any">

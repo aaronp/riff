@@ -122,33 +122,33 @@
                         <a class="object" href="EventSource$.html" title="Contains a function for applying a log type A to a state S, and persisting that state."></a>
                         <a href="EventSource$.html" title="Contains a function for applying a log type A to a state S, and persisting that state.">EventSource</a>
                       </li><li class="current-entities indented2">
+                        <a class="object" href="LowPriorityRiffMonixImplicits$.html" title=""></a>
+                        <a class="trait" href="LowPriorityRiffMonixImplicits.html" title=""></a>
+                        <a href="LowPriorityRiffMonixImplicits.html" title="">LowPriorityRiffMonixImplicits</a>
+                      </li><li class="current-entities indented2">
                         <a class="object" href="MonixClock$.html" title=""></a>
                         <a class="class" href="MonixClock.html" title=""></a>
                         <a href="MonixClock.html" title="">MonixClock</a>
-                      </li><li class="current-entities indented2">
-                        <a class="object" href="MonixCluster$.html" title=""></a>
-                        <a class="class" href="" title="This is more of a toy/test, as it sets up all the cluster members in the same JVM."></a>
-                        <a href="" title="This is more of a toy/test, as it sets up all the cluster members in the same JVM.">MonixCluster</a>
-                      </li><li class="current-entities indented2">
-                        <a class="object" href="MonixNode$.html" title=""></a>
-                        <a class="class" href="MonixNode.html" title="Contains all the constituent parts use to construct a RaftNode."></a>
-                        <a href="MonixNode.html" title="Contains all the constituent parts use to construct a RaftNode.">MonixNode</a>
                       </li><li class="current-entities indented2">
                         <a class="object" href="NamedPipe$.html" title=""></a>
                         <a class="class" href="NamedPipe.html" title=""></a>
                         <a href="NamedPipe.html" title="">NamedPipe</a>
                       </li><li class="current-entities indented2">
-                        <span class="separator"></span>
-                        <a class="class" href="ObservableCallback.html" title="Provides a means to observe the nodes timeouts"></a>
-                        <a href="ObservableCallback.html" title="Provides a means to observe the nodes timeouts">ObservableCallback</a>
-                      </li><li class="current-entities indented2">
-                        <span class="separator"></span>
-                        <a class="class" href="ObservableRaftNode.html" title="Wraps a RaftNode's onMessage so as to exposes observable requests and responses"></a>
-                        <a href="ObservableRaftNode.html" title="Wraps a RaftNode's onMessage so as to exposes observable requests and responses">ObservableRaftNode</a>
-                      </li><li class="current-entities indented2">
                         <a class="object" href="ObservableState$.html" title=""></a>
                         <a class="class" href="ObservableState.html" title="Provides a means to represent a riff.raft.node.RaftNode's role as an Observable:"></a>
                         <a href="ObservableState.html" title="Provides a means to represent a riff.raft.node.RaftNode's role as an Observable:">ObservableState</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="" title="Provides a means to observe the nodes timeouts"></a>
+                        <a href="" title="Provides a means to observe the nodes timeouts">ObservableTimerCallback</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="RaftPipeMonix$.html" title=""></a>
+                        <a href="RaftPipeMonix$.html" title="">RaftPipeMonix</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="RiffMonixClient.html" title=""></a>
+                        <a href="RiffMonixClient.html" title="">RiffMonixClient</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="object" href="RiffSchedulers$.html" title=""></a>
@@ -164,16 +164,14 @@
           <div id="content">
             <body class="class type">
       <div id="definition">
-        <a href="MonixCluster$.html" title="See companion object"><div class="big-circle class-companion-object">c</div></a>
+        <div class="big-circle class">c</div>
         <p id="owner"><a href="../index.html" class="extype" name="riff">riff</a>.<a href="index.html" class="extype" name="riff.monix">monix</a></p>
-        <h1><a href="MonixCluster$.html" title="See companion object">MonixCluster</a><span class="permalink">
-      <a href="../../riff/monix/MonixCluster.html" title="Permalink">
+        <h1>ObservableTimerCallback<span class="permalink">
+      <a href="../../riff/monix/ObservableTimerCallback.html" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span></h1>
-        <h3><span class="morelinks"><div>
-            Companion <a href="MonixCluster$.html" title="See companion object">object MonixCluster</a>
-          </div></span></h3>
+        <h3><span class="morelinks"></span></h3>
       </div>
 
       <h4 id="signature" class="signature">
@@ -182,19 +180,17 @@
         <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <span class="name">MonixCluster</span><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends <a href="../raft/log/HasNodes.html" class="extype" name="riff.raft.log.HasNodes">HasNodes</a>[<span class="extype" name="riff.monix.MonixCluster.A">A</span>]</span>
+        <span class="name">ObservableTimerCallback</span><span class="result"> extends <span class="extype" name="riff.raft.timer.TimerCallback">TimerCallback</span>[<a href="http://www.scala-lang.org/api/2.12.7/scala/Unit.html#scala.Unit" class="extype" name="scala.Unit">Unit</a>]</span>
       </span>
       </h4>
 
       
-          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>This is more of a toy/test, as it sets up all the cluster members in the same JVM.</p><p>Technically it should probably be a test resource, but I've left it here to serve as an example for
-using a <a href="MonixNode.html" class="extype" name="riff.monix.MonixNode">MonixNode</a>.</p><p>There may be a use-case for doing this as well, where a &quot;local&quot; raft cluster is set up, and by subscribing to the outputs of
-each local node real requests could be sent to remote ones.
+          <div id="comment" class="fullcommenttop"><div class="comment cmt"><p>Provides a means to observe the nodes timeouts
 </p></div><div class="toggleContainer block">
           <span class="toggle">
             Linear Supertypes
           </span>
-          <div class="superTypes hiddenContent"><a href="../raft/log/HasNodes.html" class="extype" name="riff.raft.log.HasNodes">HasNodes</a>[<span class="extype" name="riff.monix.MonixCluster.A">A</span>], <a href="http://www.scala-lang.org/api/2.12.7/scala/AnyRef.html#scala.AnyRef" class="extype" name="scala.AnyRef">AnyRef</a>, <a href="http://www.scala-lang.org/api/2.12.7/scala/Any.html#scala.Any" class="extype" name="scala.Any">Any</a></div>
+          <div class="superTypes hiddenContent"><span class="extype" name="riff.raft.timer.TimerCallback">TimerCallback</span>[<a href="http://www.scala-lang.org/api/2.12.7/scala/Unit.html#scala.Unit" class="extype" name="scala.Unit">Unit</a>], <a href="http://www.scala-lang.org/api/2.12.7/scala/AnyRef.html#scala.AnyRef" class="extype" name="scala.AnyRef">AnyRef</a>, <a href="http://www.scala-lang.org/api/2.12.7/scala/Any.html#scala.Any" class="extype" name="scala.Any">Any</a></div>
         </div></div>
         
 
@@ -220,7 +216,7 @@ each local node real requests could be sent to remote ones.
                   <span class="filtertype">Inherited<br />
                   </span>
                   <ol id="linearization">
-                    <li class="in" name="riff.monix.MonixCluster"><span>MonixCluster</span></li><li class="in" name="riff.raft.log.HasNodes"><span>HasNodes</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                    <li class="in" name="riff.monix.ObservableTimerCallback"><span>ObservableTimerCallback</span></li><li class="in" name="riff.raft.timer.TimerCallback"><span>TimerCallback</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                   </ol>
                 </div><div class="ancestors">
               <span class="filtertype"></span>
@@ -238,7 +234,26 @@ each local node real requests could be sent to remote ones.
 
       <div id="template">
         <div id="allMembers">
-        
+        <div id="constructors" class="members">
+              <h3>Instance Constructors</h3>
+              <ol><li name="riff.monix.ObservableTimerCallback#&lt;init&gt;" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="&lt;init&gt;()(implicitsched:monix.execution.Scheduler):riff.monix.ObservableTimerCallback"></a><a id="&lt;init&gt;:ObservableTimerCallback"></a>
+      <span class="permalink">
+      <a href="../../riff/monix/ObservableTimerCallback.html#&lt;init&gt;()(implicitsched:monix.execution.Scheduler):riff.monix.ObservableTimerCallback" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">new</span>
+      </span>
+      <span class="symbol">
+        <span class="name">ObservableTimerCallback</span><span class="params">()</span><span class="params">(<span class="implicit">implicit </span><span name="sched">sched: <span class="extype" name="monix.execution.Scheduler">Scheduler</span></span>)</span>
+      </span>
+      
+      
+    </li></ol>
+            </div>
 
         
 
@@ -250,7 +265,7 @@ each local node real requests could be sent to remote ones.
                 <li name="scala.AnyRef#!=" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="!=(x$1:Any):Boolean"></a><a id="!=(Any):Boolean"></a>
       <span class="permalink">
-      <a href="../../riff/monix/MonixCluster.html#!=(x$1:Any):Boolean" title="Permalink">
+      <a href="../../riff/monix/ObservableTimerCallback.html#!=(x$1:Any):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -266,7 +281,7 @@ each local node real requests could be sent to remote ones.
     </li><li name="scala.AnyRef###" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="##():Int"></a>
       <span class="permalink">
-      <a href="../../riff/monix/MonixCluster.html###():Int" title="Permalink">
+      <a href="../../riff/monix/ObservableTimerCallback.html###():Int" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -282,7 +297,7 @@ each local node real requests could be sent to remote ones.
     </li><li name="scala.AnyRef#==" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="==(x$1:Any):Boolean"></a><a id="==(Any):Boolean"></a>
       <span class="permalink">
-      <a href="../../riff/monix/MonixCluster.html#==(x$1:Any):Boolean" title="Permalink">
+      <a href="../../riff/monix/ObservableTimerCallback.html#==(x$1:Any):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -298,7 +313,7 @@ each local node real requests could be sent to remote ones.
     </li><li name="scala.Any#asInstanceOf" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="asInstanceOf[T0]:T0"></a>
       <span class="permalink">
-      <a href="../../riff/monix/MonixCluster.html#asInstanceOf[T0]:T0" title="Permalink">
+      <a href="../../riff/monix/ObservableTimerCallback.html#asInstanceOf[T0]:T0" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -311,26 +326,10 @@ each local node real requests could be sent to remote ones.
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
-    </li><li name="riff.raft.log.HasNodes#clientFor" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="clientFor(name:String):Option[riff.raft.RaftClient[monix.reactive.Observable,A]]"></a><a id="clientFor(String):Option[RaftClient[Observable,A]]"></a>
-      <span class="permalink">
-      <a href="../../riff/monix/MonixCluster.html#clientFor(name:String):Option[riff.raft.RaftClient[monix.reactive.Observable,A]]" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">clientFor</span><span class="params">(<span name="name">name: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.12.7/scala/Option.html#scala.Option" class="extype" name="scala.Option">Option</a>[<span class="extype" name="riff.raft.RaftClient">RaftClient</span>[<span class="extype" name="monix.reactive.Observable">Observable</span>, <span class="extype" name="riff.monix.MonixCluster.A">A</span>]]</span>
-      </span>
-      
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../raft/log/HasNodes.html" class="extype" name="riff.raft.log.HasNodes">HasNodes</a></dd></dl></div>
     </li><li name="scala.AnyRef#clone" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="clone():Object"></a><a id="clone():AnyRef"></a>
       <span class="permalink">
-      <a href="../../riff/monix/MonixCluster.html#clone():Object" title="Permalink">
+      <a href="../../riff/monix/ObservableTimerCallback.html#clone():Object" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -354,7 +353,7 @@ each local node real requests could be sent to remote ones.
     </li><li name="scala.AnyRef#eq" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a><a id="eq(AnyRef):Boolean"></a>
       <span class="permalink">
-      <a href="../../riff/monix/MonixCluster.html#eq(x$1:AnyRef):Boolean" title="Permalink">
+      <a href="../../riff/monix/ObservableTimerCallback.html#eq(x$1:AnyRef):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -370,7 +369,7 @@ each local node real requests could be sent to remote ones.
     </li><li name="scala.AnyRef#equals" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="equals(x$1:Any):Boolean"></a><a id="equals(Any):Boolean"></a>
       <span class="permalink">
-      <a href="../../riff/monix/MonixCluster.html#equals(x$1:Any):Boolean" title="Permalink">
+      <a href="../../riff/monix/ObservableTimerCallback.html#equals(x$1:Any):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -386,7 +385,7 @@ each local node real requests could be sent to remote ones.
     </li><li name="scala.AnyRef#finalize" visbl="prt" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="finalize():Unit"></a>
       <span class="permalink">
-      <a href="../../riff/monix/MonixCluster.html#finalize():Unit" title="Permalink">
+      <a href="../../riff/monix/ObservableTimerCallback.html#finalize():Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -408,7 +407,7 @@ each local node real requests could be sent to remote ones.
     </li><li name="scala.AnyRef#getClass" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="getClass():Class[_]"></a>
       <span class="permalink">
-      <a href="../../riff/monix/MonixCluster.html#getClass():Class[_]" title="Permalink">
+      <a href="../../riff/monix/ObservableTimerCallback.html#getClass():Class[_]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -427,7 +426,7 @@ each local node real requests could be sent to remote ones.
     </li><li name="scala.AnyRef#hashCode" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="hashCode():Int"></a>
       <span class="permalink">
-      <a href="../../riff/monix/MonixCluster.html#hashCode():Int" title="Permalink">
+      <a href="../../riff/monix/ObservableTimerCallback.html#hashCode():Int" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -446,7 +445,7 @@ each local node real requests could be sent to remote ones.
     </li><li name="scala.Any#isInstanceOf" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="isInstanceOf[T0]:Boolean"></a>
       <span class="permalink">
-      <a href="../../riff/monix/MonixCluster.html#isInstanceOf[T0]:Boolean" title="Permalink">
+      <a href="../../riff/monix/ObservableTimerCallback.html#isInstanceOf[T0]:Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -459,26 +458,10 @@ each local node real requests could be sent to remote ones.
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>Any</dd></dl></div>
-    </li><li name="riff.raft.log.HasNodes#leader" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="leader():Option[riff.monix.MonixNode[A]]"></a><a id="leader():Option[MonixNode[A]]"></a>
-      <span class="permalink">
-      <a href="../../riff/monix/MonixCluster.html#leader():Option[riff.monix.MonixNode[A]]" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">leader</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.12.7/scala/Option.html#scala.Option" class="extype" name="scala.Option">Option</a>[<a href="MonixNode.html" class="extype" name="riff.monix.MonixNode">MonixNode</a>[<span class="extype" name="riff.monix.MonixCluster.A">A</span>]]</span>
-      </span>
-      
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../raft/log/HasNodes.html" class="extype" name="riff.raft.log.HasNodes">HasNodes</a></dd></dl></div>
     </li><li name="scala.AnyRef#ne" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="ne(x$1:AnyRef):Boolean"></a><a id="ne(AnyRef):Boolean"></a>
       <span class="permalink">
-      <a href="../../riff/monix/MonixCluster.html#ne(x$1:AnyRef):Boolean" title="Permalink">
+      <a href="../../riff/monix/ObservableTimerCallback.html#ne(x$1:AnyRef):Boolean" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -491,42 +474,10 @@ each local node real requests could be sent to remote ones.
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>AnyRef</dd></dl></div>
-    </li><li name="riff.raft.log.HasNodes#nodeFor" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="nodeFor(name:String):Option[riff.monix.MonixNode[A]]"></a><a id="nodeFor(String):Option[MonixNode[A]]"></a>
-      <span class="permalink">
-      <a href="../../riff/monix/MonixCluster.html#nodeFor(name:String):Option[riff.monix.MonixNode[A]]" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">def</span>
-      </span>
-      <span class="symbol">
-        <span class="name">nodeFor</span><span class="params">(<span name="name">name: <span class="extype" name="scala.Predef.String">String</span></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.12.7/scala/Option.html#scala.Option" class="extype" name="scala.Option">Option</a>[<a href="MonixNode.html" class="extype" name="riff.monix.MonixNode">MonixNode</a>[<span class="extype" name="riff.monix.MonixCluster.A">A</span>]]</span>
-      </span>
-      
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../raft/log/HasNodes.html" class="extype" name="riff.raft.log.HasNodes">HasNodes</a></dd></dl></div>
-    </li><li name="riff.monix.MonixCluster#nodes" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="nodes:Set[riff.monix.MonixNode[A]]"></a><a id="nodes:Set[MonixNode[A]]"></a>
-      <span class="permalink">
-      <a href="../../riff/monix/MonixCluster.html#nodes:Set[riff.monix.MonixNode[A]]" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">val</span>
-      </span>
-      <span class="symbol">
-        <span class="name">nodes</span><span class="result">: <span class="extype" name="scala.Predef.Set">Set</span>[<a href="MonixNode.html" class="extype" name="riff.monix.MonixNode">MonixNode</a>[<span class="extype" name="riff.monix.MonixCluster.A">A</span>]]</span>
-      </span>
-      
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="riff.monix.MonixCluster">MonixCluster</a> → <a href="../raft/log/HasNodes.html" class="extype" name="riff.raft.log.HasNodes">HasNodes</a></dd></dl></div>
     </li><li name="scala.AnyRef#notify" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notify():Unit"></a>
       <span class="permalink">
-      <a href="../../riff/monix/MonixCluster.html#notify():Unit" title="Permalink">
+      <a href="../../riff/monix/ObservableTimerCallback.html#notify():Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -545,7 +496,7 @@ each local node real requests could be sent to remote ones.
     </li><li name="scala.AnyRef#notifyAll" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="notifyAll():Unit"></a>
       <span class="permalink">
-      <a href="../../riff/monix/MonixCluster.html#notifyAll():Unit" title="Permalink">
+      <a href="../../riff/monix/ObservableTimerCallback.html#notifyAll():Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -561,10 +512,90 @@ each local node real requests could be sent to remote ones.
                 <span class="name">@native</span><span class="args">()</span>
               
         </dd></dl></div>
+    </li><li name="riff.monix.ObservableTimerCallback#onReceiveHeartbeatTimeout" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="onReceiveHeartbeatTimeout():Unit"></a>
+      <span class="permalink">
+      <a href="../../riff/monix/ObservableTimerCallback.html#onReceiveHeartbeatTimeout():Unit" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">onReceiveHeartbeatTimeout</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.12.7/scala/Unit.html#scala.Unit" class="extype" name="scala.Unit">Unit</a></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="riff.monix.ObservableTimerCallback">ObservableTimerCallback</a> → TimerCallback</dd></dl></div>
+    </li><li name="riff.monix.ObservableTimerCallback#onSendHeartbeatTimeout" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="onSendHeartbeatTimeout():Unit"></a>
+      <span class="permalink">
+      <a href="../../riff/monix/ObservableTimerCallback.html#onSendHeartbeatTimeout():Unit" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">onSendHeartbeatTimeout</span><span class="params">()</span><span class="result">: <a href="http://www.scala-lang.org/api/2.12.7/scala/Unit.html#scala.Unit" class="extype" name="scala.Unit">Unit</a></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="riff.monix.ObservableTimerCallback">ObservableTimerCallback</a> → TimerCallback</dd></dl></div>
+    </li><li name="riff.monix.ObservableTimerCallback#receiveTimeouts" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="receiveTimeouts:monix.reactive.Observable[riff.raft.messages.TimerMessage]"></a><a id="receiveTimeouts:Observable[TimerMessage]"></a>
+      <span class="permalink">
+      <a href="../../riff/monix/ObservableTimerCallback.html#receiveTimeouts:monix.reactive.Observable[riff.raft.messages.TimerMessage]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">receiveTimeouts</span><span class="result">: <span class="extype" name="monix.reactive.Observable">Observable</span>[<span class="extype" name="riff.raft.messages.TimerMessage">TimerMessage</span>]</span>
+      </span>
+      
+      
+    </li><li name="riff.monix.ObservableTimerCallback#sendTimeout" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="sendTimeout:monix.reactive.Observable[riff.raft.messages.TimerMessage]"></a><a id="sendTimeout:Observable[TimerMessage]"></a>
+      <span class="permalink">
+      <a href="../../riff/monix/ObservableTimerCallback.html#sendTimeout:monix.reactive.Observable[riff.raft.messages.TimerMessage]" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">sendTimeout</span><span class="result">: <span class="extype" name="monix.reactive.Observable">Observable</span>[<span class="extype" name="riff.raft.messages.TimerMessage">TimerMessage</span>]</span>
+      </span>
+      
+      
+    </li><li name="riff.monix.ObservableTimerCallback#subscribe" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="subscribe(subscriber:monix.reactive.Observer[riff.raft.messages.TimerMessage]):monix.execution.Cancelable"></a><a id="subscribe(Observer[TimerMessage]):Cancelable"></a>
+      <span class="permalink">
+      <a href="../../riff/monix/ObservableTimerCallback.html#subscribe(subscriber:monix.reactive.Observer[riff.raft.messages.TimerMessage]):monix.execution.Cancelable" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">subscribe</span><span class="params">(<span name="subscriber">subscriber: <span class="extype" name="monix.reactive.Observer">Observer</span>[<span class="extype" name="riff.raft.messages.TimerMessage">TimerMessage</span>]</span>)</span><span class="result">: <span class="extype" name="monix.execution.Cancelable">Cancelable</span></span>
+      </span>
+      
+      
     </li><li name="scala.AnyRef#synchronized" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="synchronized[T0](x$1:=&gt;T0):T0"></a><a id="synchronized[T0](⇒T0):T0"></a>
       <span class="permalink">
-      <a href="../../riff/monix/MonixCluster.html#synchronized[T0](x$1:=&gt;T0):T0" title="Permalink">
+      <a href="../../riff/monix/ObservableTimerCallback.html#synchronized[T0](x$1:=&gt;T0):T0" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -580,7 +611,7 @@ each local node real requests could be sent to remote ones.
     </li><li name="scala.AnyRef#toString" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="toString():String"></a>
       <span class="permalink">
-      <a href="../../riff/monix/MonixCluster.html#toString():String" title="Permalink">
+      <a href="../../riff/monix/ObservableTimerCallback.html#toString():String" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -596,7 +627,7 @@ each local node real requests could be sent to remote ones.
     </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait():Unit"></a>
       <span class="permalink">
-      <a href="../../riff/monix/MonixCluster.html#wait():Unit" title="Permalink">
+      <a href="../../riff/monix/ObservableTimerCallback.html#wait():Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -618,7 +649,7 @@ each local node real requests could be sent to remote ones.
     </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait(x$1:Long,x$2:Int):Unit"></a><a id="wait(Long,Int):Unit"></a>
       <span class="permalink">
-      <a href="../../riff/monix/MonixCluster.html#wait(x$1:Long,x$2:Int):Unit" title="Permalink">
+      <a href="../../riff/monix/ObservableTimerCallback.html#wait(x$1:Long,x$2:Int):Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -640,7 +671,7 @@ each local node real requests could be sent to remote ones.
     </li><li name="scala.AnyRef#wait" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="wait(x$1:Long):Unit"></a><a id="wait(Long):Unit"></a>
       <span class="permalink">
-      <a href="../../riff/monix/MonixCluster.html#wait(x$1:Long):Unit" title="Permalink">
+      <a href="../../riff/monix/ObservableTimerCallback.html#wait(x$1:Long):Unit" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -671,8 +702,8 @@ each local node real requests could be sent to remote ones.
         </div>
 
         <div id="inheritedMembers">
-        <div class="parent" name="riff.raft.log.HasNodes">
-              <h3>Inherited from <a href="../raft/log/HasNodes.html" class="extype" name="riff.raft.log.HasNodes">HasNodes</a>[<span class="extype" name="riff.monix.MonixCluster.A">A</span>]</h3>
+        <div class="parent" name="riff.raft.timer.TimerCallback">
+              <h3>Inherited from <span class="extype" name="riff.raft.timer.TimerCallback">TimerCallback</span>[<a href="http://www.scala-lang.org/api/2.12.7/scala/Unit.html#scala.Unit" class="extype" name="scala.Unit">Unit</a>]</h3>
             </div><div class="parent" name="scala.AnyRef">
               <h3>Inherited from <a href="http://www.scala-lang.org/api/2.12.7/scala/AnyRef.html#scala.AnyRef" class="extype" name="scala.AnyRef">AnyRef</a></h3>
             </div><div class="parent" name="scala.Any">

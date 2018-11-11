@@ -126,9 +126,21 @@
                         <a class="trait" href="AsSubscriber.html" title="Represents any F[_] which can be represented as a Subscriber"></a>
                         <a href="AsSubscriber.html" title="Represents any F[_] which can be represented as a Subscriber">AsSubscriber</a>
                       </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="trait" href="AsyncPublisher.html" title="A hot publisher to multiple subscribers, where new subscriptions simply begin observing the messages as the point of subscription."></a>
+                        <a href="AsyncPublisher.html" title="A hot publisher to multiple subscribers, where new subscriptions simply begin observing the messages as the point of subscription.">AsyncPublisher</a>
+                      </li><li class="current-entities indented2">
                         <a class="object" href="AsyncSubscription$.html" title=""></a>
                         <a class="class" href="AsyncSubscription.html" title="Represents a subscription whose actions are handled via a Runnable pulling values from a blocking internalStateInputQueue submitted on a provided execution context"></a>
                         <a href="AsyncSubscription.html" title="Represents a subscription whose actions are handled via a Runnable pulling values from a blocking internalStateInputQueue submitted on a provided execution context">AsyncSubscription</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="BatchedPublisher.html" title=""></a>
+                        <a href="BatchedPublisher.html" title="">BatchedPublisher</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="BatchedSubscriber.html" title=""></a>
+                        <a href="BatchedSubscriber.html" title="">BatchedSubscriber</a>
                       </li><li class="current-entities indented2">
                         <a class="object" href="CollectPublisher$.html" title=""></a>
                         <a class="class" href="CollectPublisher.html" title="Simple implementation of a publisher which can filter its published elements"></a>
@@ -149,10 +161,6 @@
                         <a class="object" href="ReactivePipe$.html" title=""></a>
                         <a class="class" href="ReactivePipe.html" title="Represents an input/output pipe"></a>
                         <a href="ReactivePipe.html" title="Represents an input/output pipe">ReactivePipe</a>
-                      </li><li class="current-entities indented2">
-                        <span class="separator"></span>
-                        <a class="trait" href="ReactivePublisher.html" title="A hot publisher to multiple subscribers, where new subscriptions simply begin observing the messages as the point of subscription."></a>
-                        <a href="ReactivePublisher.html" title="A hot publisher to multiple subscribers, where new subscriptions simply begin observing the messages as the point of subscription.">ReactivePublisher</a>
                       </li><li class="current-entities indented2">
                         <a class="object" href="ReactiveTimerCallback$.html" title=""></a>
                         <a class="class" href="ReactiveTimerCallback.html" title="An implementation of a TimerCallback which publishes TimerMessages"></a>
@@ -269,6 +277,25 @@ the F[_] (such as collecting into another F[_])
       
       <p class="shortcomment cmt">Represents any F[_] which can be represented as a Subscriber
 </p>
+    </li><li name="riff.reactive.AsyncPublisher" visbl="pub" class="indented0 " data-isabs="true" fullComment="yes" group="Ungrouped">
+      <a id="AsyncPublisher[T]extendsPublisher[T]withStrictLoggingwithAutoCloseable"></a><a id="AsyncPublisher[T]:AsyncPublisher[T]"></a>
+      <span class="permalink">
+      <a href="../../riff/reactive/index.html#AsyncPublisher[T]extendsPublisher[T]withStrictLoggingwithAutoCloseable" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a title="A hot publisher to multiple subscribers, where new subscriptions simply begin observing the messages as the point of subscription." href="AsyncPublisher.html"><span class="name">AsyncPublisher</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <span class="extype" name="org.reactivestreams.Publisher">Publisher</span>[<span class="extype" name="riff.reactive.AsyncPublisher.T">T</span>] with <span class="extype" name="com.typesafe.scalalogging.StrictLogging">StrictLogging</span> with <span class="extype" name="java.lang.AutoCloseable">AutoCloseable</span></span>
+      </span>
+      
+      <p class="shortcomment cmt">A hot publisher to multiple subscribers, where new subscriptions simply begin observing the messages as the point of
+subscription.</p><div class="fullcomment"><div class="comment cmt"><p>A hot publisher to multiple subscribers, where new subscriptions simply begin observing the messages as the point of
+subscription. Each subscription maintains its own queue, and so slow consumers can end up eating up memory.</p><p>This is quite a basic implementation of a reactive-stream, without real attention to efficiency or performance.</p><p>Consider using the raft-monix, raft-fs2 or raft-akka libraries for a more robust approach.
+</p></div></div>
     </li><li name="riff.reactive.AsyncSubscription" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="AsyncSubscription[T]extendsSubscriptionwithStrictLogging"></a><a id="AsyncSubscription[T]:AsyncSubscription[T]"></a>
       <span class="permalink">
@@ -287,10 +314,42 @@ the F[_] (such as collecting into another F[_])
       <p class="shortcomment cmt">Represents a subscription whose actions are handled via a Runnable pulling values from a blocking internalStateInputQueue submitted on
 a provided execution context
 </p>
-    </li><li name="riff.reactive.CollectPublisher" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="CollectPublisher[-A,B]extendsPublisher[B]"></a><a id="CollectPublisher[-A,B]:CollectPublisher[A,B]"></a>
+    </li><li name="riff.reactive.BatchedPublisher" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="BatchedPublisher[A]extendsPublisher[A]withProductwithSerializable"></a><a id="BatchedPublisher[A]:BatchedPublisher[A]"></a>
       <span class="permalink">
-      <a href="../../riff/reactive/index.html#CollectPublisher[-A,B]extendsPublisher[B]" title="Permalink">
+      <a href="../../riff/reactive/index.html#BatchedPublisher[A]extendsPublisher[A]withProductwithSerializable" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="BatchedPublisher.html"><span class="name">BatchedPublisher</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="underlying">underlying: <span class="extype" name="org.reactivestreams.Publisher">Publisher</span>[<span class="extype" name="riff.reactive.BatchedPublisher.A">A</span>]</span>, <span name="minimumRequestedThreshold">minimumRequestedThreshold: <span class="extype" name="scala.Int">Int</span></span>, <span name="subscriptionBatchSize">subscriptionBatchSize: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result"> extends <span class="extype" name="org.reactivestreams.Publisher">Publisher</span>[<span class="extype" name="riff.reactive.BatchedPublisher.A">A</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      
+    </li><li name="riff.reactive.BatchedSubscriber" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="BatchedSubscriber[A]extendsSingleSubscriber[A]withStrictLoggingwithProductwithSerializable"></a><a id="BatchedSubscriber[A]:BatchedSubscriber[A]"></a>
+      <span class="permalink">
+      <a href="../../riff/reactive/index.html#BatchedSubscriber[A]extendsSingleSubscriber[A]withStrictLoggingwithProductwithSerializable" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="BatchedSubscriber.html"><span class="name">BatchedSubscriber</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="wrapped">wrapped: <span class="extype" name="org.reactivestreams.Subscriber">Subscriber</span>[_ &gt;: <span class="extype" name="riff.reactive.BatchedSubscriber.A">A</span>]</span>, <span name="minimumRequestedThreshold">minimumRequestedThreshold: <span class="extype" name="scala.Int">Int</span></span>, <span name="subscriptionBatchSize">subscriptionBatchSize: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result"> extends <a href="SingleSubscriber.html" class="extype" name="riff.reactive.SingleSubscriber">SingleSubscriber</a>[<span class="extype" name="riff.reactive.BatchedSubscriber.A">A</span>] with <span class="extype" name="com.typesafe.scalalogging.StrictLogging">StrictLogging</span> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      
+    </li><li name="riff.reactive.CollectPublisher" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="CollectPublisher[-A,B]extendsPublisher[B]withAutoCloseable"></a><a id="CollectPublisher[-A,B]:CollectPublisher[A,B]"></a>
+      <span class="permalink">
+      <a href="../../riff/reactive/index.html#CollectPublisher[-A,B]extendsPublisher[B]withAutoCloseable" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -299,15 +358,15 @@ a provided execution context
         <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <a title="Simple implementation of a publisher which can filter its published elements" href="CollectPublisher.html"><span class="name">CollectPublisher</span></a><span class="tparams">[<span name="A">-A</span>, <span name="B">B</span>]</span><span class="result"> extends <span class="extype" name="org.reactivestreams.Publisher">Publisher</span>[<span class="extype" name="riff.reactive.CollectPublisher.B">B</span>]</span>
+        <a title="Simple implementation of a publisher which can filter its published elements" href="CollectPublisher.html"><span class="name">CollectPublisher</span></a><span class="tparams">[<span name="A">-A</span>, <span name="B">B</span>]</span><span class="result"> extends <span class="extype" name="org.reactivestreams.Publisher">Publisher</span>[<span class="extype" name="riff.reactive.CollectPublisher.B">B</span>] with <span class="extype" name="java.lang.AutoCloseable">AutoCloseable</span></span>
       </span>
       
       <p class="shortcomment cmt">Simple implementation of a publisher which can filter its published elements
 </p>
     </li><li name="riff.reactive.MapPublisher" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="MapPublisher[A,B]extendsPublisher[B]"></a><a id="MapPublisher[A,B]:MapPublisher[A,B]"></a>
+      <a id="MapPublisher[A,B]extendsPublisher[B]withAutoCloseable"></a><a id="MapPublisher[A,B]:MapPublisher[A,B]"></a>
       <span class="permalink">
-      <a href="../../riff/reactive/index.html#MapPublisher[A,B]extendsPublisher[B]" title="Permalink">
+      <a href="../../riff/reactive/index.html#MapPublisher[A,B]extendsPublisher[B]withAutoCloseable" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -316,14 +375,14 @@ a provided execution context
         <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <a title="" href="MapPublisher.html"><span class="name">MapPublisher</span></a><span class="tparams">[<span name="A">A</span>, <span name="B">B</span>]</span><span class="result"> extends <span class="extype" name="org.reactivestreams.Publisher">Publisher</span>[<span class="extype" name="riff.reactive.MapPublisher.B">B</span>]</span>
+        <a title="" href="MapPublisher.html"><span class="name">MapPublisher</span></a><span class="tparams">[<span name="A">A</span>, <span name="B">B</span>]</span><span class="result"> extends <span class="extype" name="org.reactivestreams.Publisher">Publisher</span>[<span class="extype" name="riff.reactive.MapPublisher.B">B</span>] with <span class="extype" name="java.lang.AutoCloseable">AutoCloseable</span></span>
       </span>
       
       
     </li><li name="riff.reactive.MultiSubscriberProcessor" visbl="pub" class="indented0 " data-isabs="true" fullComment="yes" group="Ungrouped">
-      <a id="MultiSubscriberProcessor[A]extendsReactivePublisher[A]withSubscriber[A]"></a><a id="MultiSubscriberProcessor[A]:MultiSubscriberProcessor[A]"></a>
+      <a id="MultiSubscriberProcessor[A]extendsAsyncPublisher[A]withSubscriber[A]withStrictLoggingwithAutoCloseable"></a><a id="MultiSubscriberProcessor[A]:MultiSubscriberProcessor[A]"></a>
       <span class="permalink">
-      <a href="../../riff/reactive/index.html#MultiSubscriberProcessor[A]extendsReactivePublisher[A]withSubscriber[A]" title="Permalink">
+      <a href="../../riff/reactive/index.html#MultiSubscriberProcessor[A]extendsAsyncPublisher[A]withSubscriber[A]withStrictLoggingwithAutoCloseable" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -332,7 +391,7 @@ a provided execution context
         <span class="kind">trait</span>
       </span>
       <span class="symbol">
-        <a title="A 'Processor' (both a subscriber and publisher) which can be subscribed to multiple publishers in order to collate and publish their values." href="MultiSubscriberProcessor.html"><span class="name">MultiSubscriberProcessor</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends <a href="ReactivePublisher.html" class="extype" name="riff.reactive.ReactivePublisher">ReactivePublisher</a>[<span class="extype" name="riff.reactive.MultiSubscriberProcessor.A">A</span>] with <span class="extype" name="org.reactivestreams.Subscriber">Subscriber</span>[<span class="extype" name="riff.reactive.MultiSubscriberProcessor.A">A</span>]</span>
+        <a title="A 'Processor' (both a subscriber and publisher) which can be subscribed to multiple publishers in order to collate and publish their values." href="MultiSubscriberProcessor.html"><span class="name">MultiSubscriberProcessor</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends <a href="AsyncPublisher.html" class="extype" name="riff.reactive.AsyncPublisher">AsyncPublisher</a>[<span class="extype" name="riff.reactive.MultiSubscriberProcessor.A">A</span>] with <span class="extype" name="org.reactivestreams.Subscriber">Subscriber</span>[<span class="extype" name="riff.reactive.MultiSubscriberProcessor.A">A</span>] with <span class="extype" name="com.typesafe.scalalogging.StrictLogging">StrictLogging</span> with <span class="extype" name="java.lang.AutoCloseable">AutoCloseable</span></span>
       </span>
       
       <p class="shortcomment cmt">A 'Processor' (both a subscriber and publisher) which can be subscribed to multiple publishers in order to collate and publish their values.</p><div class="fullcomment"><div class="comment cmt"><p>A 'Processor' (both a subscriber and publisher) which can be subscribed to multiple publishers in order to collate and publish their values.</p><pre><span class="kw">val</span> sub : MultiSubscriberProcessor[A] = ...
@@ -343,9 +402,9 @@ pub3.subscribe(sub)
 <span class="cmt">// the subscribers to 'sub' will receive the values published from pub1, pub2 and pub3</span>
 sub.subscribe(...)</pre></div></div>
     </li><li name="riff.reactive.ReactivePipe" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="ReactivePipe[A,Sub[_],Pub[_]]extendsProductwithSerializable"></a><a id="ReactivePipe[A,Sub[_],Pub[_]]:ReactivePipe[A,Sub,Pub]"></a>
+      <a id="ReactivePipe[In,Out,Sub[_],Pub[_]]extendsAutoCloseablewithProductwithSerializable"></a><a id="ReactivePipe[In,Out,Sub[_],Pub[_]]:ReactivePipe[In,Out,Sub,Pub]"></a>
       <span class="permalink">
-      <a href="../../riff/reactive/index.html#ReactivePipe[A,Sub[_],Pub[_]]extendsProductwithSerializable" title="Permalink">
+      <a href="../../riff/reactive/index.html#ReactivePipe[In,Out,Sub[_],Pub[_]]extendsAutoCloseablewithProductwithSerializable" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -354,34 +413,15 @@ sub.subscribe(...)</pre></div></div>
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a title="Represents an input/output pipe" href="ReactivePipe.html"><span class="name">ReactivePipe</span></a><span class="tparams">[<span name="A">A</span>, <span name="Sub">Sub<span class="tparams">[<span name="_">_</span>]</span></span>, <span name="Pub">Pub<span class="tparams">[<span name="_">_</span>]</span></span>]</span><span class="params">(<span name="input">input: <span class="extype" name="riff.reactive.ReactivePipe.Sub">Sub</span>[<span class="extype" name="riff.reactive.ReactivePipe.A">A</span>]</span>, <span name="output">output: <span class="extype" name="riff.reactive.ReactivePipe.Pub">Pub</span>[<span class="extype" name="riff.reactive.ReactivePipe.A">A</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="evidence$1">evidence$1: <a href="AsSubscriber.html" class="extype" name="riff.reactive.AsSubscriber">AsSubscriber</a>[<span class="extype" name="riff.reactive.ReactivePipe.Sub">Sub</span>]</span>, <span name="evidence$2">evidence$2: <a href="AsPublisher.html" class="extype" name="riff.reactive.AsPublisher">AsPublisher</a>[<span class="extype" name="riff.reactive.ReactivePipe.Pub">Pub</span>]</span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a title="Represents an input/output pipe" href="ReactivePipe.html"><span class="name">ReactivePipe</span></a><span class="tparams">[<span name="In">In</span>, <span name="Out">Out</span>, <span name="Sub">Sub<span class="tparams">[<span name="_">_</span>]</span></span>, <span name="Pub">Pub<span class="tparams">[<span name="_">_</span>]</span></span>]</span><span class="params">(<span name="input">input: <span class="extype" name="riff.reactive.ReactivePipe.Sub">Sub</span>[<span class="extype" name="riff.reactive.ReactivePipe.In">In</span>]</span>, <span name="output">output: <span class="extype" name="riff.reactive.ReactivePipe.Pub">Pub</span>[<span class="extype" name="riff.reactive.ReactivePipe.Out">Out</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="evidence$1">evidence$1: <a href="AsSubscriber.html" class="extype" name="riff.reactive.AsSubscriber">AsSubscriber</a>[<span class="extype" name="riff.reactive.ReactivePipe.Sub">Sub</span>]</span>, <span name="evidence$2">evidence$2: <a href="AsPublisher.html" class="extype" name="riff.reactive.AsPublisher">AsPublisher</a>[<span class="extype" name="riff.reactive.ReactivePipe.Pub">Pub</span>]</span>)</span><span class="result"> extends <span class="extype" name="java.lang.AutoCloseable">AutoCloseable</span> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       
       <p class="shortcomment cmt">Represents an input/output pipe
 </p>
-    </li><li name="riff.reactive.ReactivePublisher" visbl="pub" class="indented0 " data-isabs="true" fullComment="yes" group="Ungrouped">
-      <a id="ReactivePublisher[T]extendsPublisher[T]"></a><a id="ReactivePublisher[T]:ReactivePublisher[T]"></a>
-      <span class="permalink">
-      <a href="../../riff/reactive/index.html#ReactivePublisher[T]extendsPublisher[T]" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">trait</span>
-      </span>
-      <span class="symbol">
-        <a title="A hot publisher to multiple subscribers, where new subscriptions simply begin observing the messages as the point of subscription." href="ReactivePublisher.html"><span class="name">ReactivePublisher</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="result"> extends <span class="extype" name="org.reactivestreams.Publisher">Publisher</span>[<span class="extype" name="riff.reactive.ReactivePublisher.T">T</span>]</span>
-      </span>
-      
-      <p class="shortcomment cmt">A hot publisher to multiple subscribers, where new subscriptions simply begin observing the messages as the point of
-subscription.</p><div class="fullcomment"><div class="comment cmt"><p>A hot publisher to multiple subscribers, where new subscriptions simply begin observing the messages as the point of
-subscription. Each subscription maintains its own queue, and so slow consumers can end up eating up memory.</p><p>This is quite a basic implementation of a reactive-stream, without real attention to efficiency or performance.</p><p>Consider using the raft-monix, raft-fs2 or raft-akka libraries for a more robust approach.
-</p></div></div>
     </li><li name="riff.reactive.ReactiveTimerCallback" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="ReactiveTimerCallbackextendsTimerCallback[riff.raft.messages.TimerMessage]withReactivePublisher[riff.raft.messages.TimerMessage]"></a><a id="ReactiveTimerCallback:ReactiveTimerCallback"></a>
+      <a id="ReactiveTimerCallbackextendsTimerCallback[riff.raft.messages.TimerMessage]withAsyncPublisher[riff.raft.messages.TimerMessage]"></a><a id="ReactiveTimerCallback:ReactiveTimerCallback"></a>
       <span class="permalink">
-      <a href="../../riff/reactive/index.html#ReactiveTimerCallbackextendsTimerCallback[riff.raft.messages.TimerMessage]withReactivePublisher[riff.raft.messages.TimerMessage]" title="Permalink">
+      <a href="../../riff/reactive/index.html#ReactiveTimerCallbackextendsTimerCallback[riff.raft.messages.TimerMessage]withAsyncPublisher[riff.raft.messages.TimerMessage]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -390,15 +430,15 @@ subscription. Each subscription maintains its own queue, and so slow consumers c
         <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <a title="An implementation of a TimerCallback which publishes TimerMessages" href="ReactiveTimerCallback.html"><span class="name">ReactiveTimerCallback</span></a><span class="result"> extends <a href="../raft/timer/TimerCallback.html" class="extype" name="riff.raft.timer.TimerCallback">TimerCallback</a>[<a href="../raft/messages/TimerMessage.html" class="extype" name="riff.raft.messages.TimerMessage">TimerMessage</a>] with <a href="ReactivePublisher.html" class="extype" name="riff.reactive.ReactivePublisher">ReactivePublisher</a>[<a href="../raft/messages/TimerMessage.html" class="extype" name="riff.raft.messages.TimerMessage">TimerMessage</a>]</span>
+        <a title="An implementation of a TimerCallback which publishes TimerMessages" href="ReactiveTimerCallback.html"><span class="name">ReactiveTimerCallback</span></a><span class="result"> extends <a href="../raft/timer/TimerCallback.html" class="extype" name="riff.raft.timer.TimerCallback">TimerCallback</a>[<a href="../raft/messages/TimerMessage.html" class="extype" name="riff.raft.messages.TimerMessage">TimerMessage</a>] with <a href="AsyncPublisher.html" class="extype" name="riff.reactive.AsyncPublisher">AsyncPublisher</a>[<a href="../raft/messages/TimerMessage.html" class="extype" name="riff.raft.messages.TimerMessage">TimerMessage</a>]</span>
       </span>
       
       <p class="shortcomment cmt">An implementation of a <span class="extype" name="TimerCallback">TimerCallback</span> which publishes TimerMessages
 </p>
     </li><li name="riff.reactive.ReplayPublisher" visbl="pub" class="indented0 " data-isabs="true" fullComment="yes" group="Ungrouped">
-      <a id="ReplayPublisher[A]extendsReactivePublisher[A]"></a><a id="ReplayPublisher[A]:ReplayPublisher[A]"></a>
+      <a id="ReplayPublisher[A]extendsAsyncPublisher[A]"></a><a id="ReplayPublisher[A]:ReplayPublisher[A]"></a>
       <span class="permalink">
-      <a href="../../riff/reactive/index.html#ReplayPublisher[A]extendsReactivePublisher[A]" title="Permalink">
+      <a href="../../riff/reactive/index.html#ReplayPublisher[A]extendsAsyncPublisher[A]" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -407,7 +447,7 @@ subscription. Each subscription maintains its own queue, and so slow consumers c
         <span class="kind">trait</span>
       </span>
       <span class="symbol">
-        <a title="A publisher which will replay all elements from before any subscription begins" href="ReplayPublisher.html"><span class="name">ReplayPublisher</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends <a href="ReactivePublisher.html" class="extype" name="riff.reactive.ReactivePublisher">ReactivePublisher</a>[<span class="extype" name="riff.reactive.ReplayPublisher.A">A</span>]</span>
+        <a title="A publisher which will replay all elements from before any subscription begins" href="ReplayPublisher.html"><span class="name">ReplayPublisher</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="result"> extends <a href="AsyncPublisher.html" class="extype" name="riff.reactive.AsyncPublisher">AsyncPublisher</a>[<span class="extype" name="riff.reactive.ReplayPublisher.A">A</span>]</span>
       </span>
       
       <p class="shortcomment cmt">A publisher which will replay all elements from before any subscription begins

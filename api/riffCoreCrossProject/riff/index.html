@@ -118,9 +118,9 @@
       
       
     </li><li class="current-entities indented1">
-                        <a class="object" href="Raft$.html" title=""></a>
-                        <a class="class" href="Raft.html" title="The generic representation of all the relevant parts for a single node in the raft cluster."></a>
-                        <a href="Raft.html" title="The generic representation of all the relevant parts for a single node in the raft cluster.">Raft</a>
+                        <a class="object" href="RaftPipe$.html" title=""></a>
+                        <a class="class" href="RaftPipe.html" title="The generic representation of all the relevant parts for a single node in the raft cluster."></a>
+                        <a href="RaftPipe.html" title="The generic representation of all the relevant parts for a single node in the raft cluster.">RaftPipe</a>
                       </li>
               </ul>
             </div>
@@ -184,19 +184,19 @@
 
         <div id="types" class="types members">
               <h3>Type Members</h3>
-              <ol><li name="riff.Raft" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
-      <a id="Raft[A,Sub[_],Pub[_],C[_]]extendsProductwithSerializable"></a><a id="Raft[A,Sub[_],Pub[_],C[_]]:Raft[A,Sub,Pub,C]"></a>
+              <ol><li name="riff.RaftPipe" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="RaftPipe[A,Sub[_],Pub[_],C[_],H&lt;:riff.raft.node.RaftMessageHandler[A]]extendsAutoCloseable"></a><a id="RaftPipe[A,Sub[_],Pub[_],C[_],H&lt;:RaftMessageHandler[A]]:RaftPipe[A,Sub,Pub,C,H]"></a>
       <span class="permalink">
-      <a href="../riff/index.html#Raft[A,Sub[_],Pub[_],C[_]]extendsProductwithSerializable" title="Permalink">
+      <a href="../riff/index.html#RaftPipe[A,Sub[_],Pub[_],C[_],H&lt;:riff.raft.node.RaftMessageHandler[A]]extendsAutoCloseable" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
       <span class="modifier_kind">
         <span class="modifier"></span>
-        <span class="kind">case class</span>
+        <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <a title="The generic representation of all the relevant parts for a single node in the raft cluster." href="Raft.html"><span class="name">Raft</span></a><span class="tparams">[<span name="A">A</span>, <span name="Sub">Sub<span class="tparams">[<span name="_">_</span>]</span></span>, <span name="Pub">Pub<span class="tparams">[<span name="_">_</span>]</span></span>, <span name="C">C<span class="tparams">[<span name="_">_</span>]</span></span>]</span><span class="params">(<span name="node">node: <a href="raft/node/RaftNode.html" class="extype" name="riff.raft.node.RaftNode">RaftNode</a>[<span class="extype" name="riff.Raft.A">A</span>]</span>, <span name="pipe">pipe: <a href="reactive/ReactivePipe.html" class="extype" name="riff.reactive.ReactivePipe">ReactivePipe</a>[<a href="raft/messages/RaftMessage.html" class="extype" name="riff.raft.messages.RaftMessage">RaftMessage</a>[<span class="extype" name="riff.Raft.A">A</span>], <span class="extype" name="riff.Raft.Sub">Sub</span>, <span class="extype" name="riff.Raft.Pub">Pub</span>]</span>, <span name="client">client: <a href="raft/RaftClient.html" class="extype" name="riff.raft.RaftClient">RaftClient</a>[<span class="extype" name="riff.Raft.C">C</span>, <span class="extype" name="riff.Raft.A">A</span>]</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="evidence$1">evidence$1: <a href="reactive/AsSubscriber.html" class="extype" name="riff.reactive.AsSubscriber">AsSubscriber</a>[<span class="extype" name="riff.Raft.Sub">Sub</span>]</span>, <span name="evidence$2">evidence$2: <a href="reactive/AsPublisher.html" class="extype" name="riff.reactive.AsPublisher">AsPublisher</a>[<span class="extype" name="riff.Raft.Pub">Pub</span>]</span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a title="The generic representation of all the relevant parts for a single node in the raft cluster." href="RaftPipe.html"><span class="name">RaftPipe</span></a><span class="tparams">[<span name="A">A</span>, <span name="Sub">Sub<span class="tparams">[<span name="_">_</span>]</span></span>, <span name="Pub">Pub<span class="tparams">[<span name="_">_</span>]</span></span>, <span name="C">C<span class="tparams">[<span name="_">_</span>]</span></span>, <span name="H">H &lt;: <a href="raft/node/RaftMessageHandler.html" class="extype" name="riff.raft.node.RaftMessageHandler">RaftMessageHandler</a>[<span class="extype" name="riff.RaftPipe.A">A</span>]</span>]</span><span class="result"> extends <span class="extype" name="java.lang.AutoCloseable">AutoCloseable</span></span>
       </span>
       
       <p class="shortcomment cmt">The generic representation of all the relevant parts for a single node in the raft cluster.</p><div class="fullcomment"><div class="comment cmt"><p>The generic representation of all the relevant parts for a single node in the raft cluster.</p><p>This would be the 'builder' for a raft node</p><p>It contains the underlying, NON-THREAD SAFE, node. Although this could be considered breaking encapsulation,
@@ -210,10 +210,10 @@ it is included in order to obtain access the underlying components (the log, per
         <div class="values members">
               <h3>Value Members</h3>
               <ol>
-                <li name="riff.Raft" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="Raft"></a><a id="Raft:Raft"></a>
+                <li name="riff.RaftPipe" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="RaftPipe"></a><a id="RaftPipe:RaftPipe"></a>
       <span class="permalink">
-      <a href="../riff/index.html#Raft" title="Permalink">
+      <a href="../riff/index.html#RaftPipe" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -222,7 +222,7 @@ it is included in order to obtain access the underlying components (the log, per
         <span class="kind">object</span>
       </span>
       <span class="symbol">
-        <a title="" href="Raft$.html"><span class="name">Raft</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a title="" href="RaftPipe$.html"><span class="name">RaftPipe</span></a>
       </span>
       
       

@@ -126,10 +126,6 @@
                         <a class="trait" href="CommittedOps.html" title="Represents observable operations which can be performed on a riff.raft.log.RaftLog for committed log entries"></a>
                         <a href="CommittedOps.html" title="Represents observable operations which can be performed on a riff.raft.log.RaftLog for committed log entries">CommittedOps</a>
                       </li><li class="current-entities indented3">
-                        <a class="object" href="IndexedObservable$.html" title=""></a>
-                        <a class="trait" href="IndexedObservable.html" title="Represents something which can be subscribed to from a particular index."></a>
-                        <a href="IndexedObservable.html" title="Represents something which can be subscribed to from a particular index.">IndexedObservable</a>
-                      </li><li class="current-entities indented3">
                         <a class="object" href="ObservableLog$.html" title=""></a>
                         <a class="class" href="" title="Wraps a riff.raft.log.RaftLog for a local node which exposes Observable data publishers for: $ Appended LogCoords $ Appended LogEntry $ Appended LogCoords from a historic index $ Appended LogEntry from a historic index $ Committed LogCoords $ Committed LogEntry $ Committed LogCoords from a historic index $ Committed LogEntry from a historic index"></a>
                         <a href="" title="Wraps a riff.raft.log.RaftLog for a local node which exposes Observable data publishers for: $ Appended LogCoords $ Appended LogEntry $ Appended LogCoords from a historic index $ Appended LogEntry from a historic index $ Committed LogCoords $ Committed LogEntry $ Committed LogCoords from a historic index $ Committed LogEntry from a historic index">ObservableLog</a>
@@ -308,7 +304,7 @@ $ Committed <span class="extype" name="LogEntry">LogEntry</span> from a historic
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">append</span><span class="params">(<span name="coords">coords: <span class="extype" name="riff.raft.log.LogCoords">LogCoords</span></span>, <span name="data">data: <span class="extype" name="riff.monix.log.ObservableLog.A">A</span></span>, <span name="theRest">theRest: <span class="extype" name="riff.monix.log.ObservableLog.A">A</span>*</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="classTag">classTag: <span class="extype" name="scala.reflect.ClassTag">ClassTag</span>[<span class="extype" name="riff.monix.log.ObservableLog.A">A</span>]</span>)</span><span class="result">: <span class="extype" name="riff.raft.log.LogAppendResult">LogAppendResult</span></span>
+        <span class="name">append</span><span class="params">(<span name="coords">coords: <span class="extype" name="riff.raft.log.LogCoords">LogCoords</span></span>, <span name="data">data: <span class="extype" name="riff.monix.log.ObservableLog.A">A</span></span>, <span name="theRest">theRest: <span class="extype" name="riff.monix.log.ObservableLog.A">A</span>*</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="classTag">classTag: <a href="http://www.scala-lang.org/api/2.12.7/scala/reflect/ClassTag.html#scala.reflect.ClassTag" class="extype" name="scala.reflect.ClassTag">ClassTag</a>[<span class="extype" name="riff.monix.log.ObservableLog.A">A</span>]</span>)</span><span class="result">: <span class="extype" name="riff.raft.log.LogAppendResult">LogAppendResult</span></span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>RaftLogOps</dd></dl></div>
@@ -324,7 +320,7 @@ $ Committed <span class="extype" name="LogEntry">LogEntry</span> from a historic
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">appendAll</span><span class="params">(<span name="fromIndex">fromIndex: <a href="../../raft/index.html#LogIndex=Int" class="extmbr" name="riff.raft.LogIndex">LogIndex</a></span>, <span name="data">data: <a href="http://www.scala-lang.org/api/2.12.7/scala/Array.html#scala.Array" class="extype" name="scala.Array">Array</a>[<span class="extype" name="riff.raft.log.LogEntry">LogEntry</span>[<span class="extype" name="riff.monix.log.ObservableLog.A">A</span>]]</span>)</span><span class="result">: <span class="extype" name="riff.raft.log.LogAppendResult">LogAppendResult</span></span>
+        <span class="name">appendAll</span><span class="params">(<span name="fromIndex">fromIndex: <span class="extype" name="riff.raft.LogIndex">LogIndex</span></span>, <span name="data">data: <a href="http://www.scala-lang.org/api/2.12.7/scala/Array.html#scala.Array" class="extype" name="scala.Array">Array</a>[<span class="extype" name="riff.raft.log.LogEntry">LogEntry</span>[<span class="extype" name="riff.monix.log.ObservableLog.A">A</span>]]</span>)</span><span class="result">: <span class="extype" name="riff.raft.log.LogAppendResult">LogAppendResult</span></span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="riff.monix.log.ObservableLog">ObservableLog</a> → DelegateLog → RaftLogOps</dd></dl></div>
@@ -372,7 +368,7 @@ $ Committed <span class="extype" name="LogEntry">LogEntry</span> from a historic
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">appendedCoordsFrom</span><span class="params">(<span name="index">index: <a href="../../raft/index.html#LogIndex=Int" class="extmbr" name="riff.raft.LogIndex">LogIndex</a></span>)</span><span class="result">: <span class="extype" name="monix.reactive.Observable">Observable</span>[<span class="extype" name="riff.raft.log.LogCoords">LogCoords</span>]</span>
+        <span class="name">appendedCoordsFrom</span><span class="params">(<span name="index">index: <span class="extype" name="riff.raft.LogIndex">LogIndex</span></span>)</span><span class="result">: <span class="extype" name="monix.reactive.Observable">Observable</span>[<span class="extype" name="riff.raft.log.LogCoords">LogCoords</span>]</span>
       </span>
       
       <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">index</dt><dd class="cmt"><p>the (one based!) index from which we'd like to read the appended coords</p></dd><dt>returns</dt><dd class="cmt"><p>an observable of all appended (not necessarily committed) entries from the given index</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="riff.monix.log.ObservableLog">ObservableLog</a> → <a href="AppendOps.html" class="extype" name="riff.monix.log.AppendOps">AppendOps</a></dd></dl></div>
@@ -404,7 +400,7 @@ $ Committed <span class="extype" name="LogEntry">LogEntry</span> from a historic
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">appendedEntriesFrom</span><span class="params">(<span name="index">index: <a href="../../raft/index.html#LogIndex=Int" class="extmbr" name="riff.raft.LogIndex">LogIndex</a></span>)</span><span class="result">: <span class="extype" name="monix.reactive.Observable">Observable</span>[(<span class="extype" name="riff.raft.log.LogCoords">LogCoords</span>, <span class="extype" name="riff.monix.log.ObservableLog.A">A</span>)]</span>
+        <span class="name">appendedEntriesFrom</span><span class="params">(<span name="index">index: <span class="extype" name="riff.raft.LogIndex">LogIndex</span></span>)</span><span class="result">: <span class="extype" name="monix.reactive.Observable">Observable</span>[(<span class="extype" name="riff.raft.log.LogCoords">LogCoords</span>, <span class="extype" name="riff.monix.log.ObservableLog.A">A</span>)]</span>
       </span>
       
       <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt>returns</dt><dd class="cmt"><p>an observable of log entries from the given index</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="AppendOps.html" class="extype" name="riff.monix.log.AppendOps">AppendOps</a></dd></dl></div>
@@ -476,7 +472,7 @@ $ Committed <span class="extype" name="LogEntry">LogEntry</span> from a historic
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">commit</span><span class="params">(<span name="index">index: <a href="../../raft/index.html#LogIndex=Int" class="extmbr" name="riff.raft.LogIndex">LogIndex</a></span>)</span><span class="result">: <span class="extype" name="scala.Seq">Seq</span>[<span class="extype" name="riff.raft.log.LogCoords">LogCoords</span>]</span>
+        <span class="name">commit</span><span class="params">(<span name="index">index: <span class="extype" name="riff.raft.LogIndex">LogIndex</span></span>)</span><span class="result">: <span class="extype" name="scala.Seq">Seq</span>[<span class="extype" name="riff.raft.log.LogCoords">LogCoords</span>]</span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="riff.monix.log.ObservableLog">ObservableLog</a> → DelegateLog → RaftLogOps</dd></dl></div>
@@ -508,7 +504,7 @@ $ Committed <span class="extype" name="LogEntry">LogEntry</span> from a historic
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">committedCoordsFrom</span><span class="params">(<span name="index">index: <a href="../../raft/index.html#LogIndex=Int" class="extmbr" name="riff.raft.LogIndex">LogIndex</a></span>)</span><span class="result">: <span class="extype" name="monix.reactive.Observable">Observable</span>[<span class="extype" name="riff.raft.log.LogCoords">LogCoords</span>]</span>
+        <span class="name">committedCoordsFrom</span><span class="params">(<span name="index">index: <span class="extype" name="riff.raft.LogIndex">LogIndex</span></span>)</span><span class="result">: <span class="extype" name="monix.reactive.Observable">Observable</span>[<span class="extype" name="riff.raft.log.LogCoords">LogCoords</span>]</span>
       </span>
       
       <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">index</dt><dd class="cmt"><p>the (one based!) index from which we'd like to read the committed coords</p></dd><dt>returns</dt><dd class="cmt"><p>an observable of all committed entries from the given index</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="riff.monix.log.ObservableLog">ObservableLog</a> → <a href="CommittedOps.html" class="extype" name="riff.monix.log.CommittedOps">CommittedOps</a></dd></dl></div>
@@ -540,7 +536,7 @@ $ Committed <span class="extype" name="LogEntry">LogEntry</span> from a historic
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">committedEntriesFrom</span><span class="params">(<span name="index">index: <a href="../../raft/index.html#LogIndex=Int" class="extmbr" name="riff.raft.LogIndex">LogIndex</a></span>)</span><span class="result">: <span class="extype" name="monix.reactive.Observable">Observable</span>[(<span class="extype" name="riff.raft.log.LogCoords">LogCoords</span>, <span class="extype" name="riff.monix.log.ObservableLog.A">A</span>)]</span>
+        <span class="name">committedEntriesFrom</span><span class="params">(<span name="index">index: <span class="extype" name="riff.raft.LogIndex">LogIndex</span></span>)</span><span class="result">: <span class="extype" name="monix.reactive.Observable">Observable</span>[(<span class="extype" name="riff.raft.log.LogCoords">LogCoords</span>, <span class="extype" name="riff.monix.log.ObservableLog.A">A</span>)]</span>
       </span>
       
       <p class="shortcomment cmt"></p><div class="fullcomment"><div class="comment cmt"></div><dl class="paramcmts block"><dt class="param">index</dt><dd class="cmt"><p>the (one based!) index from which to observe</p></dd><dt>returns</dt><dd class="cmt"><p>an observable of the log entries from a particular index</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="CommittedOps.html" class="extype" name="riff.monix.log.CommittedOps">CommittedOps</a></dd></dl></div>
@@ -588,7 +584,7 @@ $ Committed <span class="extype" name="LogEntry">LogEntry</span> from a historic
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">coordsForIndex</span><span class="params">(<span name="index">index: <a href="../../raft/index.html#LogIndex=Int" class="extmbr" name="riff.raft.LogIndex">LogIndex</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.12.7/scala/Option.html#scala.Option" class="extype" name="scala.Option">Option</a>[<span class="extype" name="riff.raft.log.LogCoords">LogCoords</span>]</span>
+        <span class="name">coordsForIndex</span><span class="params">(<span name="index">index: <span class="extype" name="riff.raft.LogIndex">LogIndex</span></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.12.7/scala/Option.html#scala.Option" class="extype" name="scala.Option">Option</a>[<span class="extype" name="riff.raft.log.LogCoords">LogCoords</span>]</span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>RaftLogOps</dd></dl></div>
@@ -620,7 +616,7 @@ $ Committed <span class="extype" name="LogEntry">LogEntry</span> from a historic
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">entriesFrom</span><span class="params">(<span name="firstIndex">firstIndex: <a href="../../raft/index.html#LogIndex=Int" class="extmbr" name="riff.raft.LogIndex">LogIndex</a></span>, <span name="max">max: <a href="http://www.scala-lang.org/api/2.12.7/scala/Int.html#scala.Int" class="extype" name="scala.Int">Int</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.12.7/scala/Array.html#scala.Array" class="extype" name="scala.Array">Array</a>[<span class="extype" name="riff.raft.log.LogEntry">LogEntry</span>[<span class="extype" name="riff.monix.log.ObservableLog.A">A</span>]]</span>
+        <span class="name">entriesFrom</span><span class="params">(<span name="firstIndex">firstIndex: <span class="extype" name="riff.raft.LogIndex">LogIndex</span></span>, <span name="max">max: <a href="http://www.scala-lang.org/api/2.12.7/scala/Int.html#scala.Int" class="extype" name="scala.Int">Int</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.12.7/scala/Array.html#scala.Array" class="extype" name="scala.Array">Array</a>[<span class="extype" name="riff.raft.log.LogEntry">LogEntry</span>[<span class="extype" name="riff.monix.log.ObservableLog.A">A</span>]]</span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>RaftLogOps</dd></dl></div>
@@ -636,7 +632,7 @@ $ Committed <span class="extype" name="LogEntry">LogEntry</span> from a historic
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">entryForIndex</span><span class="params">(<span name="index">index: <a href="../../raft/index.html#LogIndex=Int" class="extmbr" name="riff.raft.LogIndex">LogIndex</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.12.7/scala/Option.html#scala.Option" class="extype" name="scala.Option">Option</a>[<span class="extype" name="riff.raft.log.LogEntry">LogEntry</span>[<span class="extype" name="riff.monix.log.ObservableLog.A">A</span>]]</span>
+        <span class="name">entryForIndex</span><span class="params">(<span name="index">index: <span class="extype" name="riff.raft.LogIndex">LogIndex</span></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.12.7/scala/Option.html#scala.Option" class="extype" name="scala.Option">Option</a>[<span class="extype" name="riff.raft.log.LogEntry">LogEntry</span>[<span class="extype" name="riff.monix.log.ObservableLog.A">A</span>]]</span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>DelegateLog → RaftLogOps</dd></dl></div>
@@ -741,7 +737,7 @@ $ Committed <span class="extype" name="LogEntry">LogEntry</span> from a historic
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">latestAppendedIndex</span><span class="params">()</span><span class="result">: <a href="../../raft/index.html#LogIndex=Int" class="extmbr" name="riff.raft.LogIndex">LogIndex</a></span>
+        <span class="name">latestAppendedIndex</span><span class="params">()</span><span class="result">: <span class="extype" name="riff.raft.LogIndex">LogIndex</span></span>
       </span>
       
       
@@ -757,7 +753,7 @@ $ Committed <span class="extype" name="LogEntry">LogEntry</span> from a historic
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">latestCommit</span><span class="params">()</span><span class="result">: <a href="../../raft/index.html#LogIndex=Int" class="extmbr" name="riff.raft.LogIndex">LogIndex</a></span>
+        <span class="name">latestCommit</span><span class="params">()</span><span class="result">: <span class="extype" name="riff.raft.LogIndex">LogIndex</span></span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>DelegateLog → RaftLogOps</dd></dl></div>
@@ -773,7 +769,7 @@ $ Committed <span class="extype" name="LogEntry">LogEntry</span> from a historic
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">latestCommittedIndex</span><span class="params">()</span><span class="result">: <a href="../../raft/index.html#LogIndex=Int" class="extmbr" name="riff.raft.LogIndex">LogIndex</a></span>
+        <span class="name">latestCommittedIndex</span><span class="params">()</span><span class="result">: <span class="extype" name="riff.raft.LogIndex">LogIndex</span></span>
       </span>
       
       
@@ -859,7 +855,7 @@ $ Committed <span class="extype" name="LogEntry">LogEntry</span> from a historic
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">onAppend</span><span class="params">(<span name="currentTerm">currentTerm: <a href="../../raft/index.html#Term=Int" class="extmbr" name="riff.raft.Term">Term</a></span>, <span name="request">request: <span class="extype" name="riff.raft.messages.AppendEntries">AppendEntries</span>[<span class="extype" name="riff.monix.log.ObservableLog.A">A</span>]</span>)</span><span class="result">: <span class="extype" name="riff.raft.messages.AppendEntriesResponse">AppendEntriesResponse</span></span>
+        <span class="name">onAppend</span><span class="params">(<span name="currentTerm">currentTerm: <span class="extype" name="riff.raft.Term">Term</span></span>, <span name="request">request: <span class="extype" name="riff.raft.messages.AppendEntries">AppendEntries</span>[<span class="extype" name="riff.monix.log.ObservableLog.A">A</span>]</span>)</span><span class="result">: <span class="extype" name="riff.raft.messages.AppendEntriesResponse">AppendEntriesResponse</span></span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>RaftLogOps</dd></dl></div>
@@ -907,7 +903,7 @@ $ Committed <span class="extype" name="LogEntry">LogEntry</span> from a historic
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">termForIndex</span><span class="params">(<span name="index">index: <a href="../../raft/index.html#LogIndex=Int" class="extmbr" name="riff.raft.LogIndex">LogIndex</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.12.7/scala/Option.html#scala.Option" class="extype" name="scala.Option">Option</a>[<a href="../../raft/index.html#Term=Int" class="extmbr" name="riff.raft.Term">Term</a>]</span>
+        <span class="name">termForIndex</span><span class="params">(<span name="index">index: <span class="extype" name="riff.raft.LogIndex">LogIndex</span></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.12.7/scala/Option.html#scala.Option" class="extype" name="scala.Option">Option</a>[<span class="extype" name="riff.raft.Term">Term</span>]</span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>DelegateLog → RaftLogOps</dd></dl></div>

@@ -122,33 +122,33 @@
                         <a class="object" href="EventSource$.html" title="Contains a function for applying a log type A to a state S, and persisting that state."></a>
                         <a href="EventSource$.html" title="Contains a function for applying a log type A to a state S, and persisting that state.">EventSource</a>
                       </li><li class="current-entities indented2">
+                        <a class="object" href="LowPriorityRiffMonixImplicits$.html" title=""></a>
+                        <a class="trait" href="LowPriorityRiffMonixImplicits.html" title=""></a>
+                        <a href="LowPriorityRiffMonixImplicits.html" title="">LowPriorityRiffMonixImplicits</a>
+                      </li><li class="current-entities indented2">
                         <a class="object" href="MonixClock$.html" title=""></a>
                         <a class="class" href="MonixClock.html" title=""></a>
                         <a href="MonixClock.html" title="">MonixClock</a>
-                      </li><li class="current-entities indented2">
-                        <a class="object" href="MonixCluster$.html" title=""></a>
-                        <a class="class" href="MonixCluster.html" title="This is more of a toy/test, as it sets up all the cluster members in the same JVM."></a>
-                        <a href="MonixCluster.html" title="This is more of a toy/test, as it sets up all the cluster members in the same JVM.">MonixCluster</a>
-                      </li><li class="current-entities indented2">
-                        <a class="object" href="MonixNode$.html" title=""></a>
-                        <a class="class" href="MonixNode.html" title="Contains all the constituent parts use to construct a RaftNode."></a>
-                        <a href="MonixNode.html" title="Contains all the constituent parts use to construct a RaftNode.">MonixNode</a>
                       </li><li class="current-entities indented2">
                         <a class="object" href="NamedPipe$.html" title=""></a>
                         <a class="class" href="NamedPipe.html" title=""></a>
                         <a href="NamedPipe.html" title="">NamedPipe</a>
                       </li><li class="current-entities indented2">
-                        <span class="separator"></span>
-                        <a class="class" href="ObservableCallback.html" title="Provides a means to observe the nodes timeouts"></a>
-                        <a href="ObservableCallback.html" title="Provides a means to observe the nodes timeouts">ObservableCallback</a>
-                      </li><li class="current-entities indented2">
-                        <span class="separator"></span>
-                        <a class="class" href="ObservableRaftNode.html" title="Wraps a RaftNode's onMessage so as to exposes observable requests and responses"></a>
-                        <a href="ObservableRaftNode.html" title="Wraps a RaftNode's onMessage so as to exposes observable requests and responses">ObservableRaftNode</a>
-                      </li><li class="current-entities indented2">
                         <a class="object" href="ObservableState$.html" title=""></a>
                         <a class="class" href="" title="Provides a means to represent a riff.raft.node.RaftNode's role as an Observable:"></a>
                         <a href="" title="Provides a means to represent a riff.raft.node.RaftNode's role as an Observable:">ObservableState</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="ObservableTimerCallback.html" title="Provides a means to observe the nodes timeouts"></a>
+                        <a href="ObservableTimerCallback.html" title="Provides a means to observe the nodes timeouts">ObservableTimerCallback</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="object" href="RaftPipeMonix$.html" title=""></a>
+                        <a href="RaftPipeMonix$.html" title="">RaftPipeMonix</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="class" href="RiffMonixClient.html" title=""></a>
+                        <a href="RiffMonixClient.html" title="">RiffMonixClient</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="object" href="RiffSchedulers$.html" title=""></a>
@@ -562,7 +562,7 @@ obs.subscribe(...)</pre></div><div class="toggleContainer block">
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">onNewLeader</span><span class="params">(<span name="term">term: <a href="../raft/index.html#Term=Int" class="extmbr" name="riff.raft.Term">Term</a></span>, <span name="leaderId">leaderId: <a href="../raft/index.html#NodeId=String" class="extmbr" name="riff.raft.NodeId">NodeId</a></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.12.7/scala/Unit.html#scala.Unit" class="extype" name="scala.Unit">Unit</a></span>
+        <span class="name">onNewLeader</span><span class="params">(<span name="term">term: <span class="extype" name="riff.raft.Term">Term</span></span>, <span name="leaderId">leaderId: <span class="extype" name="riff.raft.NodeId">NodeId</span></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.12.7/scala/Unit.html#scala.Unit" class="extype" name="scala.Unit">Unit</a></span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>RoleCallback</dd></dl></div>
@@ -578,7 +578,7 @@ obs.subscribe(...)</pre></div><div class="toggleContainer block">
         <span class="kind">def</span>
       </span>
       <span class="symbol">
-        <span class="name">onRoleChange</span><span class="params">(<span name="term">term: <a href="../raft/index.html#Term=Int" class="extmbr" name="riff.raft.Term">Term</a></span>, <span name="oldRole">oldRole: <span class="extype" name="riff.raft.node.NodeRole">NodeRole</span></span>, <span name="newRole">newRole: <span class="extype" name="riff.raft.node.NodeRole">NodeRole</span></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.12.7/scala/Unit.html#scala.Unit" class="extype" name="scala.Unit">Unit</a></span>
+        <span class="name">onRoleChange</span><span class="params">(<span name="term">term: <span class="extype" name="riff.raft.Term">Term</span></span>, <span name="oldRole">oldRole: <span class="extype" name="riff.raft.node.NodeRole">NodeRole</span></span>, <span name="newRole">newRole: <span class="extype" name="riff.raft.node.NodeRole">NodeRole</span></span>)</span><span class="result">: <a href="http://www.scala-lang.org/api/2.12.7/scala/Unit.html#scala.Unit" class="extype" name="scala.Unit">Unit</a></span>
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd>RoleCallback</dd></dl></div>

@@ -162,7 +162,7 @@
         <span class="kind">class</span>
       </span>
       <span class="symbol">
-        <span class="name">DefaultClock</span><span class="result"> extends <a href="RaftClock.html" class="extype" name="riff.raft.timer.RaftClock">RaftClock</a></span>
+        <span class="name">DefaultClock</span><span class="result"> extends <a href="RaftClock.html" class="extype" name="riff.raft.timer.RaftClock">RaftClock</a> with <span class="extype" name="java.lang.AutoCloseable">AutoCloseable</span></span>
       </span>
       </h4>
 
@@ -171,7 +171,7 @@
           <span class="toggle">
             Linear Supertypes
           </span>
-          <div class="superTypes hiddenContent"><a href="RaftClock.html" class="extype" name="riff.raft.timer.RaftClock">RaftClock</a>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><span class="extype" name="java.lang.AutoCloseable">AutoCloseable</span>, <a href="RaftClock.html" class="extype" name="riff.raft.timer.RaftClock">RaftClock</a>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
         
 
@@ -197,7 +197,7 @@
                   <span class="filtertype">Inherited<br />
                   </span>
                   <ol id="linearization">
-                    <li class="in" name="riff.raft.timer.DefaultClock"><span>DefaultClock</span></li><li class="in" name="riff.raft.timer.RaftClock"><span>RaftClock</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                    <li class="in" name="riff.raft.timer.DefaultClock"><span>DefaultClock</span></li><li class="in" name="java.lang.AutoCloseable"><span>AutoCloseable</span></li><li class="in" name="riff.raft.timer.RaftClock"><span>RaftClock</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                   </ol>
                 </div><div class="ancestors">
               <span class="filtertype"></span>
@@ -229,7 +229,7 @@
         <span class="kind">new</span>
       </span>
       <span class="symbol">
-        <span class="name">DefaultClock</span><span class="params">(<span name="sendHeartbeatTimeout">sendHeartbeatTimeout: <span class="extype" name="scala.concurrent.duration.FiniteDuration">FiniteDuration</span></span>, <span name="receiveHeartbeat">receiveHeartbeat: <a href="RandomTimer.html" class="extype" name="riff.raft.timer.RandomTimer">RandomTimer</a></span>, <span name="schedulerService">schedulerService: <span class="extype" name="java.util.concurrent.ScheduledExecutorService">ScheduledExecutorService</span> = <span class="defval" name="java.util.concurrent.Executors.newScheduledThreadPool(1)">...</span></span>, <span name="cancelMayInterruptIfRunning">cancelMayInterruptIfRunning: <span class="extype" name="scala.Boolean">Boolean</span> = <span class="symbol">true</span></span>)</span>
+        <span class="name">DefaultClock</span><span class="params">(<span name="sendHeartbeatTimeout">sendHeartbeatTimeout: <span class="extype" name="scala.concurrent.duration.FiniteDuration">FiniteDuration</span></span>, <span name="receiveHeartbeat">receiveHeartbeat: <a href="RandomTimer.html" class="extype" name="riff.raft.timer.RandomTimer">RandomTimer</a></span>, <span name="schedulerService">schedulerService: <span class="extype" name="java.util.concurrent.ScheduledExecutorService">ScheduledExecutorService</span> = <span class="symbol">newScheduledThreadPool(1)</span></span>, <span name="cancelMayInterruptIfRunning">cancelMayInterruptIfRunning: <span class="extype" name="scala.Boolean">Boolean</span> = <span class="symbol">true</span></span>)</span>
       </span>
       
       
@@ -368,6 +368,22 @@
     </span>)</span>
               
         </dd></dl></div>
+    </li><li name="riff.raft.timer.DefaultClock#close" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="close():Unit"></a>
+      <span class="permalink">
+      <a href="../../../riff/raft/timer/DefaultClock.html#close():Unit" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">def</span>
+      </span>
+      <span class="symbol">
+        <span class="name">close</span><span class="params">()</span><span class="result">: <span class="extype" name="scala.Unit">Unit</span></span>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="riff.raft.timer.DefaultClock">DefaultClock</a> → AutoCloseable</dd></dl></div>
     </li><li name="scala.AnyRef#eq" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="eq(x$1:AnyRef):Boolean"></a><a id="eq(AnyRef):Boolean"></a>
       <span class="permalink">
@@ -677,7 +693,9 @@ to the given 'state'
         </div>
 
         <div id="inheritedMembers">
-        <div class="parent" name="riff.raft.timer.RaftClock">
+        <div class="parent" name="java.lang.AutoCloseable">
+              <h3>Inherited from <span class="extype" name="java.lang.AutoCloseable">AutoCloseable</span></h3>
+            </div><div class="parent" name="riff.raft.timer.RaftClock">
               <h3>Inherited from <a href="RaftClock.html" class="extype" name="riff.raft.timer.RaftClock">RaftClock</a></h3>
             </div><div class="parent" name="scala.AnyRef">
               <h3>Inherited from <span class="extype" name="scala.AnyRef">AnyRef</span></h3>
