@@ -12,7 +12,7 @@ import riff.reactive.{ReactivePipe, TestListener}
 
 class RaftPipeMonixTest extends RiffMonixSpec {
 
-  "RaftPipe.client" ignore {
+  "RaftPipe.client" should {
     "send notifications when the append responses are received" in {
       implicit val clock = newClock
 

@@ -63,17 +63,14 @@ object WebFrameEndpoint extends StrictLogging {
       }
     })
 
-    val source = frameSource
-      .doOnComplete { () =>
-        logger.debug(s"\n>>> $name onComplete called\n")
+    val source = frameSource.doOnComplete { () =>
+      logger.debug(s"\n>>> $name onComplete called\n")
 
-      }
-      .doOnError { err =>
-        logger.debug(s"\n>>> $name onError($err) called\n")
-      }
-      .doOnNext { x =>
-        logger.debug(s"\n>>> $name onNext($x) called\n")
-      }
+    }.doOnError { err =>
+      logger.debug(s"\n>>> $name onError($err) called\n")
+    }.doOnNext { x =>
+      logger.debug(s"\n>>> $name onNext($x) called\n")
+    }
 
     (observable, source)
   }

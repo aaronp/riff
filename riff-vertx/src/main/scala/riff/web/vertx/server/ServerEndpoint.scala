@@ -21,9 +21,10 @@ import scala.concurrent.duration.Duration
 final class ServerEndpoint(val socket: ServerWebSocket, to: Observer[WebFrame], from: Observable[WebFrame]) extends Endpoint[WebFrame, WebFrame](to, from)
 
 object ServerEndpoint extends StrictLogging {
+
   def replay(socket: ServerWebSocket, name: String)(implicit timeout: Duration, scheduler: Scheduler): ServerEndpoint = {
     val addr = {
-      val a   = socket.remoteAddress()
+      val a = socket.remoteAddress()
       val url = s"${a.host}:${a.port}/${a.path}"
       s"$name (socket connected to $url)"
     }

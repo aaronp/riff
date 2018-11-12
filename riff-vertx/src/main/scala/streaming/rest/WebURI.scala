@@ -28,7 +28,7 @@ case class WebURI(method: HttpMethod, uri: List[Part]) {
   def unapply(request: (HttpMethod, URI)): Option[Map[String, String]] = {
     request match {
       case (`method`, requestUri) => unapply(requestUri)
-      case _                      => None
+      case _ => None
     }
   }
 
@@ -79,7 +79,7 @@ object WebURI {
     private def asPart(str: String): Part = {
       str match {
         case ParamR(n) => ParamPart(n)
-        case n         => ConstPart(n)
+        case n => ConstPart(n)
       }
     }
 

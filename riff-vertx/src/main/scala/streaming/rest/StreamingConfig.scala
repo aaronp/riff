@@ -7,11 +7,11 @@ import monix.execution.schedulers.SchedulerService
 import streaming.api.HostPort
 
 case class StreamingConfig(config: Config) {
-  val hostPort: HostPort         = HostPort(config.getString("host"), config.getInt("port"))
+  val hostPort: HostPort = HostPort(config.getString("host"), config.getInt("port"))
   val staticPath: Option[String] = Option(config.getString("staticPath")).filterNot(_.isEmpty)
 
   lazy val computeScheduler: SchedulerService = Scheduler.computation()
-  lazy val ioScheduler: SchedulerService      = Scheduler.io()
+  lazy val ioScheduler: SchedulerService = Scheduler.io()
 }
 
 object StreamingConfig extends StrictLogging {

@@ -18,19 +18,20 @@ import scala.collection.mutable.ListBuffer
 
 class SocketClientServerIntegrationTest extends RiffSpec with Eventually with StrictLogging {
 
-
   "Server.start / SocketClient.connect" ignore {
     "route endpoints accordingly" in {
       val port = 1236
       val UserIdR = "/user/(.*)".r
 
       val started: ScalaVerticle = Server.start(HostPort.localhost(port)) {
-        case "/admin" => endpt =>
-          endpt.toRemote.onNext(WebFrame.text("Thanks for connecting to admin"))
-          endpt.toRemote.onComplete()
-        case UserIdR(user) => _.handleTextFramesWith { clientMsgs =>
-          clientMsgs.map(s"$user : " + _)
-        }
+        case "/admin" =>
+          endpt =>
+            endpt.toRemote.onNext(WebFrame.text("Thanks for connecting to admin"))
+            endpt.toRemote.onComplete()
+        case UserIdR(user) =>
+          _.handleTextFramesWith { clientMsgs =>
+            clientMsgs.map(s"$user : " + _)
+          }
       }
 
       try {
@@ -50,7 +51,6 @@ class SocketClientServerIntegrationTest extends RiffSpec with Eventually with St
         } finally {
           admin.stop()
         }
-
 
         val resultsByUser = new java.util.concurrent.ConcurrentHashMap[String, List[String]]()
         val clients: Seq[SocketClient] = Seq("Alice", "Bob", "Dave").zipWithIndex.map {
@@ -89,9 +89,7 @@ class SocketClientServerIntegrationTest extends RiffSpec with Eventually with St
 
       def chat(endpoint: Endpoint[WebFrame, WebFrame]): Cancelable = {
         endpoint.handleTextFramesWith { incomingMsgs =>
-          val obs = "Hi - you're connected to an echo-bot" +: incomingMsgs.doOnNext( msg =>
-            messagesReceivedByTheServer += msg
-          ).map("echo: " + _)
+          val obs = "Hi - you're connected to an echo-bot" +: incomingMsgs.doOnNext(msg => messagesReceivedByTheServer += msg).map("echo: " + _)
 
           obs.doOnComplete { () =>
             logger.debug("from remote on complete")
@@ -126,20 +124,20 @@ class SocketClientServerIntegrationTest extends RiffSpec with Eventually with St
         }
 
         eventually {
-          messagesReceivedByTheClient should contain inOrder("Hi - you're connected to an echo-bot",
-            "echo: from client",
-            "echo: client sending: 0",
-            "echo: client sending: 1",
-            "echo: client sending: 2",
-            "echo: client sending: 3")
+          messagesReceivedByTheClient should contain inOrder ("Hi - you're connected to an echo-bot",
+          "echo: from client",
+          "echo: client sending: 0",
+          "echo: client sending: 1",
+          "echo: client sending: 2",
+          "echo: client sending: 3")
         }
 
         eventually {
-          messagesReceivedByTheServer should contain inOrder("from client",
-            "client sending: 0",
-            "client sending: 1",
-            "client sending: 2",
-            "client sending: 3")
+          messagesReceivedByTheServer should contain inOrder ("from client",
+          "client sending: 0",
+          "client sending: 1",
+          "client sending: 2",
+          "client sending: 3")
         }
 
       } finally {
@@ -161,7 +159,6 @@ class SocketClientServerIntegrationTest extends RiffSpec with Eventually with St
 
       // start the server
       val started: ScalaVerticle = Server.startSocket(HostPort.localhost(port)) { endpoint: ServerEndpoint =>
-
         endpoint.toRemote.onNext(WebFrame.text(s"hello from the server at ${endpoint.socket.path}"))
 
         endpoint.fromRemote.foreach { msg: WebFrame =>

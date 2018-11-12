@@ -29,13 +29,13 @@ val Core = config("riff-core")
 val RiffMonix = config("riff-monix")
 val RiffFs2 = config("riff-fs2")
 val RiffAkka = config("riff-akka")
-//val RiffWeb   = config("riff-vertx")
+val RiffVertx = config("riff-vertx")
 
 git.remoteRepo  := s"git@github.com:$username/$repo.git"
 ghpagesNoJekyll := true
 
 lazy val scaladocSiteProjects =
-  List((riffCoreJVM, Core), (riffMonix, RiffMonix), (riffFs2, RiffFs2), (riffAkka, RiffAkka))
+  List((riffCoreJVM, Core), (riffMonix, RiffMonix), (riffFs2, RiffFs2), (riffAkka, RiffAkka), (riffVertx, RiffVertx))
 
 lazy val scaladocSiteSettings = scaladocSiteProjects.flatMap {
   case (project: Project, conf) =>
@@ -142,10 +142,11 @@ lazy val root = (project in file("."))
     riffCoreJVM,
     riffJsonJVM,
     riffJsonJS,
+    riffRuntime,
     riffMonix,
     riffFs2,
-    riffAkka
-    //, riffWeb
+    riffAkka,
+    riffVertx
   )
   .settings(scaladocSiteSettings)
   .settings(
@@ -195,7 +196,7 @@ lazy val riffCoreCrossProject = crossProject(JSPlatform, JVMPlatform)
 lazy val riffCoreJVM = riffCoreCrossProject.jvm
 lazy val riffCoreJS = riffCoreCrossProject.js
 
-val circeVersion = "0.9.3"
+val circeVersion = "0.10.0"
 
 lazy val riffJsonCrossProject = crossProject(JSPlatform, JVMPlatform)
   .crossType(CrossType.Full)
@@ -244,14 +245,25 @@ lazy val riffAkka = project
   .settings(commonSettings: _*)
   .settings(libraryDependencies ++= Dependencies.RiffAkka)
 
-lazy val riffWeb = project
+lazy val riffVertx = project
   .in(file("riff-vertx"))
   .dependsOn(riffMonix % "compile->compile;test->test")
   .dependsOn(riffCoreJVM % "compile->compile;test->test")
   .dependsOn(riffJsonJVM % "compile->compile;test->test")
   .settings(name := s"${repo}-web")
   .settings(commonSettings: _*)
-  .settings(libraryDependencies ++= Dependencies.RiffWeb)
+  .settings(libraryDependencies ++= Dependencies.RiffVertx)
+
+lazy val riffRuntime = project
+  .in(file("riff-runtime"))
+  .settings(name := s"${repo}-runtime")
+  .settings(commonSettings: _*)
+  .dependsOn(riffCoreJVM % "compile->compile;test->test")
+  .dependsOn(riffJsonJVM % "compile->compile;test->test")
+  .dependsOn(riffMonix % "compile->compile;test->test")
+  .dependsOn(riffVertx % "compile->compile;test->test")
+  .dependsOn(riffAkka % "compile->compile;test->test")
+  .dependsOn(riffFs2 % "compile->compile;test->test")
 
 // see https://leonard.io/blog/2017/01/an-in-depth-guide-to-deploying-to-maven-central/
 pomIncludeRepository := (_ => false)

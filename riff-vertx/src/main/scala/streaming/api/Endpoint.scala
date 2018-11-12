@@ -21,8 +21,7 @@ class Endpoint[FromRemote, ToRemote](val toRemote: Observer[ToRemote], val fromR
     new Endpoint[FromRemote, A](toRemote.contraMap(f), fromRemote)
   }
 
-  def handleTextFramesWith(
-      f: Observable[String] => Observable[String])(implicit scheduler: Scheduler, fromEv: FromRemote =:= WebFrame, toEv: ToRemote =:= WebFrame): Cancelable = {
+  def handleTextFramesWith(f: Observable[String] => Observable[String])(implicit scheduler: Scheduler, fromEv: FromRemote =:= WebFrame, toEv: ToRemote =:= WebFrame): Cancelable = {
     val fromText = fromRemote.map { from =>
       fromEv(from).asText.getOrElse(sys.error("Received non-text frame"))
     }

@@ -49,5 +49,5 @@ object Dependencies {
     streams +: akkaHttp ::: akka ::: logging ::: testDependencies
   }
   val RiffHttp4s: List[ModuleID] = http4s ::: logging ::: testDependencies
-  val RiffWeb: List[ModuleID] = config :: monix ::: vertx ::: logging ::: testDependencies
+  val RiffVertx: List[ModuleID] = config :: monix ::: vertx ::: logging ::: testDependencies
 }

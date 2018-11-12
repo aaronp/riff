@@ -25,8 +25,7 @@ class SocketClient private (coords: EndpointCoords, client: Handler[WebSocket], 
 
 object SocketClient {
 
-  def connect(coords: EndpointCoords, name: String = null)(onConnect: Endpoint[WebFrame, WebFrame] => Unit)(implicit timeout: Duration,
-                                                                                                            scheduler: Scheduler): SocketClient = {
+  def connect(coords: EndpointCoords, name: String = null)(onConnect: Endpoint[WebFrame, WebFrame] => Unit)(implicit timeout: Duration, scheduler: Scheduler): SocketClient = {
     val counter = new AtomicInteger(0)
     val handler = new Handler[WebSocket] with StrictLogging {
       override def handle(event: WebSocket): Unit = {

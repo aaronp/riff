@@ -43,7 +43,8 @@ class RestHandler(feed: Observer[RestRequestContext], val requests: Observable[R
     val multiMap = request.headers()
     val headers: Map[String, String] = multiMap
       .names()
-      .map { name => (name, multiMap.getAll(name).mkString(","))
+      .map { name =>
+        (name, multiMap.getAll(name).mkString(","))
       }
       .toMap
     val restRequest = RestRequest(method, request.uri, body, headers)

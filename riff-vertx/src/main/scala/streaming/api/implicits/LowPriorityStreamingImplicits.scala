@@ -28,7 +28,7 @@ object LowPriorityStreamingImplicits {
 
     def contraMapP[A](f: PartialFunction[A, T]): Observer[A] = contraMapUnsafe {
       case a if f.isDefinedAt(a) => f(a)
-      case a                     => sys.error(s"contraMap is undefined for $a")
+      case a => sys.error(s"contraMap is undefined for $a")
     }
 
     def contraMapUnsafe[A](f: A => T): Observer[A] = new Observer[A] {

@@ -9,21 +9,18 @@ import org.reactivestreams.{Publisher, Subscriber}
 
 import scala.concurrent.Future
 
-abstract class CollatingObserver[T >: Null <: AnyRef](combine: (T, T) => T)(implicit scheduler: Scheduler)
-    extends Observer[T]
-    with Publisher[T]
-    with StrictLogging {
+abstract class CollatingObserver[T >: Null <: AnyRef](combine: (T, T) => T)(implicit scheduler: Scheduler) extends Observer[T] with Publisher[T] with StrictLogging {
 
   private var last: Option[T] = None
 
   private var subscriber: Option[Subscriber[_ >: T]] = None
-  private var ack: Future[Ack]                       = Ack.Continue
-  private val requested                              = AtomicLong(0)
+  private var ack: Future[Ack] = Ack.Continue
+  private val requested = AtomicLong(0)
   private object RequestedLock
 
   override def onNext(elem: T): Future[Ack] = {
     last match {
-      case None        => last = Option(elem)
+      case None => last = Option(elem)
       case Some(value) => last = Option(combine(value, elem))
     }
 

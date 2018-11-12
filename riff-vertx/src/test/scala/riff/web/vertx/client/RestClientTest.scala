@@ -14,17 +14,18 @@ class RestClientTest extends RiffSpec with Eventually {
 
   "RestClient.send" should {
     "send and receive shit" in {
-      val Index                                    = WebURI.get("/index.html")
-      val port                                     = 1234
+      val Index = WebURI.get("/index.html")
+      val port = 1234
       val requests: Observable[RestRequestContext] = Server.startRest(HostPort.localhost(port), None)
 
-      requests.foreach { ctxt => ctxt.completeWith(RestResponse.json(s"""{ "msg" : "handled ${ctxt.request.uri}" }"""))
+      requests.foreach { ctxt =>
+        ctxt.completeWith(RestResponse.json(s"""{ "msg" : "handled ${ctxt.request.uri}" }"""))
       }
       val client: RestClient = RestClient.connect(HostPort.localhost(port))
 
       try {
         val response: Observable[RestResponse] = client.send(RestInput(Index))
-        val reply: List[RestResponse]          = response.toListL.runSyncUnsafe(testTimeout)
+        val reply: List[RestResponse] = response.toListL.runSyncUnsafe(testTimeout)
         reply.size shouldBe 1
 
         reply.head.bodyAsString shouldBe "{ \"msg\" : \"handled index.html\" }"
@@ -37,10 +38,10 @@ class RestClientTest extends RiffSpec with Eventually {
 
   "RestClient.sendPipe" should {
     "send and receive shit" in {
-      val Index          = WebURI.get("/index.html")
-      val Save           = WebURI.post("/save/:name")
+      val Index = WebURI.get("/index.html")
+      val Save = WebURI.post("/save/:name")
       val Read = WebURI.get("/get/name")
-      val port           = 8000
+      val port = 8000
       val serverRequests = Server.startRest(HostPort.localhost(port), None)
       serverRequests.foreach { req =>
         req.completeWith(RestResponse.text(s"handled ${req.request.method} request for ${req.request.uri} w/ body '${req.request.bodyAsString}'"))
@@ -51,13 +52,14 @@ class RestClientTest extends RiffSpec with Eventually {
 
         val requests = List(
           RestInput(Index),
-          RestInput(Save, Map("name"    -> "david")),
+          RestInput(Save, Map("name" -> "david")),
           RestInput(Save, Map("invalid" -> "no name")),
           RestInput(Read)
         )
         val responses = Observable.fromIterable(requests).pipeThrough(client.sendPipe)
         var received = List[RestResponse]()
-        responses.foreach { resp: RestResponse => received = resp :: received
+        responses.foreach { resp: RestResponse =>
+          received = resp :: received
         }
 
         eventually {

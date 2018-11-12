@@ -3,6 +3,7 @@ package streaming.rest
 sealed trait HttpMethod
 
 object HttpMethod {
+
   def unapply(name: String): Option[HttpMethod] = {
     values.find(_.toString.equalsIgnoreCase(name))
   }

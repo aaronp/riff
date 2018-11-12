@@ -11,8 +11,9 @@ import streaming.api.HostPort
   *                 be used to construct query params
   */
 case class EndpointCoords(location: HostPort, uri: WebURI, params: Map[String, String]) {
+
   val resolvedUri: String = uri.resolve(params) match {
-    case Left(err)   => sys.error(err)
+    case Left(err) => sys.error(err)
     case Right(path) => path.mkString("/", "/", "")
   }
 
@@ -27,12 +28,16 @@ object EndpointCoords {
 
   def get(hostPort: HostPort, uri: String, params: Map[String, String] = Map.empty): EndpointCoords =
     EndpointCoords(hostPort, WebURI(HttpMethod.GET, uri), params)
+
   def post(hostPort: HostPort, uri: String, params: Map[String, String] = Map.empty): EndpointCoords =
     EndpointCoords(hostPort, WebURI(HttpMethod.POST, uri), params)
+
   def put(hostPort: HostPort, uri: String, params: Map[String, String] = Map.empty): EndpointCoords =
     EndpointCoords(hostPort, WebURI(HttpMethod.PUT, uri), params)
+
   def delete(hostPort: HostPort, uri: String, params: Map[String, String] = Map.empty): EndpointCoords =
     EndpointCoords(hostPort, WebURI(HttpMethod.DELETE, uri), params)
+
   def head(hostPort: HostPort, uri: String, params: Map[String, String] = Map.empty): EndpointCoords =
     EndpointCoords(hostPort, WebURI(HttpMethod.HEAD, uri), params)
 

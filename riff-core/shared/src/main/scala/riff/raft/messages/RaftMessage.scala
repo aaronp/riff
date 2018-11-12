@@ -1,5 +1,7 @@
 package riff.raft.messages
 
+import java.util
+
 import org.reactivestreams.Subscriber
 import riff.raft.log.{LogCoords, LogEntry}
 import riff.raft.{AppendStatus, LogIndex, NodeId, Term}
@@ -32,15 +34,13 @@ final class AppendData[A:ClassTag, F[_] : AsSubscriber](val responseSubscriber :
   def statusSubscriber: Subscriber[AppendStatus] = asSubscriberEvidence.asSubscriber(responseSubscriber)
   override def toString(): String = {
     if (values.size > 5) {
-      s"AppendData(${values.take(5).mkString(s"${values.size} : [",",","...]")})"
+      s"AppendData(${values.take(5).mkString(s"${values.size} values: [",",",",...]")})"
     } else {
       s"AppendData(${values.mkString("[",",","]")})"
     }
   }
   override def hashCode(): LogIndex = {
-    values.foldLeft(17) {
-      case (hash, next) => hash + (next.hashCode() * 7)
-    }
+    util.Arrays.hashCode(values.map(_.hashCode()))
   }
 
   override def equals(other : Any) = {

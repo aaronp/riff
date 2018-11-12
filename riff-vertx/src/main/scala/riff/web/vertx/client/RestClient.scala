@@ -38,13 +38,13 @@ case class RestClient(location: HostPort, impl: Vertx = Vertx.vertx())(implicit 
         val uri = parts.mkString("/")
 
         val httpRequest: HttpClientRequest = req.uri.method match {
-          case HttpMethod.GET     => httpClient.get(location.port, location.host, uri)
-          case HttpMethod.POST    => httpClient.post(location.port, location.host, uri)
-          case HttpMethod.PUT     => httpClient.put(location.port, location.host, uri)
-          case HttpMethod.DELETE  => httpClient.delete(location.port, location.host, uri)
-          case HttpMethod.HEAD    => httpClient.head(location.port, location.host, uri)
+          case HttpMethod.GET => httpClient.get(location.port, location.host, uri)
+          case HttpMethod.POST => httpClient.post(location.port, location.host, uri)
+          case HttpMethod.PUT => httpClient.put(location.port, location.host, uri)
+          case HttpMethod.DELETE => httpClient.delete(location.port, location.host, uri)
+          case HttpMethod.HEAD => httpClient.head(location.port, location.host, uri)
           case HttpMethod.OPTIONS => httpClient.options(location.port, location.host, uri)
-          case _                  => null
+          case _ => null
         }
 
         val responseVar = Var[RestResponse](null)
