@@ -59,7 +59,7 @@ class RaftNode[A](
   initialState: NodeState,
   val maxAppendSize: Int,
   initialTimerCallback: TimerCallback[_] = null,
-  roleCallback: RoleCallback = RoleCallback.NoOp)
+  val roleCallback: RoleCallback = RoleCallback.NoOp)
     extends RaftMessageHandler[A] with TimerCallback[RaftNodeResult[A]] with AutoCloseable { self =>
 
   private val timerCallback = Option(initialTimerCallback).getOrElse(this)

@@ -6,23 +6,64 @@ import riff.RaftPipe
 import riff.raft.AppendStatus
 import riff.raft.log.LogCoords
 import riff.raft.messages.{AddressedMessage, RaftMessage, ReceiveHeartbeatTimeout, RequestVote}
-import riff.raft.node.{AddressedRequest, RaftCluster, RaftNode, RaftNodeResult}
+import riff.raft.node.RoleCallback.NewLeaderEvent
+import riff.raft.node._
 import riff.raft.timer.RaftClock
 import riff.reactive.{ReactivePipe, TestListener}
 
 class RaftPipeMonixTest extends RiffMonixSpec {
 
   "RaftPipe.client" should {
-    "send notifications when the append responses are received" in {
+    "elect a leader in a five node cluster" in {
       implicit val clock = newClock
 
       val fiveNodeCluster = RaftPipeMonix.inMemoryClusterOf[String](5)
+
+      val oneNode = fiveNodeCluster.head._2.handler
+      val cb = oneNode.roleCallback.asInstanceOf[ObservableState]
+
+      var leaderEventOpt: Option[NewLeaderEvent] = None
+      cb.asObservable.foreach { event: RoleCallback.RoleEvent =>
+        println(s"## $event")
+        event match {
+          case newLeader: NewLeaderEvent => leaderEventOpt = Option(newLeader)
+          case _ =>
+        }
+      }
+
       try {
         fiveNodeCluster.values.foreach(_.resetReceiveHeartbeat())
 
         val leader = eventually {
           fiveNodeCluster.values.find(_.handler.state().isLeader).get
         }
+
+        val leaderEvent = eventually {
+          leaderEventOpt.get
+        }
+        leaderEvent.leaderId shouldBe leader.nodeId
+
+      } finally {
+        fiveNodeCluster.values.foreach(_.close())
+      }
+    }
+    "send notifications when the append responses are received" ignore {
+      implicit val clock = newClock
+
+      val fiveNodeCluster = RaftPipeMonix.inMemoryClusterOf[String](5)
+
+      val oneNode = fiveNodeCluster.head._2.handler
+      val cb = oneNode.roleCallback.asInstanceOf[ObservableState]
+      cb.asObservable.foreach { event => println(s"## $event")
+      }
+
+      try {
+        fiveNodeCluster.values.foreach(_.resetReceiveHeartbeat())
+
+        val leader = eventually {
+          fiveNodeCluster.values.find(_.handler.state().isLeader).get
+        }
+
         val results = leader.client.append("input")
         val listener = new TestListener[AppendStatus](10, 10)
         results.subscribe(Observer.fromReactiveSubscriber(listener, new Cancelable {

@@ -4,6 +4,7 @@ import java.nio.file.Path
 import eie.io._
 import monix.execution.Scheduler
 import monix.reactive.observables.ConnectableObservable
+import monix.reactive.subjects.ConcurrentSubject
 import monix.reactive.{Observable, Observer, Pipe}
 import riff.RaftPipe
 import riff.RaftPipe.wireTogether
@@ -90,23 +91,15 @@ object RaftPipeMonix extends LowPriorityRiffMonixImplicits {
     * @tparam A
     * @return a pipe wrapping the node
     */
-  private[riff] def pipeForNode[A](originalHandler: RaftMessageHandler[A], debug: Boolean = true)(
+  private[riff] def pipeForNode[A](node: RaftMessageHandler[A])(
     implicit sched: Scheduler): ReactivePipe[RaftMessage[A], RaftNodeResult[A], Observer, Observable] = {
 
-    val (originalInput, originalOutput) = Pipe.publish[RaftMessage[A]].multicast
-
-    // for tests
-    val node = if (debug) {
-      RecordingMessageHandler(originalHandler)
-    } else {
-      originalHandler
-    }
+    val consumer: ConcurrentSubject[RaftMessage[A], RaftMessage[A]] = ConcurrentSubject.publish[RaftMessage[A]]
 
     // provide a publisher of the inputs w/ their outputs from the node.
     // this way we can more easily satisfy raft clients'
-    val zippedInput = originalOutput.map { input =>
-      val output = node.onMessage(input)
-      (input, output)
+    val zippedInput = consumer.map { input =>
+      (input, node.onMessage(input))
     }
 
     // provide publishers for the 'AppendData' subscriptions
@@ -139,7 +132,13 @@ object RaftPipeMonix extends LowPriorityRiffMonixImplicits {
       case (_, output) => output
     }
 
-    ReactivePipe(originalInput, nodeOutput)
+    // we have multiple inputs coming in, and multiple consumers (subscribers) on the other end.
+    // to ensure a single route through our RaftNode logic, we subscribe the concurrent input
+    // to this consumer, then feed a multicast output
+    val (middleWareIn, middleWareOut) = Pipe.publishToOne[RaftNodeResult[A]].multicast
+    nodeOutput.subscribe(middleWareIn)
+
+    ReactivePipe(consumer, middleWareOut)
   }
 
 }
