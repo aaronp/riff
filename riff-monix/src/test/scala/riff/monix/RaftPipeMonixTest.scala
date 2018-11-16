@@ -15,6 +15,8 @@ import scala.concurrent.duration._
 
 class RaftPipeMonixTest extends RiffMonixSpec {
 
+  implicit override def testTimeout: FiniteDuration = 10.seconds
+
   "RaftPipe.client" should {
     "elect a leader in a five node cluster" in {
       implicit val clock = newClock
