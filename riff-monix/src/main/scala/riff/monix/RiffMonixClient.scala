@@ -10,6 +10,7 @@ case class RiffMonixClient[A: ClassTag](inputSubscriber: Observer[RaftMessage[A]
 
   override def append(data: Array[A]): Observable[AppendStatus] = {
     val (statusInput, statusOutput) = Pipe.replay[AppendStatus].unicast
+    
     inputSubscriber.onNext(AppendData(statusInput.toReactive, data))
     statusOutput
   }

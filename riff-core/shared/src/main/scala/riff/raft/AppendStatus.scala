@@ -9,14 +9,14 @@ import riff.reactive.AsPublisher
   *
   * @param logCoords the coords of the entry appended
   * @param appended a map of the cluster ids to a flag indicating whether or not the node has appended the entry
-  * @param committedCoords the log coords which have been committed on the leader
+  * @param appendedCoords the log coords which have been appended on the leader
   * @param clusterSize the size of the cluster
   */
-final case class AppendStatus(leaderAppendResult: LogAppendSuccess, appended: Map[NodeId, AppendEntriesResponse], committedCoords: Set[LogCoords], clusterSize: Int) {
+final case class AppendStatus(leaderAppendResult: LogAppendSuccess, appended: Map[NodeId, AppendEntriesResponse], appendedCoords: Set[LogCoords], clusterSize: Int) {
 
   /** @return true if the leader has committed the latest (highest) coordinate of the appended log entries
     */
-  def committed: Boolean = committedCoords.contains(leaderAppendResult.lastIndex)
+  def committed: Boolean = appendedCoords.contains(leaderAppendResult.lastIndex)
 
   /** @return true if we've received all the messages expected
     */
@@ -25,12 +25,11 @@ final case class AppendStatus(leaderAppendResult: LogAppendSuccess, appended: Ma
   }
 
   def numberOfPeersContainingCommittedIndex: Int = appended.values.count { resp => //
-    resp.success && committedCoords.contains(resp.coords)
+    resp.success && appendedCoords.contains(resp.coords)
   }
 
-  def withResult(from: NodeId, response: AppendEntriesResponse, committed: Seq[LogCoords]): AppendStatus = {
-    //require(!appended.contains(from), s"Already got a response from $from in: $this")
-    copy(appended = appended.updated(from, response), committedCoords = committedCoords ++ committed)
+  def withResult(from: NodeId, response: AppendEntriesResponse, newlyAppended: Seq[LogCoords]): AppendStatus = {
+    copy(appended = appended.updated(from, response), appendedCoords = appendedCoords ++ newlyAppended)
   }
 }
 
@@ -77,13 +76,9 @@ object AppendStatus {
 
     val firstStatus = currentStatus
 
-    object Lock
     val updates: Pub[AppendStatus] = nodeInput.collect {
       case (AddressedMessage(from, appendResponse: AppendEntriesResponse), leaderCommitResp: LeaderCommittedResult[A]) if logAppendSuccess.contains(appendResponse) =>
-        println(s"$logAppendSuccess ... $from : $appendResponse ")
-        Lock.synchronized {
-          currentStatus = currentStatus.withResult(from, appendResponse, leaderCommitResp.committed)
-        }
+        currentStatus = currentStatus.withResult(from, appendResponse, leaderCommitResp.committed)
         currentStatus
     }
 

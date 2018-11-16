@@ -5,11 +5,11 @@ import eie.io._
 import monix.execution.Scheduler
 import monix.reactive.observables.ConnectableObservable
 import monix.reactive.subjects.ConcurrentSubject
-import monix.reactive.{Observable, Observer, Pipe}
+import monix.reactive.{Observable, Observer, OverflowStrategy, Pipe}
 import riff.RaftPipe
 import riff.RaftPipe.wireTogether
-import riff.raft.log.LogAppendSuccess
-import riff.raft.messages.{AppendData, RaftMessage}
+import riff.raft.log.{LogAppendSuccess, LogCoords}
+import riff.raft.messages.{AddressedMessage, AppendData, AppendEntriesResponse, RaftMessage}
 import riff.raft.node._
 import riff.raft.timer.{RaftClock, RandomTimer}
 import riff.raft.{AppendStatus, NodeId}
@@ -91,16 +91,14 @@ object RaftPipeMonix extends LowPriorityRiffMonixImplicits {
     * @tparam A
     * @return a pipe wrapping the node
     */
-  private[riff] def pipeForNode[A](node: RaftMessageHandler[A])(
-    implicit sched: Scheduler): ReactivePipe[RaftMessage[A], RaftNodeResult[A], Observer, Observable] = {
+  private[riff] def pipeForNode[A](node: RaftMessageHandler[A])(implicit sched: Scheduler): ReactivePipe[RaftMessage[A], RaftNodeResult[A], Observer, Observable] = {
 
     val consumer: ConcurrentSubject[RaftMessage[A], RaftMessage[A]] = ConcurrentSubject.publish[RaftMessage[A]]
 
     // provide a publisher of the inputs w/ their outputs from the node.
     // this way we can more easily satisfy raft clients'
-    val zippedInput = consumer.map { input =>
-      (input, node.onMessage(input))
-    }
+    val zippedInput = consumer.map { input => (input, node.onMessage(input))
+    }.dump(s"${node.nodeId} zipped ")
 
     // provide publishers for the 'AppendData' subscriptions
     //
@@ -116,18 +114,22 @@ object RaftPipeMonix extends LowPriorityRiffMonixImplicits {
     // 4) *bang - broken by race condition of #2 and #3* -- subscribe the AppendData's subscriber to this node's input feed,
     //    having then missed the messages from #3
     val nodeOutput = zippedInput.map {
-      case (append @ AppendData(_, _), output @ NodeAppendResult(logAppendResult, requests)) =>
+      case (append @ AppendData(_, _), output @ NodeAppendResult(err: Exception, _)) =>
+        Publishers.InError(err).subscribe(append.statusSubscriber)
+        output
+      case (AppendData(responseSubscriber: Observer[AppendStatus], _), output @ NodeAppendResult(logAppendSuccess: LogAppendSuccess, requests)) =>
         val clusterSize = requests.size + 1
-        logAppendResult match {
-          case logAppendSuccess: LogAppendSuccess =>
-            val statusPub: ConnectableObservable[AppendStatus] = {
-              AppendStatus.asStatusPublisher(node.nodeId, clusterSize, logAppendSuccess, zippedInput).replay
-            }
-            statusPub.subscribe(Observer.fromReactiveSubscriber(append.statusSubscriber, statusPub.connect()))
-
-          case err: Exception =>
-            Publishers.InError(err).subscribe(append.statusSubscriber)
+        val statusPub: ConnectableObservable[AppendStatus] = {
+          asStatusPublisher(node.nodeId, clusterSize, logAppendSuccess, zippedInput).replay
         }
+        statusPub.subscribe(responseSubscriber)
+        output
+      case (append @ AppendData(_, _), output @ NodeAppendResult(logAppendSuccess: LogAppendSuccess, requests)) =>
+        val clusterSize = requests.size + 1
+        val statusPub: ConnectableObservable[AppendStatus] = {
+          asStatusPublisher(node.nodeId, clusterSize, logAppendSuccess, zippedInput).replay
+        }
+        statusPub.subscribe(Observer.fromReactiveSubscriber(append.statusSubscriber, statusPub.connect()))
         output
       case (_, output) => output
     }
@@ -141,4 +143,51 @@ object RaftPipeMonix extends LowPriorityRiffMonixImplicits {
     ReactivePipe(consumer, middleWareOut)
   }
 
+  /**
+    * Create a publisher of [[AppendStatus]] which a client may observe.
+    *
+    * This forms arguably the essential, primary use-case in using riff, as client code can then take the decisions based
+    * on the provided feed to wait for quorum, full replication, or even just this node's initial AppendStatus (e.g. having data only on this leader node),
+    * etc.
+    *
+    *
+    * Essentially the publisher will be a filtered stream of the node's input which collects [[AppendEntriesResponse]]s
+    * relevant to the [[riff.raft.messages.AppendData]] result which returned the given 'logAppendSuccess'.
+    *
+    * Given that [[riff.raft.messages.AppendEntries]] requests can send multiple entries in a configurable batch, this
+    * function should be able to cope with a 'zero to many' cardinality of [[AppendEntriesResponse]]s
+    *
+    * @param nodeId the nodeId of the leader node whose logAppendSuccess and nodeInput are given, used to populate the AppendStatus
+    * @param clusterSize the cluster size, used to populate the AppendStatus entries
+    * @param logAppendSuccess the result from this leader's log append (as a result of having processed an [[riff.raft.messages.AppendData]] request
+    * @param nodeInput the zipped input of request/responses for a target node (which ultimately feeds the result)
+    * @tparam A
+    * @return a publisher (presumably) of type Pub of AppendStatus messages
+    */
+  def asStatusPublisher[A](
+    nodeId: NodeId,
+    clusterSize: Int,
+    logAppendSuccess: LogAppendSuccess,
+    nodeInput: Observable[(RaftMessage[A], RaftNodeResult[A])])(implicit scheduler : Scheduler): Observable[AppendStatus] = {
+    val firstStatus: AppendStatus = {
+      val appendMap = Map[NodeId, AppendEntriesResponse](nodeId -> AppendEntriesResponse.ok(logAppendSuccess.firstIndex.term, logAppendSuccess.lastIndex.index))
+      AppendStatus(logAppendSuccess, appendMap, logAppendSuccess.appendedCoords, clusterSize)
+    }
+
+    val updates = nodeInput.asyncBoundary(OverflowStrategy.BackPressure(2)).scan(firstStatus) {
+      case (currentStatus, (AddressedMessage(from, appendResponse: AppendEntriesResponse), leaderCommitResp: LeaderCommittedResult[A]))
+          if logAppendSuccess.contains(appendResponse) =>
+        currentStatus.withResult(from, appendResponse, leaderCommitResp.committed)
+      case (currentStatus, _) => currentStatus
+    }
+
+    // the input 'nodeInput' is an infinite stream (or should be) of messages from peers, so we need to ensure we put in a complete condition
+    // unfortunately we have this weird closure over a 'canComplete' because we want the semantics of 'takeWhile plus the first element which returns false'
+    import AsPublisher.syntax._
+    val p = LowPriorityRiffMonixImplicits.observableAsPublisher(scheduler)
+    p.takeWhileIncludeLast(firstStatus +: updates) { x =>
+
+      !x.isComplete
+    }
+  }
 }

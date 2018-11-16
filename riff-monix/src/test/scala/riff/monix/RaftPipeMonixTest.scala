@@ -8,8 +8,10 @@ import riff.raft.log.LogCoords
 import riff.raft.messages.{AddressedMessage, RaftMessage, ReceiveHeartbeatTimeout, RequestVote}
 import riff.raft.node.RoleCallback.NewLeaderEvent
 import riff.raft.node._
-import riff.raft.timer.RaftClock
+import riff.raft.timer.{RaftClock, RandomTimer}
 import riff.reactive.{ReactivePipe, TestListener}
+
+import scala.concurrent.duration._
 
 class RaftPipeMonixTest extends RiffMonixSpec {
 
@@ -20,15 +22,12 @@ class RaftPipeMonixTest extends RiffMonixSpec {
       val fiveNodeCluster = RaftPipeMonix.inMemoryClusterOf[String](5)
 
       val oneNode = fiveNodeCluster.head._2.handler
-      val cb = oneNode.roleCallback.asInstanceOf[ObservableState]
 
+      // also observe cluster events
       var leaderEventOpt: Option[NewLeaderEvent] = None
-      cb.asObservable.foreach { event: RoleCallback.RoleEvent =>
-        println(s"## $event")
-        event match {
-          case newLeader: NewLeaderEvent => leaderEventOpt = Option(newLeader)
-          case _ =>
-        }
+      oneNode.roleCallback.asInstanceOf[ObservableState].asObservable.foreach {
+        case newLeader: NewLeaderEvent => leaderEventOpt = Option(newLeader)
+        case _ =>
       }
 
       try {
@@ -41,21 +40,22 @@ class RaftPipeMonixTest extends RiffMonixSpec {
         val leaderEvent = eventually {
           leaderEventOpt.get
         }
-        leaderEvent.leaderId shouldBe leader.nodeId
+
+        val leaderTerm = leader.handler.currentTerm()
+        if (leaderTerm == leaderEvent.term) {
+          leaderEvent.leaderId shouldBe leader.nodeId
+        }
 
       } finally {
         fiveNodeCluster.values.foreach(_.close())
       }
     }
-    "send notifications when the append responses are received" ignore {
-      implicit val clock = newClock
+    "send notifications when the append responses are received" in {
+//      implicit val clock = newClock
+      import concurrent.duration._
+      implicit val clock = MonixClock(1.second, RandomTimer(2.seconds, 4.seconds))
 
       val fiveNodeCluster = RaftPipeMonix.inMemoryClusterOf[String](5)
-
-      val oneNode = fiveNodeCluster.head._2.handler
-      val cb = oneNode.roleCallback.asInstanceOf[ObservableState]
-      cb.asObservable.foreach { event => println(s"## $event")
-      }
 
       try {
         fiveNodeCluster.values.foreach(_.resetReceiveHeartbeat())
@@ -64,26 +64,16 @@ class RaftPipeMonixTest extends RiffMonixSpec {
           fiveNodeCluster.values.find(_.handler.state().isLeader).get
         }
 
-        val results = leader.client.append("input")
-        val listener = new TestListener[AppendStatus](10, 10)
-        results.subscribe(Observer.fromReactiveSubscriber(listener, new Cancelable {
-          override def cancel() = {
-            listener.cancel()
-          }
-        }))
-        eventually {
-          listener.completed shouldBe true
+        var done = false
+        val results: Observable[AppendStatus] = leader.client.append("input").doOnComplete { () => done = true
         }
-        //          println(listener.received.size)
-        //          listener.received.foreach(println)
-        //          println()
+
+        eventually {
+          done shouldBe true
+        }
       } finally {
         fiveNodeCluster.values.foreach(_.close())
       }
-      //        println("checking...")
-      //        Thread.sleep(1000000)
-      //        println("done")
-
     }
   }
 
