@@ -16,6 +16,6 @@ abstract class RiffMonixSpec extends RiffThreadedSpec with Eventually with Befor
   }
 
   def newClock(implicit s: Scheduler) = {
-    MonixClock(10.millis, RandomTimer(50.millis, 100.millis))
+    MonixClock(100.millis, RandomTimer(300.millis, 500.millis))
   }
 }

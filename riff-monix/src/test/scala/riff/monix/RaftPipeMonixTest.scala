@@ -1,24 +1,168 @@
 package riff.monix
 
-import monix.execution.Cancelable
+import monix.eval.Task
+import monix.execution.{Cancelable, Scheduler}
 import monix.reactive.{Observable, Observer}
 import riff.RaftPipe
-import riff.raft.AppendStatus
+import riff.RaftPipe.wireTogether
+import riff.monix.RaftPipeMonixTest.PausablePipe
+import riff.monix.log.ObservableLog
 import riff.raft.log.LogCoords
-import riff.raft.messages.{AddressedMessage, RaftMessage, ReceiveHeartbeatTimeout, RequestVote}
+import riff.raft.messages._
 import riff.raft.node.RoleCallback.NewLeaderEvent
 import riff.raft.node._
-import riff.raft.timer.{RaftClock, RandomTimer}
+import riff.raft.timer.{LoggedInvocationClock, RaftClock}
+import riff.raft.{AppendStatus, NodeId, Term}
 import riff.reactive.{ReactivePipe, TestListener}
 
 import scala.concurrent.duration._
+import scala.reflect.ClassTag
+
+object RaftPipeMonixTest extends LowPriorityRiffMonixImplicits {
+
+  type PauseHandler[A] = Handlers.PausableHandler[A, RaftNode[A], Handlers.RecordingHandler[A]]
+  type PausablePipe[A] = RaftPipe[A, Observer, Observable, Observable, PauseHandler[A]]
+
+  /**
+    * Create a cluster of the input nodes, so that each knows about its peers, and sends messages to/receives messages from each of them
+    *
+    * @param nodes
+    * @param execCtxt
+    * @tparam A
+    * @return
+    */
+  def asPausableCluster[A: ClassTag](nodes: RaftNode[A]*)(implicit sched: Scheduler): Map[NodeId, PausablePipe[A]] = {
+
+    val ids = nodes.map(_.nodeId).toSet
+    def duplicates: Set[NodeId] = nodes.groupBy(_.nodeId).filter(_._2.size > 1).keySet
+    require(ids.size == nodes.length, s"multiple nodes given w/ the same id: '${duplicates.mkString("[", ",", "]")}'")
+
+    val raftInstById = nodes.map { n =>
+      val raftPipe = {
+
+        val timer = new ObservableTimerCallback
+
+        val node: RaftNode[A] = {
+          n.withTimerCallback(timer) //
+            .withCluster(RaftCluster(ids - n.nodeId)) //
+            .withLog(ObservableLog(n.log)) //
+            .withRoleCallback(new ObservableState)
+        }
+
+        val raftPipe = RaftPipeMonix.raftPipeForHandler[A, PauseHandler[A]](Handlers.pausable(node))
+
+        timer.subscribe(raftPipe.input)
+        raftPipe
+      }
+      n.nodeId -> raftPipe
+    }.toMap
+
+    wireTogether(raftInstById)
+
+    raftInstById
+  }
+}
 
 class RaftPipeMonixTest extends RiffMonixSpec {
 
   implicit override def testTimeout: FiniteDuration = 10.seconds
 
   "RaftPipe.client" should {
-    "elect a leader in a five node cluster" in {
+
+    // scenario where a leader is elected in a 5-node cluster, gets disconnected from 3 nodes while accepting
+    // some appends and sending to its remaining follower before being told of the new leader amongst the 3 nodes
+    "append results should error if the append was to a disconnected leader" in {
+      // use a clock which never actually sends timeouts
+      implicit val clock = new LoggedInvocationClock
+
+      Given("A five node cluster (with a clock which never invokes anything)")
+      val fiveNodeCluster: Map[NodeId, PausablePipe[String]] = RaftPipeMonixTest.asPausableCluster((1 to 5).map(i => RaftNode.inMemory[String](s"node-$i")): _*)
+      val initialLeader: PausablePipe[String] = fiveNodeCluster("node-1")
+      val states: Iterable[ObservableState] = fiveNodeCluster.values.map(_.handler.underlying.roleCallback.asInstanceOf[ObservableState])
+      val leaderEventsTasks: Iterable[Task[NodeId]] = states.map { obsState =>
+        val replay = obsState.events.dump("Event").replay
+
+        replay.connect
+
+        replay.collect {
+          case NewLeaderEvent(_, leaderId) => leaderId
+        }.headL
+
+      }
+      //leaderEvents.head.foreach(_ shouldBe node1.nodeId)
+
+      // 1) elect a leader
+      And("A leader is elected (after we manually trigger the receive HB timeout)")
+      initialLeader.input.onNext(ReceiveHeartbeatTimeout)
+
+      val leaderIds = leaderEventsTasks.map(_.runSyncUnsafe(testTimeout))
+      leaderIds.foreach(_ shouldBe initialLeader.nodeId)
+      initialLeader.handler.underlying.state().isLeader shouldBe true
+
+      // 2) disconnect all but one node
+      And("We then disconnect three nodes from the leader")
+      val pausedNodes = Set("node-3", "node-4", "node-5")
+      pausedNodes.foreach { id => //
+        fiveNodeCluster(id).handler.pause() shouldBe true
+      }
+
+      def interceptAppendsFromPausedNodes(): Map[NodeId, AppendEntries[String]] = {
+
+        val interceptedAppends: Set[(NodeId, AppendEntries[String])] = pausedNodes.map { id => //
+          val interceptedRequest = eventually {
+            fiveNodeCluster(id).handler.pausedHandler.requests().head
+          }
+          interceptedRequest match {
+            case AddressedMessage("node-1", hb: AppendEntries[String]) =>
+              id -> hb
+            case other =>
+              fail(s"Expected a heartbeat message from node-1, but got $other")
+              ???
+          }
+        }
+        interceptedAppends.size shouldBe pausedNodes.size
+        interceptedAppends.toMap
+      }
+
+      initialLeader.input.onNext(SendHeartbeatTimeout)
+      interceptAppendsFromPausedNodes().values.foreach(_.entries shouldBe empty)
+
+      // 3) do our append request
+      When("An append is received by the current leader")
+      var appendError : Throwable = null
+      val appendUpdates: Observable[AppendStatus] = initialLeader.client.append("this won't get committed").doOnError { err =>
+        appendError = err
+      }
+
+
+      // 4) get the 2 response status messages (the leader plus one remaining follower)
+      Then("the append response should notify two messages are received")
+      val firstTwo: List[AppendStatus] = appendUpdates.dump("RESP").take(2).toListL.runSyncUnsafe(testTimeout)
+      firstTwo.size shouldBe 2
+
+      And("The paused nodes should have received (but ignored) their append requests")
+      // verify we ignored the requests
+      interceptAppendsFromPausedNodes().values.foreach(_.entries.map(_.data) should contain only ("this won't get committed"))
+
+      // 5) now reconnect the handler and trigger a new election from node 2
+      When("the three nodes are reconnected and triggers an election")
+      pausedNodes.foreach { id => //
+        fiveNodeCluster(id).handler.resume() shouldBe true
+      }
+      val newLeader: PausablePipe[String] = fiveNodeCluster("node-2")
+      newLeader.input.onNext(ReceiveHeartbeatTimeout)
+
+      And("node-2 becomes the new leader")
+      eventually {
+        newLeader.handler.underlying.state().isLeader shouldBe true
+      }
+
+      Then("the append listener should fail with an 'Im not the leader anymore' error")
+      appendUpdates.completedL.runSyncUnsafe(testTimeout)
+      appendError should not be null
+    }
+
+    "elect a leader in a five node cluster" ignore {
       implicit val clock = newClock
 
       val fiveNodeCluster = RaftPipeMonix.inMemoryClusterOf[String](5)
@@ -26,36 +170,33 @@ class RaftPipeMonixTest extends RiffMonixSpec {
       val oneNode = fiveNodeCluster.head._2.handler
 
       // also observe cluster events
-      var leaderEventOpt: Option[NewLeaderEvent] = None
-      oneNode.roleCallback.asInstanceOf[ObservableState].asObservable.foreach {
-        case newLeader: NewLeaderEvent => leaderEventOpt = Option(newLeader)
+      var leaderEvents: List[NewLeaderEvent] = Nil
+      oneNode.roleCallback.asInstanceOf[ObservableState].events.foreach {
+        case newLeader: NewLeaderEvent => leaderEvents = newLeader :: leaderEvents
         case _ =>
       }
 
       try {
         fiveNodeCluster.values.foreach(_.resetReceiveHeartbeat())
 
-        val leader = eventually {
-          fiveNodeCluster.values.find(_.handler.state().isLeader).get
+        val leaderNodeAndTerm: (NodeId, Term) = eventually {
+          fiveNodeCluster.values.collectFirst {
+            case n if n.handler.state().isLeader =>
+              n.handler.nodeId -> n.handler.currentTerm()
+          }.get
         }
 
-        val leaderEvent = eventually {
-          leaderEventOpt.get
+        eventually {
+          withClue(s"new leader events ${leaderEvents} and found leader ${leaderNodeAndTerm}") {
+            leaderEvents.map(e => (e.leaderId, e.term)) should contain(leaderNodeAndTerm)
+          }
         }
-
-        val leaderTerm = leader.handler.currentTerm()
-        if (leaderTerm == leaderEvent.term) {
-          leaderEvent.leaderId shouldBe leader.nodeId
-        }
-
       } finally {
         fiveNodeCluster.values.foreach(_.close())
       }
     }
-    "send notifications when the append responses are received" in {
-//      implicit val clock = newClock
-      import concurrent.duration._
-      implicit val clock = MonixClock(1.second, RandomTimer(2.seconds, 4.seconds))
+    "send notifications when the append responses are received" ignore {
+      implicit val clock = newClock
 
       val fiveNodeCluster = RaftPipeMonix.inMemoryClusterOf[String](5)
 
@@ -67,12 +208,38 @@ class RaftPipeMonixTest extends RiffMonixSpec {
         }
 
         var done = false
-        val results: Observable[AppendStatus] = leader.client.append("input").doOnComplete { () => done = true
+        leader.client
+          .append("input")
+          .doOnComplete { () => done = true
+          }
+          .completedL
+          .runSyncUnsafe(testTimeout)
+
+        done shouldBe true
+      } finally {
+        fiveNodeCluster.values.foreach(_.close())
+      }
+    }
+
+    "send notifications even if subscribed to after the entry is committed" ignore {
+      implicit val clock = newClock
+
+      val fiveNodeCluster = RaftPipeMonix.inMemoryClusterOf[String](5)
+      try {
+
+        val obsLogById: Map[NodeId, ObservableLog[String]] = fiveNodeCluster.map {
+          case (nodeId, nodePipe) =>
+            val obsLog = nodePipe.handler.log.asInstanceOf[ObservableLog[String]]
+            (nodeId, obsLog)
+        }
+        fiveNodeCluster.values.foreach(_.resetReceiveHeartbeat())
+
+        val leader = eventually {
+          fiveNodeCluster.values.find(_.handler.state().isLeader).get
         }
 
-        eventually {
-          done shouldBe true
-        }
+        leader.client.append("input").completedL.runSyncUnsafe(testTimeout)
+
       } finally {
         fiveNodeCluster.values.foreach(_.close())
       }
@@ -83,7 +250,7 @@ class RaftPipeMonixTest extends RiffMonixSpec {
     "publisher events destined for a particular node" in {
       implicit val clock = newClock
       val node: RaftNode[String] = RaftNode.inMemory[String]("test").withCluster(RaftCluster("first", "second"))
-      val pipeUnderTest: RaftPipe[String, Observer, Observable, Observable, RaftNode[String]] = RaftPipeMonix.raftPipeForNode(node)
+      val pipeUnderTest: RaftPipe[String, Observer, Observable, Observable, RaftNode[String]] = RaftPipeMonix.raftPipeForHandler(node)
 
       try {
 

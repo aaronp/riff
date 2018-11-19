@@ -30,13 +30,6 @@ import scala.util.Properties
   * @param handler the underlying node logic
   * @param pipe the input/output pipe used for the data flowing into/out from the handler
   * @param client a client which can be used to append data to this node (which will fail if this node isn't the leader)
-  * @param ev$1
-  * @param ev$2
-  * @tparam A
-  * @tparam Sub
-  * @tparam Pub
-  * @tparam C
-  * @tparam H
   */
 class RaftPipe[A, Sub[_]: AsSubscriber, Pub[_]: AsPublisher, C[_], H <: RaftMessageHandler[A]](
   val handler: H,
@@ -44,6 +37,7 @@ class RaftPipe[A, Sub[_]: AsSubscriber, Pub[_]: AsPublisher, C[_], H <: RaftMess
   val client: RaftClient[C, A]
 ) extends AutoCloseable {
   def input: Sub[RaftMessage[A]] = pipe.input
+  def output: Pub[RaftNodeResult[A]] = pipe.output
 
   def nodeId = handler.nodeId
 
@@ -60,6 +54,12 @@ class RaftPipe[A, Sub[_]: AsSubscriber, Pub[_]: AsPublisher, C[_], H <: RaftMess
     */
   def publisherFor(targetNodeId: NodeId): Publisher[RaftMessage[A]] = inputFor(targetNodeId).asPublisher
 
+  /**
+    * Convenience method to return a publisher of messages resulting from this handler which are destined for the target node
+    *
+    * @param targetNodeId
+    * @return a publisher of [[RaftMessage]]s from this handler to the targetNodeId
+    */
   def inputFor(targetNodeId: NodeId): Pub[RaftMessage[A]] = {
     require(targetNodeId != nodeId, s"Attempted loop - can't create an input from $targetNodeId to itself")
 

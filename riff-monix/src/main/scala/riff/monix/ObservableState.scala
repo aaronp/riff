@@ -19,11 +19,11 @@ import riff.raft.node.RoleCallback
   * }}}
   */
 class ObservableState(implicit sched: Scheduler) extends RoleCallback {
-  private val events: Var[RoleEvent] = Var[RoleEvent](null)
+  private val eventsVar: Var[RoleEvent] = Var[RoleEvent](null)
   override def onEvent(event: RoleEvent): Unit = {
-    events := event
+    eventsVar := event
   }
-  def asObservable: Observable[RoleEvent] = events.filter(_ != null)
+  def events: Observable[RoleEvent] = eventsVar.filter(_ != null)
 }
 
 object ObservableState {
