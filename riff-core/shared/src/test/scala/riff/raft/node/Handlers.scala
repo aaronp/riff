@@ -15,7 +15,7 @@ object Handlers {
     override def onMessage(ignore: RaftMessage[A]): Result = fixedResult
   }
 
-  case class PausableHandler[A, H1 <: RaftMessageHandler[A], H2 <: RaftMessageHandler[A]](underlying: H1, pausedHandler: H2) extends RaftMessageHandler[A] {
+  case class PausableHandler[A, H1 <: RaftMessageHandler[A], H2 <: RaftMessageHandler[A]](underlying: H1, pausedHandler: H2) extends RaftMessageHandler[A] with AutoCloseable {
     override def nodeId: NodeId = underlying.nodeId
 
     private val paused = new AtomicBoolean(false)
@@ -37,6 +37,17 @@ object Handlers {
 
       result
     }
+
+    override def close(): Unit = {
+      underlying match {
+        case closable : AutoCloseable => closable.close()
+        case _ =>
+      }
+      pausedHandler match {
+        case closable : AutoCloseable => closable.close()
+        case _ =>
+      }
+    }
   }
 
   /**
@@ -44,7 +55,7 @@ object Handlers {
     * @param underlying
     * @tparam A the type of data which is appended to the log (could just be a byte array, some union type, etc)
     */
-  class RecordingHandler[A](underlying: RaftMessageHandler[A]) extends RaftMessageHandler[A] {
+  class RecordingHandler[A](underlying: RaftMessageHandler[A]) extends RaftMessageHandler[A] with AutoCloseable {
     private var requestsList: List[RaftMessage[A]] = Nil
     private var responsesList: List[RaftNodeResult[A]] = Nil
 
@@ -59,6 +70,12 @@ object Handlers {
       val response = underlying.onMessage(input)
       responsesList = response :: responsesList
       response
+    }
+    override def close(): Unit = {
+      underlying match {
+        case closable : AutoCloseable => closable.close()
+        case _ =>
+      }
     }
   }
 

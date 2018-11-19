@@ -5,7 +5,7 @@ import riff.raft.messages.RaftMessage
 
 import scala.util.control.NonFatal
 
-case class RecordingMessageHandler[A](underlying: RaftMessageHandler[A]) extends RaftMessageHandler[A] with StrictLogging {
+case class RecordingMessageHandler[A](underlying: RaftMessageHandler[A]) extends RaftMessageHandler[A] with StrictLogging with AutoCloseable {
   private var requests: List[RaftMessage[A]] = Nil
 
   private var responses: List[RaftNodeResult[A]] = Nil
@@ -48,5 +48,12 @@ case class RecordingMessageHandler[A](underlying: RaftMessageHandler[A]) extends
 
     handling = false
     response
+  }
+
+  override def close(): Unit = {
+    underlying match {
+      case closable : AutoCloseable => closable.close()
+      case _ =>
+    }
   }
 }
