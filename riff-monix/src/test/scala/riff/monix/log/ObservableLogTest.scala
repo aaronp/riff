@@ -237,7 +237,7 @@ class ObservableLogTest extends RiffMonixSpec {
       ol.latestAppended() shouldBe LogCoords(2, 3)
 
       val result2: LogAppendResult = ol.append(LogCoords(3, 2), "replaced second", "replaced third", "new fourth")
-      result2 shouldBe LogAppendResult(firstIndex = LogCoords(3, 2), lastIndex = LogCoords(3, 4), replacedIndices = Seq(2, 3))
+      result2 shouldBe LogAppendResult(firstIndex = LogCoords(3, 2), lastIndex = LogCoords(3, 4), replacedIndices = Seq(LogCoords(2, 2), LogCoords(2, 3)))
 
       eventually {
         received.toList should contain inOrderOnly (//

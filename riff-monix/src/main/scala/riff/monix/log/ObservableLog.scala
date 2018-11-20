@@ -4,7 +4,6 @@ import monix.execution.Scheduler
 import monix.reactive.Observable
 import monix.reactive.observables.ConnectableObservable
 import monix.reactive.subjects.{PublishToOneSubject, Var}
-import riff.monix.RiffSchedulers
 import riff.raft.LogIndex
 import riff.raft.log._
 
@@ -25,7 +24,7 @@ import riff.raft.log._
   */
 case class ObservableLog[A](override val underlying: RaftLog[A])(implicit scheduler: Scheduler) extends DelegateLog[A] with CommittedOps[A] with AppendOps[A] {
 
-  private val appendedVar = Var[LogAppendSuccess](null: LogAppendSuccess)
+  private val appendedVar = Var[LogAppendResult](null: LogAppendResult)
   private val committedVar = Var[LogCommitted](Nil)
 
   /** @param index the (one based!) index from which we'd like to read the committed coords
@@ -42,7 +41,7 @@ case class ObservableLog[A](override val underlying: RaftLog[A])(implicit schedu
 
   /** @return an observable of the appended BUT NOT YET committed entries
     */
-  override def appendResults(): Observable[LogAppendSuccess] = appendedVar.filter(_ != null)
+  override def appendResults(): Observable[LogAppendResult] = appendedVar.filter(_ != null)
 
   /** @param index the (one based!) index from which we'd like to read the appended coords
     * @return an observable of all appended (not necessarily committed) entries from the given index
@@ -59,7 +58,16 @@ case class ObservableLog[A](override val underlying: RaftLog[A])(implicit schedu
 
   def latestCommittedIndex(): LogIndex = committedVar().lastOption.getOrElse(LogCoords.Empty).index
 
-  def latestAppendedIndex(): LogIndex = Option(appendedVar()).map(_.lastIndex.index).getOrElse(1)
+  /**
+    * @return the append index from the most recent append or 1 if the last append was in error or not yet received
+    */
+  def latestAppendedIndex(): LogIndex = {
+    val opt = Option(appendedVar()).flatMap {
+      case success: LogAppendSuccess => Option(success.lastIndex.index)
+      case _ => None
+    }
+    opt.getOrElse(1)
+  }
 
   private def coordsFrom(fromIndex: LogIndex, coords: Observable[LogCoords], readLatestReceivedIndex: => LogIndex): Observable[LogCoords] = {
     val subject = PublishToOneSubject[LogCoords]

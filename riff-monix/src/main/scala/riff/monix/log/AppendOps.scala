@@ -1,13 +1,13 @@
 package riff.monix.log
 import monix.reactive.Observable
 import riff.raft.LogIndex
-import riff.raft.log.{LogAppendSuccess, LogCoords}
+import riff.raft.log.{LogAppendResult, LogAppendSuccess, LogCoords}
 
 trait AppendOps[A] {
 
   /** @return an observable of the appended BUT NOT YET committed entries
     */
-  def appendResults(): Observable[LogAppendSuccess]
+  def appendResults(): Observable[LogAppendResult]
 
   /** @param index the (one based!) index from which we'd like to read the appended coords
     * @return an observable of all appended (not necessarily committed) entries from the given index
@@ -17,15 +17,17 @@ trait AppendOps[A] {
   /** @return an observable of the appended BUT NOT YET committed entries from the time of subscription
     */
   def appendCoords(): Observable[LogCoords] = {
-    appendResults.flatMap { res =>
-      if (res.firstIndex.index == res.lastIndex.index) {
-        Observable.pure(res.firstIndex)
-      } else {
-        val coords = (res.firstIndex.index to res.lastIndex.index).map { idx =>
-          res.firstIndex.copy(index = idx)
+    appendResults.flatMap {
+      case res: LogAppendSuccess =>
+        if (res.firstIndex.index == res.lastIndex.index) {
+          Observable.pure(res.firstIndex)
+        } else {
+          val coords = (res.firstIndex.index to res.lastIndex.index).map { idx =>
+            res.firstIndex.copy(index = idx)
+          }
+          Observable.fromIterable(coords)
         }
-        Observable.fromIterable(coords)
-      }
+      case err: Throwable => Observable.raiseError(err)
     }
   }
 

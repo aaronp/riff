@@ -33,7 +33,7 @@ class InMemory[T]() extends BaseLog[T] {
       case Left(err) => err
       case Right(indicesToDelete) =>
         mostRecentFirstEntries = indicesToDelete.foldLeft(mostRecentFirstEntries) {
-          case (list, i) => list.dropWhile(_._1.index >= i)
+          case (list, i) => list.dropWhile(_._1.index >= i.index)
         }
         val newEntries: Array[(LogCoords, T)] = data.zipWithIndex.map {
           case (LogEntry(term, e), i) => LogCoords(term = term, index = logIndex + i) -> e

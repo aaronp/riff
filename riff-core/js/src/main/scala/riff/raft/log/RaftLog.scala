@@ -50,10 +50,10 @@ object RaftLog {
       checkForOverwrite(logIndex, firstTerm) match {
         case Left(err) => err
         case Right(indices) =>
-          val removedIndices = indices.map { index =>
-            repo.removeItem(Keys.entryForIndex(index))
-            repo.removeItem(Keys.termForIndex(index))
-            index
+          val removedIndices = indices.map { coords =>
+            repo.removeItem(Keys.entryForIndex(coords.index))
+            repo.removeItem(Keys.termForIndex(coords.index))
+            coords
           }
 
           // write the log entries

@@ -13,7 +13,7 @@ private[log] abstract class BaseLog[T] extends RaftLog[T] { // with LazyLogging 
     * @param coordsOfTheFirstNewEntryToAppend the latest append coords
     * @return the indices to remove
     */
-  protected def checkForOverwrite(firstIndex : LogIndex, firstTerm: Term): Either[LogAppendResult, immutable.Seq[LogIndex]] = {
+  protected def checkForOverwrite(firstIndex : LogIndex, firstTerm: Term): Either[LogAppendResult, immutable.Seq[LogCoords]] = {
     val latest: LogCoords = latestAppended()
 
     // if our latest index is the same or after the index to append, that implies
@@ -25,7 +25,7 @@ private[log] abstract class BaseLog[T] extends RaftLog[T] { // with LazyLogging 
       if (firstTerm <= latest.term) {
         Left(AttemptToAppendLogEntryAtEarlierTerm(LogCoords(firstTerm, firstIndex), latest))
       } else {
-        Right((firstIndex to latest.index))
+        Right((firstIndex to latest.index).flatMap(coordsForIndex))
       }
     } else {
       // the coords are after our term

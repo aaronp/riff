@@ -52,7 +52,7 @@ case class RecordingMessageHandler[A](underlying: RaftMessageHandler[A]) extends
 
   override def close(): Unit = {
     underlying match {
-      case closable : AutoCloseable => closable.close()
+      case closable: AutoCloseable => closable.close()
       case _ =>
     }
   }

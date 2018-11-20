@@ -52,7 +52,7 @@ class FileBasedRaftLogTest extends RaftLogTCK {
         log.append(LogCoords(5, 2), "replacing entry") shouldBe LogAppendResult(
           firstIndex = LogCoords(5, 2),
           lastIndex = LogCoords(5, 2),
-          replacedIndices = Seq(2, 3)
+          replacedIndices = Seq(LogCoords(4, 2), LogCoords(4, 3))
         )
         log.latestAppended() shouldBe LogCoords(5, 2)
         log.termForIndex(1) shouldBe Some(4)

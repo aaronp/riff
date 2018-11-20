@@ -81,11 +81,11 @@ object FileBasedLog extends eie.io.LowPriorityIOImplicits {
       // disconnected), then we may have extra entries which we need to clobber
       checkForOverwrite(logIndex, firstTerm) match {
         case Left(err) => err
-        case Right(indices) =>
-          val removedIndices = indices.map { index =>
-            termFileForIndex(index).deleteFile()
-            entryFileForIndex(index).deleteFile()
-            index
+        case Right(replacedCoords) =>
+          val removedIndices = replacedCoords.map { coords =>
+            termFileForIndex(coords.index).deleteFile()
+            entryFileForIndex(coords.index).deleteFile()
+            coords
           }
 
           // write the log entries

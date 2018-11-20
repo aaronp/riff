@@ -8,7 +8,7 @@ sealed trait LogAppendResult
 
 object LogAppendResult {
 
-  def apply(firstIndex: LogCoords, lastIndex: LogCoords, replacedIndices: Seq[LogIndex] = Nil) = {
+  def apply(firstIndex: LogCoords, lastIndex: LogCoords, replacedIndices: Seq[LogCoords] = Nil) = {
     LogAppendSuccess(firstIndex, lastIndex, replacedIndices)
   }
 }
@@ -20,7 +20,7 @@ object LogAppendResult {
   * @param lastIndex the last index written
   * @param replacedIndices in the case where a disconnected leader had accepted commits, these are the indices of replaced entries from a new leader
   */
-final case class LogAppendSuccess(firstIndex: LogCoords, lastIndex: LogCoords, replacedIndices: Seq[LogIndex] = Nil)
+final case class LogAppendSuccess(firstIndex: LogCoords, lastIndex: LogCoords, replacedIndices: Seq[LogCoords] = Nil)
     extends LogAppendResult {
   require(firstIndex.term == lastIndex.term, s"appended result w/ ${firstIndex} to ${lastIndex}")
   def numIndices = lastIndex.index - firstIndex.index + 1

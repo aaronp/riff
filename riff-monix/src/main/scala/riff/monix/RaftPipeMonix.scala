@@ -9,7 +9,7 @@ import monix.reactive.{Observable, Observer, OverflowStrategy, Pipe}
 import riff.RaftPipe
 import riff.RaftPipe.wireTogether
 import riff.monix.log.ObservableLog
-import riff.raft.log.LogAppendSuccess
+import riff.raft.log.{LogAppendResult, LogAppendSuccess}
 import riff.raft.messages.{AddressedMessage, AppendData, AppendEntriesResponse, RaftMessage}
 import riff.raft.node._
 import riff.raft.timer.{RaftClock, RandomTimer}
@@ -80,7 +80,7 @@ object RaftPipeMonix extends LowPriorityRiffMonixImplicits {
         .withRoleCallback(new ObservableState)
     }
 
-    val raftPipe = raftPipeForHandler[A, RaftNode[A]](node)
+    val raftPipe = raftPipeForHandler[A](node)
 
     timer.subscribe(raftPipe.input)
     raftPipe
@@ -95,9 +95,15 @@ object RaftPipeMonix extends LowPriorityRiffMonixImplicits {
     * @tparam Handler
     * @return a pipe which invokes the handler to produce its outputs
     */
-  def raftPipeForHandler[A: ClassTag, Handler <: RaftMessageHandler[A]](handler: Handler)(implicit sched: Scheduler): RaftPipe[A, Observer, Observable, Observable, Handler] = {
+  def raftPipeForHandler[A: ClassTag](handler: RaftNode[A])(implicit sched: Scheduler): RaftPipe[A, Observer, Observable, Observable, RaftNode[A]] = {
     val pipe: ReactivePipe[RaftMessage[A], RaftNodeResult[A], Observer, Observable] = pipeForNode[A](handler)
-    new RaftPipe[A, Observer, Observable, Observable, Handler](handler, pipe, RiffMonixClient(pipe.input))
+    val resultsObs: Observable[LogAppendResult] = handler.log match {
+      case obs: ObservableLog[A] => obs.appendResults
+      case other =>
+        sys.error(s"Misconfiguration issue: We expected the RaftLog to be an ObservableLog so we could correctly implement error cases in append streams, but got: $other")
+    }
+    val client = RiffMonixClient(pipe.input, resultsObs)
+    new RaftPipe[A, Observer, Observable, Observable, RaftNode[A]](handler, pipe, client)
   }
 
   /**
