@@ -18,9 +18,9 @@ object LogAppendResult {
   *
   * @param firstIndex the first index written
   * @param lastIndex the last index written
-  * @param replacedIndices in the case where a disconnected leader had accepted commits, these are the indices of replaced entries from a new leader
+  * @param replacedLogCoords in the case where a disconnected leader had accepted commits, these are the coordinates of replaced entries which had been appended (but not committed) from an out-of-date leader
   */
-final case class LogAppendSuccess(firstIndex: LogCoords, lastIndex: LogCoords, replacedIndices: Seq[LogCoords] = Nil)
+final case class LogAppendSuccess(firstIndex: LogCoords, lastIndex: LogCoords, replacedLogCoords: Seq[LogCoords] = Nil)
     extends LogAppendResult {
   require(firstIndex.term == lastIndex.term, s"appended result w/ ${firstIndex} to ${lastIndex}")
   def numIndices = lastIndex.index - firstIndex.index + 1
