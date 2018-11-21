@@ -24,7 +24,7 @@ class AppendStatusTest extends RiffThreadedSpec {
 
       When("The 'asStatusPublisher' publisher is fed the input/result messages for our node under test")
       val inputs: Publisher[(RaftMessage[String], RaftNodeResult[String])] = FixedPublisher(testValues, allowOnComplete = false)
-      val publisherUnderTest: Publisher[AppendStatus] = AppendStatus.asStatusPublisher("node under test", 1, appendResult, inputs)
+      val publisherUnderTest: Publisher[AppendStatus]                      = AppendStatus.asStatusPublisher("node under test", 1, appendResult, inputs)
 
       Then("It should produce a series of append status responses and call onComplete")
       val listener = publisherUnderTest.subscribeWith(new TestListener[AppendStatus]())
@@ -34,11 +34,10 @@ class AppendStatusTest extends RiffThreadedSpec {
         listener.received.size shouldBe 1
       }
 
-      listener.received.head shouldBe AppendStatus(
-        LogAppendSuccess(LogCoords(1, 1), LogCoords(1, 1)),
-        Map("node under test" -> AppendEntriesResponse(1, true, 1)),
-        Set(LogCoords(1, 1)),
-        1)
+      listener.received.head shouldBe AppendStatus(LogAppendSuccess(LogCoords(1, 1), LogCoords(1, 1)),
+                                                   Map("node under test" -> AppendEntriesResponse(1, true, 1)),
+                                                   Set(LogCoords(1, 1)),
+                                                   1)
       eventually {
         listener.completed shouldBe true
       }
@@ -84,7 +83,7 @@ class AppendStatusTest extends RiffThreadedSpec {
       // As an aside, I wouldn't have noticed this had I not have written the test here first and saw that it passed
       // before implementing the 'onComplete' logic for AppendStatus
       val inputs: Publisher[(RaftMessage[String], RaftNodeResult[String])] = FixedPublisher(testValues, allowOnComplete = false)
-      val publisherUnderTest: Publisher[AppendStatus] = AppendStatus.asStatusPublisher("node under test", peerNodes.size + 1, appendResult, inputs)
+      val publisherUnderTest: Publisher[AppendStatus]                      = AppendStatus.asStatusPublisher("node under test", peerNodes.size + 1, appendResult, inputs)
 
       Then("It should produce a series of append status responses and call onComplete")
       val listener = publisherUnderTest.subscribeWith(new TestListener[AppendStatus]())
@@ -122,7 +121,7 @@ class AppendStatusTest extends RiffThreadedSpec {
 
       val nodeUsedToGetTestData = {
         implicit val clock = new LoggedInvocationClock
-        val node = RaftNode.inMemory[String]("test").withCluster(RaftCluster(peerNodes))
+        val node           = RaftNode.inMemory[String]("test").withCluster(RaftCluster(peerNodes))
 
         // make the node a leader. Again, we could do this by setting the node status directly, but going this
         // way means that we use the 'real' methods themselves to get a node into that state. Of course that does
@@ -135,7 +134,7 @@ class AppendStatusTest extends RiffThreadedSpec {
         node
       }
 
-      val input = AppendData("first")
+      val input                              = AppendData("first")
       val response: NodeAppendResult[String] = nodeUsedToGetTestData.onAppendData(input)
       response.request.size shouldBe 4
       val appendResult = response.appendResult.asInstanceOf[LogAppendSuccess]
@@ -147,9 +146,9 @@ class AppendStatusTest extends RiffThreadedSpec {
           // let one of the nodes return 'false', in the case for instance where it's just been started
           val peerNodeResponse = node match {
             case "node 1" => AppendEntriesResponse.fail(nodeUsedToGetTestData.currentTerm())
-            case _ => AppendEntriesResponse.ok(nodeUsedToGetTestData.currentTerm(), 1)
+            case _        => AppendEntriesResponse.ok(nodeUsedToGetTestData.currentTerm(), 1)
           }
-          val resp = AddressedMessage[String](node, peerNodeResponse)
+          val resp                           = AddressedMessage[String](node, peerNodeResponse)
           val result: RaftNodeResult[String] = nodeUsedToGetTestData.onMessage(resp)
           resp -> result
         }
@@ -159,7 +158,7 @@ class AppendStatusTest extends RiffThreadedSpec {
 
       When("The 'asStatusPublisher' publisher is fed the input/result messages for our node under test")
       val inputs: Publisher[(RaftMessage[String], RaftNodeResult[String])] = FixedPublisher(testValues, allowOnComplete = false)
-      val pub: Publisher[AppendStatus] = AppendStatus.asStatusPublisher("node under test", 5, appendResult, inputs)
+      val pub: Publisher[AppendStatus]                                     = AppendStatus.asStatusPublisher("node under test", 5, appendResult, inputs)
 
       Then("It should produce a series of append status responses and call onComplete")
       val listener = pub.subscribeWith(new TestListener[AppendStatus]())

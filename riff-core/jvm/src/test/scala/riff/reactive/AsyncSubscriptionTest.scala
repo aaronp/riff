@@ -28,7 +28,7 @@ class AsyncSubscriptionTest extends RiffSpec {
         cancelCalls = cancelCalls + 1
       }
       val wrappedSubscriber = new TestListener[Int]()
-      val subUnderTest = new AsyncSubscription[Int](wrappedSubscriber, 10, cancelled)
+      val subUnderTest      = new AsyncSubscription[Int](wrappedSubscriber, 10, cancelled)
       subUnderTest.inputQueueSize() shouldBe 0
 
       // this is 'safe' because 'processNext' is a blocking call on the next queue input

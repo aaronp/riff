@@ -7,7 +7,7 @@ class AsyncSubscriptionStateTest extends RiffSpec {
 
   "AsyncSubscriptionState.update" should {
     "process all the elements when the total queued is greater than the batch size" in {
-      val batchSize = 4
+      val batchSize          = 4
       val lots: Vector[Long] = (0L to batchSize * 3).toVector
 
       var receivedCount = 0L
@@ -17,7 +17,7 @@ class AsyncSubscriptionStateTest extends RiffSpec {
           receivedCount = receivedCount + 1
         }
         override def onError(t: Throwable): Unit = ???
-        override def onComplete(): Unit = ???
+        override def onComplete(): Unit          = ???
       }
 
       Given(s"A state where ${batchSize} is already requested and there are ${lots.size} elements")

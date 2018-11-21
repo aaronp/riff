@@ -16,7 +16,7 @@ class BaseSpec extends WordSpec with Matchers with ScalaFutures with GivenWhenTh
   /**
     * All the timeouts!
     */
-  implicit def testTimeout: FiniteDuration = 2.seconds
+  implicit def testTimeout: FiniteDuration = 5.seconds
 
   def testClassName = getClass.getSimpleName.filter(_.isLetterOrDigit)
 

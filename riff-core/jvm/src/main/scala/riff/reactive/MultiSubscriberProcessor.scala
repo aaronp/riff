@@ -8,8 +8,8 @@ object MultiSubscriberProcessor {
 
   def apply[A](queueSize: Int, delayErrorsFromSubscribers: Boolean)(implicit execContext: ExecutionContext): MultiSubscriberProcessor[A] = {
     new MultiSubscriberProcessor[A] {
-      override def maxQueueSize: Int = queueSize
-      override def delayErrors: Boolean = delayErrorsFromSubscribers
+      override def maxQueueSize: Int               = queueSize
+      override def delayErrors: Boolean            = delayErrorsFromSubscribers
       override implicit def ctxt: ExecutionContext = execContext
     }
   }

@@ -21,7 +21,7 @@ import scala.concurrent.ExecutionContext
 trait AsyncPublisher[T] extends Publisher[T] with StrictLogging with AutoCloseable {
   implicit def ctxt: ExecutionContext
 
-  private val subscriptions = ListBuffer[AsyncSubscription[T]]()
+  private val subscriptions               = ListBuffer[AsyncSubscription[T]]()
   private var errorOpt: Option[Throwable] = None
 
   /** We enqueue request(n), push, cancel and completed requests as instructions to the subscribers.

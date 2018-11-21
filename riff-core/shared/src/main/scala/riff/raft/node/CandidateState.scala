@@ -9,7 +9,6 @@ import riff.raft.messages.RequestVoteResponse
 case class CandidateState(term: Term, votesFor: Set[NodeId], votesAgainst: Set[NodeId], clusterSize: Int) {
 
   def canBecomeLeader    = isMajority(votesFor.size, clusterSize)
-  def cannotBecomeLeader = isMajority(votesAgainst.size, clusterSize)
 
   def update(from: NodeId, reply: RequestVoteResponse): CandidateState = {
     if (reply.term == term) {

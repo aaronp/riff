@@ -2,20 +2,21 @@ package riff.monix
 import java.nio.file.Path
 
 import eie.io._
-import monix.execution.Scheduler
-import monix.reactive.observables.ConnectableObservable
+import monix.execution.{Ack, Cancelable, Scheduler}
+import monix.reactive.observers.Subscriber
 import monix.reactive.subjects.ConcurrentSubject
 import monix.reactive.{Observable, Observer, OverflowStrategy, Pipe}
 import riff.RaftPipe
 import riff.RaftPipe.wireTogether
 import riff.monix.log.ObservableLog
-import riff.raft.log.{LogAppendResult, LogAppendSuccess}
+import riff.raft.log.{LogAppendResult, LogAppendSuccess, RaftLog}
 import riff.raft.messages.{AddressedMessage, AppendData, AppendEntriesResponse, RaftMessage}
 import riff.raft.node._
-import riff.raft.timer.{RaftClock, RandomTimer}
+import riff.raft.timer.{RaftClock, RandomTimer, Timers}
 import riff.raft.{AppendStatus, NodeId}
 import riff.reactive._
 
+import scala.concurrent.Future
 import scala.concurrent.duration._
 import scala.reflect.ClassTag
 import scala.util.Properties
@@ -39,7 +40,7 @@ object RaftPipeMonix extends LowPriorityRiffMonixImplicits {
     */
   def asCluster[A: ClassTag](nodes: RaftNode[A]*)(implicit sched: Scheduler): Map[NodeId, RaftPipe[A, Observer, Observable, Observable, RaftNode[A]]] = {
 
-    val ids = nodes.map(_.nodeId).toSet
+    val ids                     = nodes.map(_.nodeId).toSet
     def duplicates: Set[NodeId] = nodes.groupBy(_.nodeId).filter(_._2.size > 1).keySet
     require(ids.size == nodes.length, s"multiple nodes given w/ the same id: '${duplicates.mkString("[", ",", "]")}'")
 
@@ -53,22 +54,37 @@ object RaftPipeMonix extends LowPriorityRiffMonixImplicits {
     raftInstById
   }
 
-  def apply[A: FromBytes: ToBytes: ClassTag](id: NodeId = "single-node-cluster")(implicit sched: Scheduler): RaftPipe[A, Observer, Observable, Observable, RaftNode[A]] = {
+  def singleNode[A: FromBytes: ToBytes: ClassTag](id: NodeId = "single-node-cluster")(implicit sched: Scheduler): RaftPipe[A, Observer, Observable, Observable, RaftNode[A]] = {
     val dataDir = Properties.tmpDir.asPath.resolve(s".riff/${id.filter(_.isLetterOrDigit)}")
-    apply(id, dataDir)
+    singleNode(id, dataDir)
   }
 
-  def apply[A: FromBytes: ToBytes: ClassTag](id: NodeId, dataDir: Path)(implicit sched: Scheduler): RaftPipe[A, Observer, Observable, Observable, RaftNode[A]] = {
+  def singleNode[A: FromBytes: ToBytes: ClassTag](id: NodeId, dataDir: Path)(implicit sched: Scheduler): RaftPipe[A, Observer, Observable, Observable, RaftNode[A]] = {
 
     implicit val clock: RaftClock = RaftClock(250.millis, RandomTimer(1.second, 2.seconds))
-    val timer = new ObservableTimerCallback
+    val timer                     = new ObservableTimerCallback
 
-    val node = RaftPipe.newSingleNode(id, dataDir).withTimerCallback(timer).withRoleCallback(new ObservableState)
+    val node                                                             = newSingleNode(id, dataDir).withTimerCallback(timer).withRoleCallback(new ObservableState)
     val pipe: RaftPipe[A, Observer, Observable, Observable, RaftNode[A]] = raftPipeForHandler(node)
 
     timer.subscribe(pipe.input)
 
     pipe
+  }
+
+  /** convenience method for created a default [[RaftNode]] which has an empty cluster
+    *
+    * @return a new RaftNode
+    */
+  def newSingleNode[A: FromBytes: ToBytes](id: NodeId, dataDir: Path, maxAppendSize: Int = 10)(implicit clock: RaftClock): RaftNode[A] = {
+    new RaftNode[A](
+      NIOPersistentState(dataDir.resolve("state"), true).cached(),
+      RaftLog[A](dataDir.resolve("data"), true),
+      new Timers(clock),
+      RaftCluster(Nil),
+      FollowerNodeState(id, None),
+      maxAppendSize
+    )
   }
 
   def observablePipeForNode[A: ClassTag](n: RaftNode[A])(implicit sched: Scheduler): RaftPipe[A, Observer, Observable, Observable, RaftNode[A]] = {
@@ -102,7 +118,7 @@ object RaftPipeMonix extends LowPriorityRiffMonixImplicits {
       case other =>
         sys.error(s"Misconfiguration issue: We expected the RaftLog to be an ObservableLog so we could correctly implement error cases in append streams, but got: $other")
     }
-    val client = RiffMonixClient(pipe.input, resultsObs)
+    val client = MonixClient(pipe.input, resultsObs)
     new RaftPipe[A, Observer, Observable, Observable, RaftNode[A]](handler, pipe, client)
   }
 
@@ -120,9 +136,10 @@ object RaftPipeMonix extends LowPriorityRiffMonixImplicits {
 
     // provide a publisher of the inputs w/ their outputs from the node.
     // this way we can more easily satisfy raft clients'
-    val zippedInput = consumer.map { input =>
-      (input, node.onMessage(input))
-    }.dump(s"${node.nodeId} zipped ")
+    val zippedInput = consumer
+      .map { input => //
+        (input, node.onMessage(input))
+      }
 
     // provide publishers for the 'AppendData' subscriptions
     //
@@ -142,18 +159,15 @@ object RaftPipeMonix extends LowPriorityRiffMonixImplicits {
         Publishers.InError(err).subscribe(append.statusSubscriber)
         output
       case (AppendData(responseSubscriber: Observer[AppendStatus], _), output @ NodeAppendResult(logAppendSuccess: LogAppendSuccess, requests)) =>
-        val clusterSize = requests.size + 1
-        val statusPub: ConnectableObservable[AppendStatus] = {
-          asStatusPublisher(node.nodeId, clusterSize, logAppendSuccess, zippedInput).replay
-        }
+        val (_, statusPub) = asStatusPublisher(node.nodeId, clusterSize = requests.size + 1, logAppendSuccess, zippedInput)
+        // we have a monix Observer - lovely days
         statusPub.subscribe(responseSubscriber)
         output
       case (append @ AppendData(_, _), output @ NodeAppendResult(logAppendSuccess: LogAppendSuccess, requests)) =>
-        val clusterSize = requests.size + 1
-        val statusPub: ConnectableObservable[AppendStatus] = {
-          asStatusPublisher(node.nodeId, clusterSize, logAppendSuccess, zippedInput).replay
-        }
-        statusPub.subscribe(Observer.fromReactiveSubscriber(append.statusSubscriber, statusPub.connect()))
+        val (cancel, statusPub) = asStatusPublisher(node.nodeId, clusterSize = requests.size + 1, logAppendSuccess, zippedInput)
+        // we have some other kind of subscriber - wrap as a monix observable
+        val obs = Observer.fromReactiveSubscriber(append.statusSubscriber, cancel)
+        statusPub.subscribe(obs)
         output
       case (_, output) => output
     }
@@ -164,7 +178,16 @@ object RaftPipeMonix extends LowPriorityRiffMonixImplicits {
     val (middleWareIn, middleWareOut) = Pipe.publishToOne[RaftNodeResult[A]].multicast
     nodeOutput.subscribe(middleWareIn)
 
-    ReactivePipe(consumer, middleWareOut)
+    val input = new Observer[RaftMessage[A]] {
+      override def onNext(elem: RaftMessage[A]): Future[Ack] = consumer.onNext(elem)
+      override def onError(ex: Throwable): Unit = {
+        sched.reportFailure(ex)
+      }
+      override def onComplete(): Unit = {
+        // ignore complete
+      }
+    }
+    ReactivePipe(input, middleWareOut)
   }
 
   /**
@@ -189,7 +212,7 @@ object RaftPipeMonix extends LowPriorityRiffMonixImplicits {
     * @return a publisher (presumably) of type Pub of AppendStatus messages
     */
   def asStatusPublisher[A](nodeId: NodeId, clusterSize: Int, logAppendSuccess: LogAppendSuccess, nodeInput: Observable[(RaftMessage[A], RaftNodeResult[A])])(
-    implicit scheduler: Scheduler): Observable[AppendStatus] = {
+      implicit scheduler: Scheduler): (Cancelable, Observable[AppendStatus]) = {
     val firstStatus: AppendStatus = {
       val appendMap = Map[NodeId, AppendEntriesResponse](nodeId -> AppendEntriesResponse.ok(logAppendSuccess.firstIndex.term, logAppendSuccess.lastIndex.index))
       AppendStatus(logAppendSuccess, appendMap, logAppendSuccess.appendedCoords, clusterSize)
@@ -205,8 +228,10 @@ object RaftPipeMonix extends LowPriorityRiffMonixImplicits {
     // the input 'nodeInput' is an infinite stream (or should be) of messages from peers, so we need to ensure we put in a complete condition
     // unfortunately we have this weird closure over a 'canComplete' because we want the semantics of 'takeWhile plus the first element which returns false'
     val p = LowPriorityRiffMonixImplicits.observableAsPublisher(scheduler)
-    p.takeWhileIncludeLast(firstStatus +: updates) { x =>
-      !x.isComplete
-    }
+
+    val all                           = (firstStatus +: updates)
+    val obs: Observable[AppendStatus] = p.takeWhileIncludeLast(all)(!_.isComplete)
+    val replay                        = obs.replay
+    replay.connect() -> replay
   }
 }

@@ -24,7 +24,7 @@ import riff.raft.log._
   */
 case class ObservableLog[A](override val underlying: RaftLog[A])(implicit scheduler: Scheduler) extends DelegateLog[A] with CommittedOps[A] with AppendOps[A] {
 
-  private val appendedVar = Var[LogAppendResult](null: LogAppendResult)
+  private val appendedVar  = Var[LogAppendResult](null: LogAppendResult)
   private val committedVar = Var[LogCommitted](Nil)
 
   /** @param index the (one based!) index from which we'd like to read the committed coords
@@ -51,8 +51,10 @@ case class ObservableLog[A](override val underlying: RaftLog[A])(implicit schedu
 
   override protected def dataForIndex(coords: LogCoords): Observable[(LogCoords, A)] = {
     entryForIndex(coords.index) match {
-      case Some(entry) => Observable.pure(coords -> entry.data)
-      case None => Observable.raiseError(new Exception(s"Couldn't read an entry for $coords"))
+      // we need to check the entry at this index wasn't replaced
+      case Some(entry) if entry.term == coords.term => Observable.pure(coords -> entry.data)
+      case Some(_)                                  => Observable.empty
+      case None                                     => Observable.raiseError(new Exception(s"Couldn't read an entry for $coords"))
     }
   }
 
@@ -64,13 +66,13 @@ case class ObservableLog[A](override val underlying: RaftLog[A])(implicit schedu
   def latestAppendedIndex(): LogIndex = {
     val opt = Option(appendedVar()).flatMap {
       case success: LogAppendSuccess => Option(success.lastIndex.index)
-      case _ => None
+      case _                         => None
     }
     opt.getOrElse(1)
   }
 
   private def coordsFrom(fromIndex: LogIndex, coords: Observable[LogCoords], readLatestReceivedIndex: => LogIndex): Observable[LogCoords] = {
-    val subject = PublishToOneSubject[LogCoords]
+    val subject     = PublishToOneSubject[LogCoords]
     val connectable = ConnectableObservable.cacheUntilConnect(coords, subject)
 
     // our connectable observable *should* include all the data from the current value of counter, if not
@@ -95,7 +97,7 @@ case class ObservableLog[A](override val underlying: RaftLog[A])(implicit schedu
     Observable.fromIterable(from.max(1) to to).flatMap { idx =>
       coordsForIndex(idx) match {
         case Some(d) => Observable.pure(d)
-        case None => Observable.empty[LogCoords]
+        case None    => Observable.empty[LogCoords]
       }
     }
   }
@@ -105,7 +107,7 @@ case class ObservableLog[A](override val underlying: RaftLog[A])(implicit schedu
 
     result match {
       case ok: LogAppendSuccess => appendedVar := ok
-      case _ =>
+      case _                    =>
     }
 
     result
@@ -144,7 +146,7 @@ object ObservableLog {
     def observable(implicit sched: Scheduler): ObservableLog[A] = {
       log match {
         case obs: ObservableLog[A] => obs
-        case other => ObservableLog(other)
+        case other                 => ObservableLog(other)
       }
     }
 
@@ -153,8 +155,8 @@ object ObservableLog {
     def asObservable: Option[ObservableLog[A]] = {
       log match {
         case obs: ObservableLog[A] => Option(obs)
-        case log: DelegateLog[A] => log.underlying.asObservable
-        case _ => None
+        case log: DelegateLog[A]   => log.underlying.asObservable
+        case _                     => None
       }
     }
   }

@@ -19,13 +19,6 @@ object RaftNode {
       maxAppendSize
     )
   }
-
-//  def appendResponseAsRaftNodeResult[A](response: Either[NotTheLeaderException, (LogAppendResult, AddressedRequest[A])]): RaftNodeResult[A] = {
-//    response match {
-//      case Left(exp) => NoOpResult(exp.getMessage)
-//      case Right((_, requests)) => requests
-//    }
-//  }
 }
 
 /**
@@ -62,7 +55,7 @@ class RaftNode[A](
   val roleCallback: RoleCallback = RoleCallback.NoOp)
     extends RaftMessageHandler[A] with TimerCallback[RaftNodeResult[A]] with AutoCloseable { self =>
 
-  private val timerCallback = Option(initialTimerCallback).getOrElse(this)
+  val timerCallback = Option(initialTimerCallback).getOrElse(this)
 
   private var currentState: NodeState = initialState
 

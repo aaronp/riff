@@ -8,8 +8,8 @@ import scala.concurrent.{ExecutionContext, ExecutionContextExecutorService}
 
 package object reactive {
 
-  val DEFAULT_TIMEOUT_MILLIS = 50L
-  val DEFAULT_NO_SIGNALS_TIMEOUT_MILLIS: Long = DEFAULT_TIMEOUT_MILLIS
+  val DEFAULT_TIMEOUT_MILLIS                     = 50L
+  val DEFAULT_NO_SIGNALS_TIMEOUT_MILLIS: Long    = DEFAULT_TIMEOUT_MILLIS
   val PUBLISHER_REFERENCE_CLEANUP_TIMEOUT_MILLIS = 250L
 
   val testEnv = new TestEnvironment(DEFAULT_TIMEOUT_MILLIS, DEFAULT_TIMEOUT_MILLIS)

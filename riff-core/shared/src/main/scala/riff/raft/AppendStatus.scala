@@ -14,6 +14,18 @@ import riff.reactive.AsPublisher
   */
 final case class AppendStatus(leaderAppendResult: LogAppendSuccess, appended: Map[NodeId, AppendEntriesResponse], appendedCoords: Set[LogCoords], clusterSize: Int) {
 
+  override def toString: String = {
+
+    val responses = appended.map {
+      case (name, resp) => s"\t$name : $resp"
+    }
+
+    s"""AppendStatus(
+       |  clusterSize = $clusterSize
+       |  leaderAppendResult = $leaderAppendResult
+       |  ${appendedCoords.size} appendedCoords = $appendedCoords
+       |  ${appended.size} responses: ${responses.mkString("\n","\n","\n")})""".stripMargin
+  }
   /** @return true if the leader has committed the latest (highest) coordinate of the appended log entries
     */
   def committed: Boolean = appendedCoords.contains(leaderAppendResult.lastIndex)

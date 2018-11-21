@@ -13,7 +13,7 @@ case class FixedPublisher[T](values: Iterable[T], allowOnComplete: Boolean) exte
   override def subscribe(s: Subscriber[_ >: T]): Unit = {
     s.onSubscribe(new Subscription {
       var remaining = values.toList
-      var pending = new AtomicLong(0)
+      var pending   = new AtomicLong(0)
       var inProcess = new AtomicBoolean(false)
 
       // if we're not careful we can form an infinite loop here if the subscriber calls 'request' from its onNext

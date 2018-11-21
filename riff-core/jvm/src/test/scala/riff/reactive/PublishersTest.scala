@@ -3,6 +3,12 @@ import riff.RiffSpec
 
 class PublishersTest extends RiffSpec {
 
+  "Publishers.NoOpSubscription" should {
+    "not error" in {
+      Publishers.NoOpSubscription.request(123)
+      Publishers.NoOpSubscription.cancel()
+    }
+  }
   "Publishers.Completed" should {
     "notify subscribers that there is no data upon subscription" in {
       val sub = new TestListener[String]

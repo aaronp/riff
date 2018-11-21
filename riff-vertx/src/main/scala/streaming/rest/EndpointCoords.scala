@@ -13,7 +13,7 @@ import streaming.api.HostPort
 case class EndpointCoords(location: HostPort, uri: WebURI, params: Map[String, String]) {
 
   val resolvedUri: String = uri.resolve(params) match {
-    case Left(err) => sys.error(err)
+    case Left(err)   => sys.error(err)
     case Right(path) => path.mkString("/", "/", "")
   }
 

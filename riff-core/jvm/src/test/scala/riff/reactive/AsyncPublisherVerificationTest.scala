@@ -60,7 +60,7 @@ class AsyncPublisherVerificationTest extends PublisherVerification[Long](testEnv
   }
   override def createFailedPublisher(): Publisher[Long] = {
     new AsyncPublisher[Long] {
-      override protected def maxQueueSize: Int = 200
+      override protected def maxQueueSize: Int     = 200
       override implicit def ctxt: ExecutionContext = execContext
       enqueueError(new Exception("kapow"))
     }

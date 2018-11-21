@@ -34,11 +34,11 @@ case class ReactivePipe[In, Out, Sub[_]: AsSubscriber, Pub[_]: AsPublisher](inpu
   override def close(): Unit = {
     input match {
       case closable: AutoCloseable => closable.close()
-      case _ =>
+      case _                       =>
     }
     output match {
       case closable: AutoCloseable => closable.close()
-      case _ =>
+      case _                       =>
     }
   }
 }
@@ -46,7 +46,7 @@ case class ReactivePipe[In, Out, Sub[_]: AsSubscriber, Pub[_]: AsPublisher](inpu
 object ReactivePipe {
 
   def multi[A](queueSize: Int, delayErrors: Boolean, minimumRequestedThreshold: Int = 10, subscriptionBatchSize: Int = 100)(
-    implicit executionContext: ExecutionContext): ReactivePipe[A, A, Subscriber, Publisher] = {
+      implicit executionContext: ExecutionContext): ReactivePipe[A, A, Subscriber, Publisher] = {
     val feedAndSink: ReactivePipe[A, A, Subscriber, Publisher] =
       single(queueSize, minimumRequestedThreshold, subscriptionBatchSize)
     val multiSubscriber = MultiSubscriberProcessor[A](queueSize, delayErrors)
@@ -57,19 +57,19 @@ object ReactivePipe {
   }
 
   def single[A](maxQueueSize: Int, minimumRequestedThreshold: Int, subscriptionBatchSize: Int)(
-    implicit executionContext: ExecutionContext): ReactivePipe[A, A, Subscriber, Publisher] = {
+      implicit executionContext: ExecutionContext): ReactivePipe[A, A, Subscriber, Publisher] = {
     val feedAndSink = new Instance[A](maxQueueSize, minimumRequestedThreshold, subscriptionBatchSize)
     new ReactivePipe[A, A, Subscriber, Publisher](feedAndSink, feedAndSink)
   }
 
   class Instance[A](override val maxQueueSize: Int, override protected val minimumRequestedThreshold: Int, override protected val subscriptionBatchSize: Int)(
-    override implicit val ctxt: ExecutionContext)
+      override implicit val ctxt: ExecutionContext)
       extends AsyncPublisher[A] with SingleSubscriber[A] with AutoCloseable {
     require(minimumRequestedThreshold <= subscriptionBatchSize)
     require(minimumRequestedThreshold >= 0)
-    override protected def doOnNext(message: A): Unit = enqueueMessage(message)
+    override protected def doOnNext(message: A): Unit      = enqueueMessage(message)
     override protected def doOnError(err: Throwable): Unit = enqueueError(err)
-    override def doOnComplete(): Unit = enqueueComplete()
-    override def close() = onComplete()
+    override def doOnComplete(): Unit                      = enqueueComplete()
+    override def close()                                   = onComplete()
   }
 }

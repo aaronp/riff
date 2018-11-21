@@ -115,7 +115,7 @@ object FileBasedLog extends eie.io.LowPriorityIOImplicits {
     }
 
     private def entryFileForIndex(index: LogIndex) = dir.resolve(s"${index}.entry")
-    private def termFileForIndex(index: LogIndex) = dir.resolve(s"$index.term")
+    private def termFileForIndex(index: LogIndex)  = dir.resolve(s"$index.term")
 
     override def termForIndex(index: LogIndex): Option[Term] = {
       Option(termFileForIndex(index)).filter(_.exists()).map(_.text.toInt)
@@ -123,7 +123,7 @@ object FileBasedLog extends eie.io.LowPriorityIOImplicits {
 
     override def latestCommit(): LogIndex = {
       commitFile.text match {
-        case "" => 0
+        case ""    => 0
         case value => value.toInt
       }
     }
@@ -131,8 +131,8 @@ object FileBasedLog extends eie.io.LowPriorityIOImplicits {
     override def latestAppended(): LogCoords = {
       latestAppendedFile.text match {
         case LogCoords.FromKey(c) => c
-        case "" => LogCoords.Empty
-        case other => sys.error(s"Corrupt latest appended file ${latestAppendedFile} : >$other<")
+        case ""                   => LogCoords.Empty
+        case other                => sys.error(s"Corrupt latest appended file ${latestAppendedFile} : >$other<")
       }
     }
     override protected def doCommit(index: LogIndex, entriesToCommit: immutable.IndexedSeq[LogCoords]): Unit = {

@@ -5,11 +5,10 @@ import java.util.concurrent.{ScheduledExecutorService, ScheduledFuture, TimeUnit
 
 import scala.concurrent.duration.FiniteDuration
 
-class DefaultClock(
-  sendHeartbeatTimeout: FiniteDuration,
-  receiveHeartbeat: RandomTimer,
-  schedulerService: ScheduledExecutorService = newScheduledThreadPool(1),
-  cancelMayInterruptIfRunning: Boolean = true)
+class DefaultClock(sendHeartbeatTimeout: FiniteDuration,
+                   receiveHeartbeat: RandomTimer,
+                   schedulerService: ScheduledExecutorService = newScheduledThreadPool(1),
+                   cancelMayInterruptIfRunning: Boolean = true)
     extends RaftClock with AutoCloseable {
   override type CancelT = ScheduledFuture[Unit]
 
@@ -51,11 +50,10 @@ class DefaultClock(
 
 object DefaultClock {
 
-  def apply(
-    sendHeartbeatTimeout: FiniteDuration,
-    receiveHeartbeat: RandomTimer,
-    schedulerService: ScheduledExecutorService = java.util.concurrent.Executors.newScheduledThreadPool(2),
-    cancelMayInterruptIfRunning: Boolean = true): RaftClock = {
+  def apply(sendHeartbeatTimeout: FiniteDuration,
+            receiveHeartbeat: RandomTimer,
+            schedulerService: ScheduledExecutorService = java.util.concurrent.Executors.newScheduledThreadPool(2),
+            cancelMayInterruptIfRunning: Boolean = true): RaftClock = {
     new DefaultClock(sendHeartbeatTimeout, receiveHeartbeat, schedulerService, cancelMayInterruptIfRunning)
   }
 }

@@ -46,7 +46,7 @@ object EventSource {
     * @tparam A the log entry type
     */
   def inDir[S: FromBytes: ToBytes, A](dataDir: Path, initial: => S, log: CommittedOps[A], snapEvery: Int, numberToKeep: Option[Int] = None)(
-    combine: (S, A) => S): Try[Observable[S]] = {
+      combine: (S, A) => S): Try[Observable[S]] = {
     apply(dao(dataDir, initial, numberToKeep), log, snapEvery)(combine)
   }
 
@@ -65,7 +65,7 @@ object EventSource {
   def apply[S, A](dao: StateDao[S], log: CommittedOps[A], snapEvery: Int, bufferSize: Int = 1000)(combine: (S, A) => S): Try[Observable[S]] = {
     dao.latestSnapshot().map {
       case (latestIndex, latestSnapshot) =>
-        val entries: Observable[(LogCoords, A)] = log.committedEntriesFrom(latestIndex)
+        val entries: Observable[(LogCoords, A)] = log.committedEntriesFrom(latestIndex).dump(s"EventSource::entries from $latestIndex")
 
         val combined: Observable[(S, LogCoords)] = entries.scan(latestSnapshot -> LogCoords.Empty) {
           case ((state, _), (coords, next)) => (combine(state, next), coords)
@@ -74,7 +74,8 @@ object EventSource {
         // continue to combine in the log's committed entries' scheduler,
         // but write down on the IO scheduler
         combined
-          .observeOn(RiffSchedulers.computation.scheduler, BackPressure(bufferSize))
+          .dump(s"EventSource::combined from $latestIndex")
+          //.observeOn(RiffSchedulers.computation.scheduler, BackPressure(bufferSize))
           .zipWithIndex
           .map {
             case ((state, coords), i) =>
@@ -133,7 +134,7 @@ object EventSource {
     override def latestSnapshot(): Try[(LogIndex, S)] = {
       val index = latestSnapshotIndexFile.text match {
         case LogCoords.FromKey(coords) => coords.index
-        case _ => 0
+        case _                         => 0
       }
 
       if (index == 0) {

@@ -10,51 +10,52 @@ class AsyncPublisherTest extends RiffThreadedSpec {
 
     "enqueue but not publish elements before they are requested" in {
 
-      Given("A AsyncPublisher with a single subscriber (which doesn't initially request any elements)")
-      val publisherUnderTest = new TestInstance
-      val listener = publisherUnderTest.subscribeWith(new TestListener[String](0, 0))
-      publisherUnderTest.subscription.inputQueueSize() shouldBe 0
+      withExecCtxt { implicit ctxt =>
+        Given("A AsyncPublisher with a single subscriber (which doesn't initially request any elements)")
+        val publisherUnderTest = new TestInstance()(ctxt)
+        val listener           = publisherUnderTest.subscribeWith(new TestListener[String](0, 0))
+        publisherUnderTest.subscription.inputQueueSize() shouldBe 0
 
-      When("the subscriber requests 3 elements")
-      listener.request(3)
+        When("the subscriber requests 3 elements")
+        listener.request(3)
 
-      Then("the subscriber should've had that request enqueued")
-      publisherUnderTest.subscription.inputQueueSize() shouldBe 1
-      val subscribersFirstInput = publisherUnderTest.popNextFromSubscription()
-      subscribersFirstInput shouldBe AsyncSubscriptionState.Request(3)
+        Then("the subscriber should've had that request enqueued")
+        publisherUnderTest.subscription.inputQueueSize() shouldBe 1
+        val subscribersFirstInput = publisherUnderTest.popNextFromSubscription()
+        subscribersFirstInput shouldBe AsyncSubscriptionState.Request(3)
 
-      publisherUnderTest.subscription.inputQueueSize() shouldBe 0
+        publisherUnderTest.subscription.inputQueueSize() shouldBe 0
 
-      When("The request message is applied")
-      // manually apply what the 'Drain' thread would do
-      publisherUnderTest.subscription.updateState(subscribersFirstInput)
-      publisherUnderTest.subscription.currentState().totalRequested shouldBe 3
-      publisherUnderTest.subscription.currentState().cancelled shouldBe false
-      publisherUnderTest.subscription.currentState().complete shouldBe false
-      publisherUnderTest.subscription.currentState().valueQueue shouldBe (empty)
+        When("The request message is applied")
+        // manually apply what the 'Drain' thread would do
+        publisherUnderTest.subscription.updateState(subscribersFirstInput)
+        publisherUnderTest.subscription.currentState().totalRequested shouldBe 3
+        publisherUnderTest.subscription.currentState().cancelled shouldBe false
+        publisherUnderTest.subscription.currentState().complete shouldBe false
+        publisherUnderTest.subscription.currentState().valueQueue shouldBe (empty)
 
-      And("An element is enqueued")
-      publisherUnderTest.push("hello")
+        And("An element is enqueued")
+        publisherUnderTest.push("hello")
 
-      Then("the subscriber should be notified of the single element and now only have 2 requested")
-      publisherUnderTest.subscription.inputQueueSize() shouldBe 1
-      val subscribersSecondInput = publisherUnderTest.popNextFromSubscription()
-      subscribersSecondInput shouldBe AsyncSubscriptionState.Push("hello")
+        Then("the subscriber should be notified of the single element and now only have 2 requested")
+        publisherUnderTest.subscription.inputQueueSize() shouldBe 1
+        val subscribersSecondInput = publisherUnderTest.popNextFromSubscription()
+        subscribersSecondInput shouldBe AsyncSubscriptionState.Push("hello")
 
-      // manually apply what the 'Drain' thread would do
-      publisherUnderTest.subscription.updateState(subscribersSecondInput)
+        // manually apply what the 'Drain' thread would do
+        publisherUnderTest.subscription.updateState(subscribersSecondInput)
 
-      publisherUnderTest.subscription.inputQueueSize() shouldBe 0
-      publisherUnderTest.subscription.currentState().totalRequested shouldBe 2
-      publisherUnderTest.subscription.currentState().cancelled shouldBe false
-      publisherUnderTest.subscription.currentState().complete shouldBe false
-      publisherUnderTest.subscription.currentState().valueQueue shouldBe (empty)
+        publisherUnderTest.subscription.inputQueueSize() shouldBe 0
+        publisherUnderTest.subscription.currentState().totalRequested shouldBe 2
+        publisherUnderTest.subscription.currentState().cancelled shouldBe false
+        publisherUnderTest.subscription.currentState().complete shouldBe false
+        publisherUnderTest.subscription.currentState().valueQueue shouldBe (empty)
+      }
     }
   }
 
-  class TestInstance extends AsyncPublisher[String] {
+  class TestInstance()(override implicit val ctxt: ExecutionContext) extends AsyncPublisher[String] {
     override protected def maxQueueSize: Int = 200
-    override implicit def ctxt: ExecutionContext = execCtxt
 
     // keep track of/expose this new subscriptions for the test
     var subscription: AsyncSubscription[String] = null
@@ -71,10 +72,10 @@ class AsyncPublisherTest extends RiffThreadedSpec {
       subscription.popNextInput()
     }
 
-    def push(value: String) = enqueueMessage(value)
+    def push(value: String)               = enqueueMessage(value)
     def pushAll(values: Iterable[String]) = enqueueMessages(values)
-    def complete() = enqueueComplete()
-    def error(t: Throwable) = enqueueError(t)
+    def complete()                        = enqueueComplete()
+    def error(t: Throwable)               = enqueueError(t)
 
     /**
       * We override the creation of a subscriber within the test, a that drives the queue via the exec context.

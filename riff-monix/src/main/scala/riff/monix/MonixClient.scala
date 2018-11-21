@@ -1,7 +1,8 @@
 package riff.monix
+import cats.kernel.Eq
 import monix.execution.{Ack, Scheduler}
 import monix.reactive.{Observable, Observer, Pipe}
-import riff.raft.log.{LogAppendResult, LogAppendSuccess}
+import riff.raft.log.{LogAppendResult, LogAppendSuccess, LogCoords}
 import riff.raft.messages.{AppendData, RaftMessage}
 import riff.raft.{AppendOccurredOnDisconnectedLeader, AppendStatus, RaftClient}
 
@@ -17,7 +18,7 @@ import scala.reflect.ClassTag
   * @param sched
   * @tparam A
   */
-case class RiffMonixClient[A: ClassTag](inputSubscriber: Observer[RaftMessage[A]], raftNodeLogResults: Observable[LogAppendResult])(implicit sched: Scheduler)
+case class MonixClient[A: ClassTag](inputSubscriber: Observer[RaftMessage[A]], raftNodeLogResults: Observable[LogAppendResult])(implicit sched: Scheduler)
     extends RaftClient[Observable, A] with LowPriorityRiffMonixImplicits {
 
   /**
@@ -60,40 +61,55 @@ case class RiffMonixClient[A: ClassTag](inputSubscriber: Observer[RaftMessage[A]
 
     // set up a pipe whose input can be used to subscribe to the RaftNode's feed,
     // and whose output we will return
-    val (statusInput, statusOutput) = Pipe.replay[AppendStatus].unicast
-
-    val result = {
-      // we need to be able to get the first AppendStatus which will be from the 'inputSubscriber's node
-      // if it is in fact the leader (if it isn't all of this will be for naught, as the whole observable will
-      // just be failed by the node).
-      val head: Observable[AppendStatus] = statusOutput.take(1)
-
-      // once we have the first status then we'll know the coords of the append.
-      // if the log ever reports that those entries are replace then we'll fail this stream
-      val tail = statusOutput.drop(1)
-
-      head.flatMap { firstStatus: AppendStatus =>
-        val appendedCoords = firstStatus.appendedCoords
-        if (firstStatus.clusterSize > 1) {
-          tail.combineLatestMap(raftNodeLogResults) {
-            case (nextStatus, someLogAppendResult: LogAppendSuccess) =>
-              val weAcceptedWhileDisconnected = someLogAppendResult.replacedLogCoords.exists(appendedCoords.contains)
-              if (weAcceptedWhileDisconnected) {
-                throw new AppendOccurredOnDisconnectedLeader(firstStatus.leaderAppendResult, someLogAppendResult)
-              } else {
-                nextStatus
-              }
-            case (_, someLogAppendError: Exception) => throw someLogAppendError
-          }
-        } else {
-          Observable(firstStatus)
-        }
-      }
-    }
+    val (statusInput: Observer[AppendStatus], statusOutput: Observable[AppendStatus]) = Pipe.replay[AppendStatus].unicast
 
     // finally we can push an 'AppendData' message to the node
     val resFut: Future[Ack] = inputSubscriber.onNext(AppendData(statusInput, data))
-    Observable.fromFuture(resFut).flatMap(_ => result)
+    Observable.fromFuture(resFut).flatMap { _ => //
+      MonixClient.createAppendStatusFeed(data, statusOutput, raftNodeLogResults)
+    }
   }
+}
 
+object MonixClient {
+
+  def createAppendStatusFeed[A](data: Array[A], statusOutput: Observable[AppendStatus], raftNodeLogResults: Observable[LogAppendResult])(implicit sched: Scheduler) = {
+
+    // we need to be able to get the first AppendStatus which will be from the 'inputSubscriber's node
+    // if it is in fact the leader (if it isn't all of this will be for naught, as the whole observable will
+    // just be failed by the node).
+    val head: Observable[AppendStatus] = statusOutput.take(1)
+
+    // once we have the first status then we'll know the coords of the append.
+    // if the log ever reports that those entries are replace then we'll fail this stream
+    val tail = statusOutput.drop(1)
+
+    head.flatMap {
+      case firstStatus: AppendStatus if firstStatus.clusterSize > 1 =>
+        val appendedCoords: Set[LogCoords] = firstStatus.appendedCoords
+        val logAppends                     = raftNodeLogResults.dump(data.mkString("Monix Client LOG input [", ",", "]"))
+
+        val combinedObs: Observable[Observable[AppendStatus]] = tail.combineLatestMap(logAppends) {
+          case (nextStatus, someLogAppendResult: LogAppendSuccess) =>
+            val weAcceptedWhileDisconnected = someLogAppendResult.replacedLogCoords.exists(appendedCoords.contains)
+            if (weAcceptedWhileDisconnected) {
+              val err = new AppendOccurredOnDisconnectedLeader(firstStatus.leaderAppendResult, someLogAppendResult)
+              Observable.raiseError(err)
+            } else {
+              Observable(nextStatus)
+            }
+          case (_, someLogAppendError: Exception) => Observable.raiseError(someLogAppendError)
+        }
+
+        val combined    = combinedObs.flatten.dump(data.mkString("Monix Client combined [", ",", "]"))
+        implicit val eq = Eq.instance[AppendStatus](_ == _)
+        val res         = (firstStatus +: combined).distinctUntilChanged.dump(data.mkString("Monix Client distinct [", ",", "]"))
+
+        LowPriorityRiffMonixImplicits.observableAsPublisher(sched).takeWhileIncludeLast(res)(!_.isComplete)
+
+      case firstStatus: AppendStatus =>
+        Observable(firstStatus).dump(data.mkString("first status [", ",", "]"))
+
+    }
+  }
 }
