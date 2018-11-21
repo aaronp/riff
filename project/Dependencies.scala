@@ -2,16 +2,16 @@ import sbt._
 
 object Dependencies {
 
-  val config = "com.typesafe" % "config" % "1.3.0"
+  val config: ModuleID = "com.typesafe" % "config" % "1.3.0"
 
   //https://github.com/typesafehub/scala-logging
   val logging = List(
     "com.typesafe.scala-logging" %% "scala-logging" % "3.7.2",
-    "ch.qos.logback"                                % "logback-classic" % "1.1.11" % "test")
+    "ch.qos.logback"                                % "logback-classic" % "1.1.11")
 
   val testDependencies = List(
-    "org.scalactic" %% "scalactic" % "3.0.4"   % "test",
-    "org.scalatest" %% "scalatest" % "3.0.4"   % "test",
+    "org.scalactic" %% "scalactic" % "3.0.5"   % "test",
+    "org.scalatest" %% "scalatest" % "3.0.5"   % "test",
     "org.pegdown"                  % "pegdown" % "1.6.0" % "test",
     "junit"                        % "junit"   % "4.12" % "test"
   )

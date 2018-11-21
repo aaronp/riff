@@ -16,10 +16,10 @@ class ReplayPublisherTest extends RiffSpec with BeforeAndAfterAll with Eventuall
     "send elements pushed before a subscription was received" in {
 
       object TestPublisher extends ReplayPublisher[String] {
-        override protected def maxQueueSize: Int = 200
+        override protected def maxQueueSize: Int     = 200
         override implicit def ctxt: ExecutionContext = execContext
-        def push(value: String) = enqueueMessage(value)
-        def complete() = enqueueComplete()
+        def push(value: String)                      = enqueueMessage(value)
+        def complete()                               = enqueueComplete()
       }
 
       TestPublisher.push("first")

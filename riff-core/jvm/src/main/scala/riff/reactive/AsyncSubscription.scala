@@ -23,7 +23,7 @@ final class AsyncSubscription[T] private[reactive] (private[reactive] val s: Sub
 
   type Input = AsyncSubscriptionState.Input[T]
   private val internalStateInputQueue: BlockingQueue[Input] = new ArrayBlockingQueue[Input](maxQueueSize)
-  private var state = AsyncSubscriptionState[T](s, 0L, Vector.empty[T], false, false)
+  private var state                                         = AsyncSubscriptionState[T](s, 0L, Vector.empty[T], false, false)
 
   override def toString = {
     import scala.collection.JavaConverters._

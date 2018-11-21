@@ -27,7 +27,7 @@ object Repo {
   def apply[A: StringFormat](storage: Storage) = new Instance(storage)
 
   def apply[A: StringFormat](): Repo = new Repo {
-    val fmt = StringFormat[A]
+    val fmt         = StringFormat[A]
     private var map = Map[String, String]()
     override def setItem(key: String, value: String): Unit = {
       map = map.updated(key, value)

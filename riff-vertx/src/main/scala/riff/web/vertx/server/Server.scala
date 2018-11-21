@@ -1,5 +1,7 @@
 package riff.web.vertx.server
 
+import java.net.InetSocketAddress
+
 import com.typesafe.scalalogging.StrictLogging
 import io.vertx.core.Handler
 import io.vertx.lang.scala.ScalaVerticle
@@ -7,12 +9,14 @@ import io.vertx.scala.core.Vertx
 import io.vertx.scala.core.http.{HttpServerRequest, ServerWebSocket}
 import io.vertx.scala.ext.web.Router
 import io.vertx.scala.ext.web.handler.StaticHandler
+import javax.net.ServerSocketFactory
 import monix.execution.Scheduler
 import monix.reactive.Observable
 import streaming.api.HostPort
 import streaming.rest.RestRequestContext
 
 import scala.concurrent.duration.Duration
+import scala.util.control.NonFatal
 
 object Server extends StrictLogging {
 
@@ -24,27 +28,21 @@ object Server extends StrictLogging {
     }
   }
 
-  def startSocket(hostPort: HostPort)(onConnect: OnConnect)(implicit timeout: Duration, scheduler: Scheduler): ScalaVerticle = {
+  def startSocket(hostPort: HostPort)(onConnect: OnConnect)(implicit timeout: Duration, scheduler: Scheduler, vertx: Vertx): ScalaVerticle = {
     val websocketHandler = ServerWebSocketHandler.replay("general")(onConnect)
     start(hostPort, None, LoggingHandler, websocketHandler)
   }
 
   def start(hostPort: HostPort, staticPath: Option[String] = None)(
-    onConnect: PartialFunction[String, OnConnect])(implicit timeout: Duration, scheduler: Scheduler): ScalaVerticle = {
+      onConnect: PartialFunction[String, OnConnect])(implicit timeout: Duration, scheduler: Scheduler, vertx: Vertx): ScalaVerticle = {
     val websocketHandler = RoutingSocketHandler(onConnect.andThen(ServerWebSocketHandler.replay("general")))
     start(hostPort, staticPath, LoggingHandler, websocketHandler)
   }
 
-//  def start(hostPort: HostPort, requestHandler: Handler[HttpServerRequest] = LoggingHandler, staticPath : Option[String] = None, nullableName: String = null)(
-//      onConnect: PartialFunction[String, OnConnect])(implicit timeout: Duration, scheduler: Scheduler): ScalaVerticle = {
-//    val name             = Option(nullableName).getOrElse("general")
-//    val websocketHandler = RoutingSocketHandler(onConnect.andThen(ServerWebSocketHandler.replay(name)))
-//    start(hostPort, requestHandler, websocketHandler)
-//  }
-
-  def start(hostPort: HostPort, staticPath: Option[String], requestHandler: Handler[HttpServerRequest], socketHandler: Handler[ServerWebSocket]): ScalaVerticle = {
+  def start(hostPort: HostPort, staticPath: Option[String], requestHandler: Handler[HttpServerRequest], socketHandler: Handler[ServerWebSocket])(
+      implicit vertxInst: Vertx): ScalaVerticle = {
     object Server extends ScalaVerticle {
-      vertx = Vertx.vertx()
+      vertx = vertxInst
 
       override def start(): Unit = {
         vertx
@@ -58,7 +56,7 @@ object Server extends StrictLogging {
     Server
   }
 
-  def startRest(hostPort: HostPort, staticPath: Option[String])(implicit scheduler: Scheduler): Observable[RestRequestContext] = {
+  def startRest(hostPort: HostPort, staticPath: Option[String])(implicit scheduler: Scheduler) = {
     val restHandler = RestHandler()
     object RestVerticle extends ScalaVerticle {
       vertx = Vertx.vertx()
@@ -73,7 +71,7 @@ object Server extends StrictLogging {
     }
     RestVerticle.start()
 
-    restHandler.requests
+    RestVerticle -> restHandler.requests
   }
 
   private def makeHandler(hostPort: HostPort, vertx: Vertx, restHandler: Handler[HttpServerRequest], staticPath: Option[String]): Handler[HttpServerRequest] = {

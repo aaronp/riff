@@ -9,6 +9,20 @@ class PeerTest extends RiffSpec {
       Peer.Empty.setMatchIndex(9).nextIndex shouldBe 10
     }
   }
+  "Peer.withUnmatchedNextIndex" should {
+    "not allow negative indices" in {
+      intercept[Exception] {
+        Peer.withUnmatchedNextIndex(-1)
+      }
+    }
+  }
+  "Peer.withMatchIndex" should {
+    "not allow negative indices" in {
+      intercept[Exception] {
+        Peer.withMatchIndex(-1)
+      }
+    }
+  }
   "Peer.toString" should {
     "be intuitive" in {
       Peer.Empty.setMatchIndex(9).toString shouldBe s"Peer(nextIndex=10, matchIndex=9)"

@@ -24,26 +24,26 @@ object WebFrame {
 }
 
 final case class TextFrame(text: String) extends WebFrame {
-  override def asText = Option(text)
+  override def asText   = Option(text)
   override def asBinary = None
 }
 
 final case class BinaryFrame(data: ByteBuffer) extends WebFrame {
-  override def asText = None
+  override def asText   = None
   override def asBinary = Option(data)
 }
 
 final case class FinalTextFrame(text: String) extends WebFrame {
-  override def asText = Option(text)
+  override def asText   = Option(text)
   override def asBinary = None
 }
 
 final case class FinalBinaryFrame(data: ByteBuffer) extends WebFrame {
-  override def asText = None
+  override def asText   = None
   override def asBinary = Option(data)
 }
 
 final case class CloseFrame(statusCode: Short, reason: Option[String]) extends WebFrame {
-  override def asText = None
+  override def asText   = None
   override def asBinary = None
 }

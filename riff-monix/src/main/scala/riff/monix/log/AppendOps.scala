@@ -38,7 +38,12 @@ trait AppendOps[A] {
 
   /** @return an observable of the appended coordinates and data from the time of subscription
     */
-  def appendedEntries(): Observable[(LogCoords, A)] = appendCoords().flatMap(dataForIndex)
+  def appendedEntries(): Observable[(LogCoords, A)] = {
+    // there's actually a race condition here between being notified of new coords and the 'dataForIndex'.
+    // if an entry is replace in between the notification and the lookup, we could get fed e.g. one coord of:
+    // LogCoords(term=2, index=2)
+    appendCoords().flatMap(dataForIndex)
+  }
 
   protected def dataForIndex(coords: LogCoords): Observable[(LogCoords, A)]
 

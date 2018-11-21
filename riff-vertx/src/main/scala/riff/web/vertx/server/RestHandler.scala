@@ -127,6 +127,6 @@ object RestHandler extends StrictLogging {
 
     val (contexts, observable: Observable[RestRequestContext]) = Pipe.publish[RestRequestContext].multicast
 
-    new RestHandler(contexts, observable.dump("RestHandler"))
+    new RestHandler(contexts, observable)
   }
 }

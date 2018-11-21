@@ -30,13 +30,8 @@ object Publishers {
         private var subscription: Subscription = null
         private var completed = false
         override def onSubscribe(s: Subscription): Unit = {
-          val doubleSubscription = subscription != null
           subscription = s
           subscriber.onSubscribe(s)
-          if (doubleSubscription) {
-            s.cancel()
-            subscriber.onError(new Exception("multiple subscriptions"))
-          }
         }
         override def onNext(next: A): Unit = {
           if (test(next) && !completed) {
@@ -44,7 +39,6 @@ object Publishers {
           } else {
             val s = subscription
             if (s != null) {
-              s.cancel()
               if (!completed) {
                 if (includeLast) {
                   subscriber.onNext(next)

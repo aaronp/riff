@@ -46,7 +46,7 @@ object EventSource {
     * @tparam A the log entry type
     */
   def inDir[S: FromBytes: ToBytes, A](dataDir: Path, initial: => S, log: CommittedOps[A], snapEvery: Int, numberToKeep: Option[Int] = None)(
-    combine: (S, A) => S): Try[Observable[S]] = {
+      combine: (S, A) => S): Try[Observable[S]] = {
     apply(dao(dataDir, initial, numberToKeep), log, snapEvery)(combine)
   }
 
@@ -74,16 +74,14 @@ object EventSource {
         // continue to combine in the log's committed entries' scheduler,
         // but write down on the IO scheduler
         combined
-          .observeOn(RiffSchedulers.computation.scheduler, BackPressure(bufferSize))
-          .zipWithIndex
-          .map {
-            case ((state, coords), i) =>
-              if (i != 0 && i % snapEvery == 0) {
-                dao.writeDown(coords, state)
-              }
-              state
-          }
-          .executeAsync
+        //.observeOn(RiffSchedulers.computation.scheduler, BackPressure(bufferSize))
+        .zipWithIndex.map {
+          case ((state, coords), i) =>
+            if (i != 0 && i % snapEvery == 0) {
+              dao.writeDown(coords, state)
+            }
+            state
+        }.executeAsync
     }
   }
 
@@ -133,7 +131,7 @@ object EventSource {
     override def latestSnapshot(): Try[(LogIndex, S)] = {
       val index = latestSnapshotIndexFile.text match {
         case LogCoords.FromKey(coords) => coords.index
-        case _ => 0
+        case _                         => 0
       }
 
       if (index == 0) {

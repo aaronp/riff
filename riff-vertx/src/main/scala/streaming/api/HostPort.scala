@@ -10,7 +10,7 @@ case class HostPort(host: String, port: Int, secure: Boolean = false) {
     */
   def resolveLocalhost = host match {
     case "0.0.0.0" => HostPort("localhost", port)
-    case _ => this
+    case _         => this
   }
 
   def asURL = s"http://$hostPort"
@@ -26,7 +26,7 @@ case class HostPort(host: String, port: Int, secure: Boolean = false) {
 
 object HostPort {
 
-  def local(port: Int): HostPort = HostPort("0.0.0.0", port)
+  def local(port: Int): HostPort     = HostPort("0.0.0.0", port)
   def localhost(port: Int): HostPort = HostPort("localhost", port)
 
   private val HostPortR = "(.*):(\\d+)".r
@@ -34,7 +34,7 @@ object HostPort {
   def unapply(id: String): Option[HostPort] = {
     id match {
       case HostPortR(h, p) => Option(HostPort(h, p.toInt))
-      case _ => None
+      case _               => None
     }
   }
 }

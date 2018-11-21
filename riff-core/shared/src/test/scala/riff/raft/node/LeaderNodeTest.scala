@@ -85,6 +85,26 @@ class LeaderNodeTest extends RiffSpec {
   }
 
   "LeaderNodeState.onAppendResponse with failed update" should {
+    "send the first append entries if a follower doesn't have any data" in {
+      val leader = new LeaderNodeState("the leader", LeadersClusterView("follower1" -> Peer.withUnmatchedNextIndex(1)))
+
+      val log      = RaftLog.inMemory[String]()
+      log.append(LogCoords(1,1), "first entry") shouldBe LogAppendResult(LogCoords(1, 1), LogCoords(1,1))
+
+      val appendResponse = AppendEntriesResponse.fail(2)
+      val LeaderCommittedResult(Nil, AddressedRequest(Seq(("follower1", nextAppend)))) = leader.onAppendResponse("follower1", log, 2, appendResponse, 10)
+      nextAppend shouldBe AppendEntries(LogCoords.Empty, 2, 0, Array(LogEntry(1, "first entry")))
+    }
+    "send a commit index as the minimum of the leader's commit index or the data being sent to a follower" in {
+      val leader = new LeaderNodeState("the leader", LeadersClusterView("follower1" -> Peer.withUnmatchedNextIndex(1)))
+
+      val log      = RaftLog.inMemory[String]()
+      log.append(LogCoords(1,1), "first entry") shouldBe LogAppendResult(LogCoords(1, 1), LogCoords(1,1))
+
+      val appendResponse = AppendEntriesResponse.fail(2)
+      val LeaderCommittedResult(Nil, AddressedRequest(Seq(("follower1", nextAppend)))) = leader.onAppendResponse("follower1", log, 2, appendResponse, 10)
+      nextAppend shouldBe AppendEntries(LogCoords.Empty, 2, 0, Array(LogEntry(1, "first entry")))
+    }
     "send a previous append entries for the previous index on failure" in {
       val leader =
         new LeaderNodeState("the leader", LeadersClusterView("follower1" -> Peer.withUnmatchedNextIndex(10), "follower2" -> Peer.withUnmatchedNextIndex(10)))

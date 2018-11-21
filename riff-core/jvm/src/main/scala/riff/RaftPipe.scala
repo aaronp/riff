@@ -1,21 +1,15 @@
 package riff
-import java.nio.file.Path
-
-import eie.io.{FromBytes, ToBytes, _}
-import org.reactivestreams.{Publisher, Subscriber, Subscription}
+import org.reactivestreams.{Publisher, Subscriber}
 import riff.raft._
-import riff.raft.log.{LogAppendSuccess, RaftLog}
+import riff.raft.log.LogAppendSuccess
 import riff.raft.messages.{AddressedMessage, AppendData, RaftMessage}
 import riff.raft.node.{RaftNodeResult, _}
 import riff.raft.reactive.ReactiveClient
-import riff.raft.timer.{RaftClock, RandomTimer, Timers}
 import riff.reactive.AsPublisher.syntax._
-import riff.reactive.{ReactiveTimerCallback, _}
+import riff.reactive._
 
 import scala.concurrent.ExecutionContext
-import scala.concurrent.duration._
 import scala.reflect.ClassTag
-import scala.util.Properties
 
 /**
   *
@@ -32,11 +26,11 @@ import scala.util.Properties
   * @param client a client which can be used to append data to this node (which will fail if this node isn't the leader)
   */
 class RaftPipe[A, Sub[_]: AsSubscriber, Pub[_]: AsPublisher, C[_], H <: RaftMessageHandler[A]](
-  val handler: H,
-  private[riff] val pipe: ReactivePipe[RaftMessage[A], RaftNodeResult[A], Sub, Pub],
-  val client: RaftClient[C, A]
+    val handler: H,
+    private[riff] val pipe: ReactivePipe[RaftMessage[A], RaftNodeResult[A], Sub, Pub],
+    val client: RaftClient[C, A]
 ) extends AutoCloseable {
-  def input: Sub[RaftMessage[A]] = pipe.input
+  def input: Sub[RaftMessage[A]]     = pipe.input
   def output: Pub[RaftNodeResult[A]] = pipe.output
 
   def nodeId = handler.nodeId
@@ -44,7 +38,7 @@ class RaftPipe[A, Sub[_]: AsSubscriber, Pub[_]: AsPublisher, C[_], H <: RaftMess
   def resetReceiveHeartbeat()(implicit ev: H =:= RaftNode[A]) = {
     ev(handler).resetReceiveHeartbeat()
   }
-  def asPublisher: AsPublisher[Pub] = AsPublisher[Pub]
+  def asPublisher: AsPublisher[Pub]   = AsPublisher[Pub]
   def asSubscriber: AsSubscriber[Sub] = AsSubscriber[Sub]
 
   /**
@@ -68,8 +62,8 @@ class RaftPipe[A, Sub[_]: AsSubscriber, Pub[_]: AsPublisher, C[_], H <: RaftMess
         // change the message to be 'from' this node
         result.toNode(targetNodeId).map(_.copy(from = nodeId)) match {
           case Seq(toUs) => Option(toUs)
-          case Seq() => None
-          case many => sys.error(s"${many.size} messages were sent to $targetNodeId: ${many}")
+          case Seq()     => None
+          case many      => sys.error(s"${many.size} messages were sent to $targetNodeId: ${many}")
         }
       }
     }
@@ -82,84 +76,15 @@ class RaftPipe[A, Sub[_]: AsSubscriber, Pub[_]: AsPublisher, C[_], H <: RaftMess
     pipe.close()
     handler match {
       case closable: AutoCloseable => closable.close()
-      case _ =>
+      case _                       =>
     }
   }
 }
 
 object RaftPipe {
 
-  def inMemoryClusterOf[A: ClassTag](size: Int)(implicit execCtxt: ExecutionContext, clock: RaftClock): Map[NodeId, RaftPipe[A, Subscriber, Publisher, Publisher, RaftNode[A]]] = {
-    val nodes = (1 to size).map { i => //
-      RaftNode.inMemory[A](s"node-$i")
-    }
-    asCluster(nodes: _*)
-  }
-
-  /**
-    * Create a cluster of the input nodes, so that each knows about its peers, and sends messages to/receives messages from each of them
-    *
-    * @param nodes
-    * @param execCtxt
-    * @tparam A
-    * @return
-    */
-  def asCluster[A: ClassTag](nodes: RaftNode[A]*)(implicit execCtxt: ExecutionContext): Map[NodeId, RaftPipe[A, Subscriber, Publisher, Publisher, RaftNode[A]]] = {
-
-    val ids = nodes.map(_.nodeId).toSet
-    def duplicates: Set[NodeId] = nodes.groupBy(_.nodeId).filter(_._2.size > 1).keySet
-    require(ids.size == nodes.length, s"multiple nodes given w/ the same id: '${duplicates.mkString("[", ",", "]")}'")
-
-    val raftInstById: Map[NodeId, RaftPipe[A, Subscriber, Publisher, Publisher, RaftNode[A]]] = nodes.map { n =>
-      val timerCallback = ReactiveTimerCallback()
-      val node = n.withCluster(RaftCluster(ids - n.nodeId)).withTimerCallback(timerCallback)
-
-      val raftPipe = raftPipeForNode[A, RaftNode[A]](node, 1000)
-
-      timerCallback.subscribe(raftPipe.input)
-      node.nodeId -> raftPipe
-    }.toMap
-
-    wireTogether[A, Subscriber, Publisher, Publisher, RaftNode[A]](raftInstById)
-
-    raftInstById
-  }
-
-  def apply[A: FromBytes: ToBytes: ClassTag](id: NodeId = "single-node-cluster")(implicit ctxt: ExecutionContext): RaftPipe[A, Subscriber, Publisher, Publisher, RaftNode[A]] = {
-    val dataDir = Properties.tmpDir.asPath.resolve(s".riff/${id.filter(_.isLetterOrDigit)}")
-    apply(id, dataDir)
-  }
-
-  def apply[A: FromBytes: ToBytes: ClassTag](id: NodeId, dataDir: Path)(implicit ctxt: ExecutionContext): RaftPipe[A, Subscriber, Publisher, Publisher, RaftNode[A]] = {
-
-    implicit val clock: RaftClock = RaftClock(250.millis, RandomTimer(1.second, 2.seconds))
-    val timer = ReactiveTimerCallback()
-
-    val node = newSingleNode(id, dataDir).withTimerCallback(timer)
-    val pipe: RaftPipe[A, Subscriber, Publisher, Publisher, RaftNode[A]] = raftPipeForNode(node, 1000)
-
-    timer.subscribe(pipe.input)
-
-    pipe
-  }
-
-  /** convenience method for created a default [[RaftNode]] which has an empty cluster
-    *
-    * @return a new RaftNode
-    */
-  def newSingleNode[A: FromBytes: ToBytes](id: NodeId, dataDir: Path, maxAppendSize: Int = 10)(implicit clock: RaftClock): RaftNode[A] = {
-    new RaftNode[A](
-      NIOPersistentState(dataDir.resolve("state"), true).cached(),
-      RaftLog[A](dataDir.resolve("data"), true),
-      new Timers(clock),
-      RaftCluster(Nil),
-      node.FollowerNodeState(id, None),
-      maxAppendSize
-    )
-  }
-
   private[riff] def raftPipeForNode[A: ClassTag, Handler <: RaftMessageHandler[A]](handler: Handler, queueSize: Int)(
-    implicit executionContext: ExecutionContext): RaftPipe[A, Subscriber, Publisher, Publisher, Handler] = {
+      implicit executionContext: ExecutionContext): RaftPipe[A, Subscriber, Publisher, Publisher, Handler] = {
     val pipe: ReactivePipe[RaftMessage[A], RaftNodeResult[A], Subscriber, Publisher] = pipeForNode[A](handler, queueSize)
 
     new RaftPipe[A, Subscriber, Publisher, Publisher, Handler](handler, pipe, ReactiveClient(pipe.inputSubscriber))
@@ -174,7 +99,7 @@ object RaftPipe {
     * @return a pipe wrapping the node
     */
   private[riff] def pipeForNode[A](originalHandler: RaftMessageHandler[A], queueSize: Int, debug: Boolean = true)(
-    implicit executionContext: ExecutionContext): ReactivePipe[RaftMessage[A], RaftNodeResult[A], Subscriber, Publisher] = {
+      implicit executionContext: ExecutionContext): ReactivePipe[RaftMessage[A], RaftNodeResult[A], Subscriber, Publisher] = {
     val original: ReactivePipe[RaftMessage[A], RaftMessage[A], Subscriber, Publisher] = ReactivePipe.multi[RaftMessage[A]](queueSize, true)
     import AsPublisher.syntax._
 
@@ -229,26 +154,12 @@ object RaftPipe {
     ReactivePipe(original.input, nodeOutput)
   }
 
-  private def asStatusPublisherReplay[A, Pub[_]: AsPublisher](
-    nodeId: NodeId,
-    clusterSize: Int,
-    logAppendSuccess: LogAppendSuccess,
-    nodeInput: Pub[(RaftMessage[A], RaftNodeResult[A])])(implicit ec: ExecutionContext): Publisher[AppendStatus] = {
+  private def asStatusPublisherReplay[A, Pub[_]: AsPublisher](nodeId: NodeId,
+                                                              clusterSize: Int,
+                                                              logAppendSuccess: LogAppendSuccess,
+                                                              nodeInput: Pub[(RaftMessage[A], RaftNodeResult[A])])(implicit ec: ExecutionContext): Publisher[AppendStatus] = {
 
-    val replay = new ReplayPublisher[AppendStatus] with Subscriber[AppendStatus] {
-      override implicit def ctxt: ExecutionContext = ec
-      override protected def maxQueueSize: LogIndex = logAppendSuccess.numIndices * clusterSize + 1
-      override def onSubscribe(s: Subscription): Unit = s.request(Long.MaxValue)
-      override def onNext(t: AppendStatus): Unit = enqueueMessage(t)
-      override def onError(t: Throwable): Unit = enqueueError(t)
-      override def onComplete(): Unit = enqueueComplete()
-    }
-
-    val fromInput = AppendStatus.asStatusPublisher(nodeId, clusterSize, logAppendSuccess, nodeInput)
-
-    fromInput.subscribeWith(replay)
-
-    replay
+    ???
   }
 
   def wireTogether[A, Sub[_]: AsSubscriber, Pub[_]: AsPublisher, C[_], H <: RaftMessageHandler[A]](raftInstById: Map[NodeId, RaftPipe[A, Sub, Pub, C, H]]) = {

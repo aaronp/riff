@@ -9,7 +9,7 @@ import scala.concurrent.duration.Duration
 private[server] class ServerWebSocketHandler private (name: String, onConnect: ServerEndpoint => Unit)(implicit timeout: Duration, scheduler: Scheduler)
     extends Handler[ServerWebSocket] {
   override def handle(socket: ServerWebSocket): Unit = {
-    onConnect(ServerEndpoint.replay(socket, name))
+    onConnect(ServerEndpoint.publish(socket, name))
   }
 }
 

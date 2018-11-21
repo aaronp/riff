@@ -1,5 +1,5 @@
 package riff.raft.node
-import riff.raft.log.{LogAppendResult, LogCoords, LogEntry, RaftLog}
+import riff.raft.log.{LogCoords, LogEntry, RaftLog}
 import riff.raft.messages.{AppendEntries, AppendEntriesResponse, RequestVoteResponse}
 import riff.raft.{NodeId, Term, isMajority}
 
@@ -29,7 +29,7 @@ sealed trait NodeState {
 
   def asLeader: Option[LeaderNodeState] = this match {
     case leader: LeaderNodeState => Option(leader)
-    case _                                => None
+    case _                       => None
   }
 }
 
@@ -38,10 +38,10 @@ final case class FollowerNodeState(override val id: NodeId, override val leader:
 }
 
 final case class CandidateNodeState(override val id: NodeId, initialState: CandidateState) extends NodeState {
-  override val role                    = Candidate
-  private var voteResponses            = initialState
+  override val role                   = Candidate
+  private var voteResponses           = initialState
   override val leader: Option[NodeId] = None
-  def candidateState()                 = voteResponses
+  def candidateState()                = voteResponses
 
   /**
     * @param from the node which sent this response
@@ -94,7 +94,6 @@ final case class LeaderNodeState(override val id: NodeId, clusterView: LeadersCl
     NodeAppendResult(appendResult, AddressedRequest(requests))
   }
 
-
   override val role = Leader
 
   def clusterSize = clusterView.numberOfPeers + 1
@@ -110,13 +109,19 @@ final case class LeaderNodeState(override val id: NodeId, clusterView: LeadersCl
     * @tparam A the log type
     * @return the committed log coords resulting from having applied this response and the state output (either a no-op or a subsequent [[AppendEntries]] request)
     */
-  def onAppendResponse[A](from: NodeId,
-                          log: RaftLog[A],
-                          currentTerm: Term,
-                          appendResponse: AppendEntriesResponse,
-                          maxAppendSize: Int): LeaderCommittedResult[A] = {
+  def onAppendResponse[A](from: NodeId, log: RaftLog[A], currentTerm: Term, appendResponse: AppendEntriesResponse, maxAppendSize: Int): LeaderCommittedResult[A] = {
 
     val latestAppended = log.latestAppended()
+
+    //
+    // it's the leader's responsibility to send the right commit index for the follower nodes, who should
+    // blindly just commit what they're asked to. And so ... we mustn't send a commit index higher than the
+    // index we've asked the node to append
+    //
+    def commitIdxForPeer(newPeerState : Peer, numAppended :Int) = {
+      val highestSentIndexInclusive = newPeerState.nextIndex + numAppended - 1
+      log.latestCommit().min(highestSentIndexInclusive)
+    }
 
     //
     // first update the cluster view - update or decrement the nextIndex, matchIndex
@@ -141,17 +146,7 @@ final case class LeaderNodeState(override val id: NodeId, clusterView: LeadersCl
         val reply = if (latestAppended.index > appendResponse.matchIndex) {
           log.coordsForIndex(appendResponse.matchIndex) match {
             case Some(previous) =>
-
-              //
-              // it's the leader's responsibility to send the right commit index for the follower nodes, who should
-              // blindly just commit what they're asked to. And so ... we mustn't send a commit index higher than the
-              // index we've asked the node to append
-              //
-              val commitIdx = {
-                val highestSentIndexInclusive = newPeerState.nextIndex + values.size - 1
-                log.latestCommit().min(highestSentIndexInclusive)
-              }
-
+              val commitIdx = commitIdxForPeer(newPeerState, values.size)
               AddressedRequest(from, AppendEntries(previous, currentTerm, commitIdx, values))
             case None =>
               NoOpResult(s"Couldn't read the log entry at ${appendResponse.matchIndex}. The latest append is ${log.latestAppended()}")
@@ -164,10 +159,19 @@ final case class LeaderNodeState(override val id: NodeId, clusterView: LeadersCl
         // try again w/ an older index. This trusts that the cluster does the right thing when updating its peer view
         val reply = clusterView.stateForPeer(from) match {
           case Some(peer) =>
-            val idx        = peer.nextIndex.min(latestAppended.index)
-            val prevCoords = log.coordsForIndex(idx).getOrElse(latestAppended)
-            val commitIdx  = log.latestCommit().min(prevCoords.index)
-            AddressedRequest(from, AppendEntries(prevCoords, currentTerm, commitIdx, Array.empty[LogEntry[A]]))
+            val idx: Term = peer.nextIndex.min(latestAppended.index)
+
+            // if the next index is 1, we've reached the beginning of the log
+            val entries = if (idx == 1) {
+              val values = log.entriesFrom(idx, maxAppendSize)
+              val commitIdx = commitIdxForPeer(peer, values.size)
+              AppendEntries(LogCoords.Empty, currentTerm, commitIdx, values)
+            } else {
+              val prevCoords: LogCoords = log.coordsForIndex(idx).getOrElse(latestAppended)
+              val commitIdx: Term       = log.latestCommit().min(prevCoords.index)
+              AppendEntries(prevCoords, currentTerm, commitIdx, Array.empty[LogEntry[A]])
+            }
+            AddressedRequest(from, entries)
           case None =>
             NoOpResult(s"Couldn't find peer $from in the cluster(!), ignoring append entries response")
         }
@@ -180,6 +184,7 @@ final case class LeaderNodeState(override val id: NodeId, clusterView: LeadersCl
 }
 
 object LeaderNodeState {
+
   def apply(id: NodeId, cluster: RaftCluster): LeaderNodeState = {
     new LeaderNodeState(id, LeadersClusterView(cluster))
   }

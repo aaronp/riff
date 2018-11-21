@@ -11,13 +11,13 @@ import org.reactivestreams.Subscriber
   * @tparam T
   */
 private[reactive] case class AsyncSubscriptionState[T](
-  s: Subscriber[_ >: T],
-  totalRequested: Long,
-  valueQueue: Vector[T],
-  cancelled: Boolean,
-  complete: Boolean,
-  batchSize: Int = Int.MaxValue,
-  completeSignaled: Boolean = false
+    s: Subscriber[_ >: T],
+    totalRequested: Long,
+    valueQueue: Vector[T],
+    cancelled: Boolean,
+    complete: Boolean,
+    batchSize: Int = Int.MaxValue,
+    completeSignaled: Boolean = false
 ) {
   require(totalRequested >= 0)
 
@@ -111,9 +111,9 @@ private[reactive] case class AsyncSubscriptionState[T](
       } else {
 
         // we an only split at an integer value from the vector
-        val maxToTake = incrementedTotal.min(batchSize).toInt
+        val maxToTake                 = incrementedTotal.min(batchSize).toInt
         val (valuesToPush, remaining) = valueQueue.splitAt(maxToTake)
-        val newTotal = incrementedTotal - valuesToPush.size
+        val newTotal                  = incrementedTotal - valuesToPush.size
 
         valuesToPush.foreach(pushNext)
 
@@ -136,12 +136,11 @@ private[reactive] case class AsyncSubscriptionState[T](
       this
     }
   }
-  private def safeCopy(
-    newRequested: Long = totalRequested,
-    newQueue: Vector[T] = valueQueue,
-    isCancelled: Boolean = cancelled,
-    isComplete: Boolean = complete,
-    newCompleteSignaled: Boolean = completeSignaled) = {
+  private def safeCopy(newRequested: Long = totalRequested,
+                       newQueue: Vector[T] = valueQueue,
+                       isCancelled: Boolean = cancelled,
+                       isComplete: Boolean = complete,
+                       newCompleteSignaled: Boolean = completeSignaled) = {
     copy(totalRequested = newRequested, valueQueue = newQueue, cancelled = isCancelled, complete = isComplete, completeSignaled = newCompleteSignaled)
       .asInstanceOf[AsyncSubscriptionState[T]]
   }
@@ -149,11 +148,11 @@ private[reactive] case class AsyncSubscriptionState[T](
 private[reactive] object AsyncSubscriptionState {
 
   sealed trait Input[+T]
-  case class Request(n: Long) extends Input[Nothing]
-  case class Push[T](value: T) extends Input[T]
+  case class Request(n: Long)                extends Input[Nothing]
+  case class Push[T](value: T)               extends Input[T]
   case class PushAll[T](values: Iterable[T]) extends Input[T]
-  case object Cancel extends Input[Nothing]
-  case class Error(t: Throwable) extends Input[Nothing]
-  case object Complete extends Input[Nothing]
+  case object Cancel                         extends Input[Nothing]
+  case class Error(t: Throwable)             extends Input[Nothing]
+  case object Complete                       extends Input[Nothing]
 
 }

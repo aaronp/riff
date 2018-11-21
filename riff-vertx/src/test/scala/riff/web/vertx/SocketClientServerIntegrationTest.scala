@@ -4,7 +4,8 @@ import java.util.concurrent.{CountDownLatch, TimeUnit}
 
 import com.typesafe.scalalogging.StrictLogging
 import io.vertx.lang.scala.ScalaVerticle
-import monix.execution.{Cancelable, Scheduler}
+import io.vertx.scala.core.Vertx
+import monix.execution.Cancelable
 import monix.execution.Scheduler.Implicits.global
 import org.scalatest.concurrent.Eventually
 import riff.RiffSpec
@@ -15,14 +16,16 @@ import streaming.api.sockets.WebFrame
 import streaming.rest.EndpointCoords
 
 import scala.collection.mutable.ListBuffer
+import scala.util.control.NonFatal
 
 class SocketClientServerIntegrationTest extends RiffSpec with Eventually with StrictLogging {
 
   "Server.start / SocketClient.connect" ignore {
     "route endpoints accordingly" in {
-      val port = 1236
+      val port    = 1236
       val UserIdR = "/user/(.*)".r
 
+      implicit val vertx = Vertx.vertx()
       val started: ScalaVerticle = Server.start(HostPort.localhost(port)) {
         case "/admin" =>
           endpt =>
@@ -77,6 +80,7 @@ class SocketClientServerIntegrationTest extends RiffSpec with Eventually with St
 
       } finally {
         started.stop()
+        vertx.closeFuture().futureValue
       }
     }
     "notify the server when the client completes" in {
@@ -85,8 +89,9 @@ class SocketClientServerIntegrationTest extends RiffSpec with Eventually with St
 
       val messagesReceivedByTheServer = ListBuffer[String]()
       val messagesReceivedByTheClient = ListBuffer[String]()
-      var serverReceivedOnComplete = false
+      var serverReceivedOnComplete    = false
 
+      implicit val vertx = Vertx.vertx()
       def chat(endpoint: Endpoint[WebFrame, WebFrame]): Cancelable = {
         endpoint.handleTextFramesWith { incomingMsgs =>
           val obs = "Hi - you're connected to an echo-bot" +: incomingMsgs.doOnNext(msg => messagesReceivedByTheServer += msg).map("echo: " + _)
@@ -99,7 +104,7 @@ class SocketClientServerIntegrationTest extends RiffSpec with Eventually with St
       }
 
       val started: ScalaVerticle = Server.startSocket(HostPort.localhost(port))(chat)
-      var c: SocketClient = null
+      var c: SocketClient        = null
       try {
 
         val gotFive = new CountDownLatch(5)
@@ -145,44 +150,54 @@ class SocketClientServerIntegrationTest extends RiffSpec with Eventually with St
         if (c != null) {
           c.stop()
         }
+        vertx.closeFuture().futureValue
       }
 
     }
     "connect to a server" in {
 
-      val port = 1234
+      (8000 to 8080).find { port =>
+        implicit val vertx     = Vertx.vertx()
+        val receivedFromServer = new CountDownLatch(1)
+        var fromServer         = ""
+        val receivedFromClient = new CountDownLatch(1)
+        var fromClient         = ""
 
-      val receivedFromServer = new CountDownLatch(1)
-      var fromServer = ""
-      val receivedFromClient = new CountDownLatch(1)
-      var fromClient = ""
+        // start the server
+        val started: ScalaVerticle = Server.startSocket(HostPort.localhost(port)) { endpoint: ServerEndpoint =>
+          endpoint.toRemote.onNext(WebFrame.text(s"hello from the server at ${endpoint.socket.path}"))
 
-      // start the server
-      val started: ScalaVerticle = Server.startSocket(HostPort.localhost(port)) { endpoint: ServerEndpoint =>
-        endpoint.toRemote.onNext(WebFrame.text(s"hello from the server at ${endpoint.socket.path}"))
+          endpoint.fromRemote.foreach { msg: WebFrame =>
+            msg.asText.foreach(fromClient = _)
+            receivedFromClient.countDown()
+          }
+        }
 
-        endpoint.fromRemote.foreach { msg: WebFrame =>
-          msg.asText.foreach(fromClient = _)
-          receivedFromClient.countDown()
+        val c: SocketClient = SocketClient.connect(EndpointCoords.get(HostPort.localhost(port), "/some/path")) { endpoint =>
+          endpoint.fromRemote.foreach { msg =>
+            msg.asText.foreach(fromServer = _)
+            receivedFromServer.countDown()
+          }
+          endpoint.toRemote.onNext(WebFrame.text("from the client"))
+        }
+        try {
+          withClue(s"server didn't start within $testTimeout") {
+            receivedFromServer.await(testTimeout.toMillis, TimeUnit.MILLISECONDS) shouldBe true
+            receivedFromClient.await(testTimeout.toMillis, TimeUnit.MILLISECONDS) shouldBe true
+          }
+
+          fromServer shouldBe "hello from the server at /some/path"
+          fromClient shouldBe "from the client"
+
+          true
+        } catch {
+          case NonFatal(_) => false
+        } finally {
+          c.stop()
+          started.stop()
+          vertx.closeFuture().futureValue
         }
       }
-
-      val c: SocketClient = SocketClient.connect(EndpointCoords.get(HostPort.localhost(port), "/some/path")) { endpoint =>
-        endpoint.fromRemote.foreach { msg =>
-          msg.asText.foreach(fromServer = _)
-          receivedFromServer.countDown()
-        }
-        endpoint.toRemote.onNext(WebFrame.text("from the client"))
-      }
-
-      receivedFromServer.await(testTimeout.toMillis, TimeUnit.MILLISECONDS)
-      receivedFromClient.await(testTimeout.toMillis, TimeUnit.MILLISECONDS)
-
-      fromServer shouldBe "hello from the server at /some/path"
-      fromClient shouldBe "from the client"
-
-      c.stop()
-      started.stop()
     }
   }
 }

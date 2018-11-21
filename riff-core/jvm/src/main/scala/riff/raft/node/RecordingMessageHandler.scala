@@ -16,7 +16,7 @@ case class RecordingMessageHandler[A](underlying: RaftMessageHandler[A]) extends
     t.getStackTrace.tail.tail.mkString(s"${t.getName} call stack:\n\t\t* ", "\n\t\t* ", "\n")
   }
 
-  @volatile private var handling = false
+  @volatile private var handling  = false
   @volatile private var callStack = getStack()
 
   override def nodeId: NodeId = underlying.nodeId
@@ -53,7 +53,7 @@ case class RecordingMessageHandler[A](underlying: RaftMessageHandler[A]) extends
   override def close(): Unit = {
     underlying match {
       case closable: AutoCloseable => closable.close()
-      case _ =>
+      case _                       =>
     }
   }
 }

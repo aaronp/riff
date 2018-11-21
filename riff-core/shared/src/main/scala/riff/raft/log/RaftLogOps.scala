@@ -97,7 +97,7 @@ trait RaftLogOps[A] { self: RaftLog[A] =>
     }
   }
 
-  /** This function is the main point of the Raft cluster -- it applies the provided function
+  /** This function may server as the main domain logic hook for of the Raft cluster -- it applies the provided function
     * to the LogEntry[A] once the entry is committed. It is up to the application what to do with
     * the side-effectful function.
     *
@@ -171,17 +171,15 @@ trait RaftLogOps[A] { self: RaftLog[A] =>
     //    -- or --
     //    b) the previous is the first index
     //
-    val success = {
       val matchedPrevious = latest == request.previous || containsIndex(request.previous)
 
+    val success = {
       // we could be in the situation where a leader appended an unreplicated entry and subsequently became a follower
       matchedPrevious || (request.previous.index == 0)
     }
 
     val matchIndex: LogIndex = if (success) {
       if (request.entries.nonEmpty) {
-        val latestCommitIndex = latestCommit()
-        require(latestCommitIndex <= request.previous.index, s"Attempt to append at ${request.previous} when the latest commit is $latestCommitIndex")
         val logAppendResult: LogAppendResult = appendAll(request.appendIndex, request.entries)
 
         logAppendResult match {
@@ -189,7 +187,11 @@ trait RaftLogOps[A] { self: RaftLog[A] =>
           case _                                 => 0
         }
       } else {
-        latest.index
+        if (request.previous.index == 0) {
+          0
+        } else {
+          latest.index
+        }
       }
     } else {
       0
