@@ -47,8 +47,6 @@ object Publishers {
                 subscriber.onComplete()
               }
               subscription = null
-
-              s.cancel()
             }
           }
         }
