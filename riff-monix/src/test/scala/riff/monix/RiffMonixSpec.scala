@@ -12,11 +12,10 @@ import scala.concurrent.duration._
 
 abstract class RiffMonixSpec extends RiffThreadedSpec with Eventually with BeforeAndAfterAll with LowPriorityRiffMonixImplicits {
 
-  override def testTimeout: FiniteDuration = 90.seconds
+  override def testTimeout: FiniteDuration = 30.seconds
 
   def withScheduler[T](f: Scheduler => T): T = {
 
-    //UncaughtExceptionReporter.LogExceptionsToStandardErr
     val retVal = withExecCtxt { implicit execCtxt =>
       // some tests explicitly throw exceptions, so we should just write these down
       val reporter                             = UncaughtExceptionReporter.LogExceptionsToStandardErr

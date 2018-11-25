@@ -13,29 +13,6 @@ import scala.concurrent.Future
 class MonixClientTest extends RiffMonixSpec {
 
   "MonixClient.append" should {
-    "supply all append events even if subscribed to after all events were received" in {
-
-      withScheduler { implicit scheduler =>
-        val logResults                             = Var[LogAppendResult](LogAppendSuccess(LogCoords(1, 1), LogCoords(1, 1)))
-        var appendObserver: Observer[AppendStatus] = null
-
-        val clientUnderTest = {
-          val clientInput = new Observer[RaftMessage[String]] {
-            override def onNext(elem: RaftMessage[String]): Future[Ack] = {
-              elem match {
-                case AppendData(observer: Observer[AppendStatus], _) =>
-                  appendObserver = observer
-              }
-              Ack.Continue
-            }
-            override def onError(ex: Throwable): Unit = ???
-            override def onComplete(): Unit           = ???
-          }
-          MonixClient[String](clientInput, logResults)
-        }
-      }
-
-    }
     "complete w/ an error if the log observable ends up replacing the very coordinates we've appended after multiple append results are received" ignore {
 
       withScheduler { implicit scheduler =>
@@ -128,8 +105,7 @@ class MonixClientTest extends RiffMonixSpec {
           var done     = false
           val received = ListBuffer[AppendStatus]()
           leader.client
-            .append("input")
-            .dump("test")
+            .append("XYZ123")
             .doOnComplete { () =>
               done = true
             }

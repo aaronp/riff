@@ -23,7 +23,7 @@ import scala.reflect.ClassTag
 
 class RaftPipeMonixTest extends RiffMonixSpec {
 
-  "RaftPipe.client" should {
+  "RaftPipe.client" ignore {
 
     // scenario where a leader is elected in a 5-node cluster, gets disconnected from 3 nodes while accepting
     // some appends and sending to its remaining follower before being told of the new leader amongst the 3 nodes
@@ -41,9 +41,7 @@ class RaftPipeMonixTest extends RiffMonixSpec {
           val states: Iterable[ObservableState]   = fiveNodeCluster.values.map(_.handler.underlying.roleCallback.asInstanceOf[ObservableState])
           val leaderEventsTasks: Iterable[Task[NodeId]] = states.map { obsState =>
             val replay = obsState.events.replay
-
             replay.connect
-
             replay.collect {
               case NewLeaderEvent(_, leaderId) => leaderId
             }.headL
@@ -90,8 +88,8 @@ class RaftPipeMonixTest extends RiffMonixSpec {
           // 3) do our append request
           When("An append is received by the current leader")
           var appendError: Throwable = null
-          val appendResult           = initialLeader.client.append("this won't get committed")
           val appendUpdates: Observable[AppendStatus] = {
+            val appendResult = initialLeader.client.append("this won't get committed")
             appendResult.doOnError { err => //
               appendError = err
             }
