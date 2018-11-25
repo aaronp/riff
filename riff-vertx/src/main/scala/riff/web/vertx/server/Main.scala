@@ -23,16 +23,6 @@ object Main extends StrictLogging {
       case other                                                                     => sys.error(s"Usage: Expected the name and an optional cluster size (e.g. one of ${clusterNamesForSize(3)}, 3), but got '${other.mkString(" ")}'")
     }
 
-    var input = Console.in.readLine()
-    while (input != "") {
-      import running.builder.scheduler
-      val results: Observable[AppendStatus] = running.client.append(input)
-      results.foreach { res =>
-        println(s"APPENDING '$input' returned : $res")
-      }
-
-      input = Console.in.readLine()
-    }
     running.close()
     logger.info("Goodbye!")
   }

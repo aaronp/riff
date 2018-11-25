@@ -8,7 +8,6 @@ import org.scalatest.concurrent.Eventually
 import riff.RiffThreadedSpec
 import riff.raft.timer.RandomTimer
 
-
 import scala.concurrent.duration._
 
 abstract class RiffMonixSpec extends RiffThreadedSpec with Eventually with BeforeAndAfterAll with LowPriorityRiffMonixImplicits {

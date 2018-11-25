@@ -38,9 +38,6 @@ object Handlers {
       } else {
         recorded.onMessage(input)
       }
-      println(s"${nodeId} on ${input}\n\t${result}\n")
-
-
       result
     }
 
@@ -77,11 +74,6 @@ object Handlers {
         underlying.onMessage(input)
       } catch {
         case NonFatal(err) =>
-          val debug = requestsList.reverse.mkString(s"\n\n\t${nodeId} Messages:\n\t","\n\t","\n\n")
-          val responseDebug = responsesList.reverse.mkString(s"\n\n\t${nodeId} Outbound:\n\t","\n\t","\n\n")
-          println(debug)
-          println(responseDebug)
-
           throw new Exception(s"Error handling $input: $err", err)
       }
       responsesList = response :: responsesList

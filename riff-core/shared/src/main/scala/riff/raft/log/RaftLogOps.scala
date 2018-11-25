@@ -180,8 +180,6 @@ trait RaftLogOps[A] { self: RaftLog[A] =>
 
     val matchIndex: LogIndex = if (success) {
       if (request.entries.nonEmpty) {
-        val latestCommitIndex = latestCommit()
-        require(latestCommitIndex <= request.previous.index, s"Attempt to append at ${request.previous} when the latest commit is $latestCommitIndex")
         val logAppendResult: LogAppendResult = appendAll(request.appendIndex, request.entries)
 
         logAppendResult match {

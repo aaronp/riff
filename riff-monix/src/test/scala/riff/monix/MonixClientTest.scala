@@ -104,8 +104,6 @@ class MonixClientTest extends RiffMonixSpec {
         val err = intercept[AppendOccurredOnDisconnectedLeader] {
           //implicit val eq = Eq[AppendStatus](_ == _)
           val taken: List[AppendStatus] = appendResult.take(3).toListL.runSyncUnsafe(testTimeout)
-
-          taken.foreach(println)
           fail(s"Expected the replaced log entry to fail the stream, but got: ${taken}")
         }
         err.originalAppend shouldBe leaderLogResult

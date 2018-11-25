@@ -363,11 +363,12 @@ class RaftPipeMonixTest extends RiffMonixSpec {
                 obs.onErrorRecoverWith {
                   case _ =>
                     Thread.sleep(50)
+                    leader.handler.state().isLeader shouldBe true
                     append(deadline)
                 }
               }
             }
-            append(testTimeout.fromNow)
+            append(testTimeout.fromNow).dump("Hello World recovering stream")
           }
 
           val lastUpdate = appendResultPublisher.lastL.runSyncUnsafe(testTimeout)

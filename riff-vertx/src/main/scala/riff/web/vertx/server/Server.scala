@@ -56,7 +56,7 @@ object Server extends StrictLogging {
     Server
   }
 
-  def startRest(hostPort: HostPort, staticPath: Option[String])(implicit scheduler: Scheduler): Observable[RestRequestContext] = {
+  def startRest(hostPort: HostPort, staticPath: Option[String])(implicit scheduler: Scheduler) = {
     val restHandler = RestHandler()
     object RestVerticle extends ScalaVerticle {
       vertx = Vertx.vertx()
@@ -71,7 +71,7 @@ object Server extends StrictLogging {
     }
     RestVerticle.start()
 
-    restHandler.requests
+    RestVerticle -> restHandler.requests
   }
 
   private def makeHandler(hostPort: HostPort, vertx: Vertx, restHandler: Handler[HttpServerRequest], staticPath: Option[String]): Handler[HttpServerRequest] = {
