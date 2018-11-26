@@ -6,7 +6,7 @@ import eie.io._
 import io.vertx.scala.core.{Vertx, VertxOptions}
 import monix.execution.schedulers.SchedulerService
 import monix.reactive.Observable
-import riff.monix.{Raft, MonixClock, RiffSchedulers}
+import riff.monix.{ObservableRaftEndpoint, MonixClock, RiffSchedulers}
 import riff.raft.node.RaftCluster
 import riff.raft.{AppendStatus, NodeId}
 import riff.web.vertx.client.SocketClient
@@ -41,7 +41,7 @@ object Main extends StrictLogging {
     val cluster: RaftCluster.Fixed           = RaftCluster(clusterNamesForSize(5) - name)
     implicit val vertx                       = Vertx.vertx(VertxOptions().setWorkerPoolSize(clusterSize + 1).setEventLoopPoolSize(4).setInternalBlockingPoolSize(4))
 
-    val builder: Raft[String] = Raft[String](name, dataDir, cluster)
+    val builder: ObservableRaftEndpoint[String] = ObservableRaftEndpoint[String](name, dataDir, cluster)
 
     // eagerly create the pipe
     builder.pipe
@@ -67,12 +67,11 @@ object Main extends StrictLogging {
       logger.info(s"${name} log committed $event")
     }
 
-    builder.raftNode.resetReceiveHeartbeat()
+    builder.resetReceiveHeartbeat()
 
     def client = builder.pipe.client
     override def close(): Unit = {
-      builder.raftNode.cancelSendHeartbeat()
-      builder.raftNode.cancelReceiveHeartbeat()
+      builder.cancelHeartbeats()
       scheduler.shutdown()
       verticle.stop()
       clients.values.foreach(_.stop())

@@ -25,11 +25,11 @@ scalafmtOnCompile in ThisBuild := true
 scalafmtVersion in ThisBuild := "1.4.0"
 
 // Define a `Configuration` for each project, as per http://www.scala-sbt.org/sbt-site/api-documentation.html
-val Core      = config("riff-core")
-val RiffMonix = config("riff-monix")
-val RiffFs2   = config("riff-fs2")
-val RiffAkka  = config("riff-akka")
-val RiffVertx = config("riff-vertx")
+val Core      = config("riffCoreJVM")
+val RiffMonix = config("riffMonix")
+val RiffFs2   = config("riffFs2")
+val RiffAkka  = config("riffAkka")
+val RiffVertx = config("riffVertx")
 
 git.remoteRepo := s"git@github.com:$username/$repo.git"
 ghpagesNoJekyll := true
@@ -226,6 +226,7 @@ lazy val riffJsonJS  = riffJsonCrossProject.js
 lazy val riffMonix = project
   .in(file("riff-monix"))
   .settings(commonSettings: _*)
+  .settings(parallelExecution in Test := false)
   .settings(name := s"${repo}-monix", coverageMinimum := 80, coverageFailOnMinimum := true, libraryDependencies ++= Dependencies.RiffMonix)
   .dependsOn(riffCoreJVM % "compile->compile;test->test")
 
