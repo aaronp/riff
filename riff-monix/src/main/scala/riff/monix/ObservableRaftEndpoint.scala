@@ -56,7 +56,7 @@ class ObservableRaftEndpoint[A: ToBytes: FromBytes: ClassTag] private (raftNode:
 
     require(timerCallback == raftNode.timerCallback, s"${timerCallback} != ${raftNode.timerCallback}")
 
-    timerCallback.subscribe(p.input)
+    timerCallback.subscribe(p.nodeId, p.input)
 
     p
   }

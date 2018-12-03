@@ -5,8 +5,8 @@ import monix.reactive.{Observable, Observer}
 
 import scala.concurrent.Future
 
-class InfiniteConcurrentSubject[A](private val subject: ConcurrentSubject[A, A])(implicit sched : Scheduler) {
-  def output : Observable[A] = subject
+class InfiniteConcurrentSubject[A](private val subject: ConcurrentSubject[A, A])(implicit sched: Scheduler) {
+  def output: Observable[A] = subject
 
   val input = new Observer[A] {
     override def onNext(elem: A): Future[Ack] = {
@@ -17,14 +17,16 @@ class InfiniteConcurrentSubject[A](private val subject: ConcurrentSubject[A, A])
     }
     override def onComplete(): Unit = {
       // ignore complete
-//      println(s"Input to ${node.nodeId} onComplete()")
     }
   }
 }
+
 object InfiniteConcurrentSubject {
+
   def apply[A](implicit scheduler: Scheduler): InfiniteConcurrentSubject[A] = {
     apply(ConcurrentSubject.publish[A])
   }
+
   def apply[A](subject: ConcurrentSubject[A, A])(implicit scheduler: Scheduler): InfiniteConcurrentSubject[A] = {
     new InfiniteConcurrentSubject(subject)
   }

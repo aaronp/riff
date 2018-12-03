@@ -8,7 +8,7 @@ sealed trait LogAppendResult
 
 object LogAppendResult {
 
-  def apply(firstIndex: LogCoords, lastIndex: LogCoords, replacedIndices: Seq[LogCoords] = Nil) = {
+  def apply(firstIndex: LogCoords, lastIndex: LogCoords, replacedIndices: Seq[LogCoords] = Nil): LogAppendSuccess = {
     LogAppendSuccess(firstIndex, lastIndex, replacedIndices)
   }
 }
@@ -33,11 +33,7 @@ final case class LogAppendSuccess(firstIndex: LogCoords, lastIndex: LogCoords, r
   }
 
   def contains(response: AppendEntriesResponse): Boolean = {
-    val result = response.term == firstIndex.term && (response.matchIndex >= firstIndex.index && response.matchIndex <= lastIndex.index)
-
-    println(s"\t$toString contains $response --> $result")
-
-    result
+    response.term == firstIndex.term && (response.matchIndex >= firstIndex.index && response.matchIndex <= lastIndex.index)
   }
 }
 
@@ -45,7 +41,6 @@ final case class AttemptToSkipLogEntry(attemptedLogEntry: LogCoords, expectedNex
     extends Exception(
       s"Attempt to skip a log entry by appending ${attemptedLogEntry.index} w/ term ${attemptedLogEntry.term} when the next expected entry should've been $expectedNextIndex")
     with LogAppendResult with NoStackTrace
-//final case class AttemptToAppendEntryWithEarlierTerm(attemptedAppend :LogCoords, latestLogEntry : LogCoords) extends Exception(s"Attempt to append an entry ${attemptedAppend} which has a term greater that our latest log entry w/ $latestLogEntry")
 final case class AttemptToAppendLogEntryAtEarlierTerm(attemptedEntry: LogCoords, latestLogEntryAppended: LogCoords)
     extends Exception(
       s"An attempt to append ${attemptedEntry.index} w/ term ${attemptedEntry.term} when our latest entry was $latestLogEntryAppended. If an election took place after we were the leader, the term should've been incremented")

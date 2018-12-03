@@ -10,8 +10,8 @@ object Dependencies {
     "ch.qos.logback"                                % "logback-classic" % "1.1.11")
 
   val testDependencies = List(
-    "org.scalactic" %% "scalactic" % "3.0.4"   % "test",
-    "org.scalatest" %% "scalatest" % "3.0.4"   % "test",
+    "org.scalactic" %% "scalactic" % "3.0.5"   % "test",
+    "org.scalatest" %% "scalatest" % "3.0.5"   % "test",
     "org.pegdown"                  % "pegdown" % "1.6.0" % "test",
     "junit"                        % "junit"   % "4.12" % "test"
   )

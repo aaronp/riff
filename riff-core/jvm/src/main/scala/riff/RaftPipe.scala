@@ -1,5 +1,5 @@
 package riff
-import org.reactivestreams.{Publisher, Subscriber, Subscription}
+import org.reactivestreams.{Publisher, Subscriber}
 import riff.raft._
 import riff.raft.log.LogAppendSuccess
 import riff.raft.messages.{AddressedMessage, AppendData, RaftMessage}
@@ -159,20 +159,7 @@ object RaftPipe {
                                                               logAppendSuccess: LogAppendSuccess,
                                                               nodeInput: Pub[(RaftMessage[A], RaftNodeResult[A])])(implicit ec: ExecutionContext): Publisher[AppendStatus] = {
 
-    val replay = new ReplayPublisher[AppendStatus] with Subscriber[AppendStatus] {
-      override implicit def ctxt: ExecutionContext    = ec
-      override protected def maxQueueSize: LogIndex   = logAppendSuccess.numIndices * clusterSize + 1
-      override def onSubscribe(s: Subscription): Unit = s.request(Long.MaxValue)
-      override def onNext(t: AppendStatus): Unit      = enqueueMessage(t)
-      override def onError(t: Throwable): Unit        = enqueueError(t)
-      override def onComplete(): Unit                 = enqueueComplete()
-    }
-
-    val fromInput = AppendStatus.asStatusPublisher(nodeId, clusterSize, logAppendSuccess, nodeInput)
-
-    fromInput.subscribeWith(replay)
-
-    replay
+    ???
   }
 
   def wireTogether[A, Sub[_]: AsSubscriber, Pub[_]: AsPublisher, C[_], H <: RaftMessageHandler[A]](raftInstById: Map[NodeId, RaftPipe[A, Sub, Pub, C, H]]) = {

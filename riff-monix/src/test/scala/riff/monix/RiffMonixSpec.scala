@@ -12,6 +12,13 @@ import scala.concurrent.duration._
 
 abstract class RiffMonixSpec extends RiffThreadedSpec with Eventually with BeforeAndAfterAll with LowPriorityRiffMonixImplicits {
 
+  /**
+    * How long to wait for something NOT to happen - use sparingly!
+    *
+    * @return some amount of time to wait before ensuring e.g. no messages are received
+    */
+  def testNegativeTimeout: FiniteDuration = 100.millis
+
   def withScheduler[T](f: Scheduler => T): T = {
 
     val retVal = withExecCtxt { implicit execCtxt =>

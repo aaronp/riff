@@ -4,6 +4,7 @@ import monix.reactive.{Observable, Observer}
 import monix.reactive.OverflowStrategy.DropOld
 import monix.reactive.observers.Subscriber
 import monix.reactive.subjects.Var
+import riff.raft.NodeId
 import riff.raft.messages.{ReceiveHeartbeatTimeout, SendHeartbeatTimeout, TimerMessage}
 import riff.raft.timer.TimerCallback
 
@@ -26,8 +27,8 @@ class ObservableTimerCallback(implicit sched: Scheduler) extends TimerCallback[U
 
   override def onReceiveHeartbeatTimeout(): Unit = receiveTimeoutsVar := true
 
-  def subscribe(subscriber: Observer[TimerMessage]): Cancelable = {
-    sendTimeout.subscribe(subscriber)
-    receiveTimeouts.subscribe(subscriber)
+  def subscribe(nodeId: NodeId, subscriber: Observer[TimerMessage]): Cancelable = {
+    sendTimeout.dump(s"${nodeId} sendTimeout").subscribe(subscriber)
+    receiveTimeouts.dump(s"${nodeId} receiveTimeouts").subscribe(subscriber)
   }
 }

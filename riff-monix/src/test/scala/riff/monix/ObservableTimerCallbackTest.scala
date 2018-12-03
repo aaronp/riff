@@ -18,14 +18,17 @@ class ObservableTimerCallbackTest extends RiffMonixSpec {
         val timer    = new ObservableTimerCallback
         val received = ListBuffer[TimerMessage]()
 
-        timer.subscribe(new Observer[TimerMessage] {
-          override def onNext(elem: TimerMessage): Future[Ack] = {
-            received += elem
-            Ack.Continue
+        timer.subscribe(
+          "id",
+          new Observer[TimerMessage] {
+            override def onNext(elem: TimerMessage): Future[Ack] = {
+              received += elem
+              Ack.Continue
+            }
+            override def onError(ex: Throwable): Unit = ???
+            override def onComplete(): Unit           = ???
           }
-          override def onError(ex: Throwable): Unit = ???
-          override def onComplete(): Unit           = ???
-        })
+        )
 
         // call the method under test
         timer.onReceiveHeartbeatTimeout()
@@ -52,7 +55,7 @@ class ObservableTimerCallbackTest extends RiffMonixSpec {
 
           val listener = pipeUnderTest.subscribeWith(new TestListener[RaftNodeResult[String]](10, 100))
 
-          timer.subscribe(pipeUnderTest.input)
+          timer.subscribe("pipeUnderTest", pipeUnderTest.input)
           timer.onReceiveHeartbeatTimeout()
 
           eventually {

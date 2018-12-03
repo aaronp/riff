@@ -8,7 +8,7 @@ import scala.util.control.NonFatal
 
 object Handlers {
 
-  def pausable[A, H <: RaftMessageHandler[A]](underlying: H): PausableHandler[A, H, RecordingHandler[A]] = {
+  def pausable[A](underlying: RaftNode[A]): PausableHandler[A, RaftNode[A], RecordingHandler[A]] = {
     val paused = FixedHandler[A](underlying.nodeId, NoOpResult(s"${underlying.nodeId} is paused"))
     new PausableHandler(underlying, new RecordingHandler(paused))
   }
