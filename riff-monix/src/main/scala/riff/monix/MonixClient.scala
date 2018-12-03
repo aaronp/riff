@@ -65,8 +65,8 @@ case class MonixClient[A: ClassTag](inputSubscriber: Observer[RaftMessage[A]], r
 
     // finally we can push an 'AppendData' message to the node
     val resFut: Future[Ack] = inputSubscriber.onNext(AppendData(statusInput, data))
-    Observable.fromFuture(resFut).flatMap { _ => //
-      MonixClient.createAppendStatusFeed(data, statusOutput, raftNodeLogResults)
+    Observable.fromFuture(resFut).dump(data.mkString("client onNext ack [", ",", "]")).flatMap { _ => //
+      statusOutput
     }
   }
 }
@@ -103,7 +103,8 @@ object MonixClient {
 
         val combined    = combinedObs.flatten.dump(data.mkString("Monix Client combined [", ",", "]"))
         implicit val eq = Eq.instance[AppendStatus](_ == _)
-        val res         = (firstStatus +: combined).distinctUntilChanged.dump(data.mkString("Monix Client distinct [", ",", "]"))
+        val res =
+          (firstStatus +: combined).dump(data.mkString("Monix Client first + combined [", ",", "]")).distinctUntilChanged.dump(data.mkString("Monix Client distinct [", ",", "]"))
 
         LowPriorityRiffMonixImplicits.observableAsPublisher(sched).takeWhileIncludeLast(res)(!_.isComplete)
 

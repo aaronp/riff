@@ -2,7 +2,7 @@ import sbt._
 
 object Dependencies {
 
-  val config = "com.typesafe" % "config" % "1.3.0"
+  val config: ModuleID = "com.typesafe" % "config" % "1.3.0"
 
   //https://github.com/typesafehub/scala-logging
   val logging = List(

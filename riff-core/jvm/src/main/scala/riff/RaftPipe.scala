@@ -1,21 +1,15 @@
 package riff
-import java.nio.file.Path
-
-import eie.io.{FromBytes, ToBytes, _}
 import org.reactivestreams.{Publisher, Subscriber, Subscription}
 import riff.raft._
-import riff.raft.log.{LogAppendSuccess, RaftLog}
+import riff.raft.log.LogAppendSuccess
 import riff.raft.messages.{AddressedMessage, AppendData, RaftMessage}
 import riff.raft.node.{RaftNodeResult, _}
 import riff.raft.reactive.ReactiveClient
-import riff.raft.timer.{RaftClock, RandomTimer, Timers}
 import riff.reactive.AsPublisher.syntax._
-import riff.reactive.{ReactiveTimerCallback, _}
+import riff.reactive._
 
 import scala.concurrent.ExecutionContext
-import scala.concurrent.duration._
 import scala.reflect.ClassTag
-import scala.util.Properties
 
 /**
   *

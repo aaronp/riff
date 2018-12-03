@@ -12,7 +12,11 @@ import riff.reactive.AsPublisher
   * @param appendedCoords the log coords which have been appended on the leader
   * @param clusterSize the size of the cluster
   */
-final case class AppendStatus(leaderAppendResult: LogAppendSuccess, appended: Map[NodeId, AppendEntriesResponse], appendedCoords: Set[LogCoords], clusterSize: Int) {
+final case class AppendStatus(leaderAppendResult: LogAppendSuccess,
+                              appended: Map[NodeId, AppendEntriesResponse],
+                              appendedCoords: Set[LogCoords],
+                              clusterSize: Int,
+                              committed : Boolean) {
 
   override def toString: String = {
 
@@ -26,10 +30,6 @@ final case class AppendStatus(leaderAppendResult: LogAppendSuccess, appended: Ma
        |  ${appendedCoords.size} appendedCoords = $appendedCoords
        |  ${appended.size} responses: ${responses.mkString("\n","\n","\n")})""".stripMargin
   }
-  /** @return true if the leader has committed the latest (highest) coordinate of the appended log entries
-    */
-  def committed: Boolean = appendedCoords.contains(leaderAppendResult.lastIndex)
-
   /** @return true if we've received all the messages expected
     */
   def isComplete: Boolean = {
@@ -40,7 +40,7 @@ final case class AppendStatus(leaderAppendResult: LogAppendSuccess, appended: Ma
     resp.success && appendedCoords.contains(resp.coords)
   }
 
-  def withResult(from: NodeId, response: AppendEntriesResponse, newlyAppended: Seq[LogCoords]): AppendStatus = {
+  def withResult(from: NodeId, response: AppendEntriesResponse, newlyAppended: Iterable[LogCoords]): AppendStatus = {
     copy(appended = appended.updated(from, response), appendedCoords = appendedCoords ++ newlyAppended)
   }
 }
@@ -78,12 +78,12 @@ object AppendStatus {
     var currentStatus: AppendStatus = {
       val appendMap = Map[NodeId, AppendEntriesResponse](nodeId -> AppendEntriesResponse.ok(logAppendSuccess.firstIndex.term, logAppendSuccess.lastIndex.index))
       // the log entry is committed only if this is a single-node cluster
-      val committed = if (clusterSize == 1) {
+      val appendedCoords = if (clusterSize == 1) {
         logAppendSuccess.appendedCoords
       } else {
         Set.empty[LogCoords]
       }
-      AppendStatus(logAppendSuccess, appendMap, committed, clusterSize)
+      AppendStatus(logAppendSuccess, appendMap, appendedCoords, clusterSize, clusterSize == 1)
     }
 
     val firstStatus = currentStatus

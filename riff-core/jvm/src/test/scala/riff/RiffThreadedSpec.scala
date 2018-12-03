@@ -11,7 +11,7 @@ import scala.concurrent.duration._
 
 class RiffThreadedSpec extends RiffSpec with BeforeAndAfterAll with Eventually {
 
-  override implicit def testTimeout: FiniteDuration = 15.seconds
+  override implicit def testTimeout: FiniteDuration = 5.seconds
 
   protected def newExecCtxt(): ExecutionContextExecutorService = {
     newContextWithThreadPrefix(getClass.getSimpleName)

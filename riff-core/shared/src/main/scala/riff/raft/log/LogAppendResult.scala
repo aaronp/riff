@@ -33,7 +33,11 @@ final case class LogAppendSuccess(firstIndex: LogCoords, lastIndex: LogCoords, r
   }
 
   def contains(response: AppendEntriesResponse): Boolean = {
-    response.term == firstIndex.term && (response.matchIndex >= firstIndex.index && response.matchIndex <= lastIndex.index)
+    val result = response.term == firstIndex.term && (response.matchIndex >= firstIndex.index && response.matchIndex <= lastIndex.index)
+
+    println(s"\t$toString contains $response --> $result")
+
+    result
   }
 }
 

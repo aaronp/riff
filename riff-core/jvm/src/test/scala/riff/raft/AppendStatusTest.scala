@@ -37,7 +37,8 @@ class AppendStatusTest extends RiffThreadedSpec {
       listener.received.head shouldBe AppendStatus(LogAppendSuccess(LogCoords(1, 1), LogCoords(1, 1)),
                                                    Map("node under test" -> AppendEntriesResponse(1, true, 1)),
                                                    Set(LogCoords(1, 1)),
-                                                   1)
+                                                   1,
+        false)
       eventually {
         listener.completed shouldBe true
       }
@@ -93,7 +94,7 @@ class AppendStatusTest extends RiffThreadedSpec {
         listener.received.size shouldBe 5
       }
 
-      listener.received.head shouldBe AppendStatus(LogAppendSuccess(LogCoords(1, 1), LogCoords(1, 1)), Map("node under test" -> AppendEntriesResponse(1, true, 1)), Set.empty, 5)
+      listener.received.head shouldBe AppendStatus(LogAppendSuccess(LogCoords(1, 1), LogCoords(1, 1)), Map("node under test" -> AppendEntriesResponse(1, true, 1)), Set.empty, 5, true)
 
       val expectedResponseKeysAndCommitted = listener.received.toList.map { r =>
         r.leaderAppendResult shouldBe appendResult
@@ -171,7 +172,7 @@ class AppendStatusTest extends RiffThreadedSpec {
         }
       }
 
-      listener.received.head shouldBe AppendStatus(LogAppendSuccess(LogCoords(1, 1), LogCoords(1, 1)), Map("node under test" -> AppendEntriesResponse(1, true, 1)), Set.empty, 5)
+      listener.received.head shouldBe AppendStatus(LogAppendSuccess(LogCoords(1, 1), LogCoords(1, 1)), Map("node under test" -> AppendEntriesResponse(1, true, 1)), Set.empty, 5, true)
 
       val expectedResponseKeysAndCommitted = listener.received.toList.map { r =>
         r.leaderAppendResult shouldBe appendResult

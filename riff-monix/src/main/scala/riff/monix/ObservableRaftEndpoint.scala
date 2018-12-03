@@ -37,7 +37,7 @@ class ObservableRaftEndpoint[A: ToBytes: FromBytes: ClassTag] private (raftNode:
                                                                        val log: ObservableLog[A])(implicit val scheduler: Scheduler, val clock: RaftClock) {
 
   def cluster = raftNode.cluster
-  def nodeId = raftNode.nodeId
+  def nodeId  = raftNode.nodeId
 
   def cancelHeartbeats(): Unit = {
     raftNode.cancelSendHeartbeat()

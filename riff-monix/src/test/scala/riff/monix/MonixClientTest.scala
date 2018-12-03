@@ -35,13 +35,15 @@ class MonixClientTest extends RiffMonixSpec {
               leaderAppendResult = leaderLogResult,
               appended = Map("leader node id" -> AppendEntriesResponse.ok(1, 1)),
               appendedCoords = leaderLogResult.appendedCoords,
-              clusterSize = 5
+              clusterSize = 5,
+              false
             )
             val secondAppendResult = AppendStatus(
               leaderAppendResult = leaderLogResult,
               appended = Map("leader node id" -> AppendEntriesResponse.ok(1, 1), "follower node id" -> AppendEntriesResponse.ok(1, 1)),
               appendedCoords = leaderLogResult.appendedCoords,
-              clusterSize = 5
+              clusterSize = 5,
+              false
             )
             override def onNext(elem: RaftMessage[String]): Future[Ack] = {
               elem match {

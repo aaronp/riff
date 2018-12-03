@@ -12,8 +12,6 @@ import scala.concurrent.duration._
 
 abstract class RiffMonixSpec extends RiffThreadedSpec with Eventually with BeforeAndAfterAll with LowPriorityRiffMonixImplicits {
 
-  override def testTimeout: FiniteDuration = 30.seconds
-
   def withScheduler[T](f: Scheduler => T): T = {
 
     val retVal = withExecCtxt { implicit execCtxt =>
