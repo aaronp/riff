@@ -271,7 +271,7 @@ class RaftPipeMonixTest extends RiffMonixSpec {
           val erroredInput: Observable[RaftMessage[String]] = Observable(ReceiveHeartbeatTimeout).endWithError(new Exception("some error"))
 
           val okInput = Var[RaftMessage[String]](null)
-          okInput.filter(_ != null).dump("OK").subscribe(pipeUnderTest.input)
+          okInput.filter(_ != null).subscribe(pipeUnderTest.input)
           erroredInput.subscribe(pipeUnderTest.input)
 
           And("The remaining input sends some messages")
@@ -343,7 +343,7 @@ class RaftPipeMonixTest extends RiffMonixSpec {
           And("We append some data to that leader")
           val appendResultPublisher: Observable[AppendStatus] = {
             val client: RaftClient[Observable, String] = leader.client
-            client.append("Hello", "World").dump("Client Resp")
+            client.append("Hello", "World")
           }
 
           val received  = ListBuffer[AppendStatus]()

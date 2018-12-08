@@ -41,17 +41,17 @@ object AppendStatusObservable {
     // subscribe to our concurrent subject
     val updateMessages: Observable[StateUpdateMsg] = {
       val (pipeIn, pipeOut) = Pipe.publishToOne[StateUpdateMsg].unicast
-      stateInput.dump("Concurrent Input").subscribe(pipeIn)
+      stateInput.subscribe(pipeIn)
 
       val responseMessages = nodeInput.collect {
         case AddressedMessage(from, resp @ AppendEntriesResponse(_, _, _)) => StateUpdateMsg.responseFromNode(from, resp)
       }
 
-      responseMessages.dump("node response input").subscribe(stateInput)
-      appendResults.map(StateUpdateMsg.logAppend).dump("log append input").subscribe(stateInput)
-      committedCoordsInput.map(StateUpdateMsg.logCommit).dump("committed input").subscribe(stateInput)
+      responseMessages.subscribe(stateInput)
+      appendResults.map(StateUpdateMsg.logAppend).subscribe(stateInput)
+      committedCoordsInput.map(StateUpdateMsg.logCommit).subscribe(stateInput)
 
-      pipeOut.dump("StateUpdateMsg")
+      pipeOut
     }
 
     // the observer which will be given the single log result from the data which has been appended

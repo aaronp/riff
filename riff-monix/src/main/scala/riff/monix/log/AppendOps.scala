@@ -42,7 +42,7 @@ trait AppendOps[A] {
     // there's actually a race condition here between being notified of new coords and the 'dataForIndex'.
     // if an entry is replace in between the notification and the lookup, we could get fed e.g. one coord of:
     // LogCoords(term=2, index=2)
-    appendCoords().dump("append coords").flatMap(dataForIndex).dump("dataForIndex")
+    appendCoords().flatMap(dataForIndex)
   }
 
   protected def dataForIndex(coords: LogCoords): Observable[(LogCoords, A)]

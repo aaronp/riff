@@ -64,7 +64,7 @@ case class MonixClient[A: ClassTag](inputSubscriber: Observer[RaftMessage[A]], r
 
     // finally we can push an 'AppendData' message to the node
     val resFut: Future[Ack] = inputSubscriber.onNext(AppendData(statusInput, data))
-    Observable.fromFuture(resFut).dump(data.mkString("client onNext ack [", ",", "]")).flatMap { _ => //
+    Observable.fromFuture(resFut).flatMap { _ => //
       statusOutput
     }
   }

@@ -250,7 +250,7 @@ class AppendStatusObservableTest extends RiffMonixSpec {
     }
 
     def addSubscription(): Unit = {
-      feed.dump("test foreach").foreach { next =>
+      feed.foreach { next =>
         received += next
       }
     }
