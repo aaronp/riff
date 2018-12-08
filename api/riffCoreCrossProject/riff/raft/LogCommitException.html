@@ -101,6 +101,22 @@
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../index.html" class="extype" name="riff">riff</a></dd></dl></div>
+    </li><li name="riff.raft.client" visbl="pub" class="indented3 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="client"></a><a id="client:client"></a>
+      <span class="permalink">
+      <a href="../../riff/raft/index.html#client" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="client/index.html"><span class="name">client</span></a>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="index.html" class="extype" name="riff.raft">raft</a></dd></dl></div>
     </li><li name="riff.raft.log" visbl="pub" class="indented3 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="log"></a><a id="log:log"></a>
       <span class="permalink">
@@ -182,7 +198,11 @@
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="index.html" class="extype" name="riff.raft">raft</a></dd></dl></div>
     </li><li class="current-entities indented2">
-                        <a class="object" href="AppendStatus$.html" title=""></a>
+                        <span class="separator"></span>
+                        <a class="class" href="AppendOccurredOnDisconnectedLeader.html" title=""></a>
+                        <a href="AppendOccurredOnDisconnectedLeader.html" title="">AppendOccurredOnDisconnectedLeader</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
                         <a class="class" href="AppendStatus.html" title="Represents the current state of the cluster following an append"></a>
                         <a href="AppendStatus.html" title="Represents the current state of the cluster following an append">AppendStatus</a>
                       </li><li class="current-entities indented2">
@@ -195,8 +215,8 @@
                         <a href="AttemptToOverwriteACommittedIndex.html" title="">AttemptToOverwriteACommittedIndex</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="trait" href="LogAppendError.html" title=""></a>
-                        <a href="LogAppendError.html" title="">LogAppendError</a>
+                        <a class="trait" href="ClientError.html" title=""></a>
+                        <a href="ClientError.html" title="">ClientError</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="class" href="LogAppendException.html" title=""></a>
@@ -205,6 +225,10 @@
                         <span class="separator"></span>
                         <a class="class" href="" title=""></a>
                         <a href="" title="">LogCommitException</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="trait" href="LogError.html" title=""></a>
+                        <a href="LogError.html" title="">LogError</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="trait" href="RaftClient.html" title="The external use-cases for a node in the Raft protocol are:"></a>
@@ -232,7 +256,7 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <span class="name">LogCommitException</span><span class="params">(<span name="coords">coords: <a href="log/LogCoords.html" class="extype" name="riff.raft.log.LogCoords">LogCoords</a></span>, <span name="err">err: <span class="extype" name="scala.Throwable">Throwable</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Exception">Exception</span> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <span class="name">LogCommitException</span><span class="params">(<span name="coords">coords: <a href="log/LogCoords.html" class="extype" name="riff.raft.log.LogCoords">LogCoords</a></span>, <span name="err">err: <span class="extype" name="scala.Throwable">Throwable</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Exception">Exception</span> with <a href="LogError.html" class="extype" name="riff.raft.LogError">LogError</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       </h4>
 
@@ -241,7 +265,7 @@
           <span class="toggle">
             Linear Supertypes
           </span>
-          <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <span class="extype" name="java.lang.Exception">Exception</span>, <span class="extype" name="java.lang.Throwable">Throwable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
+          <div class="superTypes hiddenContent"><span class="extype" name="scala.Serializable">Serializable</span>, <span class="extype" name="scala.Product">Product</span>, <span class="extype" name="scala.Equals">Equals</span>, <a href="LogError.html" class="extype" name="riff.raft.LogError">LogError</a>, <span class="extype" name="java.lang.Exception">Exception</span>, <span class="extype" name="java.lang.Throwable">Throwable</span>, <span class="extype" name="java.io.Serializable">Serializable</span>, <span class="extype" name="scala.AnyRef">AnyRef</span>, <span class="extype" name="scala.Any">Any</span></div>
         </div></div>
         
 
@@ -267,7 +291,7 @@
                   <span class="filtertype">Inherited<br />
                   </span>
                   <ol id="linearization">
-                    <li class="in" name="riff.raft.LogCommitException"><span>LogCommitException</span></li><li class="in" name="scala.Serializable"><span>Serializable</span></li><li class="in" name="scala.Product"><span>Product</span></li><li class="in" name="scala.Equals"><span>Equals</span></li><li class="in" name="java.lang.Exception"><span>Exception</span></li><li class="in" name="java.lang.Throwable"><span>Throwable</span></li><li class="in" name="java.io.Serializable"><span>Serializable</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
+                    <li class="in" name="riff.raft.LogCommitException"><span>LogCommitException</span></li><li class="in" name="scala.Serializable"><span>Serializable</span></li><li class="in" name="scala.Product"><span>Product</span></li><li class="in" name="scala.Equals"><span>Equals</span></li><li class="in" name="riff.raft.LogError"><span>LogError</span></li><li class="in" name="java.lang.Exception"><span>Exception</span></li><li class="in" name="java.lang.Throwable"><span>Throwable</span></li><li class="in" name="java.io.Serializable"><span>Serializable</span></li><li class="in" name="scala.AnyRef"><span>AnyRef</span></li><li class="in" name="scala.Any"><span>Any</span></li>
                   </ol>
                 </div><div class="ancestors">
               <span class="filtertype"></span>
@@ -868,6 +892,8 @@
               <h3>Inherited from <span class="extype" name="scala.Product">Product</span></h3>
             </div><div class="parent" name="scala.Equals">
               <h3>Inherited from <span class="extype" name="scala.Equals">Equals</span></h3>
+            </div><div class="parent" name="riff.raft.LogError">
+              <h3>Inherited from <a href="LogError.html" class="extype" name="riff.raft.LogError">LogError</a></h3>
             </div><div class="parent" name="java.lang.Exception">
               <h3>Inherited from <span class="extype" name="java.lang.Exception">Exception</span></h3>
             </div><div class="parent" name="java.lang.Throwable">

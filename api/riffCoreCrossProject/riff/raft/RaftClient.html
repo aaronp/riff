@@ -101,6 +101,22 @@
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../index.html" class="extype" name="riff">riff</a></dd></dl></div>
+    </li><li name="riff.raft.client" visbl="pub" class="indented3 " data-isabs="false" fullComment="yes" group="Ungrouped">
+      <a id="client"></a><a id="client:client"></a>
+      <span class="permalink">
+      <a href="../../riff/raft/index.html#client" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="client/index.html"><span class="name">client</span></a>
+      </span>
+      
+      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="index.html" class="extype" name="riff.raft">raft</a></dd></dl></div>
     </li><li name="riff.raft.log" visbl="pub" class="indented3 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="log"></a><a id="log:log"></a>
       <span class="permalink">
@@ -182,7 +198,11 @@
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="index.html" class="extype" name="riff.raft">raft</a></dd></dl></div>
     </li><li class="current-entities indented2">
-                        <a class="object" href="AppendStatus$.html" title=""></a>
+                        <span class="separator"></span>
+                        <a class="class" href="AppendOccurredOnDisconnectedLeader.html" title=""></a>
+                        <a href="AppendOccurredOnDisconnectedLeader.html" title="">AppendOccurredOnDisconnectedLeader</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
                         <a class="class" href="AppendStatus.html" title="Represents the current state of the cluster following an append"></a>
                         <a href="AppendStatus.html" title="Represents the current state of the cluster following an append">AppendStatus</a>
                       </li><li class="current-entities indented2">
@@ -195,8 +215,8 @@
                         <a href="AttemptToOverwriteACommittedIndex.html" title="">AttemptToOverwriteACommittedIndex</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="trait" href="LogAppendError.html" title=""></a>
-                        <a href="LogAppendError.html" title="">LogAppendError</a>
+                        <a class="trait" href="ClientError.html" title=""></a>
+                        <a href="ClientError.html" title="">ClientError</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="class" href="LogAppendException.html" title=""></a>
@@ -205,6 +225,10 @@
                         <span class="separator"></span>
                         <a class="class" href="LogCommitException.html" title=""></a>
                         <a href="LogCommitException.html" title="">LogCommitException</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="trait" href="LogError.html" title=""></a>
+                        <a href="LogError.html" title="">LogError</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="trait" href="" title="The external use-cases for a node in the Raft protocol are:"></a>
@@ -300,7 +324,7 @@
 
         <div class="values members">
               <h3>Abstract Value Members</h3>
-              <ol><li name="riff.raft.RaftClient#append" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
+              <ol><li name="riff.raft.RaftClient#append" visbl="pub" class="indented0 " data-isabs="true" fullComment="yes" group="Ungrouped">
       <a id="append(data:Array[A]):F[riff.raft.AppendStatus]"></a><a id="append(Array[A]):F[AppendStatus]"></a>
       <span class="permalink">
       <a href="../../riff/raft/RaftClient.html#append(data:Array[A]):F[riff.raft.AppendStatus]" title="Permalink">
@@ -315,7 +339,11 @@
         <span class="name">append</span><span class="params">(<span name="data">data: <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="riff.raft.RaftClient.A">A</span>]</span>)</span><span class="result">: <span class="extype" name="riff.raft.RaftClient.F">F</span>[<a href="AppendStatus.html" class="extype" name="riff.raft.AppendStatus">AppendStatus</a>]</span>
       </span>
       
-      
+      <p class="shortcomment cmt">This is a client's view of a raft cluster, which simply wants to write some data.</p><div class="fullcomment"><div class="comment cmt"><p>This is a client's view of a raft cluster, which simply wants to write some data.</p><p>It should return some kind of observable result F[AppendStatus] which can represent an updated status as each member
+of the cluster replies to the append. F[AppendStatus] should also be able to represent a failure if the node represented
+by this client is not the leader or otherwise can't support the append.</p><p>This call may also trigger a <a href="AppendOccurredOnDisconnectedLeader.html" class="extype" name="riff.raft.AppendOccurredOnDisconnectedLeader">AppendOccurredOnDisconnectedLeader</a> if the append occurs on a leader which can't
+replicate the data and is subsequently replaced by another leader in another election.
+</p></div><dl class="paramcmts block"><dt class="param">data</dt><dd class="cmt"><p>the data to write</p></dd><dt>returns</dt><dd class="cmt"><p>an observable of the append results as they are appended/co</p></dd></dl></div>
     </li></ol>
             </div>
 
@@ -385,9 +413,9 @@
         <span class="name">append</span><span class="params">(<span name="data">data: <span class="extype" name="riff.raft.RaftClient.A">A</span></span>, <span name="theRest">theRest: <span class="extype" name="riff.raft.RaftClient.A">A</span>*</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="classTag">classTag: <span class="extype" name="scala.reflect.ClassTag">ClassTag</span>[<span class="extype" name="riff.raft.RaftClient.A">A</span>]</span>)</span><span class="result">: <span class="extype" name="riff.raft.RaftClient.F">F</span>[<a href="AppendStatus.html" class="extype" name="riff.raft.AppendStatus">AppendStatus</a>]</span>
       </span>
       
-      <p class="shortcomment cmt">This is a client's view of a raft cluster, which simply wants to write some data
-</p><div class="fullcomment"><div class="comment cmt"><p>This is a client's view of a raft cluster, which simply wants to write some data
-</p></div><dl class="paramcmts block"><dt class="param">data</dt><dd class="cmt"><p>the data to write</p></dd><dt>returns</dt><dd class="cmt"><p>an observable of the append results as they are appended/co</p></dd></dl></div>
+      <p class="shortcomment cmt">Convenience method for appending a var-arg set of data
+</p><div class="fullcomment"><div class="comment cmt"><p>Convenience method for appending a var-arg set of data
+</p></div><dl class="paramcmts block"><dt class="param">data</dt><dd class="cmt"><p>the first element to append</p></dd><dt class="param">theRest</dt><dd class="cmt"><p>the remaining elements</p></dd><dt>returns</dt><dd class="cmt"><p>an F[AppendStatus] representing the append results</p></dd></dl></div>
     </li><li name="scala.Any#asInstanceOf" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="asInstanceOf[T0]:T0"></a>
       <span class="permalink">

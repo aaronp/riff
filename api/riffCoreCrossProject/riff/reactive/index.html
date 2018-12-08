@@ -134,14 +134,6 @@
                         <a class="class" href="AsyncSubscription.html" title="Represents a subscription whose actions are handled via a Runnable pulling values from a blocking internalStateInputQueue submitted on a provided execution context"></a>
                         <a href="AsyncSubscription.html" title="Represents a subscription whose actions are handled via a Runnable pulling values from a blocking internalStateInputQueue submitted on a provided execution context">AsyncSubscription</a>
                       </li><li class="current-entities indented2">
-                        <span class="separator"></span>
-                        <a class="class" href="BatchedPublisher.html" title=""></a>
-                        <a href="BatchedPublisher.html" title="">BatchedPublisher</a>
-                      </li><li class="current-entities indented2">
-                        <span class="separator"></span>
-                        <a class="class" href="BatchedSubscriber.html" title=""></a>
-                        <a href="BatchedSubscriber.html" title="">BatchedSubscriber</a>
-                      </li><li class="current-entities indented2">
                         <a class="object" href="CollectPublisher$.html" title=""></a>
                         <a class="class" href="CollectPublisher.html" title="Simple implementation of a publisher which can filter its published elements"></a>
                         <a href="CollectPublisher.html" title="Simple implementation of a publisher which can filter its published elements">CollectPublisher</a>
@@ -314,38 +306,6 @@ subscription. Each subscription maintains its own queue, and so slow consumers c
       <p class="shortcomment cmt">Represents a subscription whose actions are handled via a Runnable pulling values from a blocking internalStateInputQueue submitted on
 a provided execution context
 </p>
-    </li><li name="riff.reactive.BatchedPublisher" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="BatchedPublisher[A]extendsPublisher[A]withProductwithSerializable"></a><a id="BatchedPublisher[A]:BatchedPublisher[A]"></a>
-      <span class="permalink">
-      <a href="../../riff/reactive/index.html#BatchedPublisher[A]extendsPublisher[A]withProductwithSerializable" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">case class</span>
-      </span>
-      <span class="symbol">
-        <a title="" href="BatchedPublisher.html"><span class="name">BatchedPublisher</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="underlying">underlying: <span class="extype" name="org.reactivestreams.Publisher">Publisher</span>[<span class="extype" name="riff.reactive.BatchedPublisher.A">A</span>]</span>, <span name="minimumRequestedThreshold">minimumRequestedThreshold: <span class="extype" name="scala.Int">Int</span></span>, <span name="subscriptionBatchSize">subscriptionBatchSize: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result"> extends <span class="extype" name="org.reactivestreams.Publisher">Publisher</span>[<span class="extype" name="riff.reactive.BatchedPublisher.A">A</span>] with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
-      </span>
-      
-      
-    </li><li name="riff.reactive.BatchedSubscriber" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="BatchedSubscriber[A]extendsSingleSubscriber[A]withStrictLoggingwithProductwithSerializable"></a><a id="BatchedSubscriber[A]:BatchedSubscriber[A]"></a>
-      <span class="permalink">
-      <a href="../../riff/reactive/index.html#BatchedSubscriber[A]extendsSingleSubscriber[A]withStrictLoggingwithProductwithSerializable" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">case class</span>
-      </span>
-      <span class="symbol">
-        <a title="" href="BatchedSubscriber.html"><span class="name">BatchedSubscriber</span></a><span class="tparams">[<span name="A">A</span>]</span><span class="params">(<span name="wrapped">wrapped: <span class="extype" name="org.reactivestreams.Subscriber">Subscriber</span>[_ &gt;: <span class="extype" name="riff.reactive.BatchedSubscriber.A">A</span>]</span>, <span name="minimumRequestedThreshold">minimumRequestedThreshold: <span class="extype" name="scala.Int">Int</span></span>, <span name="subscriptionBatchSize">subscriptionBatchSize: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result"> extends <a href="SingleSubscriber.html" class="extype" name="riff.reactive.SingleSubscriber">SingleSubscriber</a>[<span class="extype" name="riff.reactive.BatchedSubscriber.A">A</span>] with <span class="extype" name="com.typesafe.scalalogging.StrictLogging">StrictLogging</span> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
-      </span>
-      
-      
     </li><li name="riff.reactive.CollectPublisher" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="CollectPublisher[-A,B]extendsPublisher[B]withAutoCloseable"></a><a id="CollectPublisher[-A,B]:CollectPublisher[A,B]"></a>
       <span class="permalink">

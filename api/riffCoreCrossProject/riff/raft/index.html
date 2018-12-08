@@ -101,6 +101,22 @@
       </span>
       
       <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../index.html" class="extype" name="riff">riff</a></dd></dl></div>
+    </li><li name="riff.raft.client" visbl="pub" class="indented3 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="client"></a><a id="client:client"></a>
+      <span class="permalink">
+      <a href="../../riff/raft/index.html#client" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">package</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="client/index.html"><span class="name">client</span></a>
+      </span>
+      
+      
     </li><li name="riff.raft.log" visbl="pub" class="indented3 " data-isabs="false" fullComment="no" group="Ungrouped">
       <a id="log"></a><a id="log:log"></a>
       <span class="permalink">
@@ -182,7 +198,11 @@
       
       
     </li><li class="current-entities indented2">
-                        <a class="object" href="AppendStatus$.html" title=""></a>
+                        <span class="separator"></span>
+                        <a class="class" href="AppendOccurredOnDisconnectedLeader.html" title=""></a>
+                        <a href="AppendOccurredOnDisconnectedLeader.html" title="">AppendOccurredOnDisconnectedLeader</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
                         <a class="class" href="AppendStatus.html" title="Represents the current state of the cluster following an append"></a>
                         <a href="AppendStatus.html" title="Represents the current state of the cluster following an append">AppendStatus</a>
                       </li><li class="current-entities indented2">
@@ -195,8 +215,8 @@
                         <a href="AttemptToOverwriteACommittedIndex.html" title="">AttemptToOverwriteACommittedIndex</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
-                        <a class="trait" href="LogAppendError.html" title=""></a>
-                        <a href="LogAppendError.html" title="">LogAppendError</a>
+                        <a class="trait" href="ClientError.html" title=""></a>
+                        <a href="ClientError.html" title="">ClientError</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="class" href="LogAppendException.html" title=""></a>
@@ -205,6 +225,10 @@
                         <span class="separator"></span>
                         <a class="class" href="LogCommitException.html" title=""></a>
                         <a href="LogCommitException.html" title="">LogCommitException</a>
+                      </li><li class="current-entities indented2">
+                        <span class="separator"></span>
+                        <a class="trait" href="LogError.html" title=""></a>
+                        <a href="LogError.html" title="">LogError</a>
                       </li><li class="current-entities indented2">
                         <span class="separator"></span>
                         <a class="trait" href="RaftClient.html" title="The external use-cases for a node in the Raft protocol are:"></a>
@@ -305,7 +329,23 @@
 
         <div id="types" class="types members">
               <h3>Type Members</h3>
-              <ol><li name="riff.raft.AppendStatus" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
+              <ol><li name="riff.raft.AppendOccurredOnDisconnectedLeader" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
+      <a id="AppendOccurredOnDisconnectedLeaderextendsExceptionwithClientErrorwithProductwithSerializable"></a><a id="AppendOccurredOnDisconnectedLeader:AppendOccurredOnDisconnectedLeader"></a>
+      <span class="permalink">
+      <a href="../../riff/raft/index.html#AppendOccurredOnDisconnectedLeaderextendsExceptionwithClientErrorwithProductwithSerializable" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier">final </span>
+        <span class="kind">case class</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="AppendOccurredOnDisconnectedLeader.html"><span class="name">AppendOccurredOnDisconnectedLeader</span></a><span class="params">(<span name="originalAppend">originalAppend: <a href="log/LogAppendSuccess.html" class="extype" name="riff.raft.log.LogAppendSuccess">LogAppendSuccess</a></span>, <span name="newAppend">newAppend: <a href="log/LogAppendSuccess.html" class="extype" name="riff.raft.log.LogAppendSuccess">LogAppendSuccess</a></span>)</span><span class="result"> extends <span class="extype" name="scala.Exception">Exception</span> with <a href="ClientError.html" class="extype" name="riff.raft.ClientError">ClientError</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      
+    </li><li name="riff.raft.AppendStatus" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="AppendStatusextendsProductwithSerializable"></a><a id="AppendStatus:AppendStatus"></a>
       <span class="permalink">
       <a href="../../riff/raft/index.html#AppendStatusextendsProductwithSerializable" title="Permalink">
@@ -317,16 +357,16 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a title="Represents the current state of the cluster following an append" href="AppendStatus.html"><span class="name">AppendStatus</span></a><span class="params">(<span name="leaderAppendResult">leaderAppendResult: <a href="log/LogAppendSuccess.html" class="extype" name="riff.raft.log.LogAppendSuccess">LogAppendSuccess</a></span>, <span name="appended">appended: <span class="extype" name="scala.Predef.Map">Map</span>[<a href="#NodeId=String" class="extmbr" name="riff.raft.NodeId">NodeId</a>, <a href="messages/AppendEntriesResponse.html" class="extype" name="riff.raft.messages.AppendEntriesResponse">AppendEntriesResponse</a>]</span>, <span name="committedCoords">committedCoords: <span class="extype" name="scala.Predef.Set">Set</span>[<a href="log/LogCoords.html" class="extype" name="riff.raft.log.LogCoords">LogCoords</a>]</span>, <span name="clusterSize">clusterSize: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a title="Represents the current state of the cluster following an append" href="AppendStatus.html"><span class="name">AppendStatus</span></a><span class="params">(<span name="leaderAppendResult">leaderAppendResult: <a href="log/LogAppendSuccess.html" class="extype" name="riff.raft.log.LogAppendSuccess">LogAppendSuccess</a></span>, <span name="appended">appended: <span class="extype" name="scala.Predef.Map">Map</span>[<a href="#NodeId=String" class="extmbr" name="riff.raft.NodeId">NodeId</a>, <a href="messages/AppendEntriesResponse.html" class="extype" name="riff.raft.messages.AppendEntriesResponse">AppendEntriesResponse</a>]</span>, <span name="appendedCoords">appendedCoords: <span class="extype" name="scala.Predef.Set">Set</span>[<a href="log/LogCoords.html" class="extype" name="riff.raft.log.LogCoords">LogCoords</a>]</span>, <span name="clusterSize">clusterSize: <span class="extype" name="scala.Int">Int</span></span>, <span name="committed">committed: <span class="extype" name="scala.Predef.Set">Set</span>[<a href="log/LogCoords.html" class="extype" name="riff.raft.log.LogCoords">LogCoords</a>]</span>, <span name="errorAfterAppend">errorAfterAppend: <span class="extype" name="scala.Option">Option</span>[<span class="extype" name="scala.Exception">Exception</span>] = <span class="symbol">None</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       
       <p class="shortcomment cmt">Represents the current state of the cluster following an append
 </p><div class="fullcomment"><div class="comment cmt"><p>Represents the current state of the cluster following an append
-</p></div><dl class="paramcmts block"><dt class="param">appended</dt><dd class="cmt"><p>a map of the cluster ids to a flag indicating whether or not the node has appended the entry</p></dd><dt class="param">committedCoords</dt><dd class="cmt"><p>the log coords which have been committed on the leader</p></dd><dt class="param">clusterSize</dt><dd class="cmt"><p>the size of the cluster</p></dd></dl></div>
+</p></div><dl class="paramcmts block"><dt class="param">appended</dt><dd class="cmt"><p>a map of the cluster ids to a flag indicating whether or not the node has appended the entry</p></dd><dt class="param">appendedCoords</dt><dd class="cmt"><p>the log coords which have been appended on the leader</p></dd><dt class="param">clusterSize</dt><dd class="cmt"><p>the size of the cluster</p></dd><dt class="param">committed</dt><dd class="cmt"><p>the coordinates of committed entries on the leader after quarum has ack'd</p></dd><dt class="param">errorAfterAppend</dt><dd class="cmt"><p>A means of letting observers know that a log append error has occurred, perhaps due to a leader change</p></dd></dl></div>
     </li><li name="riff.raft.AttemptToCommitMissingIndex" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="AttemptToCommitMissingIndexextendsExceptionwithProductwithSerializable"></a><a id="AttemptToCommitMissingIndex:AttemptToCommitMissingIndex"></a>
+      <a id="AttemptToCommitMissingIndexextendsExceptionwithLogErrorwithProductwithSerializable"></a><a id="AttemptToCommitMissingIndex:AttemptToCommitMissingIndex"></a>
       <span class="permalink">
-      <a href="../../riff/raft/index.html#AttemptToCommitMissingIndexextendsExceptionwithProductwithSerializable" title="Permalink">
+      <a href="../../riff/raft/index.html#AttemptToCommitMissingIndexextendsExceptionwithLogErrorwithProductwithSerializable" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -335,14 +375,14 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a title="" href="AttemptToCommitMissingIndex.html"><span class="name">AttemptToCommitMissingIndex</span></a><span class="params">(<span name="attemptedIndex">attemptedIndex: <a href="#LogIndex=Int" class="extmbr" name="riff.raft.LogIndex">LogIndex</a></span>)</span><span class="result"> extends <span class="extype" name="scala.Exception">Exception</span> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a title="" href="AttemptToCommitMissingIndex.html"><span class="name">AttemptToCommitMissingIndex</span></a><span class="params">(<span name="attemptedIndex">attemptedIndex: <a href="#LogIndex=Int" class="extmbr" name="riff.raft.LogIndex">LogIndex</a></span>)</span><span class="result"> extends <span class="extype" name="scala.Exception">Exception</span> with <a href="LogError.html" class="extype" name="riff.raft.LogError">LogError</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       
       
     </li><li name="riff.raft.AttemptToOverwriteACommittedIndex" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="AttemptToOverwriteACommittedIndexextendsExceptionwithProductwithSerializable"></a><a id="AttemptToOverwriteACommittedIndex:AttemptToOverwriteACommittedIndex"></a>
+      <a id="AttemptToOverwriteACommittedIndexextendsExceptionwithLogErrorwithProductwithSerializable"></a><a id="AttemptToOverwriteACommittedIndex:AttemptToOverwriteACommittedIndex"></a>
       <span class="permalink">
-      <a href="../../riff/raft/index.html#AttemptToOverwriteACommittedIndexextendsExceptionwithProductwithSerializable" title="Permalink">
+      <a href="../../riff/raft/index.html#AttemptToOverwriteACommittedIndexextendsExceptionwithLogErrorwithProductwithSerializable" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -351,14 +391,14 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a title="" href="AttemptToOverwriteACommittedIndex.html"><span class="name">AttemptToOverwriteACommittedIndex</span></a><span class="params">(<span name="attemptedLogIndex">attemptedLogIndex: <a href="#LogIndex=Int" class="extmbr" name="riff.raft.LogIndex">LogIndex</a></span>, <span name="latestCommittedIndex">latestCommittedIndex: <a href="#LogIndex=Int" class="extmbr" name="riff.raft.LogIndex">LogIndex</a></span>)</span><span class="result"> extends <span class="extype" name="scala.Exception">Exception</span> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a title="" href="AttemptToOverwriteACommittedIndex.html"><span class="name">AttemptToOverwriteACommittedIndex</span></a><span class="params">(<span name="attemptedLogIndex">attemptedLogIndex: <a href="#LogIndex=Int" class="extmbr" name="riff.raft.LogIndex">LogIndex</a></span>, <span name="latestCommittedIndex">latestCommittedIndex: <a href="#LogIndex=Int" class="extmbr" name="riff.raft.LogIndex">LogIndex</a></span>)</span><span class="result"> extends <span class="extype" name="scala.Exception">Exception</span> with <a href="LogError.html" class="extype" name="riff.raft.LogError">LogError</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       
       
-    </li><li name="riff.raft.LogAppendError" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
-      <a id="LogAppendErrorextendsException"></a><a id="LogAppendError:LogAppendError"></a>
+    </li><li name="riff.raft.ClientError" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="ClientErrorextendsException"></a><a id="ClientError:ClientError"></a>
       <span class="permalink">
-      <a href="../../riff/raft/index.html#LogAppendErrorextendsException" title="Permalink">
+      <a href="../../riff/raft/index.html#ClientErrorextendsException" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -367,14 +407,14 @@
         <span class="kind">trait</span>
       </span>
       <span class="symbol">
-        <a title="" href="LogAppendError.html"><span class="name">LogAppendError</span></a><span class="result"> extends <span class="extype" name="scala.Exception">Exception</span></span>
+        <a title="" href="ClientError.html"><span class="name">ClientError</span></a><span class="result"> extends <span class="extype" name="scala.Exception">Exception</span></span>
       </span>
       
       
     </li><li name="riff.raft.LogAppendException" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="LogAppendException[T]extendsExceptionwithProductwithSerializable"></a><a id="LogAppendException[T]:LogAppendException[T]"></a>
+      <a id="LogAppendException[T]extendsExceptionwithLogErrorwithProductwithSerializable"></a><a id="LogAppendException[T]:LogAppendException[T]"></a>
       <span class="permalink">
-      <a href="../../riff/raft/index.html#LogAppendException[T]extendsExceptionwithProductwithSerializable" title="Permalink">
+      <a href="../../riff/raft/index.html#LogAppendException[T]extendsExceptionwithLogErrorwithProductwithSerializable" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -383,14 +423,14 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a title="" href="LogAppendException.html"><span class="name">LogAppendException</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="coords">coords: <a href="log/LogCoords.html" class="extype" name="riff.raft.log.LogCoords">LogCoords</a></span>, <span name="data">data: <span class="extype" name="riff.raft.LogAppendException.T">T</span></span>, <span name="err">err: <span class="extype" name="scala.Throwable">Throwable</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Exception">Exception</span> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a title="" href="LogAppendException.html"><span class="name">LogAppendException</span></a><span class="tparams">[<span name="T">T</span>]</span><span class="params">(<span name="coords">coords: <a href="log/LogCoords.html" class="extype" name="riff.raft.log.LogCoords">LogCoords</a></span>, <span name="data">data: <span class="extype" name="riff.raft.LogAppendException.T">T</span></span>, <span name="err">err: <span class="extype" name="scala.Throwable">Throwable</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Exception">Exception</span> with <a href="LogError.html" class="extype" name="riff.raft.LogError">LogError</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       
       
     </li><li name="riff.raft.LogCommitException" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="LogCommitExceptionextendsExceptionwithProductwithSerializable"></a><a id="LogCommitException:LogCommitException"></a>
+      <a id="LogCommitExceptionextendsExceptionwithLogErrorwithProductwithSerializable"></a><a id="LogCommitException:LogCommitException"></a>
       <span class="permalink">
-      <a href="../../riff/raft/index.html#LogCommitExceptionextendsExceptionwithProductwithSerializable" title="Permalink">
+      <a href="../../riff/raft/index.html#LogCommitExceptionextendsExceptionwithLogErrorwithProductwithSerializable" title="Permalink">
         <i class="material-icons"></i>
       </a>
     </span>
@@ -399,7 +439,23 @@
         <span class="kind">case class</span>
       </span>
       <span class="symbol">
-        <a title="" href="LogCommitException.html"><span class="name">LogCommitException</span></a><span class="params">(<span name="coords">coords: <a href="log/LogCoords.html" class="extype" name="riff.raft.log.LogCoords">LogCoords</a></span>, <span name="err">err: <span class="extype" name="scala.Throwable">Throwable</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Exception">Exception</span> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+        <a title="" href="LogCommitException.html"><span class="name">LogCommitException</span></a><span class="params">(<span name="coords">coords: <a href="log/LogCoords.html" class="extype" name="riff.raft.log.LogCoords">LogCoords</a></span>, <span name="err">err: <span class="extype" name="scala.Throwable">Throwable</span></span>)</span><span class="result"> extends <span class="extype" name="scala.Exception">Exception</span> with <a href="LogError.html" class="extype" name="riff.raft.LogError">LogError</a> with <span class="extype" name="scala.Product">Product</span> with <span class="extype" name="scala.Serializable">Serializable</span></span>
+      </span>
+      
+      
+    </li><li name="riff.raft.LogError" visbl="pub" class="indented0 " data-isabs="true" fullComment="no" group="Ungrouped">
+      <a id="LogErrorextendsException"></a><a id="LogError:LogError"></a>
+      <span class="permalink">
+      <a href="../../riff/raft/index.html#LogErrorextendsException" title="Permalink">
+        <i class="material-icons"></i>
+      </a>
+    </span>
+      <span class="modifier_kind">
+        <span class="modifier"></span>
+        <span class="kind">trait</span>
+      </span>
+      <span class="symbol">
+        <a title="" href="LogError.html"><span class="name">LogError</span></a><span class="result"> extends <span class="extype" name="scala.Exception">Exception</span></span>
       </span>
       
       
@@ -492,22 +548,6 @@
       </span>
       <span class="symbol">
         <span class="name">isMajority</span><span class="params">(<span name="numberReceived">numberReceived: <span class="extype" name="scala.Int">Int</span></span>, <span name="clusterSize">clusterSize: <span class="extype" name="scala.Int">Int</span></span>)</span><span class="result">: <span class="extype" name="scala.Boolean">Boolean</span></span>
-      </span>
-      
-      
-    </li><li name="riff.raft.AppendStatus" visbl="pub" class="indented0 " data-isabs="false" fullComment="no" group="Ungrouped">
-      <a id="AppendStatus"></a><a id="AppendStatus:AppendStatus"></a>
-      <span class="permalink">
-      <a href="../../riff/raft/index.html#AppendStatus" title="Permalink">
-        <i class="material-icons"></i>
-      </a>
-    </span>
-      <span class="modifier_kind">
-        <span class="modifier"></span>
-        <span class="kind">object</span>
-      </span>
-      <span class="symbol">
-        <a title="" href="AppendStatus$.html"><span class="name">AppendStatus</span></a><span class="result"> extends <span class="extype" name="scala.Serializable">Serializable</span></span>
       </span>
       
       

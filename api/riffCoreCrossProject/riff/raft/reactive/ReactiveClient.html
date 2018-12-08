@@ -288,7 +288,11 @@
         <span class="name">append</span><span class="params">(<span name="data">data: <span class="extype" name="scala.Array">Array</span>[<span class="extype" name="riff.raft.reactive.ReactiveClient.A">A</span>]</span>)</span><span class="result">: <span class="extype" name="org.reactivestreams.Publisher">Publisher</span>[<a href="../AppendStatus.html" class="extype" name="riff.raft.AppendStatus">AppendStatus</a>]</span>
       </span>
       
-      <div class="fullcomment"><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="riff.raft.reactive.ReactiveClient">ReactiveClient</a> → <a href="../RaftClient.html" class="extype" name="riff.raft.RaftClient">RaftClient</a></dd></dl></div>
+      <p class="shortcomment cmt">This is a client's view of a raft cluster, which simply wants to write some data.</p><div class="fullcomment"><div class="comment cmt"><p>This is a client's view of a raft cluster, which simply wants to write some data.</p><p>It should return some kind of observable result F[AppendStatus] which can represent an updated status as each member
+of the cluster replies to the append. F[AppendStatus] should also be able to represent a failure if the node represented
+by this client is not the leader or otherwise can't support the append.</p><p>This call may also trigger a <a href="../AppendOccurredOnDisconnectedLeader.html" class="extype" name="riff.raft.AppendOccurredOnDisconnectedLeader">AppendOccurredOnDisconnectedLeader</a> if the append occurs on a leader which can't
+replicate the data and is subsequently replaced by another leader in another election.
+</p></div><dl class="paramcmts block"><dt class="param">data</dt><dd class="cmt"><p>the data to write</p></dd><dt>returns</dt><dd class="cmt"><p>an observable of the append results as they are appended/co</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="" class="extype" name="riff.raft.reactive.ReactiveClient">ReactiveClient</a> → <a href="../RaftClient.html" class="extype" name="riff.raft.RaftClient">RaftClient</a></dd></dl></div>
     </li><li name="riff.raft.RaftClient#append" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="append(data:A,theRest:A*)(implicitclassTag:scala.reflect.ClassTag[A]):F[riff.raft.AppendStatus]"></a><a id="append(A,A*)(ClassTag[A]):Publisher[AppendStatus]"></a>
       <span class="permalink">
@@ -304,9 +308,9 @@
         <span class="name">append</span><span class="params">(<span name="data">data: <span class="extype" name="riff.raft.reactive.ReactiveClient.A">A</span></span>, <span name="theRest">theRest: <span class="extype" name="riff.raft.reactive.ReactiveClient.A">A</span>*</span>)</span><span class="params">(<span class="implicit">implicit </span><span name="classTag">classTag: <span class="extype" name="scala.reflect.ClassTag">ClassTag</span>[<span class="extype" name="riff.raft.reactive.ReactiveClient.A">A</span>]</span>)</span><span class="result">: <span class="extype" name="org.reactivestreams.Publisher">Publisher</span>[<a href="../AppendStatus.html" class="extype" name="riff.raft.AppendStatus">AppendStatus</a>]</span>
       </span>
       
-      <p class="shortcomment cmt">This is a client's view of a raft cluster, which simply wants to write some data
-</p><div class="fullcomment"><div class="comment cmt"><p>This is a client's view of a raft cluster, which simply wants to write some data
-</p></div><dl class="paramcmts block"><dt class="param">data</dt><dd class="cmt"><p>the data to write</p></dd><dt>returns</dt><dd class="cmt"><p>an observable of the append results as they are appended/co</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../RaftClient.html" class="extype" name="riff.raft.RaftClient">RaftClient</a></dd></dl></div>
+      <p class="shortcomment cmt">Convenience method for appending a var-arg set of data
+</p><div class="fullcomment"><div class="comment cmt"><p>Convenience method for appending a var-arg set of data
+</p></div><dl class="paramcmts block"><dt class="param">data</dt><dd class="cmt"><p>the first element to append</p></dd><dt class="param">theRest</dt><dd class="cmt"><p>the remaining elements</p></dd><dt>returns</dt><dd class="cmt"><p>an F[AppendStatus] representing the append results</p></dd></dl><dl class="attributes block"> <dt>Definition Classes</dt><dd><a href="../RaftClient.html" class="extype" name="riff.raft.RaftClient">RaftClient</a></dd></dl></div>
     </li><li name="scala.Any#asInstanceOf" visbl="pub" class="indented0 " data-isabs="false" fullComment="yes" group="Ungrouped">
       <a id="asInstanceOf[T0]:T0"></a>
       <span class="permalink">

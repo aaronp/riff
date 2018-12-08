@@ -767,8 +767,8 @@ index will be set to the request previous index + 1.
         <span class="name">onCommit</span><span class="params">(<span name="applyToStateMachine">applyToStateMachine: (<a href="LogEntry.html" class="extype" name="riff.raft.log.LogEntry">LogEntry</a>[<span class="extype" name="riff.raft.log.DelegateLog.A">A</span>]) ⇒ <span class="extype" name="scala.Unit">Unit</span></span>)</span><span class="result">: <a href="StateMachineLog.html" class="extype" name="riff.raft.log.StateMachineLog">StateMachineLog</a>[<span class="extype" name="riff.raft.log.DelegateLog.A">A</span>]</span>
       </span>
       
-      <p class="shortcomment cmt">This function is the main point of the Raft cluster -- it applies the provided function
-to the LogEntry[A] once the entry is committed.</p><div class="fullcomment"><div class="comment cmt"><p>This function is the main point of the Raft cluster -- it applies the provided function
+      <p class="shortcomment cmt">This function may server as the main domain logic hook for of the Raft cluster -- it applies the provided function
+to the LogEntry[A] once the entry is committed.</p><div class="fullcomment"><div class="comment cmt"><p>This function may server as the main domain logic hook for of the Raft cluster -- it applies the provided function
 to the LogEntry[A] once the entry is committed. It is up to the application what to do with
 the side-effectful function.</p><p>You can chain these methods to do multiple things, but notice that this method returns a NEW
 log, and so all of this should be done prior to creating the RaftNode which will handle the
