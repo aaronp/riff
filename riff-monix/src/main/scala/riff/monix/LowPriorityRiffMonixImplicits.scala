@@ -2,7 +2,7 @@ package riff.monix
 import monix.execution.Scheduler
 import monix.reactive.{Observable, Observer}
 import org.reactivestreams.{Publisher, Subscriber}
-import riff.reactive.{AsPublisher, AsSubscriber, Publishers}
+import riff.reactive.{AsPublisher, AsSubscriber}
 
 object LowPriorityRiffMonixImplicits extends LowPriorityRiffMonixImplicits
 
@@ -29,9 +29,11 @@ trait LowPriorityRiffMonixImplicits {
       publisher.takeWhile(predicate)
     }
     override def takeWhileIncludeLast[A](publisher: Observable[A])(predicate: A => Boolean): Observable[A] = {
-      // TODO - implement this in terms of Observable instead of having to go to/from Observable
-      val pub = Publishers.TakeWhile(publisher.toReactivePublisher, predicate, true)
-      Observable.fromReactivePublisher(pub)
+      val options: Observable[Option[A]] = publisher.flatMap {
+        case next if predicate(next) => Observable(Option(next))
+        case next                    => Observable(Option(next), None)
+      }
+      options.takeWhile(_.isDefined).map(_.get)
     }
   }
 

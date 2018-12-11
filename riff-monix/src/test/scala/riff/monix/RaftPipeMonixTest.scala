@@ -7,6 +7,7 @@ import monix.reactive.{Observable, Observer}
 import riff.RaftPipe
 import riff.monix.RaftPipeMonix.{onAppendData, pipeForHandler}
 import riff.monix.RaftPipeMonixTest.PausablePipe
+import riff.monix.client.MonixClient
 import riff.monix.log.ObservableLog
 import riff.raft._
 import riff.raft.log.{LogAppendSuccess, LogCoords, LogEntry, RaftLog}

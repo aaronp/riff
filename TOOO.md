@@ -1,0 +1,8 @@
+ - get a JS page sorted to observe the logs and input data
+ - release an args4c update so we can have a decent entry point w/ a config
+ - create a docker image for a node
+ - prove dynamic cluster in a test
+ - add docker compose cucumber tests
+ - update the readme based on my email
+ - add TLS to web examples
+ - implement fs2 and akka

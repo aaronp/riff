@@ -15,7 +15,7 @@ private[server] class ServerWebSocketHandler private (name: String, onConnect: S
 
 object ServerWebSocketHandler {
 
-  def replay(name: String)(onConnect: ServerEndpoint => Unit)(implicit timeout: Duration, scheduler: Scheduler): ServerWebSocketHandler = {
+  def publish(name: String)(onConnect: ServerEndpoint => Unit)(implicit timeout: Duration, scheduler: Scheduler): ServerWebSocketHandler = {
     new ServerWebSocketHandler(name, onConnect)
   }
 }

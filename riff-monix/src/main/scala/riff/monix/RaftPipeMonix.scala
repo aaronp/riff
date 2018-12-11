@@ -5,7 +5,7 @@ import eie.io._
 import monix.execution.{Cancelable, Scheduler}
 import monix.reactive.{Observable, Observer, Pipe}
 import riff.RaftPipe
-import riff.monix.client.AppendStatusObservable
+import riff.monix.client.{AppendStatusObservable, MonixClient}
 import riff.monix.log.ObservableLog
 import riff.raft.log.{LogAppendResult, RaftLog}
 import riff.raft.messages.{AppendData, RaftMessage}
@@ -181,7 +181,7 @@ object RaftPipeMonix extends LowPriorityRiffMonixImplicits {
         */
       val nodeInput: Observable[RaftMessage[A]] = {
         val (singleThreadedIn, nodeIn) = Pipe.publishToOne[RaftMessage[A]].unicast
-        subject.output.subscribe(singleThreadedIn)
+        subject.output.dump(s"${handler.nodeId} input").subscribe(singleThreadedIn)
         nodeIn.share
       }
 
@@ -193,13 +193,14 @@ object RaftPipeMonix extends LowPriorityRiffMonixImplicits {
         case append @ AppendData(_, d8a: Array[A]) =>
           val responseSubscriber = Observer.fromReactiveSubscriber(append.statusSubscriber, Cancelable())
           onAppendData(responseSubscriber, nodeInput, d8a)
-        case anyOtherInput => handler.onMessage(anyOtherInput)
+        case anyOtherInput =>
+          handler.onMessage(anyOtherInput)
       }
 
       handled.share
     }
 
-    ReactivePipe(subject.input, out)
+    ReactivePipe(subject.input, out.dump(s"${handler.nodeId} output"))
   }
 
   def wireTogetherMonix[A, H <: RaftMessageHandler[A]](raftInstById: Map[NodeId, RaftPipe[A, Observer, Observable, Observable, H]])(implicit s: Scheduler) = {

@@ -5,6 +5,8 @@ import riff.monix.RiffMonixSpec
 class StartupTest extends RiffMonixSpec {
 
   "Startup" should {
-    "connect a server" in {}
+    "connect a server" in {
+
+    }
   }
 }

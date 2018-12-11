@@ -1,6 +1,7 @@
-package riff.monix
+package riff.monix.client
 import monix.execution.{Ack, Scheduler}
 import monix.reactive.{Observable, Observer, Pipe}
+import riff.monix.LowPriorityRiffMonixImplicits
 import riff.raft.log.LogAppendResult
 import riff.raft.messages.{AppendData, RaftMessage}
 import riff.raft.{AppendStatus, RaftClient}

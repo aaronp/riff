@@ -1,77 +1,85 @@
 package riff.web.vertx.server
-import java.nio.file.Path
-
 import com.typesafe.scalalogging.StrictLogging
-import eie.io._
 import io.vertx.scala.core.{Vertx, VertxOptions}
 import monix.execution.schedulers.SchedulerService
 import monix.reactive.Observable
-import riff.monix.{ObservableRaftEndpoint, MonixClock, RiffSchedulers}
-import riff.raft.node.RaftCluster
-import riff.raft.{AppendStatus, NodeId}
+import riff.monix.RiffSchedulers
+import riff.raft.{NodeId, RaftClient}
 import riff.web.vertx.client.SocketClient
-import streaming.api.HostPort
-
-import scala.concurrent.duration._
 
 object Main extends StrictLogging {
 
   def main(args: Array[String]): Unit = {
-    val running = args match {
-      case Array(name) if clusterNamesForSize(5).contains(name)                      => Started(name, 5)
-      case Array(name, sizeStr) if clusterNamesForSize(sizeStr.toInt).contains(name) => Started(name, sizeStr.toInt)
-      case other                                                                     => sys.error(s"Usage: Expected the name and an optional cluster size (e.g. one of ${clusterNamesForSize(3)}, 3), but got '${other.mkString(" ")}'")
+    implicit val scheduler = new RiffSchedulers.Delegate(RiffSchedulers.computation.newScheduler()) {
+      override def shutdown(): Unit = {
+        logger.warn("shutting down scheduler")
+        super.shutdown()
+      }
     }
 
-    running.close()
-    logger.info("Goodbye!")
+    VertxClusterConfig.fromArgs(args) match {
+      case None =>
+        sys.error(s"Usage: Expected the name and an optional cluster size but got '${args.mkString(" ")}'")
+      case Some(config) =>
+        val running: Started = Started(config)
+
+        logger.info(s"Started ${running.config.name}")
+//        running.close()
+//        logger.info("Goodbye!")
+    }
   }
 
-  def clusterNamesForSize(size: Int) = (1 to size).map(i => s"node$i").toSet
+  case class Started(config: VertxClusterConfig) extends AutoCloseable {
+    implicit val scheduler: SchedulerService = {
+      new RiffSchedulers.Delegate(RiffSchedulers.computation.newScheduler()) {
+        override def shutdown(): Unit = {
+          logger.warn("Shutting down the scheduler")
+          super.shutdown()
+        }
+      }
+    }
 
-  def portForName(name: String) = 8000 + name.filter(_.isDigit).toInt
+    implicit val vertx = {
+      val clusterSize = config.clusterNodes.size + 1
+      Vertx.vertx(VertxOptions().setWorkerPoolSize(clusterSize).setEventLoopPoolSize(4).setInternalBlockingPoolSize(4))
+    }
 
-  case class Started(name: String, clusterSize: Int) extends AutoCloseable {
-    implicit val scheduler: SchedulerService = RiffSchedulers.computation.scheduler
-    implicit val socketTimeout               = 1.minute
-    implicit val clock                       = MonixClock()
-    val port                                 = portForName(name)
-    val dataDir: Path                        = name.asPath.resolve("target/.data")
-    val hostPort: HostPort                   = HostPort.localhost(port)
-    val cluster: RaftCluster.Fixed           = RaftCluster(clusterNamesForSize(5) - name)
-    implicit val vertx                       = Vertx.vertx(VertxOptions().setWorkerPoolSize(clusterSize + 1).setEventLoopPoolSize(4).setInternalBlockingPoolSize(4))
-
-    val builder: ObservableRaftEndpoint[String] = ObservableRaftEndpoint[String](name, dataDir, cluster)
-
-    // eagerly create the pipe
-    builder.pipe
-    logger.info(s"Connecting to peers...")
-    val clients: Map[NodeId, SocketClient] = Startup.connectToPeers(builder)
+    val raft     = config.mkNode[String]
+    val cluster  = config.cluster
+    val hostPort = config.hostPort
+    logger.info(s"Trying to connect to peers...")
+    val clients: Map[NodeId, SocketClient] = Startup.connectToPeers(raft)(config.socketTimeout, vertx)
     logger.info(s"Starting the server on ${hostPort} for $cluster")
-    val verticle = Startup.startServer(builder, hostPort)
+    val verticle = Startup.startServer(raft, hostPort, config.staticPath)(config.scheduler, config.socketTimeout, vertx)
     logger.info(s"Handling messages on ${hostPort} for $cluster")
 
-    builder.timerCallback.receiveTimeouts.foreach { _ => //
-      logger.info(s"${name} got received HB timeout")
+    // this isn't JUST debug -- with zero subscriptions the node doesn't do anything.
+    // we need at least one subscriber to actually make the node do work
+    raft.pipe.output.foreach { res =>
+      logger.info(s"${raft.nodeId} sending $res")
     }
-    builder.timerCallback.sendTimeout.foreach { _ => //
-      logger.info(s"${name} got send HB timeout")
+    raft.timerCallback.receiveTimeouts.foreach { _ => //
+      logger.info(s"${config.name} got received HB timeout")
     }
-    builder.stateCallback.events.foreach { event => //
-      logger.info(s"${name} noticed $event")
+    raft.timerCallback.sendTimeout.foreach { _ => //
+      logger.info(s"${config.name} got send HB timeout")
     }
-    builder.log.appendResults().foreach { event => //
-      logger.info(s"${name} log appended $event")
+    raft.stateCallback.events.foreach { event => //
+      logger.info(s"${config.name} noticed $event")
     }
-    builder.log.committedEntries().foreach { event => //
-      logger.info(s"${name} log committed $event")
+    raft.log.appendResults().foreach { event => //
+      logger.info(s"${config.name} log appended $event")
+    }
+    raft.log.committedEntries().foreach { event => //
+      logger.info(s"${config.name} log committed $event")
     }
 
-    builder.resetReceiveHeartbeat()
+    raft.resetReceiveHeartbeat()
 
-    def client = builder.pipe.client
+    def client: RaftClient[Observable, String] = raft.pipe.client
+
     override def close(): Unit = {
-      builder.cancelHeartbeats()
+      raft.cancelHeartbeats()
       scheduler.shutdown()
       verticle.stop()
       clients.values.foreach(_.stop())

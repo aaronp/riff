@@ -1,7 +1,5 @@
 package riff.web.vertx.server
 
-import java.net.InetSocketAddress
-
 import com.typesafe.scalalogging.StrictLogging
 import io.vertx.core.Handler
 import io.vertx.lang.scala.ScalaVerticle
@@ -9,15 +7,14 @@ import io.vertx.scala.core.Vertx
 import io.vertx.scala.core.http.{HttpServerRequest, ServerWebSocket}
 import io.vertx.scala.ext.web.Router
 import io.vertx.scala.ext.web.handler.StaticHandler
-import javax.net.ServerSocketFactory
 import monix.execution.Scheduler
-import monix.reactive.Observable
 import streaming.api.HostPort
-import streaming.rest.RestRequestContext
 
 import scala.concurrent.duration.Duration
-import scala.util.control.NonFatal
 
+/**
+  * Contains functions for starting a vertx service
+  */
 object Server extends StrictLogging {
 
   type OnConnect = ServerEndpoint => Unit
@@ -28,14 +25,14 @@ object Server extends StrictLogging {
     }
   }
 
-  def startSocket(hostPort: HostPort)(onConnect: OnConnect)(implicit timeout: Duration, scheduler: Scheduler, vertx: Vertx): ScalaVerticle = {
-    val websocketHandler = ServerWebSocketHandler.replay("general")(onConnect)
+  def startSocketWithHandler(hostPort: HostPort)(onConnect: OnConnect)(implicit timeout: Duration, scheduler: Scheduler, vertx: Vertx): ScalaVerticle = {
+    val websocketHandler: ServerWebSocketHandler = ServerWebSocketHandler.publish("general")(onConnect)
     start(hostPort, None, LoggingHandler, websocketHandler)
   }
 
-  def start(hostPort: HostPort, staticPath: Option[String] = None)(
+  def startSocket(hostPort: HostPort, staticPath: Option[String] = None)(
       onConnect: PartialFunction[String, OnConnect])(implicit timeout: Duration, scheduler: Scheduler, vertx: Vertx): ScalaVerticle = {
-    val websocketHandler = RoutingSocketHandler(onConnect.andThen(ServerWebSocketHandler.replay("general")))
+    val websocketHandler = RoutingSocketHandler(onConnect.andThen(ServerWebSocketHandler.publish("general")))
     start(hostPort, staticPath, LoggingHandler, websocketHandler)
   }
 

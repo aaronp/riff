@@ -20,13 +20,13 @@ import scala.util.control.NonFatal
 
 class SocketClientServerIntegrationTest extends RiffSpec with Eventually with StrictLogging {
 
-  "Server.start / SocketClient.connect" ignore {
+  "Server.startSocket / SocketClient.connect" should {
     "route endpoints accordingly" in {
       val port    = 1236
       val UserIdR = "/user/(.*)".r
 
       implicit val vertx = Vertx.vertx()
-      val started: ScalaVerticle = Server.start(HostPort.localhost(port)) {
+      val started: ScalaVerticle = Server.startSocket(HostPort.localhost(port)) {
         case "/admin" =>
           endpt =>
             endpt.toRemote.onNext(WebFrame.text("Thanks for connecting to admin"))
@@ -103,7 +103,7 @@ class SocketClientServerIntegrationTest extends RiffSpec with Eventually with St
         }
       }
 
-      val started: ScalaVerticle = Server.startSocket(HostPort.localhost(port))(chat)
+      val started: ScalaVerticle = Server.startSocketWithHandler(HostPort.localhost(port))(chat)
       var c: SocketClient        = null
       try {
 
@@ -164,7 +164,7 @@ class SocketClientServerIntegrationTest extends RiffSpec with Eventually with St
         var fromClient         = ""
 
         // start the server
-        val started: ScalaVerticle = Server.startSocket(HostPort.localhost(port)) { endpoint: ServerEndpoint =>
+        val started: ScalaVerticle = Server.startSocketWithHandler(HostPort.localhost(port)) { endpoint: ServerEndpoint =>
           endpoint.toRemote.onNext(WebFrame.text(s"hello from the server at ${endpoint.socket.path}"))
 
           endpoint.fromRemote.foreach { msg: WebFrame =>

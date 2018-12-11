@@ -25,7 +25,7 @@ object WebFrameEndpoint extends StrictLogging {
     def markComplete() = {
       if (completed.compareAndSet(false, true)) {
         frameSink.onComplete()
-        observable.onComplete()
+        //observable.onComplete()
       } else {
         logger.warn("frame sink already completed")
       }
@@ -52,7 +52,7 @@ object WebFrameEndpoint extends StrictLogging {
       override def handle(event: Throwable): Unit = {
         logger.warn(s"$name got exception $event")
         frameSink.onError(event)
-        observable.onError(event)
+        //observable.onError(event)
         socket.close()
       }
     })

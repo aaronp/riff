@@ -1,0 +1,23 @@
+version: '3.2'
+# see https://www.digitalocean.com/community/tutorials/how-to-share-data-between-docker-containers
+# https://docs.docker.com/compose/reference/
+services:
+  node1:
+    image: "porpoiseltd/riffvertx"
+    # we can specify configuration on the entrypoint's command line
+    entrypoint: "/app/bin/exec.sh"
+    ports:
+      - "80:7770"
+    environment:
+      - EXCHANGE_HOST=worker1
+    volumes:
+      - ga-home:/ga-app
+  node2:
+    image: "porpoiseltd/riffvertx"
+    # we could put a 'dependsOn', but the cluster should be able to come up in any order
+    # also, if we had 'dependsOn' all the way through we'd end up with circular dependencies
+    #depends_on:
+    #  - node1
+    entrypoint: "/app/bin/exec.sh"
+volumes:
+  riff-home:

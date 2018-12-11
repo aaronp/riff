@@ -6,38 +6,42 @@ import monix.execution.Scheduler
 import monix.reactive.{Observable, Observer}
 import riff.RaftPipe
 import riff.monix.log.ObservableLog
-import riff.raft.{NodeId, RaftClient}
 import riff.raft.log.RaftLog
 import riff.raft.node._
 import riff.raft.timer.{RaftClock, Timers}
+import riff.raft.{NodeId, RaftClient}
 
 import scala.reflect.ClassTag
 
 /**
-  * This should be the main entry for a Raft node when using Monix.
+  * This is a convenience datastructure for obtaining feeds from the relevant parts of a raft node which have been customized
+  * for monix:
+  * $ an observable state for cluster membership notifications
+  * $ a timer callback to react to heartbeat timeouts
+  * $ an observable log to react to appended and committed data
+  * $ a pipe for all the inputs/outputs to a [[RaftNode]]
   *
   * It represents the pieces required to communicate with other Raft nodes in the cluster, whether they be backed by
   * monix or not.
   *
-  *
-  * @param raftNode
-  * @param stateCallback
-  * @param timerCallback
-  * @param log
+  * @param raftNode the underlying node logic to handle the requests
+  * @param stateCallback an observable state for cluster membership notifications
+  * @param timerCallback a timer callback to react to heartbeat timeouts
+  * @param log an observable log to react to appended and committed data
   * @param ev$1
   * @param ev$2
   * @param ev$3
-  * @param scheduler
-  * @param clock
+  * @param scheduler the scheduler used to drive the observables and timer
+  * @param clock the clock used to control the raft timeouts
   * @tparam A
   */
-class ObservableRaftEndpoint[A: ToBytes: FromBytes: ClassTag] private (raftNode: RaftNode[A],
-                                                                       val stateCallback: ObservableState,
-                                                                       val timerCallback: ObservableTimerCallback,
-                                                                       val log: ObservableLog[A])(implicit val scheduler: Scheduler, val clock: RaftClock) {
+class RaftMonix[A: ToBytes: FromBytes: ClassTag] private (raftNode: RaftNode[A],
+                                                          val stateCallback: ObservableState,
+                                                          val timerCallback: ObservableTimerCallback,
+                                                          val log: ObservableLog[A])(implicit val scheduler: Scheduler, val clock: RaftClock) {
 
-  def cluster = raftNode.cluster
-  def nodeId  = raftNode.nodeId
+  def cluster: RaftCluster = raftNode.cluster
+  def nodeId: NodeId = raftNode.nodeId
 
   def cancelHeartbeats(): Unit = {
     raftNode.cancelSendHeartbeat()
@@ -49,7 +53,7 @@ class ObservableRaftEndpoint[A: ToBytes: FromBytes: ClassTag] private (raftNode:
   }
 
   /**
-    * The pipe used for input/output from this node
+    * @return a pipe representing the input/output from this node
     */
   lazy val pipe: RaftPipe[A, Observer, Observable, Observable, RaftNode[A]] = {
     val p = RaftPipeMonix.raftPipeForHandler(raftNode)
@@ -67,7 +71,7 @@ class ObservableRaftEndpoint[A: ToBytes: FromBytes: ClassTag] private (raftNode:
   def client: RaftClient[Observable, A] = pipe.client
 }
 
-object ObservableRaftEndpoint {
+object RaftMonix {
 
   /**
     *
@@ -83,7 +87,7 @@ object ObservableRaftEndpoint {
     */
   def apply[A: ToBytes: FromBytes: ClassTag](name: NodeId, dir: Path, cluster: RaftCluster, maxAppendSize: Int = 1000, createDirIfNotExists: Boolean = true)(
       implicit scheduler: Scheduler,
-      clock: RaftClock): ObservableRaftEndpoint[A] = {
+      clock: RaftClock): RaftMonix[A] = {
 
     val dataDir            = dir.resolve(".data")
     val persistentStateDir = dir.resolve(".persistentState")
@@ -102,7 +106,8 @@ object ObservableRaftEndpoint {
       timerCallback,
       stateCallback
     )
-    new ObservableRaftEndpoint(raftNode, stateCallback, timerCallback, log)
+
+    new RaftMonix(raftNode, stateCallback, timerCallback, log)
   }
 
 }

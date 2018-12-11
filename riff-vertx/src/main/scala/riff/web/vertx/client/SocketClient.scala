@@ -25,6 +25,16 @@ class SocketClient private (coords: EndpointCoords, client: Handler[WebSocket], 
 
 object SocketClient {
 
+  /**
+    * try to connect to the given endpoint
+    * @param coords
+    * @param name
+    * @param onConnect
+    * @param timeout
+    * @param scheduler
+    * @param vertx
+    * @return
+    */
   def connect(coords: EndpointCoords, name: String = null)(
       onConnect: Endpoint[WebFrame, WebFrame] => Unit)(implicit timeout: Duration, scheduler: Scheduler, vertx: Vertx): SocketClient = {
     val counter = new AtomicInteger(0)
