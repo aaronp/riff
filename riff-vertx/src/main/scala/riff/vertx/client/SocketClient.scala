@@ -1,4 +1,4 @@
-package riff.web.vertx.client
+package riff.vertx.client
 
 import java.util.concurrent.atomic.AtomicInteger
 
@@ -8,7 +8,7 @@ import io.vertx.lang.scala.ScalaVerticle
 import io.vertx.scala.core.Vertx
 import io.vertx.scala.core.http.{HttpClient, WebSocket}
 import monix.execution.Scheduler
-import riff.web.vertx.WebFrameEndpoint
+import riff.vertx.WebFrameEndpoint
 import streaming.api.Endpoint
 import streaming.api.sockets.WebFrame
 import streaming.rest.EndpointCoords

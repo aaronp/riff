@@ -9,8 +9,8 @@ import monix.execution.Cancelable
 import monix.execution.Scheduler.Implicits.global
 import org.scalatest.concurrent.Eventually
 import riff.RiffSpec
-import riff.web.vertx.client.SocketClient
-import riff.web.vertx.server.{Server, ServerEndpoint}
+import riff.vertx.client.SocketClient
+import riff.vertx.server.{Server, ServerEndpoint}
 import streaming.api._
 import streaming.api.sockets.WebFrame
 import streaming.rest.EndpointCoords

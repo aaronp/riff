@@ -1,5 +1,4 @@
-package riff.web.vertx
-
+package riff.vertx
 import java.util.concurrent.atomic.AtomicBoolean
 
 import com.typesafe.scalalogging.StrictLogging
@@ -7,7 +6,6 @@ import io.vertx.core.Handler
 import io.vertx.scala.core.http.{WebSocketBase, WebSocketFrame}
 import monix.execution.Scheduler
 import monix.reactive.{Observable, Pipe}
-import riff.web.vertx.server.WebSocketFrameAsWebFrame
 import streaming.api.sockets.WebFrame
 
 import scala.concurrent.duration.Duration

@@ -1,10 +1,10 @@
-package riff.web.vertx.server
+package riff.vertx.server
 
 import com.typesafe.scalalogging.StrictLogging
 import io.vertx.scala.core.http.ServerWebSocket
 import monix.execution.Scheduler
 import monix.reactive.{Observable, Observer}
-import riff.web.vertx.WebFrameEndpoint
+import riff.vertx.WebFrameEndpoint
 import streaming.api.Endpoint
 import streaming.api.sockets.WebFrame
 

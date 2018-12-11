@@ -1,4 +1,4 @@
-package riff.web.vertx
+package riff.vertx
 
 import java.util.concurrent.atomic.AtomicBoolean
 

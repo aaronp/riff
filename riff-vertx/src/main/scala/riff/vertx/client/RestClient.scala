@@ -1,4 +1,4 @@
-package riff.web.vertx.client
+package riff.vertx.client
 
 import com.typesafe.scalalogging.StrictLogging
 import io.vertx.core.buffer.Buffer

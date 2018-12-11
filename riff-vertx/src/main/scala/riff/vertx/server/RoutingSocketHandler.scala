@@ -1,8 +1,8 @@
-package riff.web.vertx.server
+package riff.vertx.server
 
 import io.vertx.core.Handler
 import io.vertx.scala.core.http.ServerWebSocket
-import RoutingSocketHandler.NotFoundHandler
+import riff.vertx.server.RoutingSocketHandler.NotFoundHandler
 
 case class RoutingSocketHandler(byRoute: PartialFunction[String, Handler[ServerWebSocket]], notFound: Handler[ServerWebSocket] = NotFoundHandler) extends Handler[ServerWebSocket] {
   override def handle(event: ServerWebSocket): Unit = {

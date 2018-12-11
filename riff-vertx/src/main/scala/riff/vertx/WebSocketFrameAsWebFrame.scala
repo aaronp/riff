@@ -1,5 +1,4 @@
-package riff.web.vertx.server
-
+package riff.vertx
 import io.vertx.scala.core.http.WebSocketFrame
 import streaming.api.sockets.WebFrame
 

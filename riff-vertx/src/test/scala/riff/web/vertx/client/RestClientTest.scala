@@ -4,7 +4,8 @@ import monix.execution.Scheduler.Implicits.global
 import monix.reactive.Observable
 import org.scalatest.concurrent.Eventually
 import riff.RiffSpec
-import riff.web.vertx.server.Server
+import riff.vertx.client.RestClient
+import riff.vertx.server.Server
 import streaming.api.HostPort
 import streaming.rest._
 

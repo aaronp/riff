@@ -1,5 +1,4 @@
-package riff.web.vertx.server
-
+package riff.vertx.server
 import com.typesafe.scalalogging.StrictLogging
 import io.vertx.core.Handler
 import io.vertx.lang.scala.ScalaVerticle

@@ -1,4 +1,4 @@
-package riff.web.vertx.server
+package riff.vertx.server
 
 import io.vertx.core.Handler
 import io.vertx.scala.core.http.ServerWebSocket

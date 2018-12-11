@@ -1,4 +1,4 @@
-package riff.web.vertx.server
+package riff.vertx.server
 
 import com.typesafe.scalalogging.StrictLogging
 import eie.io.{FromBytes, ToBytes}
@@ -7,7 +7,7 @@ import io.vertx.core.buffer.Buffer
 import io.vertx.scala.core.http.{HttpServerRequest, HttpServerResponse}
 import monix.execution.{Ack, Scheduler}
 import monix.reactive.{Observable, Observer, Pipe}
-import riff.web.vertx.server.RestHandler.ResponseObserver
+import riff.vertx.server.RestHandler.ResponseObserver
 import streaming.rest._
 
 import scala.concurrent.Future

@@ -1,21 +1,24 @@
-package riff.web.vertx.server
+package riff.raft.vertx.server
 import com.typesafe.scalalogging.StrictLogging
+import io.circe.{Decoder, Encoder}
 import io.vertx.lang.scala.ScalaVerticle
 import io.vertx.scala.core.Vertx
 import monix.execution.Scheduler
 import monix.reactive.{Consumer, Observable}
+import riff.json.LowPriorityRiffJsonImplicits
 import riff.monix.RaftMonix
 import riff.raft.NodeId
 import riff.raft.messages.RaftMessage
-import riff.web.vertx.client.SocketClient
+import riff.vertx.client.SocketClient
+import riff.vertx.server.{Server, ServerEndpoint}
 import streaming.api.sockets.WebFrame
 import streaming.api.{Endpoint, HostPort}
 import streaming.rest.{EndpointCoords, WebURI}
 
 import scala.concurrent.duration.FiniteDuration
+import scala.reflect.ClassTag
 
-object Startup extends StrictLogging {
-
+object Startup extends StrictLogging with LowPriorityRiffJsonImplicits {
 
   /**
     * Starts a vertx web server at the given hostPort, serving data from the staticPath (if non-empty) and routing websocket connections
@@ -29,7 +32,9 @@ object Startup extends StrictLogging {
     * @param vertx
     * @return
     */
-  def startServer(raft: RaftMonix[String], hostPort: HostPort, staticPath: Option[String])(implicit sched: Scheduler, socketTimeout: FiniteDuration, vertx: Vertx): ScalaVerticle = {
+  def startServer[A: Encoder: Decoder : ClassTag](raft: RaftMonix[A], hostPort: HostPort, staticPath: Option[String])(implicit sched: Scheduler,
+                                                                                                           socketTimeout: FiniteDuration,
+                                                                                                           vertx: Vertx): ScalaVerticle = {
     val cluster = raft.cluster
 
     // try to connect to the other services
@@ -37,7 +42,8 @@ object Startup extends StrictLogging {
 
     Server.startSocket(hostPort, staticPath) {
       case HostPort(peer) =>
-        (newClientWebsocketConnection: ServerEndpoint) => connectClientToPeer(raft, peer, newClientWebsocketConnection)
+        (newClientWebsocketConnection: ServerEndpoint) =>
+          connectClientToPeer(raft, peer, newClientWebsocketConnection)
       case unknown =>
         (endpoint: ServerEndpoint) =>
           endpoint.fromRemote.consumeWith(Consumer.cancel)
@@ -46,21 +52,22 @@ object Startup extends StrictLogging {
   }
 
   /**
-    * When we start up, we try to connect a socket to each of our peers
+    * When we start up, we try to connect a socket to each of our peers. We don't need to re-try, as each peer will do
+    * the same when it starts up
     *
     * @param builder
     * @param sched
     * @param socketTimeout
     * @return a map of node IDs to clients
     */
-  private def connectToPeers(builder: RaftMonix[String])(implicit socketTimeout: FiniteDuration, vertx: Vertx): Map[NodeId, SocketClient] = {
+  def connectToPeers[A: Encoder: Decoder: ClassTag](builder: RaftMonix[A])(implicit socketTimeout: FiniteDuration, vertx: Vertx): Map[NodeId, SocketClient] = {
     import builder.scheduler
 
     val cluster = builder.cluster
     val name    = builder.nodeId
     val pears = cluster.peers.map { peerHostPortString =>
-      val peerHostPort     = HostPort.unapply(peerHostPortString).getOrElse(sys.error(s"Couldn't parse peer as host:port: $peerHostPortString"))
-      val endpoint = EndpointCoords(peerHostPort, WebURI.post(name))
+      val peerHostPort = HostPort.unapply(peerHostPortString).getOrElse(sys.error(s"Couldn't parse peer as host:port: $peerHostPortString"))
+      val endpoint     = EndpointCoords(peerHostPort, WebURI.post(name))
       logger.info(s"Connecting to $peerHostPortString at $endpoint")
       val client = SocketClient.connect(endpoint, name) { endpoint => //
         connectClientToPeer(builder, peerHostPort, endpoint)
@@ -70,14 +77,13 @@ object Startup extends StrictLogging {
     pears.toMap.ensuring(_.size == pears.size)
   }
 
-  private def connectClientToPeer(raft: RaftMonix[String], peer: HostPort, endpoint: Endpoint[WebFrame, WebFrame]): Unit = {
+  private def connectClientToPeer[A: Encoder: Decoder : ClassTag](raft: RaftMonix[A], peer: HostPort, endpoint: Endpoint[WebFrame, WebFrame]): Unit = {
 
     import raft.scheduler
-    import riff.json.implicits._
-    val fromMessages: Observable[RaftMessage[String]] = endpoint.fromRemote.dump(s"---- FROM ${peer} (for ${raft.nodeId})").flatMap { frame =>
+    val fromMessages: Observable[RaftMessage[A]] = endpoint.fromRemote.flatMap { frame =>
       val json = frame.asText.getOrElse(sys.error("binary frames not supported"))
       import io.circe.parser._
-      decode[RaftMessage[String]](json) match {
+      decode[RaftMessage[A]](json) match {
         case Left(err) =>
           logger.error(s"Couldn't unmarshall: $err:\n$json")
           Observable.empty
@@ -86,7 +92,7 @@ object Startup extends StrictLogging {
     }
 
     // subscribe our node to this stream
-    fromMessages.subscribe(raft.pipe.input)
+    fromMessages.dump(s"---- FROM ${peer} (for ${raft.nodeId})").subscribe(raft.pipe.input)
 
     val input = raft.pipe.inputFor(peer.hostPort).dump(s"++++ TO $peer (from ${raft.nodeId})").map { msg =>
       import io.circe.syntax._

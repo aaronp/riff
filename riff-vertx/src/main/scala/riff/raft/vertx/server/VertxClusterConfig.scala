@@ -1,7 +1,9 @@
-package riff.web.vertx.server
+package riff.raft.vertx.server
+
 import java.nio.file.Path
 
 import eie.io.{FromBytes, ToBytes}
+import io.vertx.scala.core.{Vertx, VertxOptions}
 import monix.execution.Scheduler
 import riff.monix.{MonixClock, RaftMonix}
 import riff.raft.NodeId
@@ -20,6 +22,11 @@ class VertxClusterConfig(val name: NodeId, //
                          val clusterNodes: Set[HostPort],
                          val maxAppendSize: Int,
                          val createDirIfNotExists: Boolean)(implicit val scheduler: Scheduler, clock: RaftClock) { //
+
+  def vertx(): Vertx = {
+      val clusterSize = clusterNodes.size + 1
+      Vertx.vertx(VertxOptions().setWorkerPoolSize(clusterSize).setEventLoopPoolSize(4).setInternalBlockingPoolSize(4))
+  }
 
   def cluster: RaftCluster = {
     RaftCluster(clusterNodes.map(_.hostPort) - name)
