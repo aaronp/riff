@@ -28,7 +28,7 @@ class ObservableTimerCallback(implicit sched: Scheduler) extends TimerCallback[U
   override def onReceiveHeartbeatTimeout(): Unit = receiveTimeoutsVar := true
 
   def subscribe(nodeId: NodeId, subscriber: Observer[TimerMessage]): Cancelable = {
-    sendTimeout.dump(s"${nodeId} sendTimeout").subscribe(subscriber)
-    receiveTimeouts.dump(s"${nodeId} receiveTimeouts").subscribe(subscriber)
+    sendTimeout.subscribe(subscriber)
+    receiveTimeouts.subscribe(subscriber)
   }
 }

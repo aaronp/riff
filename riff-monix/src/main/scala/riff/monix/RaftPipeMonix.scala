@@ -181,7 +181,7 @@ object RaftPipeMonix extends LowPriorityRiffMonixImplicits {
         */
       val nodeInput: Observable[RaftMessage[A]] = {
         val (singleThreadedIn, nodeIn) = Pipe.publishToOne[RaftMessage[A]].unicast
-        subject.output.dump(s"${handler.nodeId} input").subscribe(singleThreadedIn)
+        subject.output.subscribe(singleThreadedIn)
         nodeIn.share
       }
 
@@ -200,7 +200,7 @@ object RaftPipeMonix extends LowPriorityRiffMonixImplicits {
       handled.share
     }
 
-    ReactivePipe(subject.input, out.dump(s"${handler.nodeId} output"))
+    ReactivePipe(subject.input, out)
   }
 
   def wireTogetherMonix[A, H <: RaftMessageHandler[A]](raftInstById: Map[NodeId, RaftPipe[A, Observer, Observable, Observable, H]])(implicit s: Scheduler) = {
