@@ -15,37 +15,42 @@ import scala.reflect.ClassTag
 object Main extends StrictLogging {
 
   def main(args: Array[String]): Unit = {
-    implicit val scheduler = delegateScheduler
-
-    VertxClusterConfig.fromArgs(args) match {
+    start(args) match {
       case None =>
         sys.error(s"Usage: Expected the name and an optional cluster size but got '${args.mkString(" ")}'")
-      case Some(config) =>
-        implicit val vertx = config.vertx
-        val running        = Started[String](config)
+      case Some(_) =>
+    }
+  }
 
-        logger.info(s"Started ${running.config.name}")
+  def start(args: Array[String]): Option[Started[String]] = {
+    implicit val scheduler = delegateScheduler
+    VertxClusterConfig.fromArgs(args).map { config =>
+      implicit val vertx = config.vertx
+      val running        = Started[String](config)
 
-        import running.raft
+      logger.info(s"Started ${running.config.name}")
 
-        raft.timerCallback.receiveTimeouts.foreach { _ => //
-          logger.info(s"${config.name} got received HB timeout")
-        }
-        raft.timerCallback.sendTimeout.foreach { _ => //
-          logger.info(s"${config.name} got send HB timeout")
-        }
-        raft.stateCallback.events.foreach { event => //
-          logger.info(s"${config.name} noticed $event")
-        }
-        raft.log.appendResults().foreach { event => //
-          logger.info(s"${config.name} log appended $event")
-        }
-        raft.log.committedEntries().foreach { event => //
-          logger.info(s"${config.name} log committed $event")
-        }
+      import running.raft
 
-//        running.close()
-//        logger.info("Goodbye!")
+      raft.timerCallback.receiveTimeouts.foreach { _ => //
+        logger.info(s"${config.name} got received HB timeout")
+      }
+      raft.timerCallback.sendTimeout.foreach { _ => //
+        logger.info(s"${config.name} got send HB timeout")
+      }
+      raft.stateCallback.events.foreach { event => //
+        logger.info(s"${config.name} noticed $event")
+      }
+      raft.log.appendResults().foreach { event => //
+        logger.info(s"${config.name} log appended $event")
+      }
+      raft.log.committedEntries().foreach { event => //
+        logger.info(s"${config.name} log committed $event")
+      }
+
+      //        running.close()
+      //        logger.info("Goodbye!")
+      running
     }
   }
 
@@ -58,7 +63,7 @@ object Main extends StrictLogging {
     }
   }
 
-  case class Started[A: ClassTag : ToBytes: FromBytes: Encoder: Decoder](config: VertxClusterConfig)(implicit val scheduler: Scheduler, vertx: Vertx) extends AutoCloseable {
+  case class Started[A: ClassTag: ToBytes: FromBytes: Encoder: Decoder](config: VertxClusterConfig)(implicit val scheduler: Scheduler, vertx: Vertx) extends AutoCloseable {
 
     implicit private val socketTimeout = config.socketTimeout
     val raft                           = config.mkNode[A]

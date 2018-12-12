@@ -41,7 +41,7 @@ class RaftMonix[A: ToBytes: FromBytes: ClassTag] private (raftNode: RaftNode[A],
                                                           val log: ObservableLog[A])(implicit val scheduler: Scheduler, val clock: RaftClock) {
 
   def cluster: RaftCluster = raftNode.cluster
-  def nodeId: NodeId = raftNode.nodeId
+  def nodeId: NodeId       = raftNode.nodeId
 
   def cancelHeartbeats(): Unit = {
     raftNode.cancelSendHeartbeat()

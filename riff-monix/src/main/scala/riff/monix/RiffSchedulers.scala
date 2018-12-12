@@ -7,8 +7,8 @@ import scala.concurrent.duration.TimeUnit
 
 object RiffSchedulers {
 
-  class Delegate(underlying : SchedulerService) extends SchedulerService {
-    private val c = underlying
+  class Delegate(underlying: SchedulerService) extends SchedulerService {
+    private val c                      = underlying
     override def isShutdown: Boolean   = c.isShutdown
     override def isTerminated: Boolean = c.isTerminated
     override def shutdown(): Unit = {

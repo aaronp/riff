@@ -24,8 +24,8 @@ class VertxClusterConfig(val name: NodeId, //
                          val createDirIfNotExists: Boolean)(implicit val scheduler: Scheduler, clock: RaftClock) { //
 
   def vertx(): Vertx = {
-      val clusterSize = clusterNodes.size + 1
-      Vertx.vertx(VertxOptions().setWorkerPoolSize(clusterSize).setEventLoopPoolSize(4).setInternalBlockingPoolSize(4))
+    val clusterSize = clusterNodes.size + 1
+    Vertx.vertx(VertxOptions().setWorkerPoolSize(clusterSize).setEventLoopPoolSize(4).setInternalBlockingPoolSize(4))
   }
 
   def cluster: RaftCluster = {
@@ -59,7 +59,7 @@ object VertxClusterConfig {
       socketTimeout,
       staticPath,
       clusterNodes,
-    maxAppendSize,
+      maxAppendSize,
       createDirIfNotExists
     )
   }
@@ -81,7 +81,8 @@ object VertxClusterConfig {
 
     hostPortOpt.map { hostPort =>
       val dataDir = s"target/${hostPort.hostPort}/.data".asPath
-      VertxClusterConfig(name = hostPort.hostPort,
+      VertxClusterConfig(
+        name = hostPort.hostPort,
         dataDir = dataDir,
         hostPort = hostPort,
         socketTimeout = 1.minute,

@@ -6,6 +6,4 @@ package riff
   *
   * There's nothing raft-specific. For that, see the riff.raft.vertx package
   */
-package object vertx {
-
-}
+package object vertx {}

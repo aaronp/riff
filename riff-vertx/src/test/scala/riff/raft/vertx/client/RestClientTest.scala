@@ -1,4 +1,4 @@
-package riff.web.vertx.client
+package riff.raft.vertx.client
 
 import monix.execution.Scheduler.Implicits.global
 import monix.reactive.Observable
