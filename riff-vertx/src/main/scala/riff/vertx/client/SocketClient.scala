@@ -42,8 +42,9 @@ object SocketClient {
       override def handle(event: WebSocket): Unit = {
         val nonNullName = Option(name).getOrElse(s"SocketClient to $coords") + s"#${counter.incrementAndGet()}"
         logger.info(s"$nonNullName connected to socket")
-        val (fromRemote, toRemote) = WebFrameEndpoint(nonNullName, event)
-        onConnect(Endpoint(fromRemote, toRemote))
+        val (toRemote, fromRemote) = WebFrameEndpoint(nonNullName, event)
+
+        onConnect(Endpoint(toRemote, fromRemote))
       }
     }
 

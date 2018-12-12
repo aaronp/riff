@@ -14,7 +14,7 @@ object WebFrameEndpoint extends StrictLogging {
 
   def apply(name: String, socket: WebSocketBase)(implicit timeout: Duration, scheduler: Scheduler): (WebSocketObserver, Observable[WebFrame]) = {
 
-    val (frameSink, frameSource: Observable[WebFrame]) = Pipe.replay[WebFrame].multicast
+    val (frameSink, frameSource: Observable[WebFrame]) = Pipe.publish[WebFrame].multicast
 
     val observable = WebSocketObserver(name, socket)
 

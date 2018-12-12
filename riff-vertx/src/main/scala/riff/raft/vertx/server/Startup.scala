@@ -32,17 +32,20 @@ object Startup extends StrictLogging with LowPriorityRiffJsonImplicits {
     * @param vertx
     * @return
     */
-  def startServer[A: Encoder: Decoder : ClassTag](raft: RaftMonix[A], hostPort: HostPort, staticPath: Option[String])(implicit sched: Scheduler,
-                                                                                                           socketTimeout: FiniteDuration,
-                                                                                                           vertx: Vertx): ScalaVerticle = {
+  def startServer[A: Encoder: Decoder: ClassTag](raft: RaftMonix[A], hostPort: HostPort, staticPath: Option[String])(implicit sched: Scheduler,
+                                                                                                                     socketTimeout: FiniteDuration,
+                                                                                                                     vertx: Vertx): ScalaVerticle = {
     val cluster = raft.cluster
 
     // try to connect to the other services
     val peerNames = cluster.peers.toSet
 
+    val StripForwardSlashR = "/?(.*)".r
+
     Server.startSocket(hostPort, staticPath) {
-      case HostPort(peer) =>
+      case StripForwardSlashR(HostPort(peer)) =>
         (newClientWebsocketConnection: ServerEndpoint) =>
+          logger.info(s"Client connecting from $peer")
           connectClientToPeer(raft, peer, newClientWebsocketConnection)
       case unknown =>
         (endpoint: ServerEndpoint) =>
@@ -77,7 +80,7 @@ object Startup extends StrictLogging with LowPriorityRiffJsonImplicits {
     pears.toMap.ensuring(_.size == pears.size)
   }
 
-  private def connectClientToPeer[A: Encoder: Decoder : ClassTag](raft: RaftMonix[A], peer: HostPort, endpoint: Endpoint[WebFrame, WebFrame]): Unit = {
+  private def connectClientToPeer[A: Encoder: Decoder: ClassTag](raft: RaftMonix[A], peer: HostPort, endpoint: Endpoint[WebFrame, WebFrame]): Unit = {
 
     import raft.scheduler
     val fromMessages: Observable[RaftMessage[A]] = endpoint.fromRemote.flatMap { frame =>
@@ -92,9 +95,9 @@ object Startup extends StrictLogging with LowPriorityRiffJsonImplicits {
     }
 
     // subscribe our node to this stream
-    fromMessages.dump(s"---- FROM ${peer} (for ${raft.nodeId})").subscribe(raft.pipe.input)
+    fromMessages.subscribe(raft.pipe.input)
 
-    val input = raft.pipe.inputFor(peer.hostPort).dump(s"++++ TO $peer (from ${raft.nodeId})").map { msg =>
+    val input = raft.pipe.inputFor(peer.hostPort).map { msg =>
       import io.circe.syntax._
       val json = msg.asJson
       WebFrame.text(json.noSpaces)
