@@ -5,7 +5,7 @@ import com.typesafe.scalalogging.StrictLogging
 import io.vertx.core.Handler
 import io.vertx.scala.core.http.{WebSocketBase, WebSocketFrame}
 import monix.execution.Scheduler
-import monix.reactive.{Observable, Pipe}
+import monix.reactive.{Observable, Observer, Pipe}
 import streaming.api.sockets.WebFrame
 
 import scala.concurrent.duration.Duration

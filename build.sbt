@@ -253,6 +253,7 @@ lazy val riffVertx = project
   .dependsOn(riffJsonJVM % "compile->compile;test->test")
   .settings(name := s"${repo}-vertx")
   .settings(commonSettings: _*)
+  .settings(parallelExecution in Test := false)
   .settings(libraryDependencies ++= Dependencies.RiffVertx)
 
 lazy val riffRuntime = project

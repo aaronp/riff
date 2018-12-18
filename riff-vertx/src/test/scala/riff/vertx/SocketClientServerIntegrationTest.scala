@@ -23,7 +23,7 @@ import scala.util.Try
 object SocketClientServerIntegrationTest {
 
   // these tests run concurrent in SBT, so we need separate ports
-  private val nextPort = new AtomicInteger(8050)
+  val nextPort = new AtomicInteger(8050)
 }
 
 class SocketClientServerIntegrationTest extends RiffSpec with Eventually with StrictLogging {
