@@ -15,12 +15,17 @@ import streaming.rest.EndpointCoords
 
 import scala.concurrent.duration.Duration
 
-class SocketClient private (coords: EndpointCoords, client: Handler[WebSocket], impl: Vertx) extends ScalaVerticle {
+class SocketClient private (coords: EndpointCoords, client: Handler[WebSocket], impl: Vertx) extends ScalaVerticle with AutoCloseable {
   vertx = impl
 
   val httpsClient: HttpClient = vertx.createHttpClient.websocket(coords.port, host = coords.host, coords.resolvedUri, client)
 
   start()
+
+  def close() = {
+    stop()
+    vertx.close()
+  }
 }
 
 object SocketClient {

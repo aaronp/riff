@@ -94,10 +94,10 @@ object VertxClusterConfig {
     * @param scheduler a monix scheduler
     * @return an optionally parsed config if the args are valid
     */
-  def fromArgs(userArgs: Array[String], portOffset: Int = 7000)(implicit scheduler: Scheduler): Option[VertxClusterConfig] = {
+  def fromArgs(userArgs: Array[String], portOffset: Int)(implicit scheduler: Scheduler): Option[VertxClusterConfig] = {
     implicit val clock = MonixClock()
     val staticPath: Option[String] = userArgs.collectFirst {
-      case WebDirR(dir)                        => dir
+      case StaticPathR(dir)                    => dir
       case candidate if candidate.asPath.isDir => candidate
     }
 

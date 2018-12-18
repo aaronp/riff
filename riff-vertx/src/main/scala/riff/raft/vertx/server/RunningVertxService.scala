@@ -2,6 +2,7 @@ package riff.raft.vertx.server
 import com.typesafe.scalalogging.StrictLogging
 import eie.io.{FromBytes, ToBytes}
 import io.circe.{Decoder, Encoder}
+import io.vertx.lang.scala.ScalaVerticle
 import io.vertx.scala.core.Vertx
 import monix.execution.Scheduler
 import monix.execution.schedulers.SchedulerService
@@ -10,6 +11,7 @@ import riff.monix.RiffSchedulers
 import riff.raft.{NodeId, RaftClient}
 import riff.vertx.client.SocketClient
 
+import scala.concurrent.Future
 import scala.reflect.ClassTag
 
 /**
@@ -18,13 +20,13 @@ import scala.reflect.ClassTag
 object RunningVertxService extends StrictLogging {
 
   /**
-  * Starts a Vertx web service
+    * Starts a Vertx web service
     * @param args the user agrs
     * @return a running vertx services
     */
-  def start(args: Array[String]): Option[RunningVertxService[String]] = {
+  def start(args: Array[String], portOffset: Int): Option[RunningVertxService[String]] = {
     implicit val scheduler = delegateScheduler
-    VertxClusterConfig.fromArgs(args).map { config =>
+    VertxClusterConfig.fromArgs(args, portOffset).map { config =>
       implicit val vertx = config.vertx
       val running        = RunningVertxService[String](config)
 
@@ -62,8 +64,47 @@ object RunningVertxService extends StrictLogging {
       }
     }
   }
-
 }
+
+/**
+  * As opposed to composition, this class is meant to contain all the started pieces and expose them as properties for
+  * access.
+  *
+  * That is, instead of something like this{
+  *
+  * {{{
+  *   def start(config : SomeConfig) = {
+  *      val foo = createFoo(config)
+  *      val bar = createBar(config, foo)
+  *      val bazz = createBazz(bar, ...)
+  *
+  *      new StartedThing(foo, bazz)
+  *   }
+  * }}}
+  *
+  * we have:
+  *
+  * {{{
+  *   class StartedThing(config : SomeConfig) = {
+  *      val foo = createFoo(config)
+  *      private val bar = createBar(config, foo)
+  *      val bazz = createBazz(bar, ...)
+  *   }
+  * }}}
+  *
+  * This makes it easier to access composed elements at different levels of a stack of parameters w/o having to relax
+  * visibilities or go to other lengths.
+  *
+  * @param config
+  * @param classTag$A
+  * @param toBytes$A
+  * @param fromBytes$A
+  * @param encoder$A
+  * @param decoder$A
+  * @param scheduler
+  * @param vertx
+  * @tparam A
+  */
 case class RunningVertxService[A: ClassTag: ToBytes: FromBytes: Encoder: Decoder](config: VertxClusterConfig)(implicit val scheduler: Scheduler, vertx: Vertx)
     extends AutoCloseable with StrictLogging {
 
@@ -73,7 +114,7 @@ case class RunningVertxService[A: ClassTag: ToBytes: FromBytes: Encoder: Decoder
   val hostPort                       = config.hostPort
 
   logger.info(s"Starting the server on ${hostPort} for $cluster")
-  val verticle = Startup.startServer[A](raft, hostPort, config.staticPath)
+  val verticle: ScalaVerticle = Startup.startServer[A](raft, hostPort, config.staticPath)
 
   logger.info(s"Trying to connect to peers...")
   val clients: Map[NodeId, SocketClient] = Startup.connectToPeers(raft)
@@ -92,12 +133,16 @@ case class RunningVertxService[A: ClassTag: ToBytes: FromBytes: Encoder: Decoder
   def client: RaftClient[Observable, A] = raft.pipe.client
 
   override def close(): Unit = {
+    shutdown()
+  }
+
+  def shutdown(): Future[Unit] = {
     raft.cancelHeartbeats()
     scheduler match {
       case ss: SchedulerService => ss.shutdown()
       case _                    =>
     }
-    verticle.stop()
-    clients.values.foreach(_.stop())
+    clients.values.foreach(_.close())
+    vertx.closeFuture()
   }
 }
