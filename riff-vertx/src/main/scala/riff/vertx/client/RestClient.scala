@@ -35,7 +35,7 @@ case class RestClient(location: HostPort, impl: Vertx = Vertx.vertx())(implicit 
       case Left(bad) =>
         Observable.raiseError(new IllegalArgumentException(s"Request for ${req.uri} didn't resolve given the path parts: $bad"))
       case Right(parts) =>
-        val uri = parts.mkString("/")
+        val uri = parts.pathString
 
         val httpRequest: HttpClientRequest = req.uri.method match {
           case HttpMethod.GET     => httpClient.get(location.port, location.host, uri)

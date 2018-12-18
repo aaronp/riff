@@ -17,9 +17,12 @@ object RestInput {
 
   def apply[A: ToBytes](uri: WebURI, body: A, headers: Map[String, String]) = ContentInput(uri, body, headers)
 
-  case class BasicInput(uri: WebURI, headers: Map[String, String]) extends RestInput
+  case class BasicInput(uri: WebURI, headers: Map[String, String]) extends RestInput {
+    def withBody[A: ToBytes](body: A) = ContentInput(uri, body, headers)
+  }
 
   case class ContentInput[A: ToBytes](uri: WebURI, body: A, headers: Map[String, String]) extends RestInput {
+    require(uri.method != HttpMethod.GET && uri.method != HttpMethod.HEAD)
     def bytes: Array[Byte] = ToBytes[A].bytes(body)
   }
 }

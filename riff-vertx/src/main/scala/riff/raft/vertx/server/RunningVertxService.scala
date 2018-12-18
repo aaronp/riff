@@ -6,6 +6,7 @@ import io.vertx.core.Handler
 import io.vertx.lang.scala.ScalaVerticle
 import io.vertx.scala.core.Vertx
 import io.vertx.scala.core.http.HttpServerRequest
+import io.vertx.scala.ext.web.{Router, RoutingContext}
 import monix.execution.Scheduler
 import monix.execution.schedulers.SchedulerService
 import monix.reactive.{Consumer, Observable}
@@ -198,9 +199,15 @@ case class RunningVertxService[A: ClassTag: ToBytes: FromBytes: Encoder: Decoder
     RoutingSocketHandler(onConnect.andThen(ServerWebSocketHandler("general", config.socketConnectionMessageCapacity)))
   }
 
-  val restHandler: Handler[HttpServerRequest] = LoggingHandler
+  val restHandler: Handler[HttpServerRequest] = {
+    val route: (WebURI, Handler[RoutingContext]) = config.staticPath match {
+      case None       => WebURI.get("/*") -> LoggingHandler
+      case Some(path) => Server.asStaticHandler(path)
+    }
+    Server.makeHandler(Router.router(vertx), route :: Nil)
+  }
 
-  val verticle: ScalaVerticle = Server.start(hostPort, config.staticPath, restHandler, websocketHandler)
+  val verticle: ScalaVerticle = Server.start(hostPort, restHandler, websocketHandler)
 
   logger.info(s"Trying to connect to peers...")
   val clients: Map[NodeId, SocketClient] = RunningVertxService.connectToPeers(raft, config.socketConnectionMessageCapacity)

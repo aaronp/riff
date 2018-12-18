@@ -17,8 +17,9 @@ class RunningVertxServiceTest extends RiffMonixSpec {
   "RunningVertxService.start" should {
     "connect 2 nodes" in {
       Given("Two running nodes")
+      val offset = RunningVertxServiceTest.nextPort.incrementAndGet()
       val runningNodes: Seq[RunningVertxService[String]] = List("node1", "node2").map { name =>
-        val Some(node) = RunningVertxService.start(Array(name), RunningVertxServiceTest.nextPort.incrementAndGet())
+        val Some(node) = RunningVertxService.start(Array(name), offset)
         node
       }
 

@@ -2,12 +2,14 @@ package riff.raft.vertx.client
 
 import java.util.concurrent.atomic.AtomicInteger
 
+import io.vertx.scala.core.Vertx
+import io.vertx.scala.ext.web.Router
 import monix.execution.Scheduler.Implicits.global
 import monix.reactive.Observable
 import org.scalatest.concurrent.Eventually
 import riff.RiffSpec
 import riff.vertx.client.RestClient
-import riff.vertx.server.Server
+import riff.vertx.server.{RestHandler, Server}
 import streaming.api.HostPort
 import streaming.rest._
 
@@ -20,22 +22,78 @@ class RestClientTest extends RiffSpec with Eventually {
 
   "RestClient.send" should {
     "send and receive values" in {
-      val port  = RestClientTest.nextPort.incrementAndGet()
-      val Index = WebURI.get("/index.html")
+      val port = RestClientTest.nextPort.incrementAndGet()
 
-      val (server, requests: Observable[RestRequestContext]) = Server.startRest(HostPort.localhost(port), None)
+      val getIdAndNameURI: WebURI = WebURI.get("/rest/:id/:name")
+      val putUserURI              = WebURI.put("/user/:id")
 
-      requests.foreach { ctxt => //
-        ctxt.completeWith(RestResponse.json(s"""{ "msg" : "handled ${ctxt.request.uri}" }"""))
+      val getIdHandler = {
+        val handler = RestHandler()
+
+        handler.requests.foreach { ctxt => //
+          val params = getIdAndNameURI.unapply(ctxt.request.uri).get
+          val id     = params("id")
+          val name   = params("name")
+
+          ctxt.completeWith(RestResponse.json(s"""{
+                                                 | "msg" : "handled ${ctxt.request.uri}",
+                                                 | "userId" : "${id}",
+                                                 | "userName" : "${name}"
+                                                 |}""".stripMargin))
+        }
+
+        handler
       }
+
+      val putUserHandler = {
+        val handler = RestHandler()
+
+        handler.requests.foreach { ctxt => //
+          val id: String = putUserURI.unapply(ctxt.request.uri).get("id")
+          ctxt.completeWith(RestResponse.json(s"""{ "put" : "${id}" }"""))
+        }
+
+        handler
+      }
+
+      val server = {
+        val vertx = Vertx.vertx()
+        val restRoutes = {
+          val routes = Seq(
+            getIdAndNameURI -> getIdHandler,
+            putUserURI      -> putUserHandler,
+          )
+
+          Server.makeHandler(Router.router(vertx), routes)
+        }
+        Server.start(HostPort.localhost(port), restRoutes, Server.LoggingSockerHandler)(vertx)
+      }
+
       val client: RestClient = RestClient.connect(HostPort.localhost(port))
 
       try {
-        val response: Observable[RestResponse] = client.send(RestInput(Index))
-        val reply: List[RestResponse]          = response.toListL.runSyncUnsafe(testTimeout)
-        reply.size shouldBe 1
 
-        reply.head.bodyAsString shouldBe "{ \"msg\" : \"handled index.html\" }"
+        // verify /reset/get/id/name route
+        {
+          val getUser                            = getIdAndNameURI.resolve("id" -> 123.toString, "name" -> "example").right.get
+          val response: Observable[RestResponse] = client.send(RestInput(getUser))
+          val reply: List[RestResponse]          = response.toListL.runSyncUnsafe(testTimeout)
+          reply.size shouldBe 1
+          reply.head.bodyAsString shouldBe """{
+                                             | "msg" : "handled /rest/123/example",
+                                             | "userId" : "123",
+                                             | "userName" : "example"
+                                             |}""".stripMargin
+        }
+
+        // verify PUT /reset/get/id/name route
+        {
+          val putUser                            = putUserURI.resolve("id" -> 456.toString).right.get
+          val response: Observable[RestResponse] = client.send(RestInput(putUser))
+          val List(reply)                        = response.toListL.runSyncUnsafe(testTimeout)
+          reply.bodyAsString shouldBe """{ "put" : "456" }""".stripMargin
+        }
+
       } finally {
         server.close()
         client.close()
@@ -43,47 +101,4 @@ class RestClientTest extends RiffSpec with Eventually {
     }
   }
 
-  "RestClient.sendPipe" should {
-    "send and receive data" in {
-      val Index = WebURI.get("/index.html")
-      val Save  = WebURI.post("/save/:name")
-      val Read  = WebURI.get("/get/name")
-
-      val port = RestClientTest.nextPort.incrementAndGet()
-
-      val (server, serverRequests: Observable[RestRequestContext]) = Server.startRest(HostPort.localhost(port), None)
-
-      serverRequests.foreach { req => //
-        req.completeWith(RestResponse.text(s"handled ${req.request.method} request for ${req.request.uri} w/ body '${req.request.bodyAsString}'"))
-      }
-
-      val client = RestClient.connect(HostPort.localhost(port))
-      try {
-
-        val requests = List(
-          RestInput(Index),
-          RestInput(Save, Map("name"    -> "david")),
-          RestInput(Save, Map("invalid" -> "no name")),
-          RestInput(Read)
-        )
-        val responses = Observable.fromIterable(requests).pipeThrough(client.sendPipe)
-        var received  = List[RestResponse]()
-        responses.foreach { resp: RestResponse =>
-          received = resp :: received
-        }
-
-        eventually {
-          received.size shouldBe requests.size - 1
-        }
-        received.map(_.bodyAsString) should contain theSameElementsInOrderAs List(
-          "handled GET request for get/name w/ body ''",
-          "handled POST request for save/david w/ body ''",
-          "handled GET request for index.html w/ body ''"
-        )
-      } finally {
-        server.close()
-        client.close()
-      }
-    }
-  }
 }

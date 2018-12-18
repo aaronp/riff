@@ -1,5 +1,7 @@
 package streaming.rest
 
+import java.net.URI
+
 import streaming.rest.HttpMethod._
 import streaming.rest.WebURI._
 
@@ -19,7 +21,7 @@ case class WebURI(method: HttpMethod, uri: List[Part]) {
 
   override def toString = s"$method ${pathString}"
 
-  def pathString = uri.mkString("/")
+  def pathString = uri.mkString("/", "/", "")
 
   /**
     * pattern matches
@@ -34,7 +36,14 @@ case class WebURI(method: HttpMethod, uri: List[Part]) {
     }
   }
 
+  /**
+    * Extract the parameters from the given request Uri
+    *
+    * @param requestUri
+    * @return the extracted parameters as a map
+    */
   def unapply(requestUri: URI): Option[Map[String, String]] = {
+
     val parts = requestUri.split("/", -1).filterNot(_.isEmpty)
     if (parts.length == uri.size) {
       val pears = (uri zip parts).collect {
@@ -46,6 +55,10 @@ case class WebURI(method: HttpMethod, uri: List[Part]) {
     }
   }
 
+  def resolve(firstParam: (String, String), theRest: (String, String)*): Either[String, WebURI] = {
+    resolve((firstParam +: theRest).toMap.ensuring(_.size == theRest.size + 1))
+  }
+
   /**
     * Used to resolve the route uri to a string, used by clients to fill-in the route.
     *
@@ -54,17 +67,20 @@ case class WebURI(method: HttpMethod, uri: List[Part]) {
     * @param params the parts of the path used to satisfy the ':key' form elements
     * @return a Left of an error or a Right containing the uri parts
     */
-  def resolve(params: Map[String, String] = Map.empty): Either[String, List[String]] = {
+  def resolve(params: Map[String, String] = Map.empty): Either[String, WebURI] = {
     import cats.syntax.either._
 
-    val either: Either[String, List[String]] = uri.foldLeft(List[String]().asRight[String]) {
+    val either: Either[String, List[ConstPart]] = uri.foldLeft(List[ConstPart]().asRight[String]) {
       case (Right(list), ParamPart(key)) =>
-        params.get(key).map(_ :: list).toRight {
+        params.get(key).map(value => ConstPart(value) :: list).toRight {
           s"The supplied parameters ${params.keySet.toList.sorted.mkString("[", ",", "]")} doesn't contain an entry for '$key'"
         }
-      case (Right(list), ConstPart(key)) => Right(key :: list)
+      case (Right(list), const: ConstPart) => Right(const :: list)
     }
-    either.map(_.reverse)
+
+    either.map { parts: List[ConstPart] =>
+      copy(uri = parts.reverse)
+    }
   }
 }
 

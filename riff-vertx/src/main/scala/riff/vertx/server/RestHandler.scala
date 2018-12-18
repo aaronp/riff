@@ -5,6 +5,7 @@ import eie.io.{FromBytes, ToBytes}
 import io.vertx.core.Handler
 import io.vertx.core.buffer.Buffer
 import io.vertx.scala.core.http.{HttpServerRequest, HttpServerResponse}
+import io.vertx.scala.ext.web.RoutingContext
 import monix.execution.{Ack, Scheduler}
 import monix.reactive.{Observable, Observer, Pipe}
 import riff.vertx.server.RestHandler.ResponseObserver
@@ -14,9 +15,10 @@ import scala.concurrent.Future
 import scala.util.control.NonFatal
 import scala.util.{Failure, Success, Try}
 
-class RestHandler(feed: Observer[RestRequestContext], val requests: Observable[RestRequestContext]) extends Handler[HttpServerRequest] with StrictLogging {
+class RestHandler(feed: Observer[RestRequestContext], val requests: Observable[RestRequestContext]) extends Handler[RoutingContext] with StrictLogging {
 
-  override def handle(request: HttpServerRequest): Unit = {
+  override def handle(ctxt: RoutingContext): Unit = {
+    val request = ctxt.request()
     logger.debug(s"Handling request for ${request.uri()}")
     request.bodyHandler { buffer =>
       HttpMethod.unapply(request.method().name()) match {

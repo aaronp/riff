@@ -14,7 +14,7 @@ case class EndpointCoords(location: HostPort, uri: WebURI, params: Map[String, S
 
   val resolvedUri: String = uri.resolve(params) match {
     case Left(err)   => sys.error(err)
-    case Right(path) => path.mkString("/", "/", "")
+    case Right(path) => path.pathString
   }
 
   def host = location.host
