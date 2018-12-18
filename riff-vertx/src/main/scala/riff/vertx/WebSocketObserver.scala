@@ -34,7 +34,7 @@ private[vertx] final case class WebSocketObserver(name: String, socket: WebSocke
       socket.writeFinalBinaryFrame(buff)
       Continue
     case CloseFrame(statusCode, reason) =>
-      logger.debug(s"$name writing close frame to socket w/ status $statusCode, reason $reason")
+      logger.info(s"$name writing close frame to socket w/ status $statusCode, reason $reason")
       socket.close(statusCode, reason)
       Continue
     //Stop
@@ -43,7 +43,7 @@ private[vertx] final case class WebSocketObserver(name: String, socket: WebSocke
   override def onError(ex: Throwable): Unit = {
     val ok = completed.compareAndSet(false, true)
 
-    logger.debug(s"\n\t!!!! $name onError trying to close the socket will  ${if (ok) "succeed" else "fail"}")
+    logger.info(s"\n\t!!!! $name onError trying to close the socket will  ${if (ok) "succeed" else "fail"}")
 
     try {
       if (ok) {
@@ -63,7 +63,7 @@ private[vertx] final case class WebSocketObserver(name: String, socket: WebSocke
   override def onComplete(): Unit = {
 
     val ok = completed.compareAndSet(false, true)
-    logger.debug(s"\n\t!!!! $name onComplete trying to close the socket will  ${if (ok) "succeed" else "fail"}")
+    logger.info(s"\n\t!!!! $name onComplete trying to close the socket will  ${if (ok) "succeed" else "fail"}")
 
     try {
       if (ok) {

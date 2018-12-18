@@ -38,11 +38,11 @@ object WebFrameEndpoint extends StrictLogging {
     socket.frameHandler(new Handler[WebSocketFrame] {
       override def handle(event: WebSocketFrame): Unit = {
         if (event.isClose()) {
-          logger.debug(s"$name handling close frame")
+          logger.info(s"\n\t$name handling close frame\n")
           markComplete()
         } else {
           val frame = WebSocketFrameAsWebFrame(event)
-          logger.debug(s"$name handling frame ${frame}")
+          logger.debug(s"\n\t$name handling frame ${frame}\n")
           frameSink.onNext(frame)
           // TODO - we should apply back-pressure, but also not block the event loop.
           // need to apply some thought here if this can work in the general case,
@@ -54,7 +54,7 @@ object WebFrameEndpoint extends StrictLogging {
 
     socket.exceptionHandler(new Handler[Throwable] {
       override def handle(event: Throwable): Unit = {
-        logger.warn(s"$name got exception $event")
+        logger.warn(s"\n\t$name got exception $event\n")
         frameSink.onError(event)
         //observable.onError(event)
         socket.close()
@@ -62,21 +62,21 @@ object WebFrameEndpoint extends StrictLogging {
     })
     socket.endHandler(new Handler[Unit] {
       override def handle(event: Unit): Unit = {
-        logger.debug(s"$name ending")
+        logger.debug(s"\n\t$name ending!!!!!!!!!\n")
         markComplete()
       }
     })
 
     val source = frameSource
       .doOnComplete { () =>
-        logger.debug(s"\n>>> $name onComplete called\n")
+        logger.info(s"\n>>> $name onComplete called\n")
 
       }
       .doOnError { err =>
-        logger.debug(s"\n>>> $name onError($err) called\n")
+        logger.info(s"\n>>> $name onError($err) called\n")
       }
       .doOnNext { x =>
-        logger.debug(s"\n>>> $name onNext($x) called\n")
+        logger.info(s"\n>>> $name onNext($x) called\n")
       }
 
     (observable, source)

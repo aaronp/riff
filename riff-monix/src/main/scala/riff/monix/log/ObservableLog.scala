@@ -27,6 +27,21 @@ case class ObservableLog[A](override val underlying: RaftLog[A])(implicit schedu
   private val appendedVar  = Var[LogAppendResult](null: LogAppendResult)
   private val committedVar = Var[LogCommitted](Nil)
 
+  def status(): Observable[LogStatus] = {
+    import cats.syntax.option._
+    val appended = appendCoords()
+    val committedOps: Observable[Option[LogCoords]] = {
+      None +: committedCoords().map(c => Option(c))
+    }
+
+    (None +: appended.map(_.some)).combineLatest(committedOps).scan(LogStatus(LogCoords.Empty, LogCoords.Empty)) {
+      case (status, (None, None))    => status
+      case (status, (Some(a), None)) => status.copy(lastAppended = a)
+      case (status, (None, Some(c))) => status.copy(lastCommitted = c)
+      case (_, (Some(a), Some(c)))   => LogStatus(a, c)
+    }
+  }
+
   /** @param index the (one based!) index from which we'd like to read the committed coords
     * @return an observable of all committed entries from the given index
     */

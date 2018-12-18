@@ -42,7 +42,7 @@ class SocketClientServerIntegrationTest extends RiffSpec with Eventually with St
         case "/admin" =>
           endpt =>
             val frame = WebFrame.text("Thanks for connecting to admin")
-            logger.info(s"Admin server sending $frame")
+            logger.info(s"\nAdmin server sending $frame\n\n")
             endpt.fromRemote.foreach { slurp =>
               logger.info(s"Admin connection ignoring $slurp")
             }

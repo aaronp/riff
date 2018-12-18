@@ -30,7 +30,7 @@ class RestClientTest extends RiffSpec with Eventually {
       val getIdHandler = {
         val handler = RestHandler()
 
-        handler.requests.foreach { ctxt => //
+        handler.requests.foreach { ctxt: RestRequestContext => //
           val params = getIdAndNameURI.unapply(ctxt.request.uri).get
           val id     = params("id")
           val name   = params("name")
