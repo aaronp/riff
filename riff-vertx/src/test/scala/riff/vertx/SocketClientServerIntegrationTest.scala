@@ -16,72 +16,84 @@ import streaming.api.sockets.WebFrame
 import streaming.rest.EndpointCoords
 
 import scala.collection.mutable.ListBuffer
+import scala.concurrent.duration._
 import scala.util.control.NonFatal
 
 class SocketClientServerIntegrationTest extends RiffSpec with Eventually with StrictLogging {
 
+  override implicit def testTimeout: FiniteDuration = 15.seconds
+
   "Server.startSocket / SocketClient.connect" should {
     "route endpoints accordingly" in {
-      val port    = 1236
-      val UserIdR = "/user/(.*)".r
 
-      implicit val vertx = Vertx.vertx()
-      val started: ScalaVerticle = Server.startSocket(HostPort.localhost(port)) {
-        case "/admin" =>
-          endpt =>
-            endpt.toRemote.onNext(WebFrame.text("Thanks for connecting to admin"))
-            endpt.toRemote.onComplete()
-        case UserIdR(user) =>
-          _.handleTextFramesWith { clientMsgs =>
-            clientMsgs.map(s"$user : " + _)
-          }
+      val startPort = {
+        val offset = System.currentTimeMillis() % 100
+        7200 + offset.toInt
       }
 
-      try {
-        var adminResults: List[String] = null
-        val admin = SocketClient.connect(EndpointCoords.get(HostPort.localhost(port), "/admin"), "test admin client") { endpoint =>
-          endpoint.toRemote.onNext(WebFrame.text("already, go!"))
-          endpoint.toRemote.onComplete()
-
-          endpoint.fromRemote.toListL.runAsync.foreach { list =>
-            adminResults = list.flatMap(_.asText)
-          }
-        }
-        try {
-          eventually {
-            adminResults shouldBe List("Thanks for connecting to admin")
-          }
-        } finally {
-          admin.stop()
-        }
-
-        val resultsByUser = new java.util.concurrent.ConcurrentHashMap[String, List[String]]()
-        val clients: Seq[SocketClient] = Seq("Alice", "Bob", "Dave").zipWithIndex.map {
-          case (user, i) =>
-            SocketClient.connect(EndpointCoords.get(HostPort.localhost(port), s"/user/$user")) { endpoint =>
-              endpoint.toRemote.onNext(WebFrame.text(s"client $user ($i) sending message")).onComplete { _ =>
-                endpoint.toRemote.onComplete()
-              }
-              endpoint.fromRemote.toListL.runAsync.foreach { clientList =>
-                resultsByUser.put(user, clientList.flatMap(_.asText))
-              }
+      val UserIdR = "/user/(.*)".r
+      val found = (startPort to startPort + 80).find { port =>
+        implicit val vertx = Vertx.vertx()
+        val started: ScalaVerticle = Server.startSocket(HostPort.localhost(port)) {
+          case "/admin" =>
+            endpt =>
+              endpt.toRemote.onNext(WebFrame.text("Thanks for connecting to admin"))
+              endpt.toRemote.onComplete()
+          case UserIdR(user) =>
+            _.handleTextFramesWith { clientMsgs =>
+              clientMsgs.map(s"$user : " + _)
             }
         }
-        eventually {
-          resultsByUser.get("Alice") shouldBe List("Alice : client Alice (0) sending message")
-        }
-        eventually {
-          resultsByUser.get("Bob") shouldBe List("Bob : client Bob (1) sending message")
-        }
-        eventually {
-          resultsByUser.get("Dave") shouldBe List("Dave : client Dave (2) sending message")
-        }
-        clients.foreach(_.stop())
 
-      } finally {
-        started.stop()
-        vertx.closeFuture().futureValue
+        try {
+          var adminResults: List[String] = null
+          val admin = SocketClient.connect(EndpointCoords.get(HostPort.localhost(port), "/admin"), "test admin client") { endpoint =>
+            endpoint.toRemote.onNext(WebFrame.text("already, go!"))
+            endpoint.toRemote.onComplete()
+
+            endpoint.fromRemote.toListL.runAsync.foreach { list =>
+              adminResults = list.flatMap(_.asText)
+            }
+          }
+          try {
+            eventually {
+              adminResults shouldBe List("Thanks for connecting to admin")
+            }
+          } finally {
+            admin.stop()
+          }
+
+          val resultsByUser = new java.util.concurrent.ConcurrentHashMap[String, List[String]]()
+          val clients: Seq[SocketClient] = Seq("Alice", "Bob", "Dave").zipWithIndex.map {
+            case (user, i) =>
+              SocketClient.connect(EndpointCoords.get(HostPort.localhost(port), s"/user/$user")) { endpoint =>
+                endpoint.toRemote.onNext(WebFrame.text(s"client $user ($i) sending message")).onComplete { _ =>
+                  endpoint.toRemote.onComplete()
+                }
+                endpoint.fromRemote.toListL.runAsync.foreach { clientList =>
+                  resultsByUser.put(user, clientList.flatMap(_.asText))
+                }
+              }
+          }
+          eventually {
+            resultsByUser.get("Alice") shouldBe List("Alice : client Alice (0) sending message")
+          }
+          eventually {
+            resultsByUser.get("Bob") shouldBe List("Bob : client Bob (1) sending message")
+          }
+          eventually {
+            resultsByUser.get("Dave") shouldBe List("Dave : client Dave (2) sending message")
+          }
+          clients.foreach(_.stop())
+          true
+        } catch {
+          case _ => false
+        } finally {
+          started.stop()
+          vertx.closeFuture().futureValue
+        }
       }
+      found should not be empty
     }
     "notify the server when the client completes" in {
 
@@ -156,7 +168,11 @@ class SocketClientServerIntegrationTest extends RiffSpec with Eventually with St
     }
     "connect to a server" in {
 
-      (8000 to 8080).find { port =>
+      val startPort = {
+        val offset = System.currentTimeMillis() % 100
+        7100 + offset.toInt
+      }
+      val found: Option[Int] = (startPort to startPort + 80).find { port =>
         implicit val vertx     = Vertx.vertx()
         val receivedFromServer = new CountDownLatch(1)
         var fromServer         = ""
@@ -198,6 +214,8 @@ class SocketClientServerIntegrationTest extends RiffSpec with Eventually with St
           vertx.closeFuture().futureValue
         }
       }
+
+      found should not be empty
     }
   }
 }

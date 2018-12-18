@@ -251,7 +251,7 @@ lazy val riffVertx = project
   .dependsOn(riffMonix % "compile->compile;test->test")
   .dependsOn(riffCoreJVM % "compile->compile;test->test")
   .dependsOn(riffJsonJVM % "compile->compile;test->test")
-  .settings(name := s"${repo}-web")
+  .settings(name := s"${repo}-vertx")
   .settings(commonSettings: _*)
   .settings(libraryDependencies ++= Dependencies.RiffVertx)
 

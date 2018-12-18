@@ -253,6 +253,10 @@ class ObservableLogTest extends RiffMonixSpec {
         val result1: LogAppendResult = ol.append(LogCoords(2, 1), "first", "second", "third")
         result1 shouldBe LogAppendResult(firstIndex = LogCoords(2, 1), lastIndex = LogCoords(2, 3), Nil)
         ol.latestAppended() shouldBe LogCoords(2, 3)
+        eventually {
+          // we should always get this value
+          received should contain(LogCoords(2, 3) -> "third")
+        }
 
         val result2: LogAppendResult = ol.append(LogCoords(3, 2), "replaced second", "replaced third", "new fourth")
         result2 shouldBe LogAppendResult(firstIndex = LogCoords(3, 2), lastIndex = LogCoords(3, 4), replacedIndices = Seq(LogCoords(2, 2), LogCoords(2, 3)))
