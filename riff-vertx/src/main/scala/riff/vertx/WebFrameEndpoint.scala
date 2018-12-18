@@ -12,9 +12,15 @@ import scala.concurrent.duration.Duration
 
 object WebFrameEndpoint extends StrictLogging {
 
-  def apply(name: String, socket: WebSocketBase)(implicit timeout: Duration, scheduler: Scheduler): (WebSocketObserver, Observable[WebFrame]) = {
+  def apply(name: String, socket: WebSocketBase, capacity: Int)(implicit timeout: Duration, scheduler: Scheduler): (WebSocketObserver, Observable[WebFrame]) = {
 
-    val (frameSink, frameSource: Observable[WebFrame]) = Pipe.publish[WebFrame].multicast
+    val (frameSink, frameSource: Observable[WebFrame]) = {
+      if (capacity <= 0) {
+        Pipe.publish[WebFrame].unicast
+      } else {
+        Pipe.replayLimited[WebFrame](capacity).unicast
+      }
+    }
 
     val observable = WebSocketObserver(name, socket)
 

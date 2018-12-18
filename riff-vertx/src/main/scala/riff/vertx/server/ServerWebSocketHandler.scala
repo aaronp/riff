@@ -6,16 +6,16 @@ import monix.execution.Scheduler
 
 import scala.concurrent.duration.Duration
 
-private[server] class ServerWebSocketHandler private (name: String, onConnect: ServerEndpoint => Unit)(implicit timeout: Duration, scheduler: Scheduler)
+private[server] class ServerWebSocketHandler private (name: String, capacity: Int, onConnect: ServerEndpoint => Unit)(implicit timeout: Duration, scheduler: Scheduler)
     extends Handler[ServerWebSocket] {
   override def handle(socket: ServerWebSocket): Unit = {
-    onConnect(ServerEndpoint.publish(socket, name))
+    onConnect(ServerEndpoint(socket, capacity, name))
   }
 }
 
 object ServerWebSocketHandler {
 
-  def publish(name: String)(onConnect: ServerEndpoint => Unit)(implicit timeout: Duration, scheduler: Scheduler): ServerWebSocketHandler = {
-    new ServerWebSocketHandler(name, onConnect)
+  def apply(name: String, capacity: Int)(onConnect: ServerEndpoint => Unit)(implicit timeout: Duration, scheduler: Scheduler): ServerWebSocketHandler = {
+    new ServerWebSocketHandler(name, capacity, onConnect)
   }
 }

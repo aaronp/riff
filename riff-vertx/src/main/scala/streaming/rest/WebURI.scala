@@ -15,9 +15,11 @@ import streaming.rest.WebURI._
   */
 case class WebURI(method: HttpMethod, uri: List[Part]) {
 
-  override def toString = s"$method ${uri.mkString("/")}"
-
   type URI = String
+
+  override def toString = s"$method ${pathString}"
+
+  def pathString = uri.mkString("/")
 
   /**
     * pattern matches
@@ -78,6 +80,7 @@ object WebURI {
 
     private def asPart(str: String): Part = {
       str match {
+        case "*"       => ParamPart("*")
         case ParamR(n) => ParamPart(n)
         case n         => ConstPart(n)
       }
@@ -91,7 +94,7 @@ object WebURI {
   }
 
   case class ParamPart(name: String) extends Part {
-    override def toString: String = name
+    override def toString: String = s":$name"
   }
 
   def get(uri: String): WebURI = WebURI(GET, Part(uri))

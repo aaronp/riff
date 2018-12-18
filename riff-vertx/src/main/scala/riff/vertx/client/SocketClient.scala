@@ -40,14 +40,14 @@ object SocketClient {
     * @param vertx
     * @return
     */
-  def connect(coords: EndpointCoords, name: String = null)(
+  def connect(coords: EndpointCoords, capacity: Int, name: String = null)(
       onConnect: Endpoint[WebFrame, WebFrame] => Unit)(implicit timeout: Duration, scheduler: Scheduler, vertx: Vertx): SocketClient = {
     val counter = new AtomicInteger(0)
     val handler = new Handler[WebSocket] with StrictLogging {
       override def handle(event: WebSocket): Unit = {
         val nonNullName = Option(name).getOrElse(s"SocketClient to $coords") + s"#${counter.incrementAndGet()}"
         logger.info(s"$nonNullName connected to socket")
-        val (toRemote, fromRemote) = WebFrameEndpoint(nonNullName, event)
+        val (toRemote, fromRemote) = WebFrameEndpoint(nonNullName, event, capacity)
 
         onConnect(Endpoint(toRemote, fromRemote))
       }

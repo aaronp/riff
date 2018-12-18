@@ -1,5 +1,6 @@
 package riff.web.vertx
 
+import java.util.concurrent.atomic.AtomicInteger
 import java.util.concurrent.{CountDownLatch, TimeUnit}
 
 import com.typesafe.scalalogging.StrictLogging
@@ -17,59 +18,79 @@ import streaming.rest.EndpointCoords
 
 import scala.collection.mutable.ListBuffer
 import scala.concurrent.duration._
+import scala.util.Try
 
+object SocketClientServerIntegrationTest {
+
+  // these tests run concurrent in SBT, so we need separate ports
+  private val nextPort = new AtomicInteger(8050)
+}
 class SocketClientServerIntegrationTest extends RiffSpec with Eventually with StrictLogging {
 
-
-  override implicit def testTimeout: FiniteDuration = 10.seconds
-
-  val port = 8050
+  import SocketClientServerIntegrationTest._
+  override implicit def testTimeout: FiniteDuration = 8.seconds
 
   "Server.startSocket / SocketClient.connect" should {
     "route endpoints accordingly" in {
+      val port = nextPort.incrementAndGet
 
       val UserIdR = "/user/(.*)".r
 
       implicit val vertx = Vertx.vertx()
-      val started: ScalaVerticle = Server.startSocket(HostPort.localhost(port)) {
+      val started: ScalaVerticle = Server.startSocket(HostPort.localhost(port), capacity = 10) {
         case "/admin" =>
           endpt =>
-            endpt.toRemote.onNext(WebFrame.text("Thanks for connecting to admin"))
+            val frame = WebFrame.text("Thanks for connecting to admin")
+            logger.info(s"Admin server sending $frame")
+            endpt.fromRemote.foreach { slurp =>
+              logger.info(s"Admin connection ignoring $slurp")
+            }
+            endpt.toRemote.onNext(frame)
             endpt.toRemote.onComplete()
         case UserIdR(user) =>
+          logger.info(s"handleTextFramesWith ...")
           _.handleTextFramesWith { clientMsgs =>
             clientMsgs.map(s"$user : " + _)
           }
       }
 
       var clients: Seq[SocketClient] = Nil
-
+      var admin: SocketClient        = null
+      val receivedFromRemote         = new AtomicInteger(0)
       try {
-        var adminResults: List[String] = null
-        val admin = SocketClient.connect(EndpointCoords.get(HostPort.localhost(port), "/admin"), "test admin client") { endpoint =>
-          endpoint.toRemote.onNext(WebFrame.text("already, go!"))
+        var adminResults: List[String] = Nil
+
+        admin = SocketClient.connect(EndpointCoords.get(HostPort.localhost(port), "/admin"), capacity = 10, "test admin client") { endpoint =>
+          val frame = WebFrame.text("already, go!")
+          logger.info(s"toRemote sending to client $frame")
+          endpoint.toRemote.onNext(frame)
+
+          logger.info(s"toRemote onComplete")
           endpoint.toRemote.onComplete()
 
-          endpoint.fromRemote.toListL.runAsync.foreach { list =>
+          def debug(f: WebFrame) = {
+            logger.info(s"\t\t GOT: $f")
+            receivedFromRemote.incrementAndGet
+          }
+          endpoint.fromRemote.doOnNext(debug).dump("ADMIN FROM REMOTE").toListL.runAsync.foreach { list =>
             adminResults = list.flatMap(_.asText)
           }
         }
-        try {
+
+        withClue(s"Having received ${receivedFromRemote.get}") {
           eventually {
             adminResults shouldBe List("Thanks for connecting to admin")
           }
-        } finally {
-          admin.stop()
         }
 
         val resultsByUser = new java.util.concurrent.ConcurrentHashMap[String, List[String]]()
         clients = Seq("Alice", "Bob", "Dave").zipWithIndex.map {
           case (user, i) =>
-            SocketClient.connect(EndpointCoords.get(HostPort.localhost(port), s"/user/$user")) { endpoint =>
+            SocketClient.connect(EndpointCoords.get(HostPort.localhost(port), s"/user/$user"), capacity = 10) { endpoint =>
               endpoint.toRemote.onNext(WebFrame.text(s"client $user ($i) sending message")).onComplete { _ =>
                 endpoint.toRemote.onComplete()
               }
-              endpoint.fromRemote.toListL.runAsync.foreach { clientList =>
+              endpoint.fromRemote.dump(s"!!!! $user from remote").toListL.runAsync.foreach { clientList =>
                 resultsByUser.put(user, clientList.flatMap(_.asText))
               }
             }
@@ -84,12 +105,14 @@ class SocketClientServerIntegrationTest extends RiffSpec with Eventually with St
           resultsByUser.get("Dave") shouldBe List("Dave : client Dave (2) sending message")
         }
       } finally {
+        Try(admin.close())
         clients.foreach(_.close())
         started.stop()
         vertx.closeFuture().futureValue
       }
     }
-    "notify the server when the client completes" ignore {
+    "notify the server when the client completes" in {
+      val port = nextPort.incrementAndGet
 
       val messagesReceivedByTheServer = ListBuffer[String]()
       val messagesReceivedByTheClient = ListBuffer[String]()
@@ -107,12 +130,12 @@ class SocketClientServerIntegrationTest extends RiffSpec with Eventually with St
         }
       }
 
-      val started: ScalaVerticle = Server.startSocketWithHandler(HostPort.localhost(port))(chat)
+      val started: ScalaVerticle = Server.startSocketWithHandler(HostPort.localhost(port), capacity = 10)(chat)
       var c: SocketClient        = null
       try {
 
         val gotFive = new CountDownLatch(5)
-        c = SocketClient.connect(EndpointCoords.get(HostPort.localhost(port), "/some/path")) { endpoint =>
+        c = SocketClient.connect(EndpointCoords.get(HostPort.localhost(port), "/some/path"), capacity = 10) { endpoint =>
           endpoint.toRemote.onNext(WebFrame.text("from client"))
           endpoint.fromRemote.zipWithIndex.foreach {
             case (frame, i) =>
@@ -158,7 +181,8 @@ class SocketClientServerIntegrationTest extends RiffSpec with Eventually with St
       }
 
     }
-    "connect to a server" ignore {
+    "connect to a server" in {
+      val port = nextPort.incrementAndGet
 
       implicit val vertx     = Vertx.vertx()
       val receivedFromServer = new CountDownLatch(1)
@@ -167,7 +191,7 @@ class SocketClientServerIntegrationTest extends RiffSpec with Eventually with St
       var fromClient         = ""
 
       // start the server
-      val started: ScalaVerticle = Server.startSocketWithHandler(HostPort.localhost(port)) { endpoint: ServerEndpoint =>
+      val started: ScalaVerticle = Server.startSocketWithHandler(HostPort.localhost(port), capacity = 10) { endpoint: ServerEndpoint =>
         endpoint.toRemote.onNext(WebFrame.text(s"hello from the server at ${endpoint.socket.path}"))
 
         endpoint.fromRemote.foreach { msg: WebFrame =>
@@ -176,7 +200,7 @@ class SocketClientServerIntegrationTest extends RiffSpec with Eventually with St
         }
       }
 
-      val c: SocketClient = SocketClient.connect(EndpointCoords.get(HostPort.localhost(port), "/some/path")) { endpoint =>
+      val c: SocketClient = SocketClient.connect(EndpointCoords.get(HostPort.localhost(port), "/some/path"), capacity = 10) { endpoint =>
         endpoint.fromRemote.foreach { msg =>
           msg.asText.foreach(fromServer = _)
           receivedFromServer.countDown()

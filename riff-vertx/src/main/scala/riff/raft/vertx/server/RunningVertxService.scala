@@ -2,25 +2,36 @@ package riff.raft.vertx.server
 import com.typesafe.scalalogging.StrictLogging
 import eie.io.{FromBytes, ToBytes}
 import io.circe.{Decoder, Encoder}
+import io.vertx.core.Handler
 import io.vertx.lang.scala.ScalaVerticle
 import io.vertx.scala.core.Vertx
+import io.vertx.scala.core.http.HttpServerRequest
 import monix.execution.Scheduler
 import monix.execution.schedulers.SchedulerService
-import monix.reactive.Observable
-import riff.monix.RiffSchedulers
+import monix.reactive.{Consumer, Observable}
+import riff.json.LowPriorityRiffJsonImplicits
+import riff.monix.{LowPriorityRiffMonixImplicits, RaftMonix, RiffSchedulers}
+import riff.raft.messages.RaftMessage
 import riff.raft.{NodeId, RaftClient}
 import riff.vertx.client.SocketClient
+import riff.vertx.server.Server.{LoggingHandler, OnConnect}
+import riff.vertx.server.{RoutingSocketHandler, Server, ServerEndpoint, ServerWebSocketHandler}
+import streaming.api.sockets.{TextFrame, WebFrame}
+import streaming.api.{Endpoint, HostPort}
+import streaming.rest.{EndpointCoords, WebURI}
 
 import scala.concurrent.Future
+import scala.concurrent.duration.FiniteDuration
 import scala.reflect.ClassTag
 
 /**
   * Provides an entry-point for starting a vertx service which can connect a RaftNode
   */
-object RunningVertxService extends StrictLogging {
+object RunningVertxService extends LowPriorityRiffJsonImplicits with LowPriorityRiffMonixImplicits with StrictLogging {
 
   /**
     * Starts a Vertx web service
+    *
     * @param args the user agrs
     * @return a running vertx services
     */
@@ -50,8 +61,6 @@ object RunningVertxService extends StrictLogging {
         logger.info(s"${config.name} log committed $event")
       }
 
-      //        running.close()
-      //        logger.info("Goodbye!")
       running
     }
   }
@@ -63,6 +72,60 @@ object RunningVertxService extends StrictLogging {
         super.shutdown()
       }
     }
+  }
+
+  /**
+    * When we start up, we try to connect a socket to each of our peers. We don't need to re-try, as each peer will do
+    * the same when it starts up
+    *
+    * @param builder
+    * @param sched
+    * @param socketTimeout
+    * @return a map of node IDs to clients
+    */
+  def connectToPeers[A: Encoder: Decoder: ClassTag](builder: RaftMonix[A], capacity: Int)(implicit socketTimeout: FiniteDuration, vertx: Vertx): Map[NodeId, SocketClient] = {
+    import builder.scheduler
+
+    val cluster = builder.cluster
+    val name    = builder.nodeId
+    val pears = cluster.peers.map { peerHostPortString =>
+      val peerHostPort = HostPort.unapply(peerHostPortString).getOrElse(sys.error(s"Couldn't parse peer as host:port: $peerHostPortString"))
+      val endpoint     = EndpointCoords(peerHostPort, WebURI.post(name))
+      logger.info(s"Connecting to $peerHostPortString at $endpoint")
+      val client = SocketClient.connect(endpoint, capacity, name) { endpoint => //
+        connectClientToPeer(builder, peerHostPort, endpoint)
+      }
+      (peerHostPortString, client)
+    }
+    pears.toMap.ensuring(_.size == pears.size)
+  }
+
+  private def connectClientToPeer[A: Encoder: Decoder: ClassTag](raft: RaftMonix[A], peer: HostPort, endpoint: Endpoint[WebFrame, WebFrame]): Unit = {
+
+    implicit val sched = raft.scheduler
+
+    // subscribe our node to this stream
+    val fromMessages: Observable[RaftMessage[A]] = endpoint.fromRemote.flatMap { frame =>
+      val json = frame.asText.getOrElse(sys.error("binary frames not supported"))
+      import io.circe.parser._
+      decode[RaftMessage[A]](json) match {
+        case Left(err) =>
+          logger.error(s"Couldn't unmarshall: $err:\n$json")
+          Observable.empty
+        case Right(msg: RaftMessage[A]) => Observable(msg)
+      }
+    }
+
+    fromMessages.subscribe(raft.pipe.input)
+
+    // subscribe the client's input to this node's output
+    val nodeOutputForClient: Observable[TextFrame] = raft.pipe.inputFor(peer.hostPort).map { msg =>
+      import io.circe.syntax._
+      val json = msg.asJson
+      WebFrame.text(json.noSpaces)
+    }
+
+    nodeOutputForClient.subscribe(endpoint.toRemote)
   }
 }
 
@@ -114,10 +177,33 @@ case class RunningVertxService[A: ClassTag: ToBytes: FromBytes: Encoder: Decoder
   val hostPort                       = config.hostPort
 
   logger.info(s"Starting the server on ${hostPort} for $cluster")
-  val verticle: ScalaVerticle = Startup.startServer[A](raft, hostPort, config.staticPath)
+
+  val websocketHandler: RoutingSocketHandler = {
+    // try to connect to the other services
+    val peerNames          = cluster.peers.toSet
+    val StripForwardSlashR = "/?(.*)".r
+
+    // the server-side logic for when a client connects on a web socket
+    val onConnect: PartialFunction[String, OnConnect] = {
+      case StripForwardSlashR(HostPort(peer)) =>
+        (newClientWebsocketConnection: ServerEndpoint) =>
+          logger.info(s"Client connecting from $peer")
+          RunningVertxService.connectClientToPeer(raft, peer, newClientWebsocketConnection)
+      case unknown =>
+        (endpoint: ServerEndpoint) =>
+          endpoint.fromRemote.consumeWith(Consumer.cancel)
+          endpoint.toRemote.onError(new Exception(s"Invalid path '$unknown'. Expected one of ${peerNames.toList.sorted.mkString(",")}"))
+    }
+
+    RoutingSocketHandler(onConnect.andThen(ServerWebSocketHandler("general", config.socketConnectionMessageCapacity)))
+  }
+
+  val restHandler: Handler[HttpServerRequest] = LoggingHandler
+
+  val verticle: ScalaVerticle = Server.start(hostPort, config.staticPath, restHandler, websocketHandler)
 
   logger.info(s"Trying to connect to peers...")
-  val clients: Map[NodeId, SocketClient] = Startup.connectToPeers(raft)
+  val clients: Map[NodeId, SocketClient] = RunningVertxService.connectToPeers(raft, config.socketConnectionMessageCapacity)
 
   logger.info(s"Handling messages on ${hostPort} for $cluster")
 

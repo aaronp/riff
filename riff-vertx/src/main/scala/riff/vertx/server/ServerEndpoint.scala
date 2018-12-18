@@ -22,14 +22,14 @@ final class ServerEndpoint(val socket: ServerWebSocket, to: Observer[WebFrame], 
 
 object ServerEndpoint extends StrictLogging {
 
-  def publish(socket: ServerWebSocket, name: String)(implicit timeout: Duration, scheduler: Scheduler): ServerEndpoint = {
+  def apply(socket: ServerWebSocket, capacity: Int, name: String)(implicit timeout: Duration, scheduler: Scheduler): ServerEndpoint = {
     val addr = {
       val a   = socket.remoteAddress()
       val url = s"${a.host}:${a.port}/${a.path}"
       s"$name (socket connected to $url)"
     }
     logger.info(s"$addr Accepting connection")
-    val (obs, frameSource) = WebFrameEndpoint(addr, socket)
+    val (obs, frameSource) = WebFrameEndpoint(addr, socket, capacity)
     socket.accept()
     new ServerEndpoint(socket, obs, frameSource)
   }

@@ -35,7 +35,8 @@ class VertxClusterConfig(val name: NodeId, //
                          val staticPath: Option[String], //
                          val clusterNodes: Set[HostPort],
                          val maxAppendSize: Int,
-                         val createDirIfNotExists: Boolean)(implicit val scheduler: Scheduler, clock: RaftClock) { //
+                         val createDirIfNotExists: Boolean,
+                         val socketConnectionMessageCapacity: Int)(implicit val scheduler: Scheduler, clock: RaftClock) { //
 
   def vertx(): Vertx = {
     val clusterSize = clusterNodes.size + 1
@@ -69,7 +70,8 @@ object VertxClusterConfig {
             staticPath: Option[String], //
             clusterNodes: Set[HostPort],
             maxAppendSize: Int,
-            createDirIfNotExists: Boolean)(implicit scheduler: Scheduler, clock: RaftClock): VertxClusterConfig = {
+            createDirIfNotExists: Boolean,
+            socketConnectionMessageCapacity: Int)(implicit scheduler: Scheduler, clock: RaftClock): VertxClusterConfig = {
 
     new VertxClusterConfig(
       name,
@@ -79,7 +81,8 @@ object VertxClusterConfig {
       staticPath,
       clusterNodes,
       maxAppendSize,
-      createDirIfNotExists
+      createDirIfNotExists,
+      socketConnectionMessageCapacity
     )
   }
 
@@ -120,7 +123,8 @@ object VertxClusterConfig {
         staticPath = staticPath,
         clusterNodes = clusterNodes.toSet - hostPort,
         1000,
-        createDirIfNotExists = true
+        createDirIfNotExists = true,
+        10
       )
     }
   }

@@ -15,7 +15,7 @@ object RestClient {
   def connect(location: HostPort)(implicit scheduler: Scheduler): RestClient = RestClient(location)
 }
 
-case class RestClient(location: HostPort, impl: Vertx = Vertx.vertx())(implicit scheduler: Scheduler) extends ScalaVerticle with StrictLogging {
+case class RestClient(location: HostPort, impl: Vertx = Vertx.vertx())(implicit scheduler: Scheduler) extends ScalaVerticle with AutoCloseable with StrictLogging {
   vertx = impl
   val httpClient: HttpClient = vertx.createHttpClient
 
@@ -76,5 +76,9 @@ case class RestClient(location: HostPort, impl: Vertx = Vertx.vertx())(implicit 
           responseVar.filter(_ != null).take(1)
         }
     }
+  }
+  override def close(): Unit = {
+    stop()
+    vertx.close()
   }
 }
