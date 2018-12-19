@@ -5,7 +5,7 @@ import com.typesafe.scalalogging.StrictLogging
 import io.vertx.core.Handler
 import io.vertx.scala.core.http.{WebSocketBase, WebSocketFrame}
 import monix.execution.Scheduler
-import monix.reactive.{Observable, Pipe}
+import monix.reactive.{Observable, Observer, Pipe}
 import streaming.api.sockets.WebFrame
 
 import scala.concurrent.duration.Duration
@@ -43,6 +43,7 @@ object WebFrameEndpoint extends StrictLogging {
         } else {
           val frame = WebSocketFrameAsWebFrame(event)
           logger.debug(s"\n\t$name handling frame ${frame}\n")
+
           frameSink.onNext(frame)
           // TODO - we should apply back-pressure, but also not block the event loop.
           // need to apply some thought here if this can work in the general case,

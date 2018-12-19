@@ -12,6 +12,7 @@ import org.scalatest.concurrent.Eventually
 import riff.RiffSpec
 import riff.vertx.client.SocketClient
 import riff.vertx.server.{Server, ServerEndpoint}
+import riff.web.vertx.SocketClientServerIntegrationTest
 import streaming.api._
 import streaming.api.sockets.WebFrame
 import streaming.rest.EndpointCoords
@@ -26,7 +27,7 @@ class SocketClientServerIntegrationTestB extends RiffSpec with Eventually with S
   "Server.startSocket / SocketClient.connect" should {
 
     "notify the server when the client completes" in {
-      val port = nextPort.incrementAndGet
+      val port = SocketClientServerIntegrationTest.nextPort.incrementAndGet
 
       val messagesReceivedByTheServer = ListBuffer[String]()
       val messagesReceivedByTheClient = ListBuffer[String]()

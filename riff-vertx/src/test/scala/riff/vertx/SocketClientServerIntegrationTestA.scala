@@ -1,23 +1,21 @@
 package riff.vertx
 
 import java.util.concurrent.atomic.AtomicInteger
-import java.util.concurrent.{CountDownLatch, TimeUnit}
 
 import com.typesafe.scalalogging.StrictLogging
 import io.vertx.lang.scala.ScalaVerticle
 import io.vertx.scala.core.Vertx
-import monix.execution.Cancelable
+import monix.execution.CancelableFuture
 import monix.execution.Scheduler.Implicits.global
 import org.scalatest.concurrent.Eventually
 import riff.RiffSpec
 import riff.vertx.client.SocketClient
-import riff.vertx.server.{Server, ServerEndpoint}
+import riff.vertx.server.Server
 import riff.web.vertx.SocketClientServerIntegrationTest
 import streaming.api._
 import streaming.api.sockets.WebFrame
 import streaming.rest.EndpointCoords
 
-import scala.collection.mutable.ListBuffer
 import scala.concurrent.duration._
 import scala.util.Try
 
@@ -40,7 +38,14 @@ class SocketClientServerIntegrationTestA extends RiffSpec with Eventually with S
               logger.info(s"Admin connection ignoring $slurp")
             }
             endpt.toRemote.onNext(frame)
-            endpt.toRemote.onComplete()
+
+            logger.info(s"\nAdmin server waiting for the first msg fro the client\n\n")
+            val gotIt: CancelableFuture[WebFrame] = endpt.fromRemote.headL.runAsync
+
+            gotIt.foreach { received =>
+              logger.info(s"\nAdmin server got $received, completing")
+              endpt.toRemote.onComplete()
+            }
         case UserIdR(user) =>
           logger.info(s"handleTextFramesWith ...")
           _.handleTextFramesWith { clientMsgs =>
