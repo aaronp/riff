@@ -1,4 +1,5 @@
-package streaming.rest
+package riff.rest
+
 import eie.io.ToBytes
 
 sealed trait RestInput {

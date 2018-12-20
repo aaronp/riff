@@ -1,9 +1,9 @@
-package streaming.api.implicits
+package riff.rest.implicits
 
 import monix.execution.Ack
 import monix.execution.Ack.Stop
 import monix.reactive.Observer
-import streaming.api.implicits.LowPriorityStreamingImplicits.RichObserver
+import riff.rest.implicits.LowPriorityStreamingImplicits.RichObserver
 
 import scala.concurrent.Future
 import scala.util.control.NonFatal

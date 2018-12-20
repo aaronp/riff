@@ -12,9 +12,9 @@ import riff.RiffSpec
 import riff.vertx.client.SocketClient
 import riff.vertx.server.Server
 import riff.web.vertx.SocketClientServerIntegrationTest
-import streaming.api._
-import streaming.api.sockets.WebFrame
-import streaming.rest.EndpointCoords
+import riff.api._
+import riff.api.sockets.WebFrame
+import riff.rest.EndpointCoords
 
 import scala.concurrent.duration._
 import scala.util.Try

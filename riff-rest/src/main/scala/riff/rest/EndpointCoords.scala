@@ -1,6 +1,4 @@
-package streaming.rest
-
-import streaming.api.HostPort
+package riff.rest
 
 /**
   * Represents an endpoint which may be targeted by a client.

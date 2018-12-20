@@ -1,4 +1,4 @@
-package streaming.rest
+package riff.rest
 
 import com.typesafe.scalalogging.LazyLogging
 import monix.reactive.Observer

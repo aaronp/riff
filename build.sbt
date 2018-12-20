@@ -28,6 +28,7 @@ scalafmtVersion in ThisBuild := "1.4.0"
 val Core      = config("riffCoreJVM")
 val RiffMonix = config("riffMonix")
 val RiffFs2   = config("riffFs2")
+val RiffRest  = config("riffRest")
 val RiffAkka  = config("riffAkka")
 val RiffVertx = config("riffVertx")
 
@@ -35,7 +36,7 @@ git.remoteRepo := s"git@github.com:$username/$repo.git"
 ghpagesNoJekyll := true
 
 lazy val scaladocSiteProjects =
-  List((riffCoreJVM, Core), (riffMonix, RiffMonix), (riffFs2, RiffFs2), (riffAkka, RiffAkka), (riffVertx, RiffVertx))
+  List((riffCoreJVM, Core), (riffMonix, RiffMonix), (riffRest, RiffRest), (riffFs2, RiffFs2), (riffAkka, RiffAkka), (riffVertx, RiffVertx))
 
 lazy val scaladocSiteSettings = scaladocSiteProjects.flatMap {
   case (project: Project, conf) =>
@@ -144,6 +145,7 @@ lazy val root = (project in file("."))
     riffJsonJS,
     riffRuntime,
     riffMonix,
+    riffRest,
     riffFs2,
     riffAkka,
     riffVertx
@@ -230,6 +232,15 @@ lazy val riffMonix = project
   .settings(name := s"${repo}-monix", coverageMinimum := 80, coverageFailOnMinimum := true, libraryDependencies ++= Dependencies.RiffMonix)
   .dependsOn(riffCoreJVM % "compile->compile;test->test")
 
+lazy val riffRest = project
+  .in(file("riff-rest"))
+  .dependsOn(riffMonix % "compile->compile;test->test")
+  .dependsOn(riffCoreJVM % "compile->compile;test->test")
+  .dependsOn(riffJsonJVM % "compile->compile;test->test")
+  .settings(name := s"${repo}-rest")
+  .settings(commonSettings: _*)
+  .settings(libraryDependencies ++= Dependencies.RiffRest)
+
 lazy val riffFs2 = project
   .in(file("riff-fs2"))
   .dependsOn(riffCoreJVM % "compile->compile;test->test")
@@ -248,9 +259,7 @@ lazy val riffAkka = project
 
 lazy val riffVertx = project
   .in(file("riff-vertx"))
-  .dependsOn(riffMonix % "compile->compile;test->test")
-  .dependsOn(riffCoreJVM % "compile->compile;test->test")
-  .dependsOn(riffJsonJVM % "compile->compile;test->test")
+  .dependsOn(riffRest % "compile->compile;test->test")
   .settings(name := s"${repo}-vertx")
   .settings(commonSettings: _*)
   .settings(parallelExecution in Test := false)

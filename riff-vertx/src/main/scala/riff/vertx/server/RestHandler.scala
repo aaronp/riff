@@ -9,7 +9,7 @@ import io.vertx.scala.ext.web.RoutingContext
 import monix.execution.{Ack, Scheduler}
 import monix.reactive.{Observable, Observer, Pipe}
 import riff.vertx.server.RestHandler.ResponseObserver
-import streaming.rest._
+import riff.rest._
 
 import scala.concurrent.Future
 import scala.util.control.NonFatal

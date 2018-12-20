@@ -1,8 +1,8 @@
-package streaming.api
+package riff.rest
 
 import monix.execution.{Cancelable, Scheduler}
 import monix.reactive.{Observable, Observer, Pipe}
-import streaming.api.sockets.WebFrame
+import riff.rest.sockets.WebFrame
 
 /**
   * Represents a connection to another system, either local or remote.
@@ -17,7 +17,7 @@ import streaming.api.sockets.WebFrame
 class Endpoint[FromRemote, ToRemote](val toRemote: Observer[ToRemote], val fromRemote: Observable[FromRemote]) {
   final def map[A](f: FromRemote => A): Endpoint[A, ToRemote] = new Endpoint[A, ToRemote](toRemote, fromRemote.map(f))
   final def contraMap[A](f: A => ToRemote): Endpoint[FromRemote, A] = {
-    import streaming.api.implicits._
+    import riff.rest.implicits._
     new Endpoint[FromRemote, A](toRemote.contraMap(f), fromRemote)
   }
 

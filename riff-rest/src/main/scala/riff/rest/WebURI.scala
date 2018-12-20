@@ -1,9 +1,9 @@
-package streaming.rest
+package riff.rest
 
 import java.net.URI
 
-import streaming.rest.HttpMethod._
-import streaming.rest.WebURI._
+import riff.rest.HttpMethod._
+import riff.rest.WebURI._
 
 /** Meant to be used when declaring routes.
   *

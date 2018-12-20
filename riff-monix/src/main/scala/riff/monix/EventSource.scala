@@ -73,9 +73,7 @@ object EventSource {
 
         // continue to combine in the log's committed entries' scheduler,
         // but write down on the IO scheduler
-        combined
-        //.observeOn(RiffSchedulers.computation.scheduler, BackPressure(bufferSize))
-        .zipWithIndex.map {
+        combined.zipWithIndex.map {
           case ((state, coords), i) =>
             if (i != 0 && i % snapEvery == 0) {
               dao.writeDown(coords, state)

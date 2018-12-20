@@ -17,9 +17,9 @@ import riff.raft.{NodeId, RaftClient}
 import riff.vertx.client.SocketClient
 import riff.vertx.server.Server.{LoggingHandler, OnConnect}
 import riff.vertx.server.{RoutingSocketHandler, Server, ServerEndpoint, ServerWebSocketHandler}
-import streaming.api.sockets.{TextFrame, WebFrame}
-import streaming.api.{Endpoint, HostPort}
-import streaming.rest.{EndpointCoords, WebURI}
+import riff.api.sockets.{TextFrame, WebFrame}
+import riff.api.HostPort
+import riff.rest.{Endpoint, EndpointCoords, HostPort, WebURI}
 
 import scala.concurrent.Future
 import scala.concurrent.duration.FiniteDuration

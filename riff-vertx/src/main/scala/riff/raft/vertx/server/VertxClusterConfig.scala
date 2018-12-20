@@ -9,7 +9,7 @@ import riff.monix.{MonixClock, RaftMonix}
 import riff.raft.NodeId
 import riff.raft.node.RaftCluster
 import riff.raft.timer.RaftClock
-import streaming.api.HostPort
+import riff.rest.HostPort
 
 import scala.concurrent.duration._
 import scala.reflect.ClassTag

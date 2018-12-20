@@ -8,8 +8,7 @@ import io.vertx.scala.core.http.{HttpClient, HttpClientRequest, HttpClientRespon
 import monix.execution.Scheduler
 import monix.reactive.subjects.Var
 import monix.reactive.{Observable, Pipe}
-import streaming.api.HostPort
-import streaming.rest.{HttpMethod, RestInput, RestResponse}
+import riff.rest.{HostPort, HttpMethod, RestInput, RestResponse}
 
 object RestClient {
   def connect(location: HostPort)(implicit scheduler: Scheduler): RestClient = RestClient(location)

@@ -7,7 +7,7 @@ import monix.reactive.Observable
 import riff.monix.log.LogStatus
 import riff.vertx.server.RestHandler
 import riff.vertx.server.Server.RestRoutes
-import streaming.rest.{RestRequestContext, RestResponse, WebURI}
+import riff.rest.{RestRequestContext, RestResponse, WebURI}
 
 object RiffRoutes {
 

@@ -1,4 +1,4 @@
-package streaming.rest
+package riff.rest
 
 sealed trait HttpMethod
 

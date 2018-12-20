@@ -7,8 +7,7 @@ import io.vertx.scala.core.http.{HttpServerRequest, ServerWebSocket}
 import io.vertx.scala.ext.web.handler.StaticHandler
 import io.vertx.scala.ext.web.{Router, RoutingContext}
 import monix.execution.Scheduler
-import streaming.api.HostPort
-import streaming.rest.WebURI
+import riff.rest.{HostPort, WebURI}
 
 import scala.concurrent.duration.Duration
 import scala.util.Try
@@ -83,7 +82,7 @@ object Server extends StrictLogging {
 
   def makeHandler(router: Router, routes: RestRoutes): Handler[HttpServerRequest] = {
 
-    import streaming.rest.HttpMethod._
+    import riff.rest.HttpMethod._
 
     routes.foreach {
       case (uri @ WebURI(POST, _), handler) =>

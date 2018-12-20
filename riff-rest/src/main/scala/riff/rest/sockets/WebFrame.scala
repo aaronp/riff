@@ -1,4 +1,4 @@
-package streaming.api.sockets
+package riff.rest.sockets
 
 import java.nio.ByteBuffer
 

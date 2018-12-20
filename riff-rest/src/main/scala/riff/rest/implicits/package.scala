@@ -1,3 +1,3 @@
-package streaming.api
+package riff.rest
 
 package object implicits extends LowPriorityStreamingImplicits

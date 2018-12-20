@@ -1,4 +1,4 @@
-package streaming.api
+package riff.rest
 
 case class HostPort(host: String, port: Int, secure: Boolean = false) {
   def hostPort = s"$host:$port"

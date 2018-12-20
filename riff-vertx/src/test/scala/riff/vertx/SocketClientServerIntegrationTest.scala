@@ -12,9 +12,9 @@ import org.scalatest.concurrent.Eventually
 import riff.RiffSpec
 import riff.vertx.client.SocketClient
 import riff.vertx.server.{Server, ServerEndpoint}
-import streaming.api._
-import streaming.api.sockets.WebFrame
-import streaming.rest.EndpointCoords
+import riff.api._
+import riff.api.sockets.WebFrame
+import riff.rest.{Endpoint, EndpointCoords}
 
 import scala.collection.mutable.ListBuffer
 import scala.concurrent.duration._

@@ -50,4 +50,5 @@ object Dependencies {
   }
   val RiffHttp4s: List[ModuleID] = http4s ::: logging ::: testDependencies
   val RiffVertx: List[ModuleID] = config :: monix ::: vertx ::: logging ::: testDependencies
+  val RiffRest: List[ModuleID] = config :: monix ::: logging ::: testDependencies
 }

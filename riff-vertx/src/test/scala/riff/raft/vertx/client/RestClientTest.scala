@@ -10,8 +10,7 @@ import org.scalatest.concurrent.Eventually
 import riff.RiffSpec
 import riff.vertx.client.RestClient
 import riff.vertx.server.{RestHandler, Server}
-import streaming.api.HostPort
-import streaming.rest._
+import riff.rest.{HostPort, _}
 
 object RestClientTest {
 // these tests run concurrent in SBT, so we need separate ports

@@ -8,7 +8,7 @@ import io.vertx.scala.core.http.WebSocketBase
 import monix.execution.Ack
 import monix.execution.Ack.Continue
 import monix.reactive.Observer
-import streaming.api.sockets._
+import riff.api.sockets._
 
 import scala.concurrent.Future
 import scala.util.control.NonFatal
