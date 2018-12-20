@@ -103,49 +103,4 @@ object Server extends StrictLogging {
     val staticHandler: StaticHandler = StaticHandler.create().setDirectoryListing(true).setAllowRootFileSystemAccess(true).setWebRoot(staticPath)
     WebURI.get("/*") -> staticHandler
   }
-
-//
-//  def startRest(hostPort: HostPort, staticPath: Option[String])(implicit scheduler: Scheduler): (ScalaVerticle with AutoCloseable, Observable[RestRequestContext]) = {
-//    val restHandler = RestHandler()
-//    object RestVerticle extends ScalaVerticle with AutoCloseable {
-//      vertx = Vertx.vertx()
-//
-//      val requestHandler: Handler[HttpServerRequest] = makeHandler(hostPort, vertx, restHandler, staticPath)
-//      private lazy val server: HttpServer = {
-//        vertx
-//          .createHttpServer()
-//          .requestHandler(requestHandler)
-//          .listen(hostPort.port, hostPort.host)
-//      }
-//      override def start(): Unit = {
-//        server
-//      }
-//      override def close(): Unit = {
-//        stop()
-//        Try(server.close())
-//        Try(vertx.close())
-//      }
-//    }
-//    RestVerticle.start()
-//
-//    RestVerticle -> restHandler.requests
-//  }
-//
-//  private def makeHandler(hostPort: HostPort, vertx: Vertx, restHandler: Handler[HttpServerRequest], staticPath: Option[String]): Handler[HttpServerRequest] = {
-//
-//    staticPath match {
-//      case Some(path) =>
-//        val router = Router.router(vertx)
-//        router.route("/rest/*").handler(ctxt => restHandler.handle(ctxt.request()))
-//
-//        val staticHandler = StaticHandler.create().setDirectoryListing(true).setAllowRootFileSystemAccess(true).setWebRoot(path)
-//        router.route("/*").handler(staticHandler)
-//
-//        logger.info(s"Starting REST server at $hostPort, serving static data under $path")
-//        router.accept _
-//      case None =>
-//        logger.info(s"Starting REST server at $hostPort")
-//        restHandler.handle _
-//    }
-//  }
 }

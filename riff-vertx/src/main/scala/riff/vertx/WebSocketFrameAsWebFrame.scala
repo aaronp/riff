@@ -1,6 +1,6 @@
 package riff.vertx
 import io.vertx.scala.core.http.WebSocketFrame
-import riff.api.sockets.WebFrame
+import riff.rest.sockets.WebFrame
 
 final object WebSocketFrameAsWebFrame {
 

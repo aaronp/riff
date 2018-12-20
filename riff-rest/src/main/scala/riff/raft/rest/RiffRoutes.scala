@@ -5,8 +5,6 @@ import io.circe.syntax._
 import monix.execution.Scheduler
 import monix.reactive.Observable
 import riff.monix.log.LogStatus
-import riff.vertx.server.RestHandler
-import riff.vertx.server.Server.RestRoutes
 import riff.rest.{RestRequestContext, RestResponse, WebURI}
 
 object RiffRoutes {

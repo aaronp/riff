@@ -36,7 +36,7 @@ class RestHandler(feed: Observer[RestRequestContext], val requests: Observable[R
     }
   }
 
-  private def asRestContext(method: HttpMethod, request: HttpServerRequest, buffer: Buffer) = {
+  private def asRestContext(method: HttpMethod, request: HttpServerRequest, buffer: Buffer): RestRequestContext = {
     val body = buffer.getBytes
 
     logger.info(s"Handling ${request.method().name()} ${request.uri()}")
@@ -53,7 +53,6 @@ class RestHandler(feed: Observer[RestRequestContext], val requests: Observable[R
 
     RestRequestContext(restRequest, new ResponseObserver(request.uri(), response))
   }
-
 }
 
 object RestHandler extends StrictLogging {

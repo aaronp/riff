@@ -12,8 +12,8 @@ import org.scalatest.concurrent.Eventually
 import riff.RiffSpec
 import riff.vertx.client.SocketClient
 import riff.vertx.server.{Server, ServerEndpoint}
-import riff.api._
-import riff.api.sockets.WebFrame
+import riff.rest._
+import riff.rest.sockets.WebFrame
 import riff.rest.{Endpoint, EndpointCoords}
 
 import scala.collection.mutable.ListBuffer

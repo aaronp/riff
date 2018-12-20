@@ -9,7 +9,7 @@ import io.vertx.scala.core.Vertx
 import io.vertx.scala.core.http.{HttpClient, WebSocket}
 import monix.execution.Scheduler
 import riff.vertx.WebFrameEndpoint
-import riff.api.sockets.WebFrame
+import riff.rest.sockets.WebFrame
 import riff.rest.{Endpoint, EndpointCoords}
 
 import scala.concurrent.duration.Duration
