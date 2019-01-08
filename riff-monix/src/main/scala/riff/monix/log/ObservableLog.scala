@@ -1,9 +1,9 @@
 package riff.monix.log
 
 import monix.execution.Scheduler
-import monix.reactive.Observable
 import monix.reactive.observables.ConnectableObservable
-import monix.reactive.subjects.{PublishToOneSubject, Var}
+import monix.reactive.subjects.{ConcurrentSubject, PublishToOneSubject, Var}
+import monix.reactive.{Observable, OverflowStrategy, Pipe}
 import riff.raft.LogIndex
 import riff.raft.log._
 
@@ -28,18 +28,42 @@ case class ObservableLog[A](override val underlying: RaftLog[A])(implicit schedu
   private val committedVar = Var[LogCommitted](Nil)
 
   def status(): Observable[LogStatus] = {
-    import cats.syntax.option._
-    val appended = appendCoords()
-    val committedOps: Observable[Option[LogCoords]] = {
-      None +: committedCoords().map(c => Option(c))
+    val out = {
+
+      import cats.syntax.either._
+//      val (eitherIn, eitherOut) = Pipe.publish[Either[LogCoords, LogCoords]].concurrent(OverflowStrategy.DropOld(4))
+      val (eitherIn, eitherOut) = Pipe.publish[Either[LogCoords, LogCoords]].unicast
+
+      val concurrent: ConcurrentSubject[Either[LogCoords, LogCoords], Either[LogCoords, LogCoords]] = ConcurrentSubject.replayLimited[Either[LogCoords, LogCoords]](1)
+
+//      val primer = Var[Either[LogCoords, LogCoords]](Left(LogCoords.Empty))
+//      primer.dump("primer").subscribe(eitherIn)
+
+      appendCoords().dump("appended").foreach { appended =>
+        concurrent.onNext(Left(appended))
+      }
+      committedCoords().dump("kermitted").foreach { committed =>
+        concurrent.onNext(Right(committed))
+      }
+
+      concurrent.dump("either").subscribe(eitherIn)
+
+      eitherOut
     }
 
-    (None +: appended.map(_.some)).combineLatest(committedOps).scan(LogStatus(LogCoords.Empty, LogCoords.Empty)) {
-      case (status, (None, None))    => status
-      case (status, (Some(a), None)) => status.copy(lastAppended = a)
-      case (status, (None, Some(c))) => status.copy(lastCommitted = c)
-      case (_, (Some(a), Some(c)))   => LogStatus(a, c)
+    val emptyStatus = LogStatus(LogCoords.Empty, LogCoords.Empty)
+    import cats.syntax.option._
+//    val obs: Observable[LogStatus] = out.scan(emptyStatus) {
+//      case (status, Left(a))  => status.copy(lastAppended = a)
+//      case (status, Right(c)) => status.copy(lastCommitted = c)
+//    }
+    val obs: Observable[LogStatus] = (None +: out.map(_.some)).scan(emptyStatus) {
+      case (status, Some(Left(a)))  => status.copy(lastAppended = a)
+      case (status, Some(Right(c))) => status.copy(lastCommitted = c)
+      case (status, None) => status
     }
+
+    obs.dump("result").cache(1).dump("result2")
   }
 
   /** @param index the (one based!) index from which we'd like to read the committed coords
@@ -52,7 +76,7 @@ case class ObservableLog[A](override val underlying: RaftLog[A])(implicit schedu
   /** @return an observable of committed coordinates from the point of subscription
     */
   override def committedCoords(): Observable[LogCoords] =
-    committedVar.filter(_.nonEmpty).flatMap(Observable.fromIterable)
+    committedVar.dump("committedVar").filter(_.nonEmpty).flatMap(Observable.fromIterable)
 
   /** @return an observable of the appended BUT NOT YET committed entries
     */

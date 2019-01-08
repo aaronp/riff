@@ -3,6 +3,11 @@ import monix.reactive.Observable
 import riff.raft.LogIndex
 import riff.raft.log.{LogAppendResult, LogAppendSuccess, LogCoords}
 
+/**
+  * Trait to simply contain the operations for exposing various Observables for append operations
+  *
+  * @tparam A
+  */
 trait AppendOps[A] {
 
   /** @return an observable of the appended BUT NOT YET committed entries
@@ -17,7 +22,7 @@ trait AppendOps[A] {
   /** @return an observable of the appended BUT NOT YET committed entries from the time of subscription
     */
   def appendCoords(): Observable[LogCoords] = {
-    appendResults.flatMap {
+    appendResults.dump("appendCoords").flatMap {
       case res: LogAppendSuccess =>
         if (res.firstIndex.index == res.lastIndex.index) {
           Observable.pure(res.firstIndex)

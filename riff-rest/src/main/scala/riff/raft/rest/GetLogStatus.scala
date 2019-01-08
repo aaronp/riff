@@ -17,11 +17,18 @@ trait GetLogStatus[F[_]] {
 
 object GetLogStatus extends StrictLogging {
 
+  def latest(status: Observable[LogStatus]) = {
+    val onlyAppended = status
+    val latestCommitted = status.drop(1)
+    latestCommitted.switchIfEmpty(onlyAppended)
+  }
   case class obs(status: Observable[LogStatus])(implicit s: Scheduler) extends GetLogStatus[Observable] {
     override def getLogStatus() : Observable[LogStatus] = status.headF
   }
   case class task(status: Observable[LogStatus])(implicit s: Scheduler) extends GetLogStatus[Task] {
-    override def getLogStatus() : Task[LogStatus] = status.headL
+    override def getLogStatus() : Task[LogStatus] = {
+      status.headL
+    }
   }
   case class future(status: Observable[LogStatus])(implicit s: Scheduler) extends GetLogStatus[Future] {
     override def getLogStatus() : Future[LogStatus] = status.headL.runAsync
