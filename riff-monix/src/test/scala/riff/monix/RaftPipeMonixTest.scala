@@ -1,6 +1,9 @@
 package riff.monix
 
+import java.util.concurrent.atomic.AtomicInteger
+
 import monix.eval.Task
+import monix.execution.atomic.AtomicInt
 import monix.execution.{Ack, Scheduler}
 import monix.reactive.subjects.Var
 import monix.reactive.{Observable, Observer}
@@ -12,7 +15,7 @@ import riff.monix.log.ObservableLog
 import riff.raft._
 import riff.raft.log.{LogAppendSuccess, LogCoords, LogEntry, RaftLog}
 import riff.raft.messages._
-import riff.raft.node.RoleCallback.NewLeaderEvent
+import riff.raft.node.RoleCallback.{NewLeaderEvent, RoleEvent}
 import riff.raft.node._
 import riff.raft.timer.LoggedInvocationClock
 import riff.reactive.{ReactivePipe, TestListener}
@@ -158,9 +161,21 @@ class RaftPipeMonixTest extends RiffMonixSpec {
 
         // also observe cluster events
         var leaderEvents: List[NewLeaderEvent] = Nil
-        oneNode.roleCallback.asInstanceOf[ObservableState].events.foreach {
-          case newLeader: NewLeaderEvent => leaderEvents = newLeader :: leaderEvents
-          case _                         =>
+        val obsState                           = oneNode.roleCallback.asInstanceOf[ObservableState]
+        val setCalls                           = new AtomicInteger(0)
+
+        val testReceived = ListBuffer[RoleEvent]()
+
+        obsState.events.foreach { e =>
+          testReceived.synchronized {
+            testReceived += e
+          }
+          e match {
+            case newLeader: NewLeaderEvent =>
+              setCalls.incrementAndGet()
+              leaderEvents = newLeader :: leaderEvents
+            case _ =>
+          }
         }
 
         try {
@@ -173,8 +188,11 @@ class RaftPipeMonixTest extends RiffMonixSpec {
             }.get
           }
 
+          val tries = new AtomicInteger(0)
+
           eventually {
-            withClue(s"new leader events ${leaderEvents} and found leader ${leaderNodeAndTerm}") {
+            withClue(s"${tries.incrementAndGet()} tries,\n${setCalls.get()} set calls,\n${testReceived.toList} received from the listener,\n${obsState
+              .listReceived()} invoked,\nnew leader events ${leaderEvents} and found leader ${leaderNodeAndTerm}") {
               leaderEvents.map(e => (e.leaderId, e.term)) should contain(leaderNodeAndTerm)
             }
           }

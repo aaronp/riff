@@ -1,5 +1,3 @@
 package riff
 
-package object rest {
-
-}
+package object rest {}

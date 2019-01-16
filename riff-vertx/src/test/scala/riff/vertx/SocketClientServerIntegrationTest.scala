@@ -10,14 +10,12 @@ import monix.execution.Cancelable
 import monix.execution.Scheduler.Implicits.global
 import org.scalatest.concurrent.Eventually
 import riff.RiffSpec
+import riff.rest.sockets.WebFrame
+import riff.rest.{Endpoint, EndpointCoords, _}
 import riff.vertx.client.SocketClient
 import riff.vertx.server.{Server, ServerEndpoint}
-import riff.rest._
-import riff.rest.sockets.WebFrame
-import riff.rest.{Endpoint, EndpointCoords}
 
 import scala.collection.mutable.ListBuffer
-import scala.concurrent.duration._
 import scala.util.Try
 
 object SocketClientServerIntegrationTest {
@@ -29,7 +27,6 @@ object SocketClientServerIntegrationTest {
 class SocketClientServerIntegrationTest extends RiffSpec with Eventually with StrictLogging {
 
   import SocketClientServerIntegrationTest._
-  override implicit def testTimeout: FiniteDuration = 8.seconds
 
   "Server.startSocket / SocketClient.connect" should {
     "route endpoints accordingly" in {
@@ -37,19 +34,29 @@ class SocketClientServerIntegrationTest extends RiffSpec with Eventually with St
 
       val UserIdR = "/user/(.*)".r
 
+      val testLog = ListBuffer[String]()
+      def logInTest(msg: String) = testLog.synchronized {
+        testLog += msg
+      }
+      def logs: String = testLog.synchronized {
+        testLog.mkString("\n")
+      }
+
       implicit val vertx = Vertx.vertx()
       val started: ScalaVerticle = Server.startSocket(HostPort.localhost(port), capacity = 10) {
         case "/admin" =>
+          logInTest("Server received /admin")
+
           endpt =>
             val frame = WebFrame.text("Thanks for connecting to admin")
-            logger.info(s"Admin server sending $frame")
+            logInTest(s"Admin server sending $frame")
             endpt.fromRemote.foreach { slurp =>
-              logger.info(s"Admin connection ignoring $slurp")
+              logInTest(s"Admin connection ignoring $slurp")
             }
             endpt.toRemote.onNext(frame)
             endpt.toRemote.onComplete()
         case UserIdR(user) =>
-          logger.info(s"handleTextFramesWith ...")
+          logInTest(s"handleTextFramesWith ...")
           _.handleTextFramesWith { clientMsgs =>
             clientMsgs.map(s"$user : " + _)
           }
@@ -61,16 +68,19 @@ class SocketClientServerIntegrationTest extends RiffSpec with Eventually with St
       try {
         var adminResults: List[String] = Nil
 
+        val connectedCount = new AtomicInteger(0)
+
         admin = SocketClient.connect(EndpointCoords.get(HostPort.localhost(port), "/admin"), capacity = 10, "test admin client") { endpoint =>
+          connectedCount.incrementAndGet()
           val frame = WebFrame.text("already, go!")
-          logger.info(s"toRemote sending to client $frame")
+          logInTest(s"toRemote sending to client $frame")
           endpoint.toRemote.onNext(frame)
 
-          logger.info(s"toRemote onComplete")
+          logInTest(s"toRemote onComplete")
           endpoint.toRemote.onComplete()
 
           def debug(f: WebFrame) = {
-            logger.info(s"\t\t GOT: $f")
+            logInTest(s"\t\t debug GOT: $f")
             receivedFromRemote.incrementAndGet
           }
           endpoint.fromRemote.doOnNext(debug).dump("ADMIN FROM REMOTE").toListL.runAsync.foreach { list =>
@@ -78,8 +88,8 @@ class SocketClientServerIntegrationTest extends RiffSpec with Eventually with St
           }
         }
 
-        withClue(s"Having received ${receivedFromRemote.get}") {
-          eventually {
+        eventually {
+          withClue(s"Having connected ${connectedCount.get} times and received ${receivedFromRemote.get}:\n${logs}\n") {
             adminResults shouldBe List("Thanks for connecting to admin")
           }
         }

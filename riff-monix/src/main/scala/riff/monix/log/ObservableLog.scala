@@ -60,7 +60,7 @@ case class ObservableLog[A](override val underlying: RaftLog[A])(implicit schedu
     val obs: Observable[LogStatus] = (None +: out.map(_.some)).scan(emptyStatus) {
       case (status, Some(Left(a)))  => status.copy(lastAppended = a)
       case (status, Some(Right(c))) => status.copy(lastCommitted = c)
-      case (status, None) => status
+      case (status, None)           => status
     }
 
     obs.dump("result").cache(1).dump("result2")

@@ -5,6 +5,8 @@ import monix.reactive.subjects.Var
 import riff.raft.node.RoleCallback.RoleEvent
 import riff.raft.node.RoleCallback
 
+import scala.collection.mutable.ListBuffer
+
 /**
   * Provides a means to represent a [[riff.raft.node.RaftNode]]'s role as an Observable:
   *
@@ -20,7 +22,12 @@ import riff.raft.node.RoleCallback
   */
 class ObservableState(implicit sched: Scheduler) extends RoleCallback {
   private val eventsVar: Var[RoleEvent] = Var[RoleEvent](null)
+  private val received                  = ListBuffer[RoleEvent]()
+  def listReceived()                    = received
   override def onEvent(event: RoleEvent): Unit = {
+    received.synchronized {
+      received += event
+    }
     eventsVar := event
   }
   def events: Observable[RoleEvent] = eventsVar.filter(_ != null)

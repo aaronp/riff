@@ -12,26 +12,26 @@ import scala.concurrent.Future
 
 trait GetLogStatus[F[_]] {
 
-  def getLogStatus() : F[LogStatus]
+  def getLogStatus(): F[LogStatus]
 }
 
 object GetLogStatus extends StrictLogging {
 
   def latest(status: Observable[LogStatus]) = {
-    val onlyAppended = status
+    val onlyAppended    = status
     val latestCommitted = status.drop(1)
     latestCommitted.switchIfEmpty(onlyAppended)
   }
   case class obs(status: Observable[LogStatus])(implicit s: Scheduler) extends GetLogStatus[Observable] {
-    override def getLogStatus() : Observable[LogStatus] = status.headF
+    override def getLogStatus(): Observable[LogStatus] = status.headF
   }
   case class task(status: Observable[LogStatus])(implicit s: Scheduler) extends GetLogStatus[Task] {
-    override def getLogStatus() : Task[LogStatus] = {
+    override def getLogStatus(): Task[LogStatus] = {
       status.headL
     }
   }
   case class future(status: Observable[LogStatus])(implicit s: Scheduler) extends GetLogStatus[Future] {
-    override def getLogStatus() : Future[LogStatus] = status.headL.runAsync
+    override def getLogStatus(): Future[LogStatus] = status.headL.runAsync
   }
 
   def statusHandler(requests: Observable[RestRequestContext], status: Observable[LogStatus])(implicit s: Scheduler): CancelableFuture[Unit] = {

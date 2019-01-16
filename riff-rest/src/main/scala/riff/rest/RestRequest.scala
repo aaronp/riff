@@ -5,4 +5,3 @@ case class RestRequest(method: HttpMethod, uri: String, body: Array[Byte], heade
 
   override def toString = s"${method} $uri ${headers.mkString("[", "; ", "]")} { $bodyAsString } "
 }
-
